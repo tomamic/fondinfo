@@ -1,0 +1,18 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    string line;
+    ifstream file("../untitled1/main.cpp");
+
+    getline(file, line);
+    while (file.good()) {
+      cout << line << endl;
+      getline(file, line);
+    }
+
+    return 0;
+}

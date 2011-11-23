@@ -1,0 +1,3 @@
+always second: 35 aargh
+bombastic champion: 40
+hopeless dud: 10
