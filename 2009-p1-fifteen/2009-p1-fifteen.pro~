@@ -1,0 +1,13 @@
+# -------------------------------------------------
+# Project created by QtCreator 2009-04-02T13:15:57
+# -------------------------------------------------
+TARGET = fifteen-gui
+TEMPLATE = app
+SOURCES += main.cpp \
+    fifteengui.cpp \
+    fifteenpuzzle.cpp
+HEADERS += fifteengui.h \
+    fifteenpuzzle.h
+FORMS += 
+
+RESOURCES +=
