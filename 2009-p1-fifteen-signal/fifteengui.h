@@ -11,6 +11,7 @@
 #define FIFTEENGUI_H
 
 #include "fifteenpuzzle.h"
+#include "rightbuttongroup.h"
 
 #include <QtGui>
 
@@ -30,7 +31,7 @@ private:
     void updateAllButtons();
     void checkSolution();
 
-    QButtonGroup* buttons;
+    RightButtonGroup* buttons;
     FifteenPuzzle* model;
 };
 

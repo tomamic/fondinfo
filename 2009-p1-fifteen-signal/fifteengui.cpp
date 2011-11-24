@@ -8,6 +8,7 @@
  */
 
 #include "fifteengui.h"
+#include "rightpushbutton.h"
 
 FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
 {
@@ -15,10 +16,10 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
     setWindowTitle(tr("Fifteen Puzzle"));
     setStyleSheet("background: green");
     QGridLayout* layout = new QGridLayout();
-    buttons = new QButtonGroup();
+    buttons = new RightButtonGroup();
     for (int y = 0; y < model->getRows(); ++y) {
         for (int x = 0; x < model->getColumns(); ++x) {
-            QPushButton *b = new QPushButton();
+            RightPushButton *b = new RightPushButton();
             b->setStyleSheet("background: yellow");
             buttons->addButton(b, y * model->getColumns() + x);
             layout->addWidget(b, y, x);
@@ -28,6 +29,8 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
 
     this->setLayout(layout);
     QObject::connect(buttons, SIGNAL(buttonClicked(int)),
+                     this, SLOT(controlButtons(int)));
+    QObject::connect(buttons, SIGNAL(buttonRightClicked(int)),
                      this, SLOT(controlButtons(int)));
     // connection added for model signals
     QObject::connect(model, SIGNAL(blankMoved(int, int, int, int)),

@@ -1,5 +1,5 @@
 QT       += core
-TARGET   = 2010-queens-oo
+TARGET   = queens-oo
 TEMPLATE = app
 
 SOURCES += main.cpp \

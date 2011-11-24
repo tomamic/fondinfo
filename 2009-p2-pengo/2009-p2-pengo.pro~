@@ -1,6 +1,6 @@
 QT       += core gui
-TARGET   = 2009-p2-pengo
 TEMPLATE = app
+TARGET   = 2009-p2-pengo
 
 SOURCES += main.cpp\
     penguin.cpp \
