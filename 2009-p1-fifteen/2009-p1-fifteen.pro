@@ -1,4 +1,3 @@
-
 QT       += core gui
 TEMPLATE = app
 TARGET   = 2009-p1-fifteen.pro
