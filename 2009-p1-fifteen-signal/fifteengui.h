@@ -14,8 +14,7 @@
 
 #include <QtGui>
 
-class FifteenGui : public QWidget
-{
+class FifteenGui : public QWidget {
     Q_OBJECT
 
 public:
@@ -24,6 +23,8 @@ public:
 
 public slots:
     void controlButtons(int i);
+     // method added for model signals
+    void updateAfterMove(int newY, int newX, int oldY, int oldX);
 
 private:
     void updateAllButtons();

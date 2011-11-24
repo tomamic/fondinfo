@@ -12,11 +12,13 @@
 
 #include <iostream>
 #include <vector>
+#include <QtCore/QObject>
 
 using namespace std;
 
-class FifteenPuzzle
-{
+class FifteenPuzzle : public QObject {
+    Q_OBJECT
+
 public:
     int getColumns() const;
     int getRows() const;
@@ -33,8 +35,13 @@ public:
     const static char BLANK_SYMBOL = ' ';
     const static char OUT_OF_BOUNDS = '!';
 
+signals:
+    // model signal added
+    void blankMoved(int newY, int newX, int oldY, int oldX);
+
 private:
-    void moveBlank(int direction);
+    // silent mode added, for shuffling without emitting signals
+    void moveBlank(int direction, bool silent = false);
 
     int columns;
     int rows;

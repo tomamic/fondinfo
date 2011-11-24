@@ -17,7 +17,7 @@
 
 using namespace std;
 
-void runConsole(QApplication& a)
+int runConsole(QApplication& a)
 {
     char symbol;
     FifteenPuzzle* puzzle = new FifteenPuzzle(2, 3);
@@ -33,7 +33,7 @@ void runConsole(QApplication& a)
     return 0;
 }
 
-void runGui(QApplication& a)
+int runGui(QApplication& a)
 {
     FifteenPuzzle* puzzle = new FifteenPuzzle(2, 3);
     FifteenGui* gui = new FifteenGui(puzzle);
@@ -45,6 +45,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     srand(time(NULL));
 
-    // return runConsole(a);
-    return runGui(a);
+    return runConsole(a);
+    // return runGui(a);
 }

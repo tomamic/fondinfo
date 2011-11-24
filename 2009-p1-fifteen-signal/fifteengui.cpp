@@ -29,6 +29,9 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
     this->setLayout(layout);
     QObject::connect(buttons, SIGNAL(buttonClicked(int)),
                      this, SLOT(controlButtons(int)));
+    // connection added for model signals
+    QObject::connect(model, SIGNAL(blankMoved(int, int, int, int)),
+                     this, SLOT(updateAfterMove(int, int, int, int)));
     show();
 }
 
@@ -54,7 +57,19 @@ void FifteenGui::controlButtons(int i)
     int x = i % model->getColumns();
 
     model->move(y, x);
-    updateAllButtons();
+    // call removed for model signals
+    // updateAllButtons();
+}
+
+void FifteenGui::updateAfterMove(int newY, int newX, int oldY, int oldX)
+{
+    char symbol = model->get(oldY, oldX);
+    int oldPos = oldY * model->getColumns() + oldX;
+    buttons->button(oldPos)->setText(QString(symbol));
+
+    int newPos = newY * model->getColumns() + newX;
+    buttons->button(newPos)->setText(QString(FifteenPuzzle::BLANK_SYMBOL));
+    checkSolution();
 }
 
 void FifteenGui::checkSolution()

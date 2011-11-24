@@ -12,8 +12,6 @@
 #include <cstdlib>
 #include <algorithm>
 
-using namespace std;
-
 const int FifteenPuzzle::DY[] = { -1,  0, +1,  0}; // N, E, S, W
 const int FifteenPuzzle::DX[] = {  0, +1,  0, -1}; // N, E, S, W
 
@@ -63,7 +61,7 @@ void FifteenPuzzle::shuffle()
             int nextX = (blank % columns) + DX[direction];
             // if it is inside the board, then move the blank
             if (0 <= nextY && nextY < rows && 0 <= nextX && nextX < columns) {
-                moveBlank(direction);
+                moveBlank(direction, true); // silent, no signals emitted
             }
         }
     } while (isSolved());
@@ -104,12 +102,17 @@ char FifteenPuzzle::get(int y, int x) const
     return value;
 }
 
-void FifteenPuzzle::moveBlank(int direction)
+void FifteenPuzzle::moveBlank(int direction, bool silent)
 {
     int old = blank;
     blank += DY[direction] * columns + DX[direction];
     board[old] = board[blank];
     board[blank] = BLANK_SYMBOL;
+    // while shuffling, no signals are emitted
+    if (! silent) {
+        emit blankMoved(blank / columns, blank % columns,
+                        old / columns, old % columns);
+    }
 }
 
 bool FifteenPuzzle::isSolved() const
@@ -124,18 +127,18 @@ bool FifteenPuzzle::isSolved() const
     return solved;
 }
 
-void FifteenPuzzle::write(ostream& out) const
+void FifteenPuzzle::write(std::ostream& out) const
 {
     for (int i = 0; i < size; ++i) {
         out << board[i];
         if (i % columns == columns - 1) {
-            out << endl;
+            out << std::endl;
         }
     }
-    out << endl;
+    out << std::endl;
 }
 
-//ostream& operator<<(ostream& out, FifteenPuzzle& puzzle)
+//std::ostream& operator<<(std::ostream& out, FifteenPuzzle& puzzle)
 //{
 //    puzzle.write(out);
 //    return out;
