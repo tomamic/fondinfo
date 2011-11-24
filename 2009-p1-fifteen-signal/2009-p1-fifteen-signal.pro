@@ -4,14 +4,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     fifteengui.cpp \
-    fifteenpuzzle.cpp \
-    rightpushbutton.cpp \
-    rightbuttongroup.cpp
+    fifteenpuzzle.cpp
 
 HEADERS += fifteengui.h \
-    fifteenpuzzle.h \
-    rightpushbutton.h \
-    rightbuttongroup.h
+    fifteenpuzzle.h
 
 TRANSLATIONS = fifteen_it.ts
 

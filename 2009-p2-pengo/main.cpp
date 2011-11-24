@@ -21,7 +21,7 @@
 #include <cstdlib>
 #include <ctime>
 
-int runConsole(QApplication& a)
+int runConsole(int argc, char *argv[])
 {
     Game* game = new Game(7, 7);
     new Ice(game, 2, 1);
@@ -45,17 +45,20 @@ int runConsole(QApplication& a)
         game->moveAll();
         game->write(cout);
     }
+    return 0;
 }
 
-int runGui(QApplication& a)
+int runGui(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     QTranslator translator;
     translator.load(":/translations/pengo_" + QLocale::system().name());
     a.installTranslator(&translator);
 
-    Loader* loader = new Loader(":levels/pengo");
-    Game* game = loader->loadGame(1);
-    GameGui* w = new GameGui(game);
+    Loader loader(":levels/pengo");
+    Game* game = loader.loadGame(1);
+    GameGui gui(game);
 
     return a.exec();
 }
@@ -63,9 +66,8 @@ int runGui(QApplication& a)
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-    QApplication a(argc, argv);
 
-    //return runConsole(a);
-    return runGui(a);
+    //return runConsole(argc, argv);
+    return runGui(argc, argv);
 
 }

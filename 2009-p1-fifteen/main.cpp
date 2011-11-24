@@ -17,34 +17,33 @@
 
 using namespace std;
 
-int runConsole(QApplication& a)
+int runConsole(int argc, char *argv[])
 {
     char symbol;
-    FifteenPuzzle* puzzle = new FifteenPuzzle(2, 3);
-    puzzle->write(cout);
+    FifteenPuzzle puzzle(2, 3);
+    puzzle.write(cout);
 
-    while (!puzzle->isSolved()) {
+    while (!puzzle.isSolved()) {
         cin >> symbol;
-        puzzle->move(toupper(symbol));
-        puzzle->write(cout);
+        puzzle.move(toupper(symbol));
+        puzzle.write(cout);
     }
     cout << "Puzzle solved!" << endl;
-    delete puzzle;
     return 0;
 }
 
-int runGui(QApplication& a)
+int runGui(int argc, char *argv[])
 {
-    FifteenPuzzle* puzzle = new FifteenPuzzle(2, 3);
-    FifteenGui* gui = new FifteenGui(puzzle);
+    QApplication a(argc, argv);
+    FifteenPuzzle puzzle(2, 3);
+    FifteenGui gui(&puzzle);
     return a.exec();
 }
 
 int main(int argc, char *argv[])
 {    
-    QApplication a(argc, argv);
     srand(time(NULL));
 
-    return runConsole(a);
-    // return runGui(a);
+    return runConsole(argc, argv);
+//    return runGui(argc, argv);
 }

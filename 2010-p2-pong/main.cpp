@@ -20,7 +20,7 @@
 #include <cstdlib>
 #include <ctime>
 
-void runConsole()
+int runConsole(int argc, char *argv[])
 {
     Game* game = new Game(17, 47);
     new Ball(game, 6, 15);
@@ -42,26 +42,28 @@ void runConsole()
         game->moveAll();
         game->write(cout);
     }
+    return 0;
 }
 
-int runGui(QApplication& a)
+int runGui(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     QTranslator translator;
     translator.load(":/translations/pong_" + QLocale::system().name());
     a.installTranslator(&translator);
 
-    Loader* loader = new Loader(":levels/pong");
-    Game* game = loader->loadGame(1);
-    GameGui* w = new GameGui(game);
+    Loader loader(":levels/pong");
+    Game* game = loader.loadGame(1);
+    GameGui gui(game);
+
+    return a.exec();
 }
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));    
-    QApplication a(argc, argv);
 
-    //runConsole();
-    runGui(a);
-
-    return a.exec();
+//    return runConsole(argc, argv);
+    return runGui(argc, argv);
 }
