@@ -1,6 +1,6 @@
 /**
  * Example used in programming courses at University of Parma, IT.
- * Author: Michele Tomaiuolo - <tomamic@ce.unipr.it> - 2009
+ * Author: Michele Tomaiuolo - <tomamic@ce.unipr.it> - 2010
  *
  * This software is free: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License, version 3 or
@@ -59,6 +59,11 @@ void Game::addActor(Actor* actor)
     actors.push_back(actor);
 }
 
+Actor* Game::getActor(int i)
+{
+    return (0 <= i && i < actors.size()) ? actors[i] : NULL;
+}
+
 int Game::getUserCommand(int player)
 {
     return commands[player];
@@ -67,6 +72,16 @@ int Game::getUserCommand(int player)
 void Game::setUserCommand(int command, int player)
 {
     this->commands[player] = command;
+}
+
+int Game::getPoints(int player)
+{
+    return points[player];
+}
+
+void Game::scorePoints(int points, int player)
+{
+    this->points[player] += points;
 }
 
 void Game::moveAll()

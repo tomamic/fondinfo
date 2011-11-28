@@ -1,6 +1,6 @@
 /**
  * Example used in programming courses at University of Parma, IT.
- * Author: Michele Tomaiuolo - <tomamic@ce.unipr.it> - 2009
+ * Author: Michele Tomaiuolo - <tomamic@ce.unipr.it> - 2010
  *
  * This software is free: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License, version 3 or
@@ -28,7 +28,7 @@ public:
     void addActor(Actor* actor);
     void moveAll();
     Actor* get(int y, int x);
-    //void set(int y, int x, Actor* actor);
+    Actor* getActor(int i);
     int getHeight();
     int getWidth();
     bool isWon();
@@ -37,13 +37,17 @@ public:
     void write(ostream& out);
     int getUserCommand(int player = 0);
     void setUserCommand(int command, int player = 0);
+    int getPoints(int player = 0);
+    void scorePoints(int points, int player = 0);
 
     static const char BLANK = '.';
+
 private:
     int height;
     int width;
     vector<Actor*> actors;
     map<int, int> commands;
+    map<int, int> points;
 
     // In fact, a matrix is not required
     // ... but it would improve performance
