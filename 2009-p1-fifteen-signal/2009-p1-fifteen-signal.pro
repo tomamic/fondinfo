@@ -1,6 +1,7 @@
 QT       += core gui
 TARGET   = 2009-p1-fifteen-signal
 TEMPLATE = app
+CONFIG   += console
 
 SOURCES += main.cpp \
     fifteengui.cpp \

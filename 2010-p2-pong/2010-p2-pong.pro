@@ -1,6 +1,7 @@
 QT       += core gui
 TEMPLATE = app
 TARGET   = 2010-p2-pong
+CONFIG   += console
 
 SOURCES += main.cpp\
     actor.cpp \
