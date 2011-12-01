@@ -12,9 +12,9 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QTextEdit>
-#include <QtGui/QPushButton>
 
-class Notepad : public QMainWindow
+
+class Notepad : public QWidget
 {
     Q_OBJECT
 

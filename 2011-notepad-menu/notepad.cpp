@@ -9,61 +9,48 @@
 
 #include "notepad.h"
 
-#include <QtGui>
+#include <QtGui/QApplication>
+#include <QtGui/QMainWindow>
+#include <QtGui/QAction>
+#include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
+#include <QtGui/QToolBar>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
 #include <fstream>
 
 using namespace std;
 
-Notepad::Notepad(QWidget* parent)
-    : QMainWindow(parent)
+Notepad::Notepad(QWidget* parent) : QMainWindow(parent)
 {
-    QPushButton* openButton = new QPushButton(tr("&Open"), this);
-    QPushButton* saveButton = new QPushButton(tr("&Save"), this);
-    QPushButton* exitButton = new QPushButton(tr("E&xit"), this);
-
-    connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
-    connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
-    connect(exitButton, SIGNAL(clicked()), this, SLOT(exit()));
-
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->addWidget(openButton);
-    vLayout->addWidget(saveButton);
-    vLayout->addWidget(exitButton);
-    vLayout->addStretch();
 
     textEdit = new QTextEdit();
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(textEdit);
-    hLayout->addLayout(vLayout);
+    setCentralWidget(textEdit);
 
-    setCentralWidget(new QWidget());
-    centralWidget()->setLayout(hLayout);
+    // Create some actions
+    QAction* openAction = new QAction(tr("&Open"), this);
+    QAction* saveAction = new QAction(tr("&Save"), this);
+    QAction* exitAction = new QAction(tr("E&xit"), this);
+    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+    connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(exit()));
+
+    // Add all the actions to a menu
+    QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(openAction);
+    fileMenu->addAction(saveAction);
+    fileMenu->addSeparator();
+    fileMenu->addAction(exitAction);
+
+    // Add all the actions to a toolbar
+    QToolBar* toolBar = addToolBar(tr("&File"));
+    toolBar->addAction(openAction);
+    toolBar->addAction(saveAction);
+    toolBar->addSeparator();
+    toolBar->addAction(exitAction);
 
     setWindowTitle(tr("Notepad"));
-
-//    // Create some actions
-//    QAction* openAction = new QAction(tr("&Open"), this);
-//    QAction* saveAction = new QAction(tr("&Save"), this);
-//    QAction* exitAction = new QAction(tr("E&xit"), this);
-//    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
-//    connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
-//    connect(exitAction, SIGNAL(triggered()), this, SLOT(exit()));
-
-//    // Add all the actions to a menu
-//    QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
-//    fileMenu->addAction(openAction);
-//    fileMenu->addAction(saveAction);
-//    fileMenu->addSeparator();
-//    fileMenu->addAction(exitAction);
-
-//    // Add all the actions to a toolbar
-//    QToolBar* toolBar = addToolBar(tr("&File"));
-//    toolBar->addAction(openAction);
-//    toolBar->addAction(saveAction);
-//    toolBar->addSeparator();
-//    toolBar->addAction(exitAction);
-
     show();
 }
 

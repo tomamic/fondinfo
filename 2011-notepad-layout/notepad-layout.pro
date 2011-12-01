@@ -1,5 +1,5 @@
 QT       += core gui
-TARGET   = 2011-hello-notepad
+TARGET   = 2011-notepad-layout
 TEMPLATE = app
 
 SOURCES += main.cpp\
