@@ -21,6 +21,8 @@ using namespace std;
 
 Notepad::Notepad(QWidget* parent) : QWidget(parent)
 {
+    textEdit = new QTextEdit();
+
     QPushButton* openButton = new QPushButton(tr("&Open"), this);
     QPushButton* saveButton = new QPushButton(tr("&Save"), this);
     QPushButton* exitButton = new QPushButton(tr("E&xit"), this);
@@ -34,8 +36,6 @@ Notepad::Notepad(QWidget* parent) : QWidget(parent)
     vLayout->addWidget(saveButton);
     vLayout->addWidget(exitButton);
     vLayout->addStretch();
-
-    textEdit = new QTextEdit();
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(textEdit);
@@ -62,8 +62,9 @@ void Notepad::open()
                 tr("Text Files (*.txt);; C++ Files (*.cpp *.h)"));
     if (fileName != "") {
         ifstream file(fileName.toStdString().c_str());
-        string content, line;
         if (file.good()) {
+            // read application data from file stream
+            string content, line;
             while (getline(file, line)) {
                 if (content != "") content += "\n";
                 content += line;
@@ -85,8 +86,8 @@ void Notepad::save()
                 tr("Text Files (*.txt);;C++ Files (*.cpp *.h)"));
     if (fileName != "") {
         ofstream file(fileName.toStdString().c_str());
-        string content, line;
         if (file.good()) {
+            // write application data to file stream
             file << textEdit->toPlainText().toStdString();
         } else {
             QMessageBox::critical(
