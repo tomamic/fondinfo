@@ -20,7 +20,7 @@ using namespace std;
 int runConsole(int argc, char *argv[])
 {
     char symbol;
-    FifteenPuzzle puzzle(2, 3);
+    FifteenPuzzle puzzle(1, 1);
     puzzle.write(cout);
 
     while (!puzzle.isSolved()) {
