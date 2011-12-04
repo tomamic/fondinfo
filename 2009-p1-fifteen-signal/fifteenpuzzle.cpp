@@ -17,6 +17,8 @@ const int FifteenPuzzle::DX[] = {  0, +1,  0, -1}; // N, E, S, W
 
 FifteenPuzzle::FifteenPuzzle(int rows, int columns)
 {
+    if (rows < 2) rows = 2;
+    if (columns < 2) columns = 2;
     this->rows = rows;
     this->columns = columns;
     size = columns * rows;
