@@ -1,5 +1,5 @@
 QT       += core
-TARGET   = reverse-server
+TARGET   = 2011-reverse-server
 TEMPLATE = app
 CONFIG   += console
 

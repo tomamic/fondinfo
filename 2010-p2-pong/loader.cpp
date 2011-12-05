@@ -29,7 +29,7 @@ Game* Loader::loadGame(int level)
 {
     QFile file(QString("%1-%2.dat").arg(name.c_str()).arg(level));
     file.open(QIODevice::ReadOnly | QIODevice::Text);
-    istringstream in(QTextStream(&file).readAll().toStdString());
+    istringstream in(file.readAll().data());
 
     int h, w, y, x;
     char type;
