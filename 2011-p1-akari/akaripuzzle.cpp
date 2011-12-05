@@ -21,6 +21,7 @@ AkariPuzzle::AkariPuzzle()
 
 void AkariPuzzle::read(istream& in)
 {
+    // *add* cleanup code here
     in >> noskipws;
     char c;
     while (in >> c) {
