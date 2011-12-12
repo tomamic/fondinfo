@@ -5,5 +5,5 @@ CONFIG   += console
 
 SOURCES += main.cpp
 
-LIBS += -L/usr/lib/ -lboost_system -lboost_thread
+LIBS += -L/usr/lib/ -lboost_system
 QMAKE_CXXFLAGS += -std=c++0x
