@@ -46,7 +46,7 @@ int main()
         tcp::endpoint endpoint(tcp::v4(), 4444);
         tcp::acceptor acceptor(io_service, endpoint);
 
-        for (;;) {
+        while (true) {
             tcp::iostream* socketStream = new tcp::iostream();
             // the buffer of the tcp::stream is associated
             // with the newly accepted socket
