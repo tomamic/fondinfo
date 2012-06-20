@@ -11,6 +11,7 @@
 #include "fifteengui.h"
 
 #include <QtGui/QApplication>
+#include <QtGui/QInputDialog>
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
@@ -20,7 +21,7 @@ using namespace std;
 int runConsole(int argc, char *argv[])
 {
     char symbol;
-    FifteenPuzzle puzzle(1, 1);
+    FifteenPuzzle puzzle(2, 3);
     puzzle.write(cout);
 
     while (!puzzle.isSolved()) {
@@ -35,8 +36,11 @@ int runConsole(int argc, char *argv[])
 int runGui(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FifteenPuzzle puzzle(2, 3);
-    FifteenGui gui(&puzzle);
+
+    int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
+    int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
+    FifteenPuzzle* puzzle = new FifteenPuzzle(rows, columns);
+    FifteenGui* gui = new FifteenGui(puzzle);
     return a.exec();
 }
 
