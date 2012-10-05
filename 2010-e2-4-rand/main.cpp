@@ -34,12 +34,10 @@ int main(int argc, char *argv[])
             cout << "The secret is smaller than " << guess << endl;
         } else if (secret > guess) {
             cout << "The secret is larger than " << guess << endl;
+        } else {
+            cout << "Congratulations, you guessed in " << tries << " tries" << endl;
         }
     } while (secret != guess && tries <= 10);
-
-    if (secret == guess) {
-        cout << "Congratulations, you guessed in " << tries << " tries";
-    }
 
     return 0;
 }
