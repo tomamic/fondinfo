@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
     int n, d = 2;
     cin >> n;
 
-    for (d = 2; d < n/2 && n%d != 0; ++d) { }
+    // for (d = 2; d < n/2 && n%d != 0; ++d) { }
 	
     if (n % d != 0) {
-        for (d = 3; d*d <= n && n%d != 0; d += 2);
+        for (d = 3; d*d <= n && n%d != 0; d += 2) { }
     }
 
     if (n % d == 0 && n != 2) {
