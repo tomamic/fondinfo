@@ -11,7 +11,10 @@
 
 using namespace std;
 
-/* Proof. Since n is composite, n = d*e for some natural numbers d and e which are not zero and not units. If both of them are greater than sqrt(n), then n = d*e > sqrt(n)*sqrt(n) = n, so n>n, contradiction. So d or e is <= sqrt(n). */
+/* Proof. Since n is composite, n = d*e for some natural numbers
+   d and e which are not zero and not units. If both of them are
+   greater than sqrt(n), then n = d*e > sqrt(n)*sqrt(n) = n, so
+   n>n, contradiction. So d or e is <= sqrt(n). */
 
 int main(int argc, char *argv[])
 {
