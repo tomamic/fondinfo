@@ -6,8 +6,9 @@ Page: <http://www.ce.unipr.it/people/tomamic/fondinfo>
 
 Description of exercises:
 
-* 2010: <https://github.com/downloads/tomamic/fondinfo/esercizi-2010.pdf>
-* 2011: <https://github.com/downloads/tomamic/fondinfo/esercizi-2011.pdf>
+* 2012: <http://goo.gl/byLYH>
+* 2011: <http://goo.gl/G6T2D>
+* 2010: <http://goo.gl/L8te9>
 
 This software is free: you can redistribute it and/or modify it,
 under the terms of the GNU General Public License, version 3 or later.
