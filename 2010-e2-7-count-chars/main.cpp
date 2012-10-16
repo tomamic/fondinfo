@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
             "Bell Labs nel 1983 come un miglioramento del linguaggio C. "
             "Tra i miglioramenti principali troviamo: l'introduzione del "
             "paradigma di programmazione a oggetti (le classi), funzioni "
-            "virtuali, overloading degli operatori, ereditarieta` multipla, "
-            "template e gestione delle eccezioni.";
+            "virtuali, overloading degli operatori, ereditarieta` "
+            "multipla, template e gestione delle eccezioni.";
     string chars;
     cin >> chars;
 
