@@ -14,7 +14,15 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    string text = "Il C++ e` un linguaggio di programmazione orientato agli oggetti, con tipizzazione statica. E` stato sviluppato (in origine col nome di 'C con classi') da Bjarne Stroustrup ai Bell Labs nel 1983 come un miglioramento del linguaggio C. Tra i miglioramenti principali troviamo: l'introduzione del paradigma di programmazione a oggetti (le classi), funzioni virtuali, overloading degli operatori, ereditarieta` multipla, template e gestione delle eccezioni.";
+    string text =
+            "Il C++ e` un linguaggio di programmazione orientato agli "
+            "oggetti, con tipizzazione statica. E` stato sviluppato (in "
+            "origine col nome di 'C con classi') da Bjarne Stroustrup ai "
+            "Bell Labs nel 1983 come un miglioramento del linguaggio C. "
+            "Tra i miglioramenti principali troviamo: l'introduzione del "
+            "paradigma di programmazione a oggetti (le classi), funzioni "
+            "virtuali, overloading degli operatori, ereditarieta` multipla, "
+            "template e gestione delle eccezioni.";
     string chars;
     cin >> chars;
 
