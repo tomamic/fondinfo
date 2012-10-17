@@ -34,7 +34,7 @@ int main(int argc, char*argv[]) {
             }
         }
 
-        for (int x =0; x < COLS; ++x) {
+        for (int x = 0; x < COLS; ++x) {
             for (int y = 0; y < ROWS; ++y) {
                 out << matrix[y][x];
             }
