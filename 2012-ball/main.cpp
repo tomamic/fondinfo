@@ -4,7 +4,8 @@
 
 using namespace std;
 
-void print(Ball* ball1, Ball* ball2) {
+void print(Ball* ball1, Ball* ball2)
+{
     const char BALL1 = 'O';
     const char BALL2 = 'X';
     const char EMPTY = '-';
