@@ -3,7 +3,11 @@
 
 class Ball
 {
-    int x, y, dx, dy;
+    int x;
+    int y;
+    int dx;
+    int dy;
+
 public:
     Ball(int x, int y, int dx, int dy);
     void move();
