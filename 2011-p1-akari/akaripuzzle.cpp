@@ -76,7 +76,8 @@ void AkariPuzzle::illuminate(int y, int x, int dy, int dx)
     }
 }
 
-bool AkariPuzzle::checkConstraint(int y, int x) {
+bool AkariPuzzle::checkConstraint(int y, int x)
+{
     int missingBulbs = get(y, x) - WALL0; // how many bulbs have to be placed around?
     if (get(y - 1, x) == BULB) { --missingBulbs; } // UP
     if (get(y, x + 1) == BULB) { --missingBulbs; } // RIGHT
