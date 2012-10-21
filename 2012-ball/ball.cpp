@@ -8,7 +8,8 @@ Ball::Ball(int x, int y, int dx, int dy)
     this->dy = dy;
 }
 
-void Ball::move() {
+void Ball::move()
+{
     if (x + dx < 0 || x + dx >= WIDTH) {
         dx = -dx;
     }
@@ -19,10 +20,12 @@ void Ball::move() {
     y += dy;
 }
 
-int Ball::getX() {
+int Ball::getX()
+{
     return x;
 }
 
-int Ball::getY() {
+int Ball::getY()
+{
     return y;
 }
