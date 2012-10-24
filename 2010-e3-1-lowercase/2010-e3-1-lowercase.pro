@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2010-e3-1-lowercase
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
 
 SOURCES += main.cpp

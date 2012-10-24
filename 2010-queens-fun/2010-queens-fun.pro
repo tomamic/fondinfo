@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2010-queens-fun
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
 
 SOURCES += main.cpp

@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2010-fibonacci
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
 
 SOURCES += main.cpp

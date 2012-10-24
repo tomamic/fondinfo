@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2010-e3-3-scytale
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
 
 SOURCES += main.cpp
