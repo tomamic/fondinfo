@@ -12,19 +12,43 @@
 
 using namespace std;
 
-int fibonacci(int n)
+int fibonacci1(int n)
+{
+  int result = 1;
+  if (n >= 2) {
+    clog << "fib " << n << endl;
+    result = fibonacci1(n-1) + fibonacci1(n-2);
+  }
+  return result;
+}
+
+int fibonacci2(int n)
 {
     static vector<int> lookup(2, 1);
 
     int result = 1;
-    if (n > 1) {
-        if (n < lookup.size()) result = lookup[n];
-        else {
-            clog << "fib " << n << endl;
-            result = fibonacci(n-1) + fibonacci(n-2);
-            lookup.push_back(result);
-        }
+    if (n < lookup.size()) {
+        result = lookup[n];
+    } else {
+        clog << "fib " << n << endl;
+        result = fibonacci2(n-1) + fibonacci2(n-2);
+        lookup.push_back(result);
     }
+    return result;
+}
+
+int fibonacci3(int n)
+{
+    int result = 1;
+    int fib2 = 1;    // result @ 2 steps before, when n>=2
+
+    for (int i = 2; i <= n; i++) {
+        result += fib2;
+
+        // prepare result @ 2 steps before... for next step
+        fib2 = result - fib2;
+    }
+
     return result;
 }
 
@@ -32,7 +56,7 @@ int main(int argc, char *argv[])
 {
     int n; cin >> n;
     while (n > 0) {
-        cout << fibonacci(n) << endl;
+        cout << fibonacci1(n) << endl;
         cin >> n;
     }
 
