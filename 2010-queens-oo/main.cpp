@@ -15,10 +15,12 @@
 int main(int argc, char *argv[])
 {
     int side;
+    cout << "side? ";
     cin >> side;
 
     Board b(side, side);
     b.solve();
     b.write(cout);
+
     return 0;
 }

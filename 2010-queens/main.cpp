@@ -8,26 +8,26 @@
  */
 
 #include <iostream>
-#include <sstream>
+#include <vector>
 
 using namespace std;
 
-void printBoard(bool** board, int side, ostream &out)
+void printBoard(vector<vector<bool> > &board, ostream &out)
 {
-    for (int y = 0; y < side; ++y) {
-        for (int x = 0; x < side; ++x) {
+    for (int y = 0; y < board.size(); ++y) {
+        for (int x = 0; x < board[y].size(); ++x) {
             if (board[y][x]) {
-                cout << "|Q";
+                out << "|Q";
             } else {
-                cout << "| ";
+                out << "| ";
             }
         }
-        out << '|' << endl;
+        out << "|" << endl;
     }
     out << endl;
 }
 
-bool underAttack(bool **board, int side, int row, int col)
+bool underAttack(vector<vector<bool> >& board, int row, int col)
 {
     bool attack = false;
 
@@ -39,7 +39,7 @@ bool underAttack(bool **board, int side, int row, int col)
         // walk till finding a queen, or border
         int y = row + dy;
         int x = col + dx;
-        while (0 <= y && y < side && 0 <= x && x < side && !attack) {
+        while (0 <= y && y < board.size() && 0 <= x && x < board[y].size() && !attack) {
 
             // if a queen is found, the square is under attack
             attack = board[y][x];
@@ -50,28 +50,28 @@ bool underAttack(bool **board, int side, int row, int col)
     return attack;
 }
 
-bool placeQueens(bool **board, int side, int row)
+bool placeQueens(vector<vector<bool> >& board, int row)
 {
     bool result = false;
-    for (int col = 0; col < side && !result; ++col) {
-        if (!underAttack(board, side, row, col)) {
+    for (int col = 0; col < board[row].size() && !result; ++col) {
+        if (!underAttack(board, row, col)) {
 
             // this square is not attacked,
             // let's try to place a queen here
             board[row][col] = true;
-
-            if (row == side-1) {
+            if (row == board.size() - 1) {
                 // hey! this is the last row!
                 result = true;
             } else {
                 // otherwise, let's try to place
                 // more queens in the following rows
-                result = placeQueens(board, side, row+1);
+                result = placeQueens(board, row+1);
             }
-
-            // no luck this way, let's remove the queen
-            // (backtracking)
-            if (!result) board[row][col] = false;
+            if (!result) {
+                // no luck this way, let's remove the queen
+                // (backtracking)
+                board[row][col] = false;
+            }
         }
     }
     return result;
@@ -79,31 +79,16 @@ bool placeQueens(bool **board, int side, int row)
 
 int main(int argc, char *argv[])
 {
-    int side = 6;
-    if (argc > 1) {
-        // get side as a command line argument
-        istringstream arg1(argv[1]);
-        arg1 >> side;
-    }
+    int side;
+    cout << "side? ";
+    cin >> side;
 
     // allocation and initialization of board
-    bool **board = new bool*[side];
-    for (int y = 0; y < side; ++y) {
-        board[y] = new bool[side];
-        for (int x = 0; x < side; ++x) {
-            board[y][x] = false;
-        }
-    }
+    vector<vector<bool> > board(side, vector<bool> (side, false));
 
     // solution: place queens starting from first row
-    placeQueens(board, side, 0);
-    printBoard(board, side, cout);
-
-    // deallocate memory
-    for (int y = 0; y < side; ++y) {
-        delete[] board[y];
-    }
-    delete[] board;
+    placeQueens(board, 0);
+    printBoard(board, cout);
 
     return 0;
 }

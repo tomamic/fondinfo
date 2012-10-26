@@ -29,10 +29,6 @@ private:
     int height;
     int width;
     vector< vector<bool> > board;
-
-    static const int DIRECTIONS = 8;
-    static const int DY[];
-    static const int DX[];
 };
 
 #endif // BOARD_H

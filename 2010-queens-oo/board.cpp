@@ -9,10 +9,6 @@
 
 #include "board.h"
 
-// N, NE, E, SE, S, SW, W, NW
-const int Board::DY[] = {-1,-1, 0, 1, 1, 1, 0,-1};
-const int Board::DX[] = { 0, 1, 1, 1, 0,-1,-1,-1};
-
 using namespace std;
 
 Board::Board(int height, int width)
@@ -45,17 +41,22 @@ void Board::write(ostream &out)
 bool Board::underAttack(int row, int col)
 {
     bool attack = false;
-    // for each direction ...
-    for (int dir = 0; dir < DIRECTIONS && !attack; ++dir) {
-        int y = row + DY[dir];
-        int x = col + DX[dir];
+
+    // for each direction up-left, up, up-right...
+    // (there are no queens in lower cells)
+    int dy = -1;
+    for (int dx = -1; dx <= +1 && !attack; ++dx) {
+        int y = row + dy;
+        int x = col + dx;
+
         // walk till finding a queen, or border
         while (0 <= y && y < height && 0 <= x
                && x < width && !attack) {
+
             // if a queen is found, the square is under attack
             attack = board[y][x];
-            y += DY[dir];
-            x += DX[dir];
+            y += dy;
+            x += dx;
         }
     }
     return attack;
@@ -79,9 +80,9 @@ bool Board::placeQueens(int row)
                 result = placeQueens(row+1);
             }
 
-            // no luck this way, let's remove the queen
-            // (backtracking)
             if (!result) {
+                // no luck this way, let's remove the queen
+                // (backtracking)
                 board[row][col] = false;
             }
         }
