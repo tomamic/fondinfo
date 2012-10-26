@@ -39,8 +39,9 @@ int runGui(int argc, char *argv[])
 
     int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
     int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
-    FifteenPuzzle* puzzle = new FifteenPuzzle(rows, columns);
-    FifteenGui* gui = new FifteenGui(puzzle);
+    FifteenPuzzle puzzle(rows, columns);
+    FifteenGui gui(&puzzle);
+
     return a.exec();
 }
 
