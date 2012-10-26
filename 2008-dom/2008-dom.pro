@@ -1,6 +1,6 @@
-QT       += core
-TARGET   = 2008-dom
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
 
 SOURCES += main.cpp \
     node.cpp \
