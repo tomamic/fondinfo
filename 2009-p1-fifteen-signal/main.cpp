@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
       QLocale::system().name());
     a.installTranslator(&myappTranslator);
 
-    FifteenPuzzle* puzzle = new FifteenPuzzle(2, 3);
-    FifteenGui* gui = new FifteenGui(puzzle);
+    FifteenPuzzle puzzle(2, 3);
+    FifteenGui gui(&puzzle);
     return a.exec();
 }
