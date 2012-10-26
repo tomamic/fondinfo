@@ -24,7 +24,7 @@ FifteenPuzzle::FifteenPuzzle(int rows, int columns)
     this->rows = rows;
     this->columns = columns;
     size = columns * rows;
-    board.assign(size, ' ');
+    board.assign(size, BLANK_SYMBOL);
 
     init();
     shuffle();
