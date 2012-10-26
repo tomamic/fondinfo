@@ -40,7 +40,7 @@ int fibonacci2(int n)
 int fibonacci3(int n)
 {
     int result = 1;
-    int fib2 = 1;    // result @ 2 steps before, when n>=2
+    int fib2 = 1;    // result @ 2 steps before
 
     for (int i = 2; i <= n; i++) {
         result += fib2;
