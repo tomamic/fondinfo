@@ -54,10 +54,9 @@ int fibonacci3(int n)
 
 int main(int argc, char *argv[])
 {
-    int n; cin >> n;
-    while (n > 0) {
+    int n;
+    while (cin >> n) {
         cout << fibonacci1(n) << endl;
-        cin >> n;
     }
 
     return 0;
