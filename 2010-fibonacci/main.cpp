@@ -45,7 +45,7 @@ int fibonacci3(int n)
     for (int i = 2; i <= n; i++) {
         result += fib2;
 
-        // prepare result @ 2 steps before... for next step
+        // store previous value of result, for next step
         fib2 = result - fib2;
     }
 
