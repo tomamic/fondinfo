@@ -12,9 +12,11 @@ void print(Ball* ball1, Ball* ball2)
 
     for (int y = 0; y < Ball::HEIGHT; ++y) {
         for (int x = 0; x < Ball::WIDTH; ++x) {
-            if (x == ball1->getX() && y == ball1->getY()) {
+            if (x == ball1->getX()
+                    && y == ball1->getY()) {
                 cout << BALL1;
-            } else if (x == ball2->getX() && y == ball2->getY()) {
+            } else if (x == ball2->getX()
+                       && y == ball2->getY()) {
                 cout << BALL2;
             } else {
                 cout << EMPTY;

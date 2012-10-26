@@ -8,22 +8,26 @@
  */
 
 #include <iostream>
-#include <sstream>
+#include <vector>
 
 using namespace std;
 
-void printBoard(bool board[], const int SIDE, ostream &out)
+void printBoard(vector<vector<bool> > &board, ostream &out)
 {
-    for (int y = 0; y < SIDE; ++y) {
-        for (int x = 0; x < SIDE; ++x) {
-            out << '|' << (board[y * SIDE + x] ? 'Q' : ' ');
+    for (int y = 0; y < board.size(); ++y) {
+        for (int x = 0; x < board[y].size(); ++x) {
+            if (board[y][x]) {
+                out << "|Q";
+            } else {
+                out << "|-";
+            }
         }
-        out << '|' << endl;
+        out << "|" << endl;
     }
     out << endl << endl;
 }
 
-bool underAttack(bool board[], const int SIDE, int row, int col)
+bool underAttack(vector<vector<bool> >& board, int row, int col)
 {
     static const int DIRECTIONS = 8;
     static const int DY[] = {-1,-1, 0, 1, 1, 1, 0,-1}; // N, NE, E, SE, S, SW, W, NW
@@ -33,8 +37,8 @@ bool underAttack(bool board[], const int SIDE, int row, int col)
     for (int dir = 0; dir < DIRECTIONS && !attack; ++dir) {
         int y = row + DY[dir];
         int x = col + DX[dir];
-        while (0 <= y && y < SIDE && 0 <= x && x < SIDE && !attack) {
-            attack = board[y * SIDE + x];
+        while (0 <= y && y < board.size() && 0 <= x && x < board[y].size() && !attack) {
+            attack = board[y][x];
             y += DY[dir];
             x += DX[dir];
         }
@@ -42,18 +46,20 @@ bool underAttack(bool board[], const int SIDE, int row, int col)
     return attack;
 }
 
-bool placeQueens(bool board[], const int SIDE, int row)
+bool placeQueens(vector<vector<bool> >& board, int row)
 {
     bool result = false;
-    for (int col = 0; col < SIDE && !result; ++col) {
-        if (!underAttack(board, SIDE, row, col)) {
-            board[row * SIDE + col] = true;
-            if (row == SIDE-1) {
+    for (int col = 0; col < board[row].size() && !result; ++col) {
+        if (!underAttack(board, row, col)) {
+            board[row][col] = true;
+            if (row == board.size() - 1) {
                 result = true;
             } else {
-                result = placeQueens(board, SIDE, row+1);
+                result = placeQueens(board, row+1);
             }
-            if (!result) board[row * SIDE + col] = false; // backtracking
+            if (!result) {
+                board[row][col] = false; // backtracking
+            }
         }
     }
     return result;
@@ -61,14 +67,13 @@ bool placeQueens(bool board[], const int SIDE, int row)
 
 int main(int argc, char *argv[])
 {
-    const int SIDE = 6;
-    bool board[SIDE*SIDE];
-    for (int i = 0; i < SIDE*SIDE; ++i) {
-        board[i] = false;
-    }
+    int side;
+    cin >> side;
 
-    placeQueens(board, SIDE, 0);
-    printBoard(board, SIDE, cout);
+    vector<vector<bool> > board(side, vector<bool> (side, false));
+
+    placeQueens(board, 0);
+    printBoard(board, cout);
 
     return 0;
 }

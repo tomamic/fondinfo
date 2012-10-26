@@ -1,7 +1,6 @@
-QT       += core
-TARGET   = 2011-e3-6-records
 TEMPLATE = app
+CONFIG += console
+CONFIG -= qt
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp
-
-QMAKE_CXXFLAGS += -std=c++0x

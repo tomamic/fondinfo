@@ -14,8 +14,10 @@
 
 int main(int argc, char *argv[])
 {
-    const int SIDE = 6;
-    Board b(SIDE);
+    int side;
+    cin >> side;
+
+    Board b(side, side);
     b.solve();
     b.write(cout);
     return 0;

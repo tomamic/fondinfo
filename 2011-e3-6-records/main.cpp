@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
     map<string, int> records;
 
-    ifstream in("../2011-3-6-records/list.txt");
+    ifstream in("../2011-e3-6-records/list.txt");
 
 //    getline(in, name, ':');
 //    in >> points;
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
         getline(in, line);
     }
 
-//    // a taste of C++11 - add this line in .pro:
-//    // QMAKE_CXXFLAGS += -std=c++11
+    // a taste of C++11 - add this line in .pro:
+    // QMAKE_CXXFLAGS += -std=c++11
 //    for (auto i : records) {
 //        clog << i.first << ": " << i.second << endl;
 //    }

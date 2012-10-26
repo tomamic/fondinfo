@@ -9,15 +9,17 @@
 
 #include "board.h"
 
-const int Board::DY[] = {-1,-1, 0, 1, 1, 1, 0,-1}; // N, NE, E, SE, S, SW, W, NW
-const int Board::DX[] = { 0, 1, 1, 1, 0,-1,-1,-1}; // N, NE, E, SE, S, SW, W, NW
+// N, NE, E, SE, S, SW, W, NW
+const int Board::DY[] = {-1,-1, 0, 1, 1, 1, 0,-1};
+const int Board::DX[] = { 0, 1, 1, 1, 0,-1,-1,-1};
 
 using namespace std;
 
-Board::Board(int side)
+Board::Board(int height, int width)
 {
-    this->side = side;
-    board.assign(side, vector<bool>(side, false));
+    this->height = height;
+    this->width = width;
+    board.assign(height, vector<bool>(width, false));
 }
 
 bool Board::solve()
@@ -27,9 +29,13 @@ bool Board::solve()
 
 void Board::write(ostream &out)
 {
-    for (int y = 0; y < side; ++y) {
-        for (int x = 0; x < side; ++x) {
-            out << '|' << (board[y][x] ? 'Q' : ' ');
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            if (board[y][x]) {
+                out << "|Q";
+            } else {
+                out << "| ";
+            }
         }
         out << '|' << endl;
     }
@@ -44,7 +50,8 @@ bool Board::underAttack(int row, int col)
         int y = row + DY[dir];
         int x = col + DX[dir];
         // walk till finding a queen, or border
-        while (0 <= y && y < side && 0 <= x && x < side && !attack) {
+        while (0 <= y && y < height && 0 <= x
+               && x < width && !attack) {
             // if a queen is found, the square is under attack
             attack = board[y][x];
             y += DY[dir];
@@ -57,13 +64,13 @@ bool Board::underAttack(int row, int col)
 bool Board::placeQueens(int row)
 {
     bool result = false;
-    for (int col = 0; col < side && !result; ++col) {
+    for (int col = 0; col < width && !result; ++col) {
         if (!underAttack(row, col)) {
 
             // this square is not attacked,
             // let's try to place a queen here
             board[row][col] = true;
-            if (row == side-1) {
+            if (row == height - 1) {
                 // hey! this is the last row!
                 result = true;
             } else {
@@ -74,7 +81,9 @@ bool Board::placeQueens(int row)
 
             // no luck this way, let's remove the queen
             // (backtracking)
-            if (!result) board[row][col] = false;
+            if (!result) {
+                board[row][col] = false;
+            }
         }
     }
     return result;

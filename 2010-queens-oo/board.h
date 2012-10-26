@@ -18,7 +18,7 @@ using namespace std;
 class Board
 {
 public:
-    Board(int side);
+    Board(int height, int width);
     bool solve();
     void write(ostream &out);
 
@@ -26,7 +26,8 @@ private:
     bool placeQueens(int row);
     bool underAttack(int row, int col);
 
-    int side;
+    int height;
+    int width;
     vector< vector<bool> > board;
 
     static const int DIRECTIONS = 8;
