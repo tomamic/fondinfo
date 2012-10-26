@@ -1,7 +1,6 @@
-QT       += core gui
-TARGET   = 2009-p1-fifteen.pro
 TEMPLATE = app
 CONFIG   += console
+QT       += core gui
 
 SOURCES  += main.cpp \
     fifteengui.cpp \
