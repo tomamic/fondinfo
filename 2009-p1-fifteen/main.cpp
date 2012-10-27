@@ -24,12 +24,17 @@ int runConsole(int argc, char *argv[])
     FifteenPuzzle puzzle(2, 3);
     puzzle.write(cout);
 
-    while (!puzzle.isSolved()) {
-        cin >> symbol;
+    cin >> symbol;
+    while (cin.good() && !puzzle.isSolved()) {
         puzzle.move(toupper(symbol));
         puzzle.write(cout);
+
+        if (puzzle.isSolved()) {
+            cout << "Puzzle solved!" << endl;
+        } else {
+            cin >> symbol;
+        }
     }
-    cout << "Puzzle solved!" << endl;
     return 0;
 }
 
@@ -49,6 +54,6 @@ int main(int argc, char *argv[])
 {    
     srand(time(NULL));
 
-//    return runConsole(argc, argv);
-    return runGui(argc, argv);
+    return runConsole(argc, argv);
+//    return runGui(argc, argv);
 }
