@@ -26,13 +26,18 @@ int main(int argc, char *argv[])
     Memory memory(rows, cols);
     memory.write(cout);
 
-    do {
-        int a, b;
-        cout << "Two cards (1-" << size << ")?" << endl;
-        cin >> a >> b;
+    int a, b;
+    cout << "Two cards (1-" << size << ")?" << endl;
+    cin >> a >> b;
+    while (cin.good() && !memory.isSolved()) {
         memory.move(a - 1, b - 1);
         memory.write(cout);
-    } while (! memory.isSolved());
+
+        if (!memory.isSolved()) {
+            cout << "Two cards (1-" << size << ")?" << endl;
+            cin >> a >> b;
+        }
+    }
 
     return 0;
 }

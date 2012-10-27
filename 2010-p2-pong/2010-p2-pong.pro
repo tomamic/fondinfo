@@ -1,6 +1,5 @@
-QT       += core gui
 TEMPLATE = app
-TARGET   = 2010-p2-pong
+QT       += core gui
 CONFIG   += console
 
 SOURCES += main.cpp\

@@ -1,6 +1,6 @@
-QT       += core
-TARGET   = 2011-e5-1-memory
 TEMPLATE = app
+QT       += core
+CONFIG   += console
 
 SOURCES += main.cpp \
     memory.cpp

@@ -9,22 +9,18 @@
 
 #include "memory.h"
 
+#include <vector>
 #include <algorithm>
 
 using namespace std;
 
-Memory::Memory(int rows, int cols) :
-    rows(rows), cols(cols),
-    matrix(rows * cols),
-    move1(-1), move2(-1)
+Memory::Memory(int rows, int cols)
 {
-//    rows = r;
-//    cols = c;
-//    move1 = -1;
-//    move2 = -1;
-
-//    matrix.assign(rows * cols);
-//    matrix = vector<char>(rows * cols);
+    this->rows = rows;
+    this->cols = cols;
+    move1 = -1;
+    move2 = -1;
+    matrix.assign(rows * cols, 0);
 
     init();
     shuffle();
@@ -49,7 +45,9 @@ void Memory::shuffle()
 }
 
 void Memory::move(int card1, int card2) {
-    if (0 <= card1 && card1 < matrix.size() && 0 <= card2 && card2 < matrix.size()) {
+    if (card1 != card2
+            && 0 <= card1 && card1 < matrix.size()
+            && 0 <= card2 && card2 < matrix.size()) {
         move1 = card1;
         move2 = card2;
         if (matrix[card1] == matrix[card2]) {
