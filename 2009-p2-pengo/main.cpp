@@ -33,9 +33,9 @@ int runConsole(int argc, char *argv[])
     new Penguin(game, 3, 3);
     game->write(cout);
 
-    while (!game->isLost() && !game->isWon()) {
-        string command;
-        getline(cin, command);
+    string command;
+    getline(cin, command);
+    while (cin.good() && !game->isLost() && !game->isWon()) {
         if (command == "w") game->setUserCommand(Actor::UP);
         else if (command == "s") game->setUserCommand(Actor::RIGHT);
         else if (command == "z") game->setUserCommand(Actor::DOWN);
@@ -44,6 +44,9 @@ int runConsole(int argc, char *argv[])
 
         game->moveAll();
         game->write(cout);
+        if (!game->isLost() && !game->isWon()) {
+            getline(cin, command);
+        }
     }
     return 0;
 }
@@ -69,5 +72,4 @@ int main(int argc, char *argv[])
 
     return runConsole(argc, argv);
     //return runGui(argc, argv);
-
 }
