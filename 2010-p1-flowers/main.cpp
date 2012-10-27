@@ -23,18 +23,25 @@ int runConsole(int argc, char *argv[])
     FlowersPuzzle puzzle(9, 9, 10);
     puzzle.write(cout);
 
-    while (!puzzle.isWon() && !puzzle.isLost()) {
-        int moveY, moveX;
-        cin >> moveY >> moveX;
+    int moveY, moveX;
+    cin >> moveY >> moveX;
+    while (cin.good() && !puzzle.isWon() && !puzzle.isLost()) {
         if (moveY < 0 || moveX < 0) {
             puzzle.flag(abs(moveY) - 1, abs(moveX) - 1);
         } else {
             puzzle.uncover(moveY - 1, moveX - 1);
         }
         puzzle.write(cout);
+
+        if (puzzle.isWon()) {
+            cout << "Game won!" << endl;
+        } else if (puzzle.isLost()) {
+            cout << "Game lost!" << endl;
+        } else {
+            cin >> moveY >> moveX;
+        }
     }
 
-    cout << (puzzle.isWon() ? "Game won!" : "Game lost!") << endl;
     return 0;
 }
 
@@ -52,6 +59,6 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    //return runConsole(argc, argv);
-    return runGui(argc, argv);
+//    return runGui(argc, argv);
+    return runConsole(argc, argv);
 }
