@@ -25,6 +25,9 @@ public:
     bool isSolved();
     void write(ostream& out);
 
+    // covered cards are represented in lowercase
+    // once guessed, they are substitued by the
+    // corresponding uppercase, in matrix
     static const char JOLLY = '?';
     static const char FIRST = 'A';
     static const char LAST = 'Z';
