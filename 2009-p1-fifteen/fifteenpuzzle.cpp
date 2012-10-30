@@ -131,17 +131,16 @@ void FifteenPuzzle::moveBlank(int direction)
 bool FifteenPuzzle::isSolved() const
 {
     bool correct = true;
-    int value = FIRST_SYMBOL;
+    char expected = FIRST_SYMBOL;
     for (int y = 0; y < rows && correct; ++y) {
         for (int x = 0; x < columns && correct; ++x) {
+            char value = get(y, x);
             // if the cell has the wrong symbol...
-            // and it is not the last one...
             // puzzle is not yet solved!
-            if (get(y, x) != value
-                    && !(y == rows - 1 && x == columns - 1)) {
+            if (value != expected && value != BLANK_SYMBOL) {
                 correct = false;
             }
-            ++value;
+            ++expected;
         }
     }
     return correct;

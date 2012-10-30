@@ -42,13 +42,15 @@ signals:
 private:
     // silent mode added, for shuffling without emitting signals
     void moveBlank(int direction, bool silent = false);
+    void set(int y, int x, int value);
 
     int columns;
     int rows;
     int size;
 
     vector<char> board;
-    int blank;
+    int blankY;
+    int blankX;
 
     static const int DIRECTIONS = 4; // N, E, S, W
     static const int DY[DIRECTIONS];
