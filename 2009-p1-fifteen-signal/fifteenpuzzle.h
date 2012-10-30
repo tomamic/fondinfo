@@ -31,9 +31,9 @@ public:
     void write(ostream& out) const;
     FifteenPuzzle(int rows, int columns);
 
-    const static char FIRST_SYMBOL = 'A';
-    const static char BLANK_SYMBOL = ' ';
-    const static char OUT_OF_BOUNDS = '!';
+    static const char FIRST_SYMBOL = 'A';
+    static const char BLANK_SYMBOL = ' ';
+    static const char OUT_OF_BOUNDS = '!';
 
 signals:
     // model signal added

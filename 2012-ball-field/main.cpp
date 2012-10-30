@@ -11,7 +11,8 @@ int main()
     const int HEIGHT = 12;
     Field* field = new Field(WIDTH, HEIGHT);
     field->add(new Ball(4, 8, +1, +1, WIDTH, HEIGHT));
-    field->add(new Ball(8, 4, +1, +1, WIDTH, HEIGHT));
+    field->add(new Ball(12, 4, +1, +1, WIDTH, HEIGHT));
+    field->add(new Ball(8, 6, +1, +1, WIDTH, HEIGHT));
     field->print(cout);
 
     string line;

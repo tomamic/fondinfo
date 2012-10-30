@@ -8,11 +8,6 @@
 
 class Field
 {
-    int width;
-    int height;
-    std::vector<Ball*> balls;
-    char getSymbol(int x, int y);
-
 public:
     Field(int width, int height);
     ~Field();
@@ -20,6 +15,12 @@ public:
     void add(Ball* ball);
     void moveAll();
     void print(std::ostream& out);
+
+private:
+    int width;
+    int height;
+    std::vector<Ball*> balls;
+    char getSymbol(int x, int y);
 };
 
 #endif // FIELD_H
