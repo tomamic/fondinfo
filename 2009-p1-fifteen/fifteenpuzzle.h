@@ -35,13 +35,15 @@ public:
 
 private:
     void moveBlank(int direction);
+    void set(int y, int x, char value);
 
     int columns;
     int rows;
     int size;
 
     vector<char> board;
-    int blank;
+    int blankX;
+    int blankY;
 
     static const int DIRECTIONS = 4; // N, E, S, W
     static const int DY[DIRECTIONS];

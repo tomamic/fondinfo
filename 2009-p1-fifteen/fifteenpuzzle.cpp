@@ -43,12 +43,17 @@ int FifteenPuzzle::getRows() const
 void FifteenPuzzle::init()
 {
     // put ordered symbols in each cell (ltr, ttb)
-    for (int i = 0; i < size; ++i) {
-        board[i] = i + FIRST_SYMBOL;
+    int value = FIRST_SYMBOL;
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
+            set(y, x, value);
+            ++value;
+        }
     }
     // put blank in the last cell
-    blank = size - 1;
-    board[blank] = BLANK_SYMBOL;
+    blankY = rows - 1;
+    blankX = columns - 1;
+    set(blankY, blankX, BLANK_SYMBOL);
 }
 
 void FifteenPuzzle::shuffle()
@@ -61,10 +66,11 @@ void FifteenPuzzle::shuffle()
 
             // consider the cell adjacent to the
             // blank cell, in the current direction
-            int nextY = (blank / columns) + DY[direction];
-            int nextX = (blank % columns) + DX[direction];
+            int nextY = blankY + DY[direction];
+            int nextX = blankX + DX[direction];
             // if it is inside the board, then move the blank
-            if (0 <= nextY && nextY < rows && 0 <= nextX && nextX < columns) {
+            if (0 <= nextY && nextY < rows
+                    && 0 <= nextX && nextX < columns) {
                 moveBlank(direction);
             }
         }
@@ -75,11 +81,12 @@ void FifteenPuzzle::move(char symbol)
 {
     bool found = false;
     // for each direction, while symbol not yet found...
-    for (int direction = 0; direction < DIRECTIONS && !found; ++direction) {
+    for (int direction = 0; direction < DIRECTIONS
+         && !found; ++direction) {
         // consider the cell adjacent to the
         // blank cell, in the current direction
-        int nextY = (blank / columns) + DY[direction];
-        int nextX = (blank % columns) + DX[direction];
+        int nextY = blankY + DY[direction];
+        int nextX = blankX + DX[direction];
         // if the symbol to move is here...
         if (get(nextY, nextX) == symbol) {
             found = true;
@@ -106,33 +113,47 @@ char FifteenPuzzle::get(int y, int x) const
     return value;
 }
 
+void FifteenPuzzle::set(int y, int x, char value)
+{
+    board[y * columns + x] = value;
+}
+
 void FifteenPuzzle::moveBlank(int direction)
 {
-    int old = blank;
-    blank += DY[direction] * columns + DX[direction];
-    board[old] = board[blank];
-    board[blank] = BLANK_SYMBOL;
+    int oldY = blankY;
+    int oldX = blankX;
+    blankY += DY[direction];
+    blankX += DX[direction];
+    set(oldY, oldX, get(blankY, blankX));
+    set(blankY, blankX, BLANK_SYMBOL);
 }
 
 bool FifteenPuzzle::isSolved() const
 {
-    bool solved = true;
-    // for each cell (ltr, ttb), but the last one...
-    for (int i = 0; i < size - 1 && solved; ++i) {
-        // if it has the wrong symbol...
-        // puzzle is not yet solved!
-        solved = (board[i] == i + FIRST_SYMBOL);
+    bool correct = true;
+    int value = FIRST_SYMBOL;
+    for (int y = 0; y < rows && correct; ++y) {
+        for (int x = 0; x < columns && correct; ++x) {
+            // if the cell has the wrong symbol...
+            // and it is not the last one...
+            // puzzle is not yet solved!
+            if (get(y, x) != value
+                    && !(y == rows - 1 && x == columns - 1)) {
+                correct = false;
+            }
+            ++value;
+        }
     }
-    return solved;
+    return correct;
 }
 
 void FifteenPuzzle::write(ostream& out) const
 {
-    for (int i = 0; i < size; ++i) {
-        out << board[i];
-        if (i % columns == columns - 1) {
-            out << endl;
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
+            out << get(y, x);
         }
+        out << endl;
     }
     out << endl;
 }
