@@ -1,6 +1,6 @@
 TEMPLATE = app
-QT       += core
-CONFIG   += console
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp \
     memory.cpp

@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e1-2-min3
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

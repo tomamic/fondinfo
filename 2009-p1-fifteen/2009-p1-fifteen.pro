@@ -1,6 +1,6 @@
 TEMPLATE = app
-CONFIG   += console
-QT       += core gui
+CONFIG += console
+QT += core gui
 
 SOURCES  += main.cpp \
     fifteengui.cpp \

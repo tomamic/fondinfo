@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
         } else if (choice == DISTANCE) {
             int id1, id2;
             cin >> id1 >> id2;
-            if (0 <= id1 && id1 < points.size() && 0 <= id2 && id2 < points.size()) {
+            if (0 <= id1 && id1 < points.size()
+                    && 0 <= id2 && id2 < points.size()) {
                 Point* p1 = points[id1];
                 Point* p2 = points[id2];
                 cout << p1->distance(p2) << endl;
@@ -62,10 +63,10 @@ int main(int argc, char *argv[])
         }
     } while (choice != EXIT);
 
-    /*for (int i = 0; i < points.size(); ++i) {
-        delete points[i];
-    }
-    points.clear();*/
+//    for (int i = 0; i < points.size(); ++i) {
+//        delete points[i];
+//    }
+//    points.clear();
 
     return 0;
 }

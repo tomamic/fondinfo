@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e5-7-polish
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

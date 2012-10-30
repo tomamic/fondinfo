@@ -1,7 +1,6 @@
-QT       += core gui
-TARGET   = 2010-p1-flowers
 TEMPLATE = app
-CONFIG   += console
+CONFIG += console
+QT += core gui
 
 SOURCES += main.cpp \
     rightpushbutton.cpp \

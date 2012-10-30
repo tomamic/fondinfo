@@ -1,6 +1,6 @@
-QT       += core
-TARGET   = 2011-e4-4-points
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp \
     point.cpp

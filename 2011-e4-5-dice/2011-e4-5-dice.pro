@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e4-5-dice
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

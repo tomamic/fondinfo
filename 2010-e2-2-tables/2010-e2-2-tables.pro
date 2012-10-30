@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2010-e2-2-tables
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

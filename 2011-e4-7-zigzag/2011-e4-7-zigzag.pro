@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e4-7-zigzag
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

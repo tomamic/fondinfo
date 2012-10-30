@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e3-4-couples
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

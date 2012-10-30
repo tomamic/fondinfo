@@ -1,5 +1,5 @@
-QT       += core
-TARGET   = 2011-e1-3-cubes
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp

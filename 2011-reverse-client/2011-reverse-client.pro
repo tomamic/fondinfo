@@ -1,9 +1,8 @@
-QT       += core
-TARGET   = 2011-reverse-client
 TEMPLATE = app
-CONFIG   += console
+CONFIG += console
+QT += core
 
 SOURCES += main.cpp
 
 LIBS += -L/usr/lib/ -lboost_system -lboost_thread
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++11

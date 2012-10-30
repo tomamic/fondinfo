@@ -1,6 +1,6 @@
-QT       += core
-TARGET = 2011-e5-5-polygon
 TEMPLATE = app
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp \
     point.cpp \
