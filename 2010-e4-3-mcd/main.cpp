@@ -11,31 +11,27 @@
 
 using namespace std;
 
+void swap(int &a, int &b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+
 int mcd(int m, int n) {
-    if (m > n) {
-        int tmp = m;
-        m = n;
-        n = tmp;
-    }
+    if (m > n) swap(m, n);
+    clog << "mcd(" << m << ", " << n << ")" << endl;
 
-    cout << "mcd(" << m << ", " << n << ")" << endl;
-
-    return (m == 0) ? n : mcd(m, n % m);
+    int result = n;
+    if (m != 0) result = mcd(m, n % m);
+    return result;
 }
 
 int mcd2(int m, int n) {
     do {
-        if (m > n) {
-            int tmp = m;
-            m = n;
-            n = tmp;
-        }
+        if (m > n) swap(m, n);
+        clog << "mcd2(" << m << ", " << n << ")" << endl;
 
-        cout << "mcd2(" << m << ", " << n << ")" << endl;
-
-        if (m != 0) {
-            n = n % m;
-        }
+        if (m != 0)  n = n % m;
     } while (m > 0);
     return n;
 }
