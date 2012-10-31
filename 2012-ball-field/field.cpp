@@ -29,7 +29,9 @@ void Field::moveAll()
 
 char Field::getSymbol(int x, int y)
 {
-    char result = '-';
+    const char EMPTY = '-';
+
+    char result = EMPTY;
     for (int i = 0; i < balls.size(); ++i) {
         Ball* ball = balls[i];
         if (x == ball->getX()
@@ -42,8 +44,6 @@ char Field::getSymbol(int x, int y)
 
 void Field::print(std::ostream& out)
 {
-    const char EMPTY = '-';
-
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             out << getSymbol(x, y);
