@@ -14,8 +14,10 @@
 
 using namespace std;
 
-const int FifteenPuzzle::DY[] = { -1,  0, +1,  0}; // N, E, S, W
-const int FifteenPuzzle::DX[] = {  0, +1,  0, -1}; // N, E, S, W
+// should be static class members
+const int DIRECTIONS = 4; // N, E, S, W
+const int DY[] = { -1,  0, +1,  0};
+const int DX[] = {  0, +1,  0, -1};
 
 FifteenPuzzle::FifteenPuzzle(int rows, int columns)
 {
@@ -23,8 +25,7 @@ FifteenPuzzle::FifteenPuzzle(int rows, int columns)
     if (columns < 2) { columns = 2; }
     this->rows = rows;
     this->columns = columns;
-    size = columns * rows;
-    board.assign(size, BLANK_SYMBOL);
+    board.assign(rows * columns, BLANK_SYMBOL);
 
     init();
     shuffle();
@@ -61,7 +62,7 @@ void FifteenPuzzle::shuffle()
     do {
         // generate SIZE^2 random directions
         // for a random walk of the blank cell
-        for (int i = 0; i < size * size; ++i) {
+        for (int i = 0; i < rows * rows * columns * columns; ++i) {
             int direction = rand() % DIRECTIONS;
 
             // consider the cell adjacent to the

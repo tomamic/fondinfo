@@ -39,15 +39,10 @@ private:
 
     int columns;
     int rows;
-    int size;
 
     vector<char> board;
     int blankX;
     int blankY;
-
-    static const int DIRECTIONS = 4; // N, E, S, W
-    static const int DY[DIRECTIONS];
-    static const int DX[DIRECTIONS];
 };
 
 //std::ostream& operator<<(ostream& out, FifteenPuzzle& puzzle);
