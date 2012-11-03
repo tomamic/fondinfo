@@ -14,7 +14,7 @@
 
 using namespace std;
 
-// should be static class members
+// could be static class members
 const int DIRECTIONS = 4; // N, E, S, W
 const int DY[] = { -1,  0, +1,  0};
 const int DX[] = {  0, +1,  0, -1};
