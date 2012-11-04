@@ -31,8 +31,10 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < LENGTH; ++i) {
             char c = file.get();
             if (file.good()) {
-                cout << setfill('0') << setw(2) << hex << int(c) << ' ';
-                line += (' ' <= c && c <= '~') ? c : ' ';
+                cout << setfill('0') << setw(2) << hex
+                     << int(c) << ' ';
+                if (' ' <= c && c <= '~') line += c;
+                else line += ' ';
             } else {
                 cout << "   ";
             }
