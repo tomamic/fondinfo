@@ -9,7 +9,8 @@
 
 #include "fifteengui.h"
 
-FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
+FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent)
+    : QWidget(parent)
 {
     this->model = model;
     setWindowTitle(tr("Fifteen Puzzle"));
@@ -43,7 +44,7 @@ void FifteenGui::updateAllButtons()
 {
     for (int y = 0; y < model->getRows(); y++) {
         for (int x = 0; x < model->getColumns(); x++) {
-            char symbol = model->get(y, x);
+            char symbol = model->get({x, y});
             int i = y * model->getColumns() + x;
             buttons->button(i)->setText(QString(symbol));
         }
@@ -56,26 +57,29 @@ void FifteenGui::controlButtons(int i)
     int y = i / model->getColumns();
     int x = i % model->getColumns();
 
-    model->move(y, x);
+    model->move({x, y});
     // call removed for model signals
     // updateAllButtons();
 }
 
-void FifteenGui::updateAfterMove(int newY, int newX, int oldY, int oldX)
+void FifteenGui::updateAfterMove(int newY, int newX,
+                                 int oldY, int oldX)
 {
-    char symbol = model->get(oldY, oldX);
+    char symbol = model->get({oldX, oldY});
     int oldPos = oldY * model->getColumns() + oldX;
     buttons->button(oldPos)->setText(QString(symbol));
 
     int newPos = newY * model->getColumns() + newX;
-    buttons->button(newPos)->setText(QString(FifteenPuzzle::BLANK_SYMBOL));
+    buttons->button(newPos)->setText(
+            QString(FifteenPuzzle::BLANK_SYMBOL));
     checkSolution();
 }
 
 void FifteenGui::checkSolution()
 {
     if (model->isSolved()) {
-        QMessageBox::information(this, tr("Puzzle solved!"), tr("Puzzle solved!"));
+        QMessageBox::information(this, tr("Puzzle solved!"),
+                                 tr("Puzzle solved!"));
         model->shuffle();
         updateAllButtons();
     }

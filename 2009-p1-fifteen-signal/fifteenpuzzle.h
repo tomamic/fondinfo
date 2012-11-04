@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <vector>
+#include <complex>
 #include <QtCore/QObject>
 
 using namespace std;
@@ -25,8 +26,8 @@ public:
     void init();
     void shuffle();
     void move(char symbol);
-    void move(int y, int x);
-    char get(int y, int x) const;
+    void move(complex<int> pos);
+    char get(complex<int> pos) const;
     bool isSolved() const;
     void write(ostream& out) const;
     FifteenPuzzle(int rows, int columns);
@@ -41,20 +42,15 @@ signals:
 
 private:
     // silent mode added, for shuffling without emitting signals
-    void moveBlank(int direction, bool silent = false);
-    void set(int y, int x, int value);
+    void moveBlank(complex<int> direction, bool silent = false);
+    void set(complex<int> pos, char value);
 
     int columns;
     int rows;
     int size;
 
     vector<char> board;
-    int blankY;
-    int blankX;
-
-    static const int DIRECTIONS = 4; // N, E, S, W
-    static const int DY[DIRECTIONS];
-    static const int DX[DIRECTIONS];
+    complex<int> blank;
 };
 
 //std::ostream& operator<<(ostream& out, FifteenPuzzle& puzzle);

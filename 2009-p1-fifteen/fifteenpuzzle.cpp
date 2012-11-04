@@ -10,14 +10,13 @@
 #include "fifteenpuzzle.h"
 
 #include <cstdlib>
-#include <algorithm>
 
 using namespace std;
 
-// could be static class members
-const int DIRECTIONS = 4; // N, E, S, W
-const int DY[] = { -1,  0, +1,  0};
-const int DX[] = {  0, +1,  0, -1};
+// could be static class member
+const int DY = 0, DX = 1;
+const vector< vector<int> > directions = {
+    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
 
 FifteenPuzzle::FifteenPuzzle(int rows, int columns)
 {
@@ -63,16 +62,16 @@ void FifteenPuzzle::shuffle()
         // generate SIZE^2 random directions
         // for a random walk of the blank cell
         for (int i = 0; i < rows * rows * columns * columns; ++i) {
-            int direction = rand() % DIRECTIONS;
+            int d = rand() % directions.size();
 
             // consider the cell adjacent to the
             // blank cell, in the current direction
-            int nextY = blankY + DY[direction];
-            int nextX = blankX + DX[direction];
+            int nextY = blankY + directions[d][DY];
+            int nextX = blankX + directions[d][DX];
             // if it is inside the board, then move the blank
             if (0 <= nextY && nextY < rows
                     && 0 <= nextX && nextX < columns) {
-                moveBlank(direction);
+                moveBlank(d);
             }
         }
     } while (isSolved());
@@ -82,17 +81,16 @@ void FifteenPuzzle::move(char symbol)
 {
     bool found = false;
     // for each direction, while symbol not yet found...
-    for (int direction = 0; direction < DIRECTIONS
-         && !found; ++direction) {
+    for (int d = 0; d < directions.size() && !found; ++d) {
         // consider the cell adjacent to the
         // blank cell, in the current direction
-        int nextY = blankY + DY[direction];
-        int nextX = blankX + DX[direction];
+        int nextY = blankY + directions[d][DY];
+        int nextX = blankX + directions[d][DX];
         // if the symbol to move is here...
         if (get(nextY, nextX) == symbol) {
             found = true;
             // move blank this way!
-            moveBlank(direction);
+            moveBlank(d);
         }
     }
 }
@@ -123,8 +121,8 @@ void FifteenPuzzle::moveBlank(int direction)
 {
     int oldY = blankY;
     int oldX = blankX;
-    blankY += DY[direction];
-    blankX += DX[direction];
+    blankY += directions[direction][DY];
+    blankX += directions[direction][DX];
     set(oldY, oldX, get(blankY, blankX));
     set(blankY, blankX, BLANK_SYMBOL);
 }

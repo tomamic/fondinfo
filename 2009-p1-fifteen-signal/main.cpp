@@ -32,7 +32,9 @@ int main(int argc, char *argv[])
       QLocale::system().name());
     a.installTranslator(&myappTranslator);
 
-    FifteenPuzzle puzzle(2, 3);
+    int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
+    int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
+    FifteenPuzzle puzzle(rows, columns);
     FifteenGui gui(&puzzle);
     return a.exec();
 }
