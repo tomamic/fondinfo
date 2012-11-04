@@ -29,7 +29,7 @@ public slots:
 private:
     void updateAllButtons();
     void checkSolution();
-    int index(complex<int> pos);
+    int index(FifteenPuzzle::Coord pos);
 
     QButtonGroup* buttons;
     FifteenPuzzle* model;

@@ -10,11 +10,10 @@
 #include "fifteenpuzzle.h"
 
 #include <cstdlib>
-#include <algorithm>
 
-// W, S, E, N (C++11)
-const vector< complex<int> > directions = {
-    {-1,  0}, { 0, +1}, {+1,  0}, { 0, -1}};
+// N, E, S, W
+const vector<FifteenPuzzle::Coord> directions = {
+    {0, -1}, {+1, 0}, {0, +1}, {-1, 0}};
 
 FifteenPuzzle::FifteenPuzzle(int rows, int columns)
 {
@@ -65,7 +64,7 @@ void FifteenPuzzle::shuffle()
 
             // consider the cell adjacent to the
             // blank cell, in the current direction
-            complex<int> next = blank + directions[d];
+            Coord next = blank + directions[d];
             // if it is inside the board, then move the blank
             if (get(next) != OUT_OF_BOUNDS) {
                 moveBlank(directions[d], true); // silent, no signals emitted
@@ -76,22 +75,21 @@ void FifteenPuzzle::shuffle()
 
 void FifteenPuzzle::move(char symbol)
 {
-    bool found = false;
     // for each direction, while symbol not yet found...
-    for (int d = 0; d < directions.size() && !found; ++d) {
+    for (Coord delta : directions) {
         // consider the cell adjacent to the
         // blank cell, in the current direction
-        complex<int> next = blank + directions[d];
+        Coord next = blank + delta;
         // if the symbol to move is here...
         if (get(next) == symbol) {
-            found = true;
             // move blank this way!
-            moveBlank(directions[d]);
+            moveBlank(delta);
+            break;
         }
     }
 }
 
-void FifteenPuzzle::move(complex<int> pos)
+void FifteenPuzzle::move(Coord pos)
 {
     char symbol = get(pos);
     if (symbol != OUT_OF_BOUNDS) {
@@ -99,7 +97,7 @@ void FifteenPuzzle::move(complex<int> pos)
     }
 }
 
-char FifteenPuzzle::get(complex<int> pos) const
+char FifteenPuzzle::get(Coord pos) const
 {
     int value = OUT_OF_BOUNDS;
     if (0 <= pos.imag() && pos.imag() < rows
@@ -109,12 +107,12 @@ char FifteenPuzzle::get(complex<int> pos) const
     return value;
 }
 
-void FifteenPuzzle::set(complex<int> pos, char value)
+void FifteenPuzzle::set(Coord pos, char value)
 {
     board[pos.imag() * columns + pos.real()] = value;
 }
 
-void FifteenPuzzle::moveBlank(complex<int> direction, bool silent)
+void FifteenPuzzle::moveBlank(Coord direction, bool silent)
 {
     moved = blank;
     blank += direction;
@@ -144,12 +142,12 @@ bool FifteenPuzzle::isSolved() const
     return correct;
 }
 
-complex<int> FifteenPuzzle::getBlank() const
+FifteenPuzzle::Coord FifteenPuzzle::getBlank() const
 {
     return blank;
 }
 
-complex<int> FifteenPuzzle::getMoved() const
+FifteenPuzzle::Coord FifteenPuzzle::getMoved() const
 {
     return moved;
 }

@@ -21,16 +21,18 @@ class FifteenPuzzle : public QObject {
     Q_OBJECT
 
 public:
+    typedef complex<int> Coord;
+
     int getColumns() const;
     int getRows() const;
     void init();
     void shuffle();
     void move(char symbol);
-    void move(complex<int> pos);
-    char get(complex<int> pos) const;
+    void move(Coord pos);
+    char get(Coord pos) const;
     bool isSolved() const;
-    complex<int> getBlank() const;
-    complex<int> getMoved() const;
+    Coord getBlank() const;
+    Coord getMoved() const;
     void write(ostream& out) const;
     FifteenPuzzle(int rows, int columns);
 
@@ -44,16 +46,16 @@ signals:
 
 private:
     // silent mode added, for shuffling without emitting signals
-    void moveBlank(complex<int> direction, bool silent = false);
-    void set(complex<int> pos, char value);
+    void moveBlank(Coord delta, bool silent = false);
+    void set(Coord pos, char value);
 
     int columns;
     int rows;
     int size;
 
     vector<char> board;
-    complex<int> blank;
-    complex<int> moved;
+    Coord blank;
+    Coord moved;
 };
 
 //std::ostream& operator<<(ostream& out, FifteenPuzzle& puzzle);

@@ -63,11 +63,11 @@ void FifteenGui::controlButtons(int i)
 
 void FifteenGui::updateAfterMove()
 {
-    complex<int> moved = model->getMoved();
+    FifteenPuzzle::Coord moved = model->getMoved();
     buttons->button(index(moved))->setText(
                 QString(model->get(moved)));
 
-    complex<int> blank = model->getBlank();
+    FifteenPuzzle::Coord blank = model->getBlank();
     buttons->button(index(blank))->setText(
                 QString(model->get(blank)));
 
@@ -84,7 +84,7 @@ void FifteenGui::checkSolution()
     }
 }
 
-int FifteenGui::index(complex<int> pos)
+int FifteenGui::index(FifteenPuzzle::Coord pos)
 {
     return pos.imag() * model->getColumns() + pos.real();
 }
