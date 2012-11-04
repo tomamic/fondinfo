@@ -24,11 +24,12 @@ public:
 public slots:
     void controlButtons(int i);
      // method added for model signals
-    void updateAfterMove(int newY, int newX, int oldY, int oldX);
+    void updateAfterMove();
 
 private:
     void updateAllButtons();
     void checkSolution();
+    int index(complex<int> pos);
 
     QButtonGroup* buttons;
     FifteenPuzzle* model;

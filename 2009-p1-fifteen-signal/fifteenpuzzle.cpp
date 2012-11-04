@@ -52,6 +52,7 @@ void FifteenPuzzle::init()
     // put blank in the last cell
     blank = {columns - 1, rows - 1};
     set(blank, BLANK_SYMBOL);
+    moved = blank;
 }
 
 void FifteenPuzzle::shuffle()
@@ -115,13 +116,13 @@ void FifteenPuzzle::set(complex<int> pos, char value)
 
 void FifteenPuzzle::moveBlank(complex<int> direction, bool silent)
 {
-    complex<int> old = blank;
+    moved = blank;
     blank += direction;
-    set(old, get(blank));
+    set(moved, get(blank));
     set(blank, BLANK_SYMBOL);
     // while shuffling, no signals are emitted
     if (! silent) {
-        emit blankMoved(blank.imag(), blank.real(), old.imag(), old.real());
+        emit blankMoved();
     }
 }
 
@@ -141,6 +142,16 @@ bool FifteenPuzzle::isSolved() const
         }
     }
     return correct;
+}
+
+complex<int> FifteenPuzzle::getBlank() const
+{
+    return blank;
+}
+
+complex<int> FifteenPuzzle::getMoved() const
+{
+    return moved;
 }
 
 void FifteenPuzzle::write(std::ostream& out) const

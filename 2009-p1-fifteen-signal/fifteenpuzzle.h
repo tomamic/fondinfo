@@ -29,6 +29,8 @@ public:
     void move(complex<int> pos);
     char get(complex<int> pos) const;
     bool isSolved() const;
+    complex<int> getBlank() const;
+    complex<int> getMoved() const;
     void write(ostream& out) const;
     FifteenPuzzle(int rows, int columns);
 
@@ -38,7 +40,7 @@ public:
 
 signals:
     // model signal added
-    void blankMoved(int newY, int newX, int oldY, int oldX);
+    void blankMoved();
 
 private:
     // silent mode added, for shuffling without emitting signals
@@ -51,6 +53,7 @@ private:
 
     vector<char> board;
     complex<int> blank;
+    complex<int> moved;
 };
 
 //std::ostream& operator<<(ostream& out, FifteenPuzzle& puzzle);

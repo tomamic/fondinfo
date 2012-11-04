@@ -21,7 +21,7 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent)
         for (int x = 0; x < model->getColumns(); ++x) {
             QPushButton *b = new QPushButton();
             b->setStyleSheet("background: yellow");
-            buttons->addButton(b, y * model->getColumns() + x);
+            buttons->addButton(b, index({x, y}));
             layout->addWidget(b, y, x);
         }
     }
@@ -31,8 +31,8 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent)
     QObject::connect(buttons, SIGNAL(buttonClicked(int)),
                      this, SLOT(controlButtons(int)));
     // connection added for model signals
-    QObject::connect(model, SIGNAL(blankMoved(int, int, int, int)),
-                     this, SLOT(updateAfterMove(int, int, int, int)));
+    QObject::connect(model, SIGNAL(blankMoved()),
+                     this, SLOT(updateAfterMove()));
     show();
 }
 
@@ -44,9 +44,8 @@ void FifteenGui::updateAllButtons()
 {
     for (int y = 0; y < model->getRows(); y++) {
         for (int x = 0; x < model->getColumns(); x++) {
-            char symbol = model->get({x, y});
-            int i = y * model->getColumns() + x;
-            buttons->button(i)->setText(QString(symbol));
+            buttons->button(index({x, y}))->setText(
+                    QString(model->get({x, y})));
         }
     }
     checkSolution();
@@ -62,16 +61,16 @@ void FifteenGui::controlButtons(int i)
     // updateAllButtons();
 }
 
-void FifteenGui::updateAfterMove(int newY, int newX,
-                                 int oldY, int oldX)
+void FifteenGui::updateAfterMove()
 {
-    char symbol = model->get({oldX, oldY});
-    int oldPos = oldY * model->getColumns() + oldX;
-    buttons->button(oldPos)->setText(QString(symbol));
+    complex<int> moved = model->getMoved();
+    buttons->button(index(moved))->setText(
+                QString(model->get(moved)));
 
-    int newPos = newY * model->getColumns() + newX;
-    buttons->button(newPos)->setText(
-            QString(FifteenPuzzle::BLANK_SYMBOL));
+    complex<int> blank = model->getBlank();
+    buttons->button(index(blank))->setText(
+                QString(model->get(blank)));
+
     checkSolution();
 }
 
@@ -83,4 +82,9 @@ void FifteenGui::checkSolution()
         model->shuffle();
         updateAllButtons();
     }
+}
+
+int FifteenGui::index(complex<int> pos)
+{
+    return pos.imag() * model->getColumns() + pos.real();
 }
