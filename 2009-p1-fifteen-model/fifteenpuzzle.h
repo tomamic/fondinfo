@@ -13,45 +13,34 @@
 #include <iostream>
 #include <vector>
 #include <complex>
-#include <QtCore/QObject>
 
 using namespace std;
 
-class FifteenPuzzle : public QObject {
-    Q_OBJECT
-
+class FifteenPuzzle
+{
 public:
     typedef complex<int> Coord;
-
-    int getColumns() const;
-    int getRows() const;
-    void init();
-    void shuffle();
-    void move(char symbol);
-    void move(Coord pos);
-    char get(Coord pos) const;
-    bool isSolved() const;
-    Coord getBlank() const;
-    Coord getMoved() const;
-    void write(ostream& out) const;
     FifteenPuzzle(int rows, int columns);
+    virtual int getColumns() const;
+    virtual int getRows() const;
+    virtual void init();
+    virtual void shuffle();
+    virtual void move(char symbol);
+    virtual void move(Coord pos);
+    virtual char get(Coord pos) const;
+    virtual bool isSolved() const;
+    virtual void write(ostream& out) const;
 
     static const char FIRST_SYMBOL = 'A';
     static const char BLANK_SYMBOL = ' ';
     static const char OUT_OF_BOUNDS = '!';
 
-signals:
-    // model signal added
-    void blankMoved();
-
-private:
-    // silent mode added, for shuffling without emitting signals
-    void moveBlank(Coord delta, bool silent = false);
-    void set(Coord pos, char value);
+protected:
+    virtual void moveBlank(Coord delta);
+    virtual void set(Coord pos, char value);
 
     int columns;
     int rows;
-    int size;
 
     vector<char> board;
     Coord blank;

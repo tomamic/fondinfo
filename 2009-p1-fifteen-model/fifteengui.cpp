@@ -9,7 +9,7 @@
 
 #include "fifteengui.h"
 
-FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent)
+FifteenGui::FifteenGui(FifteenModel* model, QWidget* parent)
     : QWidget(parent)
 {
     this->model = model;
@@ -63,11 +63,11 @@ void FifteenGui::controlButtons(int i)
 
 void FifteenGui::updateAfterMove()
 {
-    FifteenPuzzle::Coord moved = model->getMoved();
+    FifteenModel::Coord moved = model->getMoved();
     buttons->button(index(moved))->setText(
                 QString(model->get(moved)));
 
-    FifteenPuzzle::Coord blank = model->getBlank();
+    FifteenModel::Coord blank = model->getBlank();
     buttons->button(index(blank))->setText(
                 QString(model->get(blank)));
 
@@ -84,7 +84,7 @@ void FifteenGui::checkSolution()
     }
 }
 
-int FifteenGui::index(FifteenPuzzle::Coord pos)
+int FifteenGui::index(FifteenModel::Coord pos)
 {
     return pos.imag() * model->getColumns() + pos.real();
 }

@@ -12,7 +12,6 @@
 
 #include <QtGui>
 #include <cstdlib>
-#include <cmath>
 #include <ctime>
 
 int main(int argc, char *argv[])
@@ -34,7 +33,7 @@ int main(int argc, char *argv[])
 
     int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
     int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
-    FifteenPuzzle puzzle(rows, columns);
-    FifteenGui gui(&puzzle);
+    FifteenModel model(rows, columns);
+    FifteenGui gui(&model);
     return a.exec();
 }

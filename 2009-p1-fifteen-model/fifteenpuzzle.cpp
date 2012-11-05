@@ -11,18 +11,19 @@
 
 #include <cstdlib>
 
-// N, E, S, W
+using namespace std;
+
+// N, E, S, W (C++11)
 const vector<FifteenPuzzle::Coord> directions = {
     {0, -1}, {+1, 0}, {0, +1}, {-1, 0}};
 
 FifteenPuzzle::FifteenPuzzle(int rows, int columns)
 {
-    if (rows < 2) rows = 2;
-    if (columns < 2) columns = 2;
+    if (rows < 2) { rows = 2; }
+    if (columns < 2) { columns = 2; }
     this->rows = rows;
     this->columns = columns;
-    size = columns * rows;
-    board.assign(size, BLANK_SYMBOL);
+    board.assign(rows * columns, BLANK_SYMBOL);
 
     init();
     shuffle();
@@ -59,15 +60,15 @@ void FifteenPuzzle::shuffle()
     do {
         // generate SIZE^2 random directions
         // for a random walk of the blank cell
-        for (int i = 0; i < size * size; ++i) {
-            int d = rand() % directions.size();
+        for (int i = 0; i < rows * rows * columns * columns; ++i) {
+            Coord delta = directions[rand() % directions.size()];
 
             // consider the cell adjacent to the
             // blank cell, in the current direction
-            Coord next = blank + directions[d];
+            Coord next = blank + delta;
             // if it is inside the board, then move the blank
             if (get(next) != OUT_OF_BOUNDS) {
-                moveBlank(directions[d], true); // silent, no signals emitted
+                moveBlank(delta);
             }
         }
     } while (isSolved());
@@ -99,10 +100,10 @@ void FifteenPuzzle::move(Coord pos)
 
 char FifteenPuzzle::get(Coord pos) const
 {
+    int y = pos.imag(), x = pos.real();
     int value = OUT_OF_BOUNDS;
-    if (0 <= pos.imag() && pos.imag() < rows
-            && 0 <= pos.real() && pos.real() < columns) {
-        value = board[pos.imag() * columns + pos.real()];
+    if (0 <= y && y < rows && 0 <= x && x < columns) {
+        value = board[y * columns + x];
     }
     return value;
 }
@@ -112,16 +113,12 @@ void FifteenPuzzle::set(Coord pos, char value)
     board[pos.imag() * columns + pos.real()] = value;
 }
 
-void FifteenPuzzle::moveBlank(Coord direction, bool silent)
+void FifteenPuzzle::moveBlank(Coord delta)
 {
     moved = blank;
-    blank += direction;
+    blank += delta;
     set(moved, get(blank));
     set(blank, BLANK_SYMBOL);
-    // while shuffling, no signals are emitted
-    if (! silent) {
-        emit blankMoved();
-    }
 }
 
 bool FifteenPuzzle::isSolved() const
@@ -139,20 +136,10 @@ bool FifteenPuzzle::isSolved() const
             ++expected;
         }
     }
-    return correct;
+return correct;
 }
 
-FifteenPuzzle::Coord FifteenPuzzle::getBlank() const
-{
-    return blank;
-}
-
-FifteenPuzzle::Coord FifteenPuzzle::getMoved() const
-{
-    return moved;
-}
-
-void FifteenPuzzle::write(std::ostream& out) const
+void FifteenPuzzle::write(ostream& out) const
 {
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
@@ -163,7 +150,7 @@ void FifteenPuzzle::write(std::ostream& out) const
     out << endl;
 }
 
-//std::ostream& operator<<(std::ostream& out, FifteenPuzzle& puzzle)
+//ostream& operator<<(ostream& out, FifteenPuzzle& puzzle)
 //{
 //    puzzle.write(out);
 //    return out;
