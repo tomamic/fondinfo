@@ -1,21 +1,21 @@
 #include "fifteenmodel.h"
 
 FifteenModel::FifteenModel(int rows, int columns)
-    : shuffling(false), FifteenPuzzle(rows, columns)
+    : silent(false), FifteenPuzzle(rows, columns)
 {
 }
 
 void FifteenModel::shuffle()
 {
-    shuffling = true;
+    silent = true;
     FifteenPuzzle::shuffle();
-    shuffling = false;
+    silent = false;
 }
 
 void FifteenModel::moveBlank(Coord delta)
 {
     FifteenPuzzle::moveBlank(delta);
-    if (!shuffling) emit blankMoved();
+    if (!silent) emit blankMoved();
 }
 
 FifteenPuzzle::Coord FifteenModel::getBlank()

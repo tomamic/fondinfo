@@ -20,7 +20,7 @@ signals:
 
 protected:
     void moveBlank(Coord delta);
-    bool shuffling = false;
+    bool silent = false;
 };
 
 #endif // FIFTEENMODEL_H
