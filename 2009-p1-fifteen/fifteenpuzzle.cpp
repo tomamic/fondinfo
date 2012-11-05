@@ -13,8 +13,8 @@
 
 using namespace std;
 
-// could be static class member
-const int DY = 0, DX = 1;
+// could be static class members
+const int DY = 0, DX = 1; // N, E, S, W
 const vector< vector<int> > directions = {
     {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
 
