@@ -8,4 +8,4 @@ _Generazione numero pseudo-casuale: rand()_
 
 _Per avere valori diversi, eseguire all'inizio: srand(time(NULL))_
 
-_Librerie necessarie: <cstdlib>, <ctime>_
+_Librerie necessarie: < cstdlib >, < ctime >_
