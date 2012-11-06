@@ -25,15 +25,20 @@ bool Board::solve()
 
 void Board::write(ostream &out)
 {
+    const char SEPARATOR = '|';
+    const char QUEEN = 'Q';
+    const char EMPTY = ' ';
+
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
+            cout << SEPARATOR;
             if (board[y][x]) {
-                out << "|Q";
+                out << QUEEN;
             } else {
-                out << "| ";
+                out << EMPTY;
             }
         }
-        out << '|' << endl;
+        out << SEPARATOR << endl;
     }
     out << endl << endl;
 }

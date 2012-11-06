@@ -21,8 +21,11 @@ void printBoard(vector<vector<bool> > &board, ostream &out)
     for (int y = 0; y < board.size(); ++y) {
         for (int x = 0; x < board[y].size(); ++x) {
             cout << SEPARATOR;
-            if (board[y][x]) out << QUEEN;
-            else out << EMPTY;
+            if (board[y][x]) {
+                out << QUEEN;
+            } else {
+                out << EMPTY;
+            }
         }
         out << SEPARATOR << endl;
     }
