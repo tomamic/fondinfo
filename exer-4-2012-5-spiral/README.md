@@ -6,4 +6,5 @@
 * Dimensioni della matrice indicate dall'utente a runtime
 
 _Tenere traccia della direzione attuale (∆y, ∆x)_
+
 _Avanzare fino al bordo o ad una cella già visitata, poi cambiare la direzione in senso orario_
