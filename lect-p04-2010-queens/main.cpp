@@ -14,15 +14,17 @@ using namespace std;
 
 void printBoard(vector<vector<bool> > &board, ostream &out)
 {
+    const char SEPARATOR = '|';
+    const char QUEEN = 'Q';
+    const char EMPTY = ' ';
+
     for (int y = 0; y < board.size(); ++y) {
         for (int x = 0; x < board[y].size(); ++x) {
-            if (board[y][x]) {
-                out << "|Q";
-            } else {
-                out << "| ";
-            }
+            cout << SEPARATOR;
+            if (board[y][x]) out << QUEEN;
+            else out << EMPTY;
         }
-        out << "|" << endl;
+        out << SEPARATOR << endl;
     }
     out << endl;
 }
