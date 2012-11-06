@@ -4,8 +4,11 @@
 
 using namespace std;
 
+//const int DY = 0, DX = 1;
+//const vector< vector<int> > DIRECTIONS = {
+//    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
+
 const int EMPTY = -1;
-const int OUT = -2;
 
 bool empty(const vector<vector<int> > & matrix, int y, int x)
 {
@@ -23,30 +26,22 @@ int main()
     int columns; cout << "columns? "; cin >> columns;
     vector<vector<int> > matrix(rows, vector<int>(columns, EMPTY));
 
-    int y = rows - 1;
-    int x = 0;
-    int dy = -1;
-    int dx = 0;
-    int i = 0;
+    // initially: bottom-left cell, heading up
+    int y = rows - 1, x = 0;
+    int dy = -1, dx = 0;
 
-    while (empty(matrix, y, x)) {
+    for (int i = 0; i < rows * columns; ++i) {
         matrix[y][x] = i;
-        ++i;
         // advance
-        y += dy;
-        x += dx;
+        y += dy; x += dx;
         // bounce against border or visited cell?
         if (!empty(matrix, y, x)) {
             // go one step back
-            y -= dy;
-            x -= dx;
+            y -= dy; x -= dx;
             // turn clockwise
-            int tmp = dy;
-            dy = dx;
-            dx = -tmp;
+            int tmp = dy; dy = dx; dx = -tmp;
             // advance in new direction
-            y += dy;
-            x += dx;
+            y += dy; x += dx;
         }
     }
 

@@ -13,12 +13,11 @@
 
 using namespace std;
 
-void zigzag(vector< vector<int> >& matrix) {
+void zigzag(vector< vector<int> > & matrix) {
     int rows = matrix.size();
     int columns = matrix[0].size();
 
-    // initially: bottom-left cell
-    // heading towards south-east
+    // initially: bottom-left cell, heading down-right
     int y = rows - 1, x = 0;
     int dy = +1, dx = +1;
 
