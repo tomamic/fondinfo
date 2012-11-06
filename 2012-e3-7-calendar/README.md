@@ -1,7 +1,7 @@
 3.7 Calendario trasposto
 
 * Chiedere all'utente:
-  * Il giorno della settimana (lunedì=0 ... domenica=6) corrispondente al primo del mese
+  * Il giorno della settimana corrispondente al primo del mese (lunedì=0 ... domenica=6)
   * La lunghezza del mese (28-31)
 * Visualizzare il calendario del mese
   * Disporre i giorni in una griglia, una colonna alla volta
