@@ -1,4 +1,4 @@
-Programming lab @ Ingegneria dell'Informazione, Parma
+Programming lab @ Information Engineering, Parma
 
 Author: Michele Tomaiuolo - <tomamic@ce.unipr.it>
 
