@@ -34,8 +34,8 @@ void Penguin::move()
 {
     int direction = game->getUserCommand();
     if (alive && direction >= 0) {
-        int newY = y + DY[direction];
-        int newX = x + DX[direction];
+        int newY = y + DIRECTIONS[direction][DY];
+        int newX = x + DIRECTIONS[direction][DX];
 
         if (game->isInside(newY, newX)) {
             Actor* other = game->get(newY, newX);

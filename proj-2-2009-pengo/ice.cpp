@@ -33,8 +33,8 @@ char Ice::getSymbol()
 void Ice::move()
 {
     if (alive && direction >= 0) {
-        int newY = y + DY[direction];
-        int newX = x + DX[direction];
+        int newY = y + DIRECTIONS[direction][DY];
+        int newX = x + DIRECTIONS[direction][DX];
 
         if (game->isInside(newY, newX)) {
             Actor* other = game->get(newY, newX);
@@ -61,12 +61,12 @@ void Ice::touchedBy(Actor* other)
     if (other->isPlayer()) {
         // find the direction opposite to the player
         direction = 0;
-        while (DY[direction] != y - other->getY()
-            || DX[direction] != x - other->getX()) {
+        while (DIRECTIONS[direction][DY] != y - other->getY()
+               || DIRECTIONS[direction][DX] != x - other->getX()) {
             ++direction;
         }
-        int newY = y + DY[direction];
-        int newX = x + DX[direction];
+        int newY = y + DIRECTIONS[direction][DY];
+        int newX = x + DIRECTIONS[direction][DX];
 
         // if the ice-block is pushed against the border,
         // or against anybody not being an enemy,
