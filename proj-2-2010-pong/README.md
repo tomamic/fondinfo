@@ -24,7 +24,7 @@ _È fornito un semplice framework di esempio_
   * Movimento sempre e solo in verticale
 * A piacimento: ulteriori palline, ostacoli, bonus...
 
-# Opzionale
+## Opzionale
 
 * Garantire ai personaggi un movimento libero, pixel a pixel (posizione x, y non fissata su una griglia rigida)
 * Angolo di rimbalzo della palla sulla barretta dipendente da distanza dal centro della barretta
