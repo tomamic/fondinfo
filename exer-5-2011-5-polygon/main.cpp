@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
     cout << x.perimeter() << endl;
 
-    ofstream out("../2011-5-5-polygon/polygon.txt");
+    ofstream out("../exer-5-2011-5-polygon/polygon.txt");
     x.write(out);
 
     return 0;

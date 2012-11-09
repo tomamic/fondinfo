@@ -136,7 +136,7 @@ bool FifteenPuzzle::isSolved() const
             ++expected;
         }
     }
-return correct;
+    return correct;
 }
 
 void FifteenPuzzle::write(ostream& out) const

@@ -82,8 +82,7 @@ void FifteenPuzzle::move(char symbol)
     bool found = false;
     // for each direction, while symbol not yet found...
     for (int d = 0; d < directions.size() && !found; ++d) {
-        // consider the cell adjacent to the
-        // blank cell, in the current direction
+        // consider the cell next to the blank cell
         int nextY = blankY + directions[d][DY];
         int nextX = blankX + directions[d][DX];
         // if the symbol to move is here...
