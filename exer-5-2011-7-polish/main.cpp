@@ -10,56 +10,55 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <string>
-#include <algorithm>
 
 using namespace std;
 
-// const vector<string> OPERATORS = {"+", "-", "*", "/", "div", "mod"};
-// C++2011 assignment, add the following line in .pro file
-// QMAKE_CXXFLAGS += -std=c++0x
-
-const string OPERATORS[] = {"+", "-", "*", "/", "div", "mod"};
-
 void writeInfix(istream& in, ostream& out)
 {
-    string op; in >> op;
+    string token;
+    in >> token;
 
-    if (count(OPERATORS, OPERATORS + 6, op) > 0) {
+    float value = 0;
+    istringstream numberParser(token);
+    numberParser >> value;
+
+    if (numberParser.fail()) {
         out << "(";
         writeInfix(in, out);
-        out << ' ' << op << ' ';
+        out << ' ' << token << ' ';
         writeInfix(in, out);
         out << ")";
     } else {
-        out << op;
+        out << value;
     }
 }
 
 float eval(istream& in)
 {
-    float result = 0, a = 0, b = 0;
-    string op; in >> op;
+    string token;
+    in >> token;
 
-    if (count(OPERATORS, OPERATORS + 6, op) > 0) {
-        a = eval(in);
-        b = eval(in);
+    float value = 0;
+    istringstream numberParser(token);
+    numberParser >> value;
 
-        if (op == "+") result = a + b;
-        else if (op == "-") result = a - b;
-        else if (op == "*") result = a * b;
-        else if (op == "/") result = a / b;
-        else if (op == "div") result = int(a) / int(b);
-        else if (op == "mod") result = int(a) % int(b);
-    } else {
-        istringstream(op) >> result;
+    if (numberParser.fail()) {
+        float a = eval(in);
+        float b = eval(in);
+
+        if (token == "+") value = a + b;
+        else if (token == "-") value = a - b;
+        else if (token == "*") value = a * b;
+        else if (token == "/") value = a / b;
+        else if (token == "div") value = int(a) / int(b);
+        else if (token == "mod") value = int(a) % int(b);
     }
-    return result;
+    return value;
 }
 
 int main()
 {
-    string expr = "mod + * + 1 2 + 2 3 4 5";
+    string expr = "mod + * + 1 2 + 2 3 4 5 ";
 
     istringstream in1(expr);
     writeInfix(in1, cout);
