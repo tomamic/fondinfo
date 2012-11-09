@@ -10,6 +10,8 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
+#include <vector>
+
 #include "game.h"
 
 class Game;
@@ -49,9 +51,10 @@ protected:
     int x;
     int z;
     bool alive;
-    static const int DIRECTIONS = 8;
-    static const int DY[DIRECTIONS];
-    static const int DX[DIRECTIONS];
+
+    static const int DY = 0;
+    static const int DX = 1;
+    static const std::vector< std::vector<int> > DIRECTIONS;
 };
 
 #endif // ACTOR_H

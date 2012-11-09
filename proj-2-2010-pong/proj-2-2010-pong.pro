@@ -2,6 +2,8 @@ TEMPLATE = app
 CONFIG += console
 QT += core gui
 
+QMAKE_CXXFLAGS += -std=c++11
+
 SOURCES += main.cpp\
     actor.cpp \
     loader.cpp \

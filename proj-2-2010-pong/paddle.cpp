@@ -53,7 +53,7 @@ void Paddle::move()
             // if the cell is free, eventually, move there
             other = game->get(newY, x);
             if (alive && (other == NULL || other == this)) {
-                y = y + DY[direction];
+                y = y + DIRECTIONS[direction][0];
             }
         }
     }
