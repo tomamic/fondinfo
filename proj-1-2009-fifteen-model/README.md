@@ -1,4 +1,4 @@
-Progetto 1. Gioco del quindici
+# Progetto 1. Gioco del quindici
 
 * Classe per incapsulare dati e regole di un gioco
   * Campi privati + metodi pubblici (e _privati_)

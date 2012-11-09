@@ -1,4 +1,4 @@
-Progetto 1. Gioco del quindici
+# Progetto 1. Gioco del quindici
 
 * Classe per incapsulare dati e regole di un gioco
   * Campi privati + metodi pubblici (e _privati_)
@@ -25,8 +25,3 @@ Progetto 1. Gioco del quindici
   * Rendere l'interfaccia adattabile a dimensioni diverse del campo di gioco
 * Riuso - Definire la classe di modello per le partite in modo generico
   * Usabile sia da interfaccia grafica che da console
-
-## Emissione segnale
-
-* Dopo una mossa corretta, il modello emette un segnale
-* In questo modo l'interfaccia può aggiornale sole le caselle cambiate
