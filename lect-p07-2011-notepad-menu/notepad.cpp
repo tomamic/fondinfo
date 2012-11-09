@@ -109,7 +109,7 @@ void Notepad::exit()
                 tr("Do you really want to quit?"),
                 QMessageBox::Yes | QMessageBox::No);
 
-    if(button == QMessageBox::Yes) {
+    if (button == QMessageBox::Yes) {
         qApp->quit();
     }
 }
