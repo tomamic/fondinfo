@@ -4,9 +4,9 @@
 
 using namespace std;
 
-const int DY = 0, DX = 1;
-const vector< vector<int> > DIRECTIONS = {
-    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
+//const int DY = 0, DX = 1;
+//const vector< vector<int> > DIRECTIONS = {
+//    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
 
 const int EMPTY = -1;
 
@@ -28,8 +28,7 @@ int main()
 
     // initially: bottom-left cell, heading up
     int y = rows - 1, x = 0;
-    int d = 0;
-    int dy = DIRECTIONS[d][DY], dx = DIRECTIONS[d][DX];
+    int dy = -1, dx = 0;
 
     for (int i = 0; i < rows * columns; ++i) {
         matrix[y][x] = i;
@@ -40,10 +39,7 @@ int main()
             // go one step back
             y -= dy; x -= dx;
             // turn clockwise
-            //int tmp = dy; dy = dx; dx = -tmp;
-            d = (d + 1) % DIRECTIONS.size();
-            dy = DIRECTIONS[d][DY];
-            dx = DIRECTIONS[d][DX];
+            int tmp = dy; dy = dx; dx = -tmp;
             // advance in new direction
             y += dy; x += dx;
         }
