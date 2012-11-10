@@ -11,37 +11,30 @@
 
 using namespace std;
 
-void swap(int &a, int &b) {
-    int tmp = a;
-    a = b;
-    b = tmp;
-}
-
-int mcd(int m, int n) {
-    if (m > n) swap(m, n);
-    clog << "mcd(" << m << ", " << n << ")" << endl;
-
-    int result = n;
-    if (m != 0) result = mcd(m, n % m);
+int mcd1(int m, int n)
+{
+    clog << "mcd1 " << m << " " << n << endl;
+    int result = m;
+    if (n != 0) result = mcd1(n, m % n);
     return result;
 }
 
-int mcd2(int m, int n) {
-    do {
-        if (m > n) swap(m, n);
-        clog << "mcd2(" << m << ", " << n << ")" << endl;
-
-        if (m != 0)  n = n % m;
-    } while (m > 0);
-    return n;
+int mcd2(int m, int n)
+{
+    while (n != 0) {
+        clog << "mcd2 " << m << " " << n << endl;
+        int r = m % n;
+        m = n; n = r;
+    }
+    clog << "mcd2 " << m << " " << n << endl;
+    return m;
 }
 
 int main(int argc, char *argv[])
 {
-    int m = 72, n = 96;
+    int m = 1071, n = 1029;
     cin >> m >> n;
-    cout << mcd(m, n) << endl;
+    cout << mcd1(m, n) << endl;
     cout << mcd2(m, n) << endl;
-
     return 0;
 }
