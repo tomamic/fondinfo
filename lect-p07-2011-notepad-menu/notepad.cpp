@@ -61,22 +61,20 @@ Notepad::~Notepad()
 void Notepad::open()
 {
     QString fileName = QFileDialog::getOpenFileName(
-                this, tr("Open File"), "",
-                tr("Text Files (*.txt);; C++ Files (*.cpp *.h)"));
+                this, tr("Notepad - Open File"));
     if (fileName != "") {
         ifstream file(fileName.toStdString().c_str());
         if (file.good()) {
             // read application data from file stream
             string content, line;
             while (getline(file, line)) {
-                if (content != "") content += "\n";
+                if (content != "") content += '\n';
                 content += line;
             }
-            textEdit->setText(QString(content.c_str()));
+            textEdit->setText(content.c_str());
         } else {
-            QMessageBox::critical(
-                        this, tr("Error"),
-                        tr("Could not open file"));
+            QMessageBox::critical(this, tr("Notepad - Error"),
+                                  tr("Could not open file"));
         }
     }
 }
@@ -84,19 +82,16 @@ void Notepad::open()
 void Notepad::save()
 {
     QString fileName = QFileDialog::getSaveFileName(
-                this,
-                tr("Save File"), "",
-                tr("Text Files (*.txt);;C++ Files (*.cpp *.h)"));
+                this, tr("Notepad - Save File"));
     if (fileName != "") {
         ofstream file(fileName.toStdString().c_str());
         if (file.good()) {
             // write application data to file stream
-            file << textEdit->toPlainText().toStdString();
+            QString text = textEdit->toPlainText();
+            file << text.toStdString();
         } else {
-            QMessageBox::critical(
-                        this,
-                        tr("Error"),
-                        tr("Could not open file"));
+            QMessageBox::critical(this, tr("Notepad - Error"),
+                                  tr("Could not save file"));
         }
     }
 }
@@ -104,8 +99,7 @@ void Notepad::save()
 void Notepad::exit()
 {
     int button = QMessageBox::question(
-                this,
-                tr("Quit"),
+                this, tr("Notepad - Quit"),
                 tr("Do you really want to quit?"),
                 QMessageBox::Yes | QMessageBox::No);
 

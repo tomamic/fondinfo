@@ -70,7 +70,7 @@ void Notepad::open()
             }
             textEdit->setText(content.c_str());
         } else {
-            QMessageBox::critical(this, tr("Error"),
+            QMessageBox::critical(this, tr("Notepad - Error"),
                                   tr("Could not open file"));
         }
     }
@@ -87,7 +87,7 @@ void Notepad::save() {
             QString text = textEdit->toPlainText();
             out << text.toStdString();
         } else {
-            QMessageBox::critical(this, tr("Error"),
+            QMessageBox::critical(this, tr("Notepad - Error"),
                                   tr("Could not save file"));
         }
     }
