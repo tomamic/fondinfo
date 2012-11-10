@@ -1,8 +1,7 @@
-QT       += core gui
-TARGET   = 2011-notepad-menu
 TEMPLATE = app
+QT += core gui
 
-SOURCES += main.cpp\
-        notepad.cpp
+SOURCES += main.cpp \
+           notepad.cpp
 
-HEADERS  += notepad.h
+HEADERS += notepad.h

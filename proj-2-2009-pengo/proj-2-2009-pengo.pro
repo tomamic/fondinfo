@@ -4,7 +4,7 @@ QT += core gui
 
 QMAKE_CXXFLAGS += -std=c++11
 
-SOURCES += main.cpp\
+SOURCES += main.cpp \
     penguin.cpp \
     ice.cpp \
     ghost.cpp \
@@ -13,7 +13,7 @@ SOURCES += main.cpp\
     game.cpp \
     gamegui.cpp
 
-HEADERS  += pengogui.h \
+HEADERS += pengogui.h \
     penguin.h \
     level.h \
     ice.h \
@@ -28,5 +28,5 @@ OTHER_FILES += pengo-1.dat
 RESOURCES += pengo.qrc
 
 TRANSLATIONS = pengo_it.ts \
-                pengo_fr.ts
+               pengo_fr.ts
 

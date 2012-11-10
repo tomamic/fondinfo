@@ -27,10 +27,6 @@ Notepad::Notepad(QWidget* parent) : QWidget(parent)
     QPushButton* saveButton = new QPushButton(tr("&Save"), this);
     QPushButton* exitButton = new QPushButton(tr("E&xit"), this);
 
-    connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
-    connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
-    connect(exitButton, SIGNAL(clicked()), this, SLOT(exit()));
-
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->addWidget(openButton);
     vLayout->addWidget(saveButton);
@@ -43,8 +39,12 @@ Notepad::Notepad(QWidget* parent) : QWidget(parent)
 
     setLayout(hLayout);
 
-//    setCentralWidget(new QWidget()); // if derived from QMainWindow
-//    centralWidget()->setLayout(hLayout);
+    //    setCentralWidget(new QWidget()); // if derived from QMainWindow
+    //    centralWidget()->setLayout(hLayout);
+
+    connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
+    connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
+    connect(exitButton, SIGNAL(clicked()), this, SLOT(exit()));
 
     setWindowTitle(tr("Notepad"));
     show();
@@ -58,42 +58,37 @@ Notepad::~Notepad()
 void Notepad::open()
 {
     QString fileName = QFileDialog::getOpenFileName(
-                this, tr("Open File"), "",
-                tr("Text Files (*.txt);; C++ Files (*.cpp *.h)"));
+                this, tr("Notepad - Open File"));
     if (fileName != "") {
-        ifstream file(fileName.toStdString().c_str());
-        if (file.good()) {
+        ifstream in(fileName.toStdString().c_str()); // c++03
+        if (in.good()) {
             // read application data from file stream
-            string content, line;
-            while (getline(file, line)) {
-                if (content != "") content += "\n";
+            string line, content;
+            while (getline(in, line)) {
+                if (content != "") content += '\n';
                 content += line;
             }
-            textEdit->setText(QString(content.c_str()));
+            textEdit->setText(content.c_str());
         } else {
-            QMessageBox::critical(
-                        this, tr("Error"),
-                        tr("Could not open file"));
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Could not open file"));
         }
     }
 }
 
-void Notepad::save()
-{
+
+void Notepad::save() {
     QString fileName = QFileDialog::getSaveFileName(
-                this,
-                tr("Save File"), "",
-                tr("Text Files (*.txt);;C++ Files (*.cpp *.h)"));
+                this, tr("Notepad - Save File"));
     if (fileName != "") {
-        ofstream file(fileName.toStdString().c_str());
-        if (file.good()) {
+        ofstream out(fileName.toStdString().c_str());
+        if (out.good()) {
             // write application data to file stream
-            file << textEdit->toPlainText().toStdString();
+            QString text = textEdit->toPlainText();
+            out << text.toStdString();
         } else {
-            QMessageBox::critical(
-                        this,
-                        tr("Error"),
-                        tr("Could not save file"));
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Could not save file"));
         }
     }
 }
@@ -101,12 +96,11 @@ void Notepad::save()
 void Notepad::exit()
 {
     int button = QMessageBox::question(
-                this,
-                tr("Quit"),
+                this, tr("Notepad - Quit"),
                 tr("Do you really want to quit?"),
                 QMessageBox::Yes | QMessageBox::No);
 
-    if(button == QMessageBox::Yes) {
+    if (button == QMessageBox::Yes) {
         qApp->quit();
     }
 }
