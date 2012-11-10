@@ -69,8 +69,7 @@ void FifteenPuzzle::shuffle()
             int nextY = blankY + directions[d][DY];
             int nextX = blankX + directions[d][DX];
             // if it is inside the board, then move the blank
-            if (0 <= nextY && nextY < rows
-                    && 0 <= nextX && nextX < columns) {
+            if (get(nextY, nextX) != OUT_OF_BOUNDS) {
                 moveBlank(d);
             }
         }
