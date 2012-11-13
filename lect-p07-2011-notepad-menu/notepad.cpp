@@ -66,11 +66,8 @@ void Notepad::open()
         ifstream file(fileName.toStdString().c_str());
         if (file.good()) {
             // read application data from file stream
-            string content, line;
-            while (getline(file, line)) {
-                if (content != "") content += '\n';
-                content += line;
-            }
+            string content;
+            getline(file, content, '\0');
             textEdit->setText(content.c_str());
         } else {
             QMessageBox::critical(this, tr("Notepad - Error"),
