@@ -9,8 +9,8 @@
 
 #include "actor.h"
 
-const std::vector< std::vector<int> > Actor::DIRECTIONS = {
-    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
+const int Actor::DY[] = {-1,  0, +1,  0};
+const int Actor::DX[] = { 0, +1,  0, -1};
 
 Actor::Actor(Game* game, int y, int x)
     : game(game), y(y), x(x), z(0), alive(true)

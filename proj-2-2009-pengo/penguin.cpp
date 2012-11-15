@@ -32,10 +32,10 @@ bool Penguin::isPlayer()
 
 void Penguin::move()
 {
-    int direction = game->getUserCommand();
-    if (alive && direction >= 0) {
-        int newY = y + DIRECTIONS[direction][DY];
-        int newX = x + DIRECTIONS[direction][DX];
+    int dir = game->getUserCommand();
+    if (alive && dir >= 0) {
+        int newY = y + DY[dir];
+        int newX = x + DX[dir];
 
         if (game->isInside(newY, newX)) {
             Actor* other = game->get(newY, newX);

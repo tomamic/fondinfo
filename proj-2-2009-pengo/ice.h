@@ -23,7 +23,7 @@ public:
     char getSymbol();
     static const char SYMBOL = '#';
 private:
-    int direction;
+    int dir;
 };
 
 #endif // ICE_H

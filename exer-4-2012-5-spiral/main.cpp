@@ -4,9 +4,9 @@
 
 using namespace std;
 
-//const int DY = 0, DX = 1;
-//const vector< vector<int> > DIRECTIONS = {
-//    {-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
+// const int NUM_DIRS = 4;
+// const int DY[] = {-1,  0, +1,  0};
+// const int DX[] = { 0, +1,  0, -1};
 
 const int EMPTY = -1;
 

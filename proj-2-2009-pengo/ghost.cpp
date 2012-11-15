@@ -37,9 +37,9 @@ void Ghost::move()
 {
     ++turn;
     if (alive && (turn % WAIT == 0)) {
-        int direction = rand() % DIRECTIONS.size();
-        int newY = y + DIRECTIONS[direction][DY];
-        int newX = x + DIRECTIONS[direction][DX];
+        int dir = rand() % NUM_DIRS;
+        int newY = y + DY[dir];
+        int newX = x + DX[dir];
 
         if (game->isInside(newY, newX)) {
             Actor* other = game->get(newY, newX);
