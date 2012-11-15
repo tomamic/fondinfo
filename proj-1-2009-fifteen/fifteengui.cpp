@@ -17,10 +17,10 @@ FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
     QGridLayout* layout = new QGridLayout();
     buttons = new QButtonGroup();
     for (int y = 0; y < model->getRows(); ++y) {
-        for (int x = 0; x < model->getColumns(); ++x) {
+        for (int x = 0; x < model->getCols(); ++x) {
             QPushButton *b = new QPushButton();
             b->setStyleSheet("background: yellow");
-            buttons->addButton(b, y * model->getColumns() + x);
+            buttons->addButton(b, y * model->getCols() + x);
             layout->addWidget(b, y, x);
         }
     }
@@ -39,9 +39,9 @@ FifteenGui::~FifteenGui()
 void FifteenGui::updateAllButtons()
 {
     for (int y = 0; y < model->getRows(); y++) {
-        for (int x = 0; x < model->getColumns(); x++) {
+        for (int x = 0; x < model->getCols(); x++) {
             char symbol = model->get(y, x);
-            int i = y * model->getColumns() + x;
+            int i = y * model->getCols() + x;
             buttons->button(i)->setText(QString(symbol));
         }
     }
@@ -50,8 +50,8 @@ void FifteenGui::updateAllButtons()
 
 void FifteenGui::controlButtons(int i)
 {
-    int y = i / model->getColumns();
-    int x = i % model->getColumns();
+    int y = i / model->getCols();
+    int x = i % model->getCols();
 
     model->move(y, x);
     updateAllButtons();

@@ -18,7 +18,7 @@ using namespace std;
 class FifteenPuzzle
 {
 public:
-    int getColumns() const;
+    int getCols() const;
     int getRows() const;
     void init();
     void shuffle();
@@ -27,17 +27,17 @@ public:
     char get(int y, int x) const;
     bool isSolved() const;
     void write(ostream& out) const;
-    FifteenPuzzle(int rows, int columns);
+    FifteenPuzzle(int rows, int cols);
 
     static const char FIRST_SYMBOL = 'A';
     static const char BLANK_SYMBOL = ' ';
     static const char OUT_OF_BOUNDS = '!';
 
 private:
-    void moveBlank(int direction);
+    void moveBlank(int dir);
     void set(int y, int x, char value);
 
-    int columns;
+    int cols;
     int rows;
 
     vector<char> board;
