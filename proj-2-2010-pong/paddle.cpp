@@ -34,14 +34,15 @@ bool Paddle::isPlayer()
 
 bool Paddle::isAt(int y, int x)
 {
-    return (alive && this->y <= y && y < (this->y + length) && this->x == x);
+    return (alive && this->x == x
+            && this->y <= y && y < (this->y + length));
 }
 
 void Paddle::move()
 {
-    int direction = game->getUserCommand(id);
-    if (alive && (direction == UP || direction == DOWN)) {
-        int newY = direction == UP ? (y - 1) : (y + length);
+    int dir = game->getUserCommand(id);
+    if (alive && (dir == UP || dir == DOWN)) {
+        int newY = (dir == UP) ? (y - 1) : (y + length);
 
         if (game->isInside(newY, x)) {
             Actor* other = game->get(newY, x);
@@ -53,7 +54,7 @@ void Paddle::move()
             // if the cell is free, eventually, move there
             other = game->get(newY, x);
             if (alive && (other == NULL || other == this)) {
-                y = y + DIRECTIONS[direction][0];
+                y = y + DY[dir];
             }
         }
     }

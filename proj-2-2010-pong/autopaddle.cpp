@@ -26,9 +26,11 @@ void AutoPaddle::move()
     while (a != NULL) {
         if (a->isEnemy()) {
             if (abs(a->getX() - x) < 0.5 * game->getHeight()) {
+                // if the ball is close enough, follow it
                 if (a->getY() < middle) command = UP;
                 else if (a->getY() > middle) command = DOWN;
             } else {
+                // otherwise, move to closer the center
                 if (middle > 0.66 * game->getHeight()) command = UP;
                 else if (middle < 0.33 * game->getHeight()) command = DOWN;
             }

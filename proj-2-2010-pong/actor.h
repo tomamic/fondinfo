@@ -52,9 +52,9 @@ protected:
     int z;
     bool alive;
 
-    static const int DY = 0;
-    static const int DX = 1;
-    static const std::vector< std::vector<int> > DIRECTIONS;
+    static const int NUM_DIRS = 8;
+    static const int DY[];
+    static const int DX[];
 };
 
 #endif // ACTOR_H

@@ -46,7 +46,8 @@ Actor* Game::get(int y, int x)
     if (isInside(y, x)) {
         for (int i = 0; i < actors.size(); ++i) {
             Actor* a = actors[i];
-            if (a->isAt(y, x) && (result == NULL || result->getZ() < a->getZ())) {
+            if (a->isAt(y, x)
+                    && (result == NULL || result->getZ() < a->getZ())) {
                 result = a;
             }
         }
