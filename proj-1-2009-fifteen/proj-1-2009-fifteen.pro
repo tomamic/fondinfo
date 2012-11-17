@@ -2,9 +2,9 @@ TEMPLATE = app
 CONFIG += console
 QT += core gui
 
-SOURCES  += main.cpp \
-    fifteengui.cpp \
-    fifteenpuzzle.cpp
+SOURCES += main.cpp \
+           fifteenpuzzle.cpp \
+           fifteengui.cpp
 
-HEADERS  += fifteengui.h \
-    fifteenpuzzle.h
+HEADERS += fifteenpuzzle.h \
+           fifteengui.h

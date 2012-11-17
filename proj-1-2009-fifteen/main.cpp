@@ -10,15 +10,14 @@
 #include "fifteenpuzzle.h"
 #include "fifteengui.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QInputDialog>
+#include <QApplication>
+#include <QInputDialog>
 #include <cstdlib>
-#include <cmath>
 #include <ctime>
 
 using namespace std;
 
-int runConsole(int argc, char *argv[])
+int runConsole(int argc, char* argv[])
 {
     char symbol;
     FifteenPuzzle puzzle(2, 3);
@@ -38,9 +37,11 @@ int runConsole(int argc, char *argv[])
     return 0;
 }
 
-int runGui(int argc, char *argv[])
+int runGui(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+    // a.setStyleSheet("FifteenGui {background: green; }"
+    //                 "FifteenGui QPushButton { background: yellow; }");
 
     int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
     int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
@@ -50,10 +51,10 @@ int runGui(int argc, char *argv[])
     return a.exec();
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {    
     srand(time(NULL));
 
-    // return runGui(argc, argv);
-    return runConsole(argc, argv);
+    return runGui(argc, argv);
+    // return runConsole(argc, argv);
 }

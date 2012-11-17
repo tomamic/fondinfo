@@ -7,33 +7,34 @@
  * later. See <http://www.gnu.org/licenses/>.
  */
 
+#include <QGridLayout>
+#include <QPushButton>
+#include <QMessageBox>
 #include "fifteengui.h"
 
-FifteenGui::FifteenGui(FifteenPuzzle* model, QWidget* parent) : QWidget(parent)
+FifteenGui::FifteenGui(FifteenPuzzle* model)
 {
     this->model = model;
-    setWindowTitle(tr("Fifteen Puzzle"));
-    setStyleSheet("background: green");
+
     QGridLayout* layout = new QGridLayout();
     buttons = new QButtonGroup();
     for (int y = 0; y < model->getRows(); ++y) {
         for (int x = 0; x < model->getCols(); ++x) {
-            QPushButton *b = new QPushButton();
-            b->setStyleSheet("background: yellow");
+            QPushButton* b = new QPushButton();
             buttons->addButton(b, y * model->getCols() + x);
             layout->addWidget(b, y, x);
+            // b->setStyleSheet("background: yellow");
         }
     }
     updateAllButtons();
+    setLayout(layout);
 
-    this->setLayout(layout);
-    QObject::connect(buttons, SIGNAL(buttonClicked(int)),
-                     this, SLOT(controlButtons(int)));
+    connect(buttons, SIGNAL(buttonClicked(int)),
+            this, SLOT(controlButtons(int)));
+
+    // setStyleSheet("background: green");
+    setWindowTitle(tr("Fifteen Puzzle"));
     show();
-}
-
-FifteenGui::~FifteenGui()
-{
 }
 
 void FifteenGui::updateAllButtons()
@@ -60,7 +61,8 @@ void FifteenGui::controlButtons(int i)
 void FifteenGui::checkSolution()
 {
     if (model->isSolved()) {
-        QMessageBox::information(this, tr("Puzzle solved!"), tr("Puzzle solved!"));
+        QMessageBox::information(this, tr("Puzzle solved!"),
+                                 tr("Puzzle solved!"));
         model->shuffle();
         updateAllButtons();
     }

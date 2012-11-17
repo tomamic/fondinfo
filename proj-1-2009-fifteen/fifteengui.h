@@ -12,17 +12,17 @@
 
 #include "fifteenpuzzle.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QButtonGroup>
 
 class FifteenGui : public QWidget
 {
     Q_OBJECT
 
 public:
-    FifteenGui(FifteenPuzzle* model, QWidget* parent = NULL);
-    ~FifteenGui();
+    FifteenGui(FifteenPuzzle* model);
 
-public slots:
+private slots:
     void controlButtons(int i);
 
 private:
