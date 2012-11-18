@@ -1,3 +1,8 @@
+/**
+ * @author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
+
 #include "ball.h"
 
 Ball::Ball(int x, int y, int dx, int dy)

@@ -1,18 +1,14 @@
 /**
- * Example used in programming courses at University of Parma, IT.
- * Author: Michele Tomaiuolo - <tomamic@ce.unipr.it> - 2011
- *
- * This software is free: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License, version 3 or
- * later. See <http://www.gnu.org/licenses/>.
+ * @author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsItemAnimation>
-#include <QtGui/QGraphicsView>
-#include <QtCore/QTimeLine>
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
+#include <QGraphicsItemAnimation>
+#include <QGraphicsView>
+#include <QTimeLine>
 #include <QGLWidget>
 
 int main(int argc, char *argv[])
