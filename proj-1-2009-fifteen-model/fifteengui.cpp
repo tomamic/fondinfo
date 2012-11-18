@@ -23,19 +23,17 @@ FifteenGui::FifteenGui(FifteenModel* model)
             QPushButton* b = new QPushButton();
             buttons->addButton(b, index({x, y}));
             layout->addWidget(b, y, x);
-            // b->setStyleSheet("background: yellow");
         }
     }
     updateAllButtons();
     setLayout(layout);
 
-    connect(buttons, SIGNAL(buttonClicked(int)),
-                     this, SLOT(controlButtons(int)));
     // connection added for model signals
     connect(model, SIGNAL(blankMoved()),
                      this, SLOT(updateAfterMove()));
+    connect(buttons, SIGNAL(buttonClicked(int)),
+                     this, SLOT(controlButtons(int)));
 
-    // setStyleSheet("background: green");
     setWindowTitle(tr("Fifteen Puzzle"));
     show();
 }
