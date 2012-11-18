@@ -22,16 +22,16 @@ FifteenPuzzle::FifteenPuzzle(int rows, int columns)
     if (rows < 2) { rows = 2; }
     if (columns < 2) { columns = 2; }
     this->rows = rows;
-    this->columns = columns;
+    this->cols = columns;
     board.assign(rows * columns, BLANK_SYMBOL);
 
-    init();
+    sort();
     shuffle();
 }
 
-int FifteenPuzzle::getColumns() const
+int FifteenPuzzle::getCols() const
 {
-    return columns;
+    return cols;
 }
 
 int FifteenPuzzle::getRows() const
@@ -39,18 +39,18 @@ int FifteenPuzzle::getRows() const
     return rows;
 }
 
-void FifteenPuzzle::init()
+void FifteenPuzzle::sort()
 {
     // put ordered symbols in each cell (ltr, ttb)
     int value = FIRST_SYMBOL;
     for (int y = 0; y < rows; ++y) {
-        for (int x = 0; x < columns; ++x) {
+        for (int x = 0; x < cols; ++x) {
             set({x, y}, value);
             ++value;
         }
     }
     // put blank in the last cell
-    blank = {columns - 1, rows - 1};
+    blank = {cols - 1, rows - 1};
     set(blank, BLANK_SYMBOL);
     moved = blank;
 }
@@ -60,7 +60,7 @@ void FifteenPuzzle::shuffle()
     do {
         // generate SIZE^2 random directions
         // for a random walk of the blank cell
-        for (int i = 0; i < rows * rows * columns * columns; ++i) {
+        for (int i = 0; i < rows * rows * cols * cols; ++i) {
             Coord delta = directions[rand() % directions.size()];
 
             // consider the cell adjacent to the
@@ -71,7 +71,7 @@ void FifteenPuzzle::shuffle()
                 moveBlank(delta);
             }
         }
-    } while (isSolved());
+    } while (isFinished());
 }
 
 void FifteenPuzzle::move(char symbol)
@@ -102,15 +102,15 @@ char FifteenPuzzle::get(Coord pos) const
 {
     int y = pos.imag(), x = pos.real();
     int value = OUT_OF_BOUNDS;
-    if (0 <= y && y < rows && 0 <= x && x < columns) {
-        value = board[y * columns + x];
+    if (0 <= y && y < rows && 0 <= x && x < cols) {
+        value = board[y * cols + x];
     }
     return value;
 }
 
 void FifteenPuzzle::set(Coord pos, char value)
 {
-    board[pos.imag() * columns + pos.real()] = value;
+    board[pos.imag() * cols + pos.real()] = value;
 }
 
 void FifteenPuzzle::moveBlank(Coord delta)
@@ -121,12 +121,12 @@ void FifteenPuzzle::moveBlank(Coord delta)
     set(blank, BLANK_SYMBOL);
 }
 
-bool FifteenPuzzle::isSolved() const
+bool FifteenPuzzle::isFinished() const
 {
     bool correct = true;
     char expected = FIRST_SYMBOL;
     for (int y = 0; y < rows && correct; ++y) {
-        for (int x = 0; x < columns && correct; ++x) {
+        for (int x = 0; x < cols && correct; ++x) {
             char value = get({x, y});
             // if the cell has the wrong symbol...
             // puzzle is not yet solved!
@@ -142,7 +142,7 @@ bool FifteenPuzzle::isSolved() const
 void FifteenPuzzle::write(ostream& out) const
 {
     for (int y = 0; y < rows; ++y) {
-        for (int x = 0; x < columns; ++x) {
+        for (int x = 0; x < cols; ++x) {
             out << get({x, y});
         }
         out << endl;

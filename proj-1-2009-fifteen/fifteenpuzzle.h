@@ -20,12 +20,12 @@ class FifteenPuzzle
 public:
     int getCols() const;
     int getRows() const;
-    void init();
+    void sort();
     void shuffle();
     void move(char symbol);
     void move(int y, int x);
     char get(int y, int x) const;
-    bool isSolved() const;
+    bool isFinished() const;
     void write(ostream& out) const;
     FifteenPuzzle(int rows, int cols);
 

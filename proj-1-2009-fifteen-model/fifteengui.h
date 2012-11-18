@@ -12,14 +12,14 @@
 
 #include "fifteenmodel.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QButtonGroup>
 
 class FifteenGui : public QWidget {
     Q_OBJECT
 
 public:
-    FifteenGui(FifteenModel* model, QWidget* parent = NULL);
-    ~FifteenGui();
+    FifteenGui(FifteenModel* model);
 
 public slots:
     void controlButtons(int i);
@@ -28,7 +28,7 @@ public slots:
 
 private:
     void updateAllButtons();
-    void checkSolution();
+    void checkFinished();
     int index(FifteenPuzzle::Coord pos);
 
     QButtonGroup* buttons;

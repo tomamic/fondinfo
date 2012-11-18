@@ -26,7 +26,7 @@ FifteenPuzzle::FifteenPuzzle(int rows, int columns)
     this->cols = columns;
     board.assign(rows * columns, BLANK_SYMBOL);
 
-    init();
+    sort();
     shuffle();
 }
 
@@ -40,7 +40,7 @@ int FifteenPuzzle::getRows() const
     return rows;
 }
 
-void FifteenPuzzle::init()
+void FifteenPuzzle::sort()
 {
     // put ordered symbols in each cell (ltr, ttb)
     int value = FIRST_SYMBOL;
@@ -73,7 +73,7 @@ void FifteenPuzzle::shuffle()
                 moveBlank(dir);
             }
         }
-    } while (isSolved());
+    } while (isFinished());
 }
 
 void FifteenPuzzle::move(char symbol)
@@ -125,7 +125,7 @@ void FifteenPuzzle::moveBlank(int dir)
     set(blankY, blankX, BLANK_SYMBOL);
 }
 
-bool FifteenPuzzle::isSolved() const
+bool FifteenPuzzle::isFinished() const
 {
     bool correct = true;
     char expected = FIRST_SYMBOL;

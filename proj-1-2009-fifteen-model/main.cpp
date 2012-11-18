@@ -10,7 +10,11 @@
 #include "fifteenpuzzle.h"
 #include "fifteengui.h"
 
-#include <QtGui>
+#include <QApplication>
+#include <QInputDialog>
+#include <QLibraryInfo>
+#include <QLocale>
+#include <QTranslator>
 #include <cstdlib>
 #include <ctime>
 
@@ -20,15 +24,15 @@ int main(int argc, char *argv[])
     srand(time(NULL));
 
     QTranslator qtTranslator;
-    qtTranslator.load("qt_"+QLocale::system().name(),
-      QLibraryInfo::location(
-        QLibraryInfo::TranslationsPath));
+    qtTranslator.load(
+                "qt_" + QLocale::system().name(),
+                QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     a.installTranslator(&qtTranslator);
 
     // run lupdate/lrelease, first!
     QTranslator myappTranslator;
-    myappTranslator.load(":translations/fifteen_"+
-      QLocale::system().name());
+    myappTranslator.load(
+                ":translations/fifteen_" + QLocale::system().name());
     a.installTranslator(&myappTranslator);
 
     int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);

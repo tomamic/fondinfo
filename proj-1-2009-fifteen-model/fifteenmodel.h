@@ -10,7 +10,7 @@ class FifteenModel
     Q_OBJECT
 
 public:
-    FifteenModel(int rows, int columns);
+    FifteenModel(int rows, int cols);
     void shuffle();
     Coord getBlank();
     Coord getMoved();

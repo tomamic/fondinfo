@@ -20,17 +20,17 @@ class FifteenGui : public QWidget
     Q_OBJECT
 
 public:
-    FifteenGui(FifteenPuzzle* model);
+    FifteenGui(FifteenPuzzle* game);
 
 private slots:
     void controlButtons(int i);
 
 private:
     void updateAllButtons();
-    void checkSolution();
+    void checkFinished();
 
     QButtonGroup* buttons;
-    FifteenPuzzle* model;
+    FifteenPuzzle* game;
 };
 
-#endif // FIFTEENGUI_H
+#endif // GAMEGUI_H

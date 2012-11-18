@@ -8,53 +8,53 @@
  */
 
 #include "fifteengui.h"
+#include <QGridLayout>
+#include <QPushButton>
+#include <QMessageBox>
 
-FifteenGui::FifteenGui(FifteenModel* model, QWidget* parent)
-    : QWidget(parent)
+FifteenGui::FifteenGui(FifteenModel* model)
 {
     this->model = model;
-    setWindowTitle(tr("Fifteen Puzzle"));
-    setStyleSheet("background: green");
+
     QGridLayout* layout = new QGridLayout();
     buttons = new QButtonGroup();
     for (int y = 0; y < model->getRows(); ++y) {
-        for (int x = 0; x < model->getColumns(); ++x) {
-            QPushButton *b = new QPushButton();
-            b->setStyleSheet("background: yellow");
+        for (int x = 0; x < model->getCols(); ++x) {
+            QPushButton* b = new QPushButton();
             buttons->addButton(b, index({x, y}));
             layout->addWidget(b, y, x);
+            // b->setStyleSheet("background: yellow");
         }
     }
     updateAllButtons();
+    setLayout(layout);
 
-    this->setLayout(layout);
-    QObject::connect(buttons, SIGNAL(buttonClicked(int)),
+    connect(buttons, SIGNAL(buttonClicked(int)),
                      this, SLOT(controlButtons(int)));
     // connection added for model signals
-    QObject::connect(model, SIGNAL(blankMoved()),
+    connect(model, SIGNAL(blankMoved()),
                      this, SLOT(updateAfterMove()));
-    show();
-}
 
-FifteenGui::~FifteenGui()
-{
+    // setStyleSheet("background: green");
+    setWindowTitle(tr("Fifteen Puzzle"));
+    show();
 }
 
 void FifteenGui::updateAllButtons()
 {
     for (int y = 0; y < model->getRows(); y++) {
-        for (int x = 0; x < model->getColumns(); x++) {
+        for (int x = 0; x < model->getCols(); x++) {
             buttons->button(index({x, y}))->setText(
                     QString(model->get({x, y})));
         }
     }
-    checkSolution();
+    checkFinished();
 }
 
 void FifteenGui::controlButtons(int i)
 {
-    int y = i / model->getColumns();
-    int x = i % model->getColumns();
+    int y = i / model->getCols();
+    int x = i % model->getCols();
 
     model->move({x, y});
     // call removed for model signals
@@ -71,14 +71,14 @@ void FifteenGui::updateAfterMove()
     buttons->button(index(blank))->setText(
                 QString(model->get(blank)));
 
-    checkSolution();
+    checkFinished();
 }
 
-void FifteenGui::checkSolution()
+void FifteenGui::checkFinished()
 {
-    if (model->isSolved()) {
-        QMessageBox::information(this, tr("Puzzle solved!"),
-                                 tr("Puzzle solved!"));
+    if (model->isFinished()) {
+        QMessageBox::information(
+                    this, tr("Game finished!"), tr("Game finished!"));
         model->shuffle();
         updateAllButtons();
     }
@@ -86,5 +86,5 @@ void FifteenGui::checkSolution()
 
 int FifteenGui::index(FifteenModel::Coord pos)
 {
-    return pos.imag() * model->getColumns() + pos.real();
+    return pos.imag() * model->getCols() + pos.real();
 }

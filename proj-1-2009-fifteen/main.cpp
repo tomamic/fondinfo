@@ -24,11 +24,11 @@ int runConsole(int argc, char* argv[])
     puzzle.write(cout);
 
     cin >> symbol;
-    while (cin.good() && !puzzle.isSolved()) {
+    while (cin.good() && !puzzle.isFinished()) {
         puzzle.move(toupper(symbol));
         puzzle.write(cout);
 
-        if (puzzle.isSolved()) {
+        if (puzzle.isFinished()) {
             cout << "Puzzle solved!" << endl;
         } else {
             cin >> symbol;
@@ -40,6 +40,7 @@ int runConsole(int argc, char* argv[])
 int runGui(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+    a.setApplicationName(QObject::tr("Fifteen Puzzle"));
     // a.setStyleSheet("FifteenGui {background: green; }"
     //                 "FifteenGui QPushButton { background: yellow; }");
 

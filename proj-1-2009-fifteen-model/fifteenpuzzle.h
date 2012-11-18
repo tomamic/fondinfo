@@ -20,15 +20,15 @@ class FifteenPuzzle
 {
 public:
     typedef complex<int> Coord;
-    FifteenPuzzle(int rows, int columns);
-    virtual int getColumns() const;
+    FifteenPuzzle(int rows, int cols);
+    virtual int getCols() const;
     virtual int getRows() const;
-    virtual void init();
+    virtual void sort();
     virtual void shuffle();
     virtual void move(char symbol);
     virtual void move(Coord pos);
     virtual char get(Coord pos) const;
-    virtual bool isSolved() const;
+    virtual bool isFinished() const;
     virtual void write(ostream& out) const;
 
     static const char FIRST_SYMBOL = 'A';
@@ -39,7 +39,7 @@ protected:
     virtual void moveBlank(Coord delta);
     virtual void set(Coord pos, char value);
 
-    int columns;
+    int cols;
     int rows;
 
     vector<char> board;

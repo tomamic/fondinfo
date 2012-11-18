@@ -12,16 +12,16 @@
 #include <QMessageBox>
 #include "fifteengui.h"
 
-FifteenGui::FifteenGui(FifteenPuzzle* model)
+FifteenGui::FifteenGui(FifteenPuzzle* game)
 {
-    this->model = model;
+    this->game = game;
 
     QGridLayout* layout = new QGridLayout();
     buttons = new QButtonGroup();
-    for (int y = 0; y < model->getRows(); ++y) {
-        for (int x = 0; x < model->getCols(); ++x) {
+    for (int y = 0; y < game->getRows(); ++y) {
+        for (int x = 0; x < game->getCols(); ++x) {
             QPushButton* b = new QPushButton();
-            buttons->addButton(b, y * model->getCols() + x);
+            buttons->addButton(b, y * game->getCols() + x);
             layout->addWidget(b, y, x);
             // b->setStyleSheet("background: yellow");
         }
@@ -39,31 +39,31 @@ FifteenGui::FifteenGui(FifteenPuzzle* model)
 
 void FifteenGui::updateAllButtons()
 {
-    for (int y = 0; y < model->getRows(); y++) {
-        for (int x = 0; x < model->getCols(); x++) {
-            char symbol = model->get(y, x);
-            int i = y * model->getCols() + x;
+    for (int y = 0; y < game->getRows(); y++) {
+        for (int x = 0; x < game->getCols(); x++) {
+            char symbol = game->get(y, x);
+            int i = y * game->getCols() + x;
             buttons->button(i)->setText(QString(symbol));
         }
     }
-    checkSolution();
+    checkFinished();
 }
 
 void FifteenGui::controlButtons(int i)
 {
-    int y = i / model->getCols();
-    int x = i % model->getCols();
+    int y = i / game->getCols();
+    int x = i % game->getCols();
 
-    model->move(y, x);
+    game->move(y, x);
     updateAllButtons();
 }
 
-void FifteenGui::checkSolution()
+void FifteenGui::checkFinished()
 {
-    if (model->isSolved()) {
-        QMessageBox::information(this, tr("Puzzle solved!"),
-                                 tr("Puzzle solved!"));
-        model->shuffle();
+    if (game->isFinished()) {
+        QMessageBox::information(
+                    this, tr("Game finished!"), tr("Game finished!"));
+        game->shuffle();
         updateAllButtons();
     }
 }
