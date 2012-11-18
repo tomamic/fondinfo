@@ -40,7 +40,6 @@ int runConsole(int argc, char* argv[])
 int runGui(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName(QObject::tr("Fifteen Puzzle"));
     // a.setStyleSheet("FifteenGui {background: green; }"
     //                 "FifteenGui QPushButton { background: yellow; }");
 
