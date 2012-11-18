@@ -1,5 +1,4 @@
 TEMPLATE = app
-CONFIG += console
 QT += core gui
 QMAKE_CXXFLAGS += -std=c++11
 
