@@ -149,9 +149,3 @@ void FifteenPuzzle::write(ostream& out) const
     }
     out << endl;
 }
-
-//ostream& operator<<(ostream& out, FifteenPuzzle& puzzle)
-//{
-//    puzzle.write(out);
-//    return out;
-//}
