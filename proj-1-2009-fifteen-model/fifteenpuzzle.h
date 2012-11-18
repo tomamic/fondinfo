@@ -47,6 +47,4 @@ protected:
     Coord moved;
 };
 
-//std::ostream& operator<<(ostream& out, FifteenPuzzle& puzzle);
-
 #endif // FIFTEENPUZZLE_H

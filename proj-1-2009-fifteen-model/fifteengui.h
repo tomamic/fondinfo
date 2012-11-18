@@ -21,10 +21,10 @@ class FifteenGui : public QWidget {
 public:
     FifteenGui(FifteenModel* model);
 
-public slots:
+private slots:
+    // method added for model signals
+   void updateAfterMove();
     void controlButtons(int i);
-     // method added for model signals
-    void updateAfterMove();
 
 private:
     void updateAllButtons();
