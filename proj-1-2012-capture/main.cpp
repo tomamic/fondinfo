@@ -12,13 +12,13 @@ bool check(string& line, int pos, char val)
 
 int capture(string& line, int pos, int dir)
 {
-    int i = pos, count = 0;
+    int i = pos + dir, count = 0;
     while (check(line, i, OPPONENT)) {
         ++count;
         i += dir;
     }
     if (count > 0 && check(line, i, PLAYER)) {
-        i = pos;
+        i = pos + dir;
         while (check(line, i, OPPONENT)) {
             line[i] = PLAYER;
             i += dir;
@@ -35,8 +35,8 @@ int main()
     int pos; // es. 4
     while (cin >> line >> pos) {
         int count = 0;
-        count += capture(line, pos + 1, +1);
-        count += capture(line, pos - 1, -1);
+        count += capture(line, pos, +1);
+        count += capture(line, pos, -1);
         if (count > 0) {
             line[pos] = PLAYER;
         }
