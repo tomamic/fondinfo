@@ -9,6 +9,7 @@ using namespace std;
 
 const char PLAYER = 'B';
 const char OPPONENT = 'W';
+const char EMPTY = '-';
 
 bool check(string& line, int pos, char val)
 {
@@ -39,11 +40,13 @@ int main()
     string line; // es. "-BWW-WWB-"
     int pos; // es. 4
     while (cin >> line >> pos) {
-        int count = 0;
-        count += capture(line, pos, +1);
-        count += capture(line, pos, -1);
-        if (count > 0) {
-            line[pos] = PLAYER;
+        if (check(line, pos, EMPTY)) {
+            int count = 0;
+            count += capture(line, pos, +1);
+            count += capture(line, pos, -1);
+            if (count > 0) {
+                line[pos] = PLAYER;
+            }
         }
         cout << line << endl;
     }
