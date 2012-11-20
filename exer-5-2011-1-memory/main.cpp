@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
     int a, b;
     cout << "Two cards (1-" << size << ")?" << endl;
     cin >> a >> b;
-    while (cin.good() && !memory.isSolved()) {
-        memory.move(a - 1, b - 1);
+    while (cin.good() && !memory.isFinished()) {
+        memory.uncover(a - 1, b - 1);
         memory.write(cout);
 
-        if (!memory.isSolved()) {
+        if (!memory.isFinished()) {
             cout << "Two cards (1-" << size << ")?" << endl;
             cin >> a >> b;
         }

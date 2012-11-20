@@ -15,10 +15,10 @@ class Memory
 {
 public:
     Memory(int rows, int cols);
-    void init();
+    void sort();
     void shuffle();
-    void move(int card1, int card2);
-    bool isSolved();
+    void uncover(int card1, int card2);
+    bool isFinished();
     void write(ostream& out);
 
     // covered cards are represented in lowercase

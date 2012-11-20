@@ -18,11 +18,11 @@ Memory::Memory(int rows, int cols)
     move2 = -1;
     matrix.assign(rows * cols, 0);
 
-    init();
+    sort();
     shuffle();
 }
 
-void Memory::init()
+void Memory::sort()
 {
     for (int i = 0; i < matrix.size(); ++i) {
         matrix[i] = FIRST_HIDDEN + i/2;
@@ -40,7 +40,7 @@ void Memory::shuffle()
     }
 }
 
-void Memory::move(int card1, int card2) {
+void Memory::uncover(int card1, int card2) {
     if (card1 != card2
             && 0 <= card1 && card1 < matrix.size()
             && 0 <= card2 && card2 < matrix.size()) {
@@ -53,7 +53,7 @@ void Memory::move(int card1, int card2) {
     }
 }
 
-bool Memory::isSolved() {
+bool Memory::isFinished() {
     bool ok = true;
     for (int i = 0; i < matrix.size() && ok; ++i) {
         ok = (FIRST <= matrix[i] && matrix[i] <= LAST);
