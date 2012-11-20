@@ -35,20 +35,26 @@ int capture(string& line, int pos, int dir)
     return count;
 }
 
+void play(string& line, int pos)
+{
+    if (check(line, pos, EMPTY)) {
+        int count = 0;
+        count += capture(line, pos, +1);
+        count += capture(line, pos, -1);
+        if (count > 0) {
+            line[pos] = PLAYER;
+        }
+    }
+}
+
 int main()
 {
     string line; // es. "-BWW-WWB-"
     int pos; // es. 4
     while (cin >> line >> pos) {
-        if (check(line, pos, EMPTY)) {
-            int count = 0;
-            count += capture(line, pos, +1);
-            count += capture(line, pos, -1);
-            if (count > 0) {
-                line[pos] = PLAYER;
-            }
-        }
+        play(line, pos);
         cout << line << endl;
     }
     return 0;
 }
+
