@@ -1,4 +1,4 @@
-# 5.1 Battaglia in classe
+5.1 Battaglia in classe
 
 * Classe per incapsulare le funzionalità dell'es. 4.3
 * Il costruttore riceve rows, cols e alloca la matrice
