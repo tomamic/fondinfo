@@ -15,33 +15,30 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    /* A surface to manage various 2D graphical items; it has algorithms for animations and collision detection */
+    // A surface to manage various 2D graphical items;
+    // it has algorithms for animations and collision detection
     QGraphicsScene* scene = new QGraphicsScene();
 
-    /* A scene contains instances of QGraphicsItem, such as lines, rectangles, text, or custom items */
+    // A scene contains instances of QGraphicsItem,
+    // such as lines, rectangles, text, or custom items
     QGraphicsItem* hello = scene->addText("Hello, world!");
-    hello->setPos(0, -100);
 
-    /* QGraphicsView can either visualize the whole scene, or zoom in and view only parts of the scene */
+    // QGraphicsView can either visualize the whole scene,
+    // or zoom in and view only parts of the scene
     QGraphicsView* view = new QGraphicsView(scene);
     view->setSceneRect(0, 0, 800, 600);
     view->fitInView(0, 0, 800, 600);
 
-    /* Use OpenGL acceleration, if available */
+    // Use OpenGL acceleration, if available
     view->setViewport(new QGLWidget());
     view->show();
 
-    QTimeLine *timer = new QTimeLine(5000);
-    timer->setLoopCount(0);
-    timer->setCurveShape(QTimeLine::LinearCurve);
-
     QGraphicsItemAnimation *animation =
         new QGraphicsItemAnimation();
-    animation->setItem(hello);
 
     animation->setPosAt(0, QPointF(0, 0));
     animation->setRotationAt(0, 0);
-    animation->setScaleAt(0, 0, 0);
+    animation->setScaleAt(0, 1, 1);
 
     animation->setPosAt(0.5, QPointF(360, 360));
     animation->setRotationAt(0.5, 360);
@@ -49,11 +46,12 @@ int main(int argc, char *argv[])
 
     animation->setPosAt(1, QPointF(0, 0));
     animation->setRotationAt(1, 0);
-    animation->setScaleAt(1, 0, 0);
+    animation->setScaleAt(1, 1, 1);
 
-    animation->setTimeLine(timer);
-
-    timer->start();
+    animation->setItem(hello);
+    animation->setTimeLine(new QTimeLine(5000));
+    animation->timeLine()->setLoopCount(0);
+    animation->timeLine()->start();
 
     return a.exec();
 }
