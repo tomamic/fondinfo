@@ -26,7 +26,7 @@ bool Sea::place(int y, int x, int dir, int size)
         result = place(y + DY[dir], x + DX[dir], dir, size - 1);
     }
     if (result) {
-        matrix[y][x] = 1;
+        matrix[y][x] = true;
     }
     return result;
 }
