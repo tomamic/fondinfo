@@ -6,33 +6,40 @@
 #include "flowersgui.h"
 #include "rightpushbutton.h"
 
-FlowersGui::FlowersGui(FlowersPuzzle* model, QWidget* parent) : QWidget(parent)
+FlowersGui::FlowersGui(FlowersPuzzle* puzzle)
 {
-    this->puzzle = model;
+    this->puzzle = puzzle;
     setWindowTitle(tr("Flowers Puzzle"));
     setStyleSheet("background: green");
+    buttons = NULL;
+    createLayout();
+    show();
+}
+
+void FlowersGui::createLayout()
+{
+    if (buttons != NULL) {
+        delete buttons;
+        delete centralWidget();
+    }
     QGridLayout* layout = new QGridLayout();
     buttons = new RightButtonGroup();
-    for (int y = 0; y < model->getRows(); ++y) {
-        for (int x = 0; x < model->getColumns(); ++x) {
+    for (int y = 0; y < puzzle->getRows(); ++y) {
+        for (int x = 0; x < puzzle->getColumns(); ++x) {
             RightPushButton *b = new RightPushButton();
             b->setStyleSheet("background: yellow");
-            buttons->addButton(b, y * model->getColumns() + x);
+            buttons->addButton(b, y * puzzle->getColumns() + x);
             layout->addWidget(b, y, x);
         }
     }
     updateAllButtons();
 
-    this->setLayout(layout);
-    QObject::connect(buttons, SIGNAL(buttonClicked(int)),
+    setCentralWidget(new QWidget());
+    centralWidget()->setLayout(layout);
+    connect(buttons, SIGNAL(buttonClicked(int)),
                      this, SLOT(controlButtons(int)));
-    QObject::connect(buttons, SIGNAL(buttonRightClicked(int)),
+    connect(buttons, SIGNAL(buttonRightClicked(int)),
                      this, SLOT(controlRightButtons(int)));
-    show();
-}
-
-FlowersGui::~FlowersGui()
-{
 }
 
 void FlowersGui::updateAllButtons()

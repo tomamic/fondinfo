@@ -11,19 +11,19 @@
 
 #include <QtGui>
 
-class FlowersGui : public QWidget
+class FlowersGui : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    FlowersGui(FlowersPuzzle* puzzle, QWidget* parent = NULL);
-    ~FlowersGui();
+    FlowersGui(FlowersPuzzle* puzzle);
 
 public slots:
     void controlButtons(int i);
     void controlRightButtons(int i);
 
 private:
+    void createLayout();
     void updateAllButtons();
     void checkSolution();
 
