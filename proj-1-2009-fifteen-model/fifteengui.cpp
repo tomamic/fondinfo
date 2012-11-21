@@ -13,7 +13,7 @@ FifteenGui::FifteenGui(FifteenModel* model)
     this->model = model;
 
     QGridLayout* layout = new QGridLayout();
-    buttons = new QButtonGroup();
+    buttons = new QButtonGroup(this);
     for (int y = 0; y < model->getRows(); ++y) {
         for (int x = 0; x < model->getCols(); ++x) {
             QPushButton* b = new QPushButton();

@@ -13,7 +13,7 @@ FifteenGui::FifteenGui(FifteenPuzzle* game)
     this->game = game;
 
     QGridLayout* layout = new QGridLayout();
-    buttons = new QButtonGroup();
+    buttons = new QButtonGroup(this);
     for (int y = 0; y < game->getRows(); ++y) {
         for (int x = 0; x < game->getCols(); ++x) {
             QPushButton* b = new QPushButton();

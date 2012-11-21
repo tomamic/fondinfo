@@ -11,19 +11,19 @@ FlowersGui::FlowersGui(FlowersPuzzle* puzzle)
     this->puzzle = puzzle;
     setWindowTitle(tr("Flowers Puzzle"));
     setStyleSheet("background: green");
-    buttons = NULL;
     createLayout();
     show();
 }
 
 void FlowersGui::createLayout()
 {
-    if (buttons != NULL) {
-        delete buttons;
+    if (centralWidget() != NULL) {
         delete centralWidget();
     }
+    setCentralWidget(new QWidget());
+    buttons = new RightButtonGroup(centralWidget());
     QGridLayout* layout = new QGridLayout();
-    buttons = new RightButtonGroup();
+
     for (int y = 0; y < puzzle->getRows(); ++y) {
         for (int x = 0; x < puzzle->getColumns(); ++x) {
             RightPushButton *b = new RightPushButton();
@@ -33,9 +33,8 @@ void FlowersGui::createLayout()
         }
     }
     updateAllButtons();
-
-    setCentralWidget(new QWidget());
     centralWidget()->setLayout(layout);
+
     connect(buttons, SIGNAL(buttonClicked(int)),
                      this, SLOT(controlButtons(int)));
     connect(buttons, SIGNAL(buttonRightClicked(int)),
