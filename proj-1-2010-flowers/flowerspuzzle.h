@@ -14,11 +14,12 @@ using namespace std;
 class FlowersPuzzle
 {
 public:
-    FlowersPuzzle(int height, int width, int flowers);
-    void shuffle();
+    FlowersPuzzle(int rows, int cols, int flowers);
+    void create(int rows, int cols, int flowers);
+    void create();
 
     int getRows();
-    int getColumns();
+    int getCols();
     char getMap(int y, int x);
     char getView(int y, int x);
 
@@ -38,7 +39,7 @@ public:
 
 private:
     int rows;
-    int columns;
+    int cols;
     int flowers;
     vector< vector<char> > map;
     vector< vector<char> > view;

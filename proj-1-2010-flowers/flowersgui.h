@@ -18,12 +18,13 @@ class FlowersGui : public QMainWindow
 public:
     FlowersGui(FlowersPuzzle* puzzle);
 
-public slots:
+private slots:
     void controlButtons(int i);
     void controlRightButtons(int i);
+    void newGame();
 
 private:
-    void createLayout();
+    void createButtons();
     void updateAllButtons();
     void checkSolution();
 

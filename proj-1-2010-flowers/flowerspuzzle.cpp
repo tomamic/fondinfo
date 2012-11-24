@@ -9,29 +9,34 @@
 
 using namespace std;
 
-FlowersPuzzle::FlowersPuzzle(int rows, int columns, int flowers)
+FlowersPuzzle::FlowersPuzzle(int rows, int cols, int flowers)
 {
-    this->rows = rows;
-    this->columns = columns;
-    this->flowers = flowers;
-    shuffle();
+    create(rows, cols, flowers);
 }
 
-void FlowersPuzzle::shuffle()
+void FlowersPuzzle::create(int rows, int cols, int flowers)
 {
-    map.assign(rows, vector<char>(columns, ZERO));
-    view.assign(rows, vector<char>(columns, UNKNOWN));
+    this->rows = rows;
+    this->cols = cols;
+    this->flowers = flowers;
+    create();
+}
+
+void FlowersPuzzle::create()
+{
+    map.assign(rows, vector<char>(cols, ZERO));
+    view.assign(rows, vector<char>(cols, UNKNOWN));
 
     for (int f = 0; f < flowers;) {
         int ry = rand() % rows;
-        int rx = rand() % columns;
+        int rx = rand() % cols;
         if (getMap(ry, rx) != FLOWER) {
             setMap(ry, rx, FLOWER);
             ++f;
         }
     }
     for (int y = 0; y < rows; ++y) {
-        for (int x = 0; x < columns; ++x) {
+        for (int x = 0; x < cols; ++x) {
             if (getMap(y, x) != FLOWER) {
                 setMap(y, x, ZERO + countFlowers(y, x));
             }
@@ -59,15 +64,15 @@ int FlowersPuzzle::getRows()
     return rows;
 }
 
-int FlowersPuzzle::getColumns()
+int FlowersPuzzle::getCols()
 {
-    return columns;
+    return cols;
 }
 
 char FlowersPuzzle::getMap(int y, int x)
 {
     int val = OUT_OF_BOUNDS;
-    if (0 <= x && x < columns && 0 <= y && y < rows) {
+    if (0 <= x && x < cols && 0 <= y && y < rows) {
         val = map[y][x];
     }
     return val;
@@ -76,7 +81,7 @@ char FlowersPuzzle::getMap(int y, int x)
 char FlowersPuzzle::getView(int y, int x)
 {
     int val = OUT_OF_BOUNDS;
-    if (0 <= x && x < columns && 0 <= y && y < rows) {
+    if (0 <= x && x < cols && 0 <= y && y < rows) {
         val = view[y][x];
     }
     return val;
@@ -90,7 +95,7 @@ void FlowersPuzzle::flag(int y, int x)
 
     if (flagged == flowers) {
         for (int y = 0; y < rows; ++y) {
-            for (int x = 0; x < columns; ++x) {
+            for (int x = 0; x < cols; ++x) {
                 if (getView(y, x) == UNKNOWN) {
                     uncover(y, x);
                 }
@@ -101,7 +106,7 @@ void FlowersPuzzle::flag(int y, int x)
 
 bool FlowersPuzzle::isWon()
 {
-    return uncovered == columns * rows - flowers;
+    return uncovered == cols * rows - flowers;
 }
 
 bool FlowersPuzzle::isLost()
@@ -155,7 +160,7 @@ int FlowersPuzzle::countFlowers(int y, int x)
 
 void FlowersPuzzle::write(ostream& out)  {
     for (int y = 0; y < rows; y++) {
-        for (int x = 0; x < columns; x++) {
+        for (int x = 0; x < cols; x++) {
             out << view[y][x];
         }
         cout << endl;
