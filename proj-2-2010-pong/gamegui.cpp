@@ -10,8 +10,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QMessageBox>
 
-GameGui::GameGui(Game* game, QWidget* parent)
-    : QWidget(parent)
+GameGui::GameGui(Game* game)
 {
     setWindowTitle(tr("Pong"));
     this->game = game;
