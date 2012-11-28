@@ -68,7 +68,8 @@ void GameGui::updateAllLabels()
     for (int y = 0; y < game->getHeight(); ++y) {
         for (int x = 0; x < game->getWidth(); ++x) {
             Actor* a = game->get(y, x);
-            char symbol = (a != NULL) ? a->getSymbol() : ' ';
+            char symbol = ' ';
+            if (a != NULL) symbol = a->getSymbol();
             int i = y * game->getWidth() + x;
             labels[i]->setText(QString(symbol));
         }

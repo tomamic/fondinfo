@@ -38,7 +38,8 @@ void Paddle::move()
 {
     int dir = game->getCommand(id);
     if (alive && (dir == UP || dir == DOWN)) {
-        int newY = (dir == UP) ? (y - 1) : (y + length);
+        int newY = y + length;
+        if (dir == UP) newY = y - 1;
 
         if (game->isInside(newY, x)) {
             Actor* other = game->get(newY, x);
