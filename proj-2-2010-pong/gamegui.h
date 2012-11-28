@@ -36,8 +36,6 @@ private:
     QLCDNumber* points1;
     QLCDNumber* points2;
     QTimer* timer;
-    static const int PLAYER_1 = 0;
-    static const int PLAYER_2 = 1;
 };
 
 #endif // GAMEGUI_H

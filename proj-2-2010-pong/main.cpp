@@ -20,7 +20,7 @@ int runConsole(int argc, char *argv[])
 {
     Game* game = new Game(17, 47);
     new Ball(game, 6, 15);
-    new Paddle(game, 8, 4, 0);
+    new Paddle(game, 8, 4, Game::HERO);
     new AutoPaddle(game, 8, 0, 2);
     new AutoPaddle(game, 8, 42, 2);
     new AutoPaddle(game, 8, 46, 2);
@@ -29,11 +29,11 @@ int runConsole(int argc, char *argv[])
     string command;
     getline(cin, command);
     while (cin.good() && !game->isLost() && !game->isWon()) {
-        if (command == "w") game->setUserCommand(Actor::UP);
-        else if (command == "s") game->setUserCommand(Actor::RIGHT);
-        else if (command == "z") game->setUserCommand(Actor::DOWN);
-        else if (command == "a") game->setUserCommand(Actor::LEFT);
-        else game->setUserCommand(Actor::STAY);
+        if (command == "w") game->setCommand(Game::HERO, Actor::UP);
+        else if (command == "s") game->setCommand(Game::HERO, Actor::RIGHT);
+        else if (command == "z") game->setCommand(Game::HERO, Actor::DOWN);
+        else if (command == "a") game->setCommand(Game::HERO, Actor::LEFT);
+        else game->setCommand(Game::HERO, Actor::STAY);
 
         game->moveAll();
         game->write(cout);

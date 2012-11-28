@@ -36,10 +36,10 @@ void Ball::move()
 
         if (x + dx < 0) {
             dx = -dx;
-            game->scorePoints(1, RIGHT);
+            game->scorePoints(RIGHT, 1);
         } else if (x + dx >= game->getWidth()) {
             dx = -dx;
-            game->scorePoints(1, LEFT);
+            game->scorePoints(LEFT, 1);
         }
 
         Actor* other = game->get(y + dy, x + dx);

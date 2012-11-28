@@ -43,7 +43,8 @@ Actor* Game::get(int y, int x)
         for (int i = 0; i < actors.size(); ++i) {
             Actor* a = actors[i];
             if (a->isAt(y, x)
-                    && (result == NULL || result->getZ() < a->getZ())) {
+                    && (result == NULL
+                        || result->getZ() < a->getZ())) {
                 result = a;
             }
         }
@@ -61,14 +62,27 @@ Actor* Game::getActor(int i)
     return (0 <= i && i < actors.size()) ? actors[i] : NULL;
 }
 
-int Game::getUserCommand(int player)
+int Game::getCommand(int player)
 {
     return commands[player];
 }
 
-void Game::setUserCommand(int command, int player)
+void Game::setCommand(int player, int command)
 {
     this->commands[player] = command;
+}
+
+void Game::setNextCommand(int command, int player)
+{
+    nextCommands.push_back(pair<int, int>(command, player));
+}
+
+void Game::updateCommands()
+{
+    for (int i = 0; i < nextCommands.size(); ++i) {
+        setCommand(nextCommands[i].first, nextCommands[i].second);
+    }
+    nextCommands.clear();
 }
 
 int Game::getPoints(int player)
@@ -76,13 +90,15 @@ int Game::getPoints(int player)
     return points[player];
 }
 
-void Game::scorePoints(int points, int player)
+void Game::scorePoints(int player, int points)
 {
     this->points[player] += points;
 }
 
 void Game::moveAll()
 {
+    updateCommands();
+
     for (int i = 0; i < actors.size(); ++i) {
         if (actors[i]->isAlive()) {
             actors[i]->move();

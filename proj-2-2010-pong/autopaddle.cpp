@@ -36,6 +36,6 @@ void AutoPaddle::move()
         a = game->getActor(i);
     }
 
-    game->setUserCommand(command, id);
+    game->setCommand(id, command);
     Paddle::move();
 }

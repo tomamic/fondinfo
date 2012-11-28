@@ -31,12 +31,15 @@ public:
     bool isLost();
     bool isInside(int y, int x);
     void write(ostream& out);
-    int getUserCommand(int player = 0);
-    void setUserCommand(int command, int player = 0);
+    int getCommand(int player);
+    void setCommand(int player, int command);
+    void setNextCommand(int player, int command);
+    void updateCommands();
     int getPoints(int player = 0);
-    void scorePoints(int points, int player = 0);
+    void scorePoints(int player, int points);
 
     static const char BLANK = '.';
+    static const int HERO = 0;
 
 private:
     int height;
@@ -44,6 +47,7 @@ private:
     vector<Actor*> actors;
     map<int, int> commands;
     map<int, int> points;
+    vector< pair<int, int> > nextCommands;
 
     // In fact, a matrix is not required
     // ... but it would improve performance

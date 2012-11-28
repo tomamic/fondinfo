@@ -10,7 +10,7 @@ Paddle::Paddle(Game* game, int y, int x, int id)
 {
     this->id = id;
     length = INITIAL_LENGTH;
-    game->setUserCommand(STAY, id);
+    game->setCommand(id, STAY);
 }
 
 char Paddle::getSymbol()
@@ -36,7 +36,7 @@ bool Paddle::isAt(int y, int x)
 
 void Paddle::move()
 {
-    int dir = game->getUserCommand(id);
+    int dir = game->getCommand(id);
     if (alive && (dir == UP || dir == DOWN)) {
         int newY = (dir == UP) ? (y - 1) : (y + length);
 
