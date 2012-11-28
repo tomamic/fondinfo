@@ -32,11 +32,11 @@ int runConsole(int argc, char *argv[])
     string command;
     getline(cin, command);
     while (cin.good() && !game->isLost() && !game->isWon()) {
-        if (command == "w") game->setUserCommand(Actor::UP);
-        else if (command == "s") game->setUserCommand(Actor::RIGHT);
-        else if (command == "z") game->setUserCommand(Actor::DOWN);
-        else if (command == "a") game->setUserCommand(Actor::LEFT);
-        else game->setUserCommand(Actor::STAY);
+        if (command == "w") game->setCommand(Game::HERO, Actor::UP);
+        else if (command == "s") game->setCommand(Game::HERO, Actor::RIGHT);
+        else if (command == "z") game->setCommand(Game::HERO, Actor::DOWN);
+        else if (command == "a") game->setCommand(Game::HERO, Actor::LEFT);
+        else game->setCommand(Game::HERO, Actor::STAY);
 
         game->moveAll();
         game->write(cout);

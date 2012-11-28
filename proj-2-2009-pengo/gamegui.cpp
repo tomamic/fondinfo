@@ -66,21 +66,21 @@ void GameGui::keyPressEvent(QKeyEvent* event)
 {
     int key = event->key();
     if (key == Qt::Key_Up) {
-        game->setUserCommand(Actor::UP); // PLAYER_1
+        game->setCommand(Game::HERO, Actor::UP);
     } else if (key == Qt::Key_Right) {
-        game->setUserCommand(Actor::RIGHT); // PLAYER_1
+        game->setCommand(Game::HERO, Actor::RIGHT);
     } else if (key == Qt::Key_Down) {
-        game->setUserCommand(Actor::DOWN); // PLAYER_1
+        game->setCommand(Game::HERO, Actor::DOWN);
     } else if (key == Qt::Key_Left) {
-        game->setUserCommand(Actor::LEFT); // PLAYER_1
+        game->setCommand(Game::HERO, Actor::LEFT);
     } else if (key == Qt::Key_W) {
-        game->setUserCommand(Actor::UP, PLAYER_2);
+        game->setCommand(Game::HERO + 1, Actor::UP);
     } else if (key == Qt::Key_S) {
-        game->setUserCommand(Actor::RIGHT, PLAYER_2);
+        game->setCommand(Game::HERO + 1, Actor::RIGHT);
     } else if (key == Qt::Key_Z) {
-        game->setUserCommand(Actor::DOWN, PLAYER_2);
+        game->setCommand(Game::HERO + 1, Actor::DOWN);
     } else if (key == Qt::Key_A) {
-        game->setUserCommand(Actor::LEFT, PLAYER_2);
+        game->setCommand(Game::HERO + 1, Actor::LEFT);
     }
     QWidget::keyPressEvent(event);
 }
@@ -92,12 +92,12 @@ void GameGui::keyReleaseEvent(QKeyEvent* event)
             || key == Qt::Key_Right
             || key == Qt::Key_Down
             || key == Qt::Key_Left) {
-        game->setUserCommand(Actor::STAY); // PLAYER_1
+        game->setCommand(Game::HERO, Actor::STAY);
     } else if (key == Qt::Key_W
                || key == Qt::Key_S
                || key == Qt::Key_Z
                || key == Qt::Key_A) {
-        game->setUserCommand(Actor::STAY, PLAYER_2);
+        game->setCommand(Game::HERO + 1, Actor::STAY);
     }
     QWidget::keyPressEvent(event);
 }

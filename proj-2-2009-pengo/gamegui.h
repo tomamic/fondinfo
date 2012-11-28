@@ -33,8 +33,6 @@ private:
 
     std::vector <QLabel*> labels;
     QTimer* timer;
-    static const int PLAYER_1 = 0;
-    static const int PLAYER_2 = 1;
 };
 
 #endif // GAMEGUI_H

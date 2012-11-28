@@ -8,7 +8,7 @@
 Penguin::Penguin(Game* game, int y, int x) :
     Actor(game, y, x)
 {
-    game->setUserCommand(STAY);
+    game->setCommand(Game::HERO, STAY);
 }
 
 char Penguin::getSymbol()
@@ -28,7 +28,7 @@ bool Penguin::isPlayer()
 
 void Penguin::move()
 {
-    int dir = game->getUserCommand();
+    int dir = game->getCommand(Game::HERO);
     if (alive && dir >= 0) {
         int newY = y + DY[dir];
         int newX = x + DX[dir];
