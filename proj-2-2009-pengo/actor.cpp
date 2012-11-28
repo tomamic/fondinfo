@@ -9,8 +9,11 @@ const int Actor::DY[] = {-1,  0, +1,  0};
 const int Actor::DX[] = { 0, +1,  0, -1};
 
 Actor::Actor(Game* game, int y, int x)
-    : game(game), y(y), x(x), z(0), alive(true)
 {
+    this->game = game;
+    this->y = y;
+    this->x = x;
+    alive = true;
     game->addActor(this);
 }
 

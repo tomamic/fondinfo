@@ -66,6 +66,6 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    return runConsole(argc, argv);
-    //return runGui(argc, argv);
+    //return runConsole(argc, argv);
+    return runGui(argc, argv);
 }

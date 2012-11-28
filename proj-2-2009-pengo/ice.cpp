@@ -6,9 +6,9 @@
 #include "ice.h"
 
 Ice::Ice(Game* game, int y, int x) :
-    Actor(game, y, x),
-    dir(STAY)
+    Actor(game, y, x)
 {
+    dir = STAY;
 }
 
 bool Ice::isEnemy()

@@ -19,7 +19,7 @@ class GameGui : public QWidget
     Q_OBJECT
 
 public:
-    GameGui(Game* game, QWidget* parent = NULL);
+    GameGui(Game* game);
 
 public slots:
     void updateGame();

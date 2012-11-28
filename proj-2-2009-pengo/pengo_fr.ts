@@ -4,12 +4,17 @@
 <context>
     <name>GameGui</name>
     <message>
-        <location filename="gamegui.cpp" line="29"/>
+        <location filename="gamegui.cpp" line="16"/>
+        <source>Pengo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamegui.cpp" line="43"/>
         <source>Game lost!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegui.cpp" line="32"/>
+        <location filename="gamegui.cpp" line="46"/>
         <source>Game won!</source>
         <translation type="unfinished"></translation>
     </message>
