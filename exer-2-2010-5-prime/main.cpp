@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         for (d = 3; d*d <= n && n%d != 0; d += 2) { }
     }
 
-    if (n % d == 0 && n != 2) {
+    if (n % d == 0 && n != d) {
         cout << "The number is divisible by " << d << endl;
     } else {
         cout << "The number is prime" << endl;
