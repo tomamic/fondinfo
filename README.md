@@ -4,6 +4,6 @@ http://www.ce.unipr.it/people/tomamic/fondinfo
 
 C++ examples
 
-Copyleft 2008-2013 Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic  
+Copyleft (ɔ) 2008-2013 Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic  
 This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
