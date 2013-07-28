@@ -1,0 +1,124 @@
+<head>
+<style>
+table { border-collapse:collapse; margin: 1em; font-family: monospace; }
+table,th, td { border: 1px solid black; }
+td { width: 1.2em; height: 1.2em; color: black; margin: 0; padding: 0; vertical-align: middle; text-align: center; }
+.b { background: black; color: white; }
+.n { background: lime; }
+.d { background: yellow; }
+.s { background: red; }
+code { color: blue; }
+i { color: purple; }
+address { text-align: right; }
+address:before { content: "\2014"; }
+</style>
+</head>
+<body>
+
+<h1>Solution techniques for Akari puzzles (Light-up)</h1>
+
+<p>A cell is <i>free</i> if it is:</p>
+
+<ul>
+<li><i>white</i>,</li>
+<li>not <i>illuminated</i>,</li>
+<li>without a <i>dot</i>,</li>
+<li>without a <i>bulb</i>.</li>
+</ul>
+
+<p>A <i>white</i> cell is visible from another <i>white</i> cell if:</p>
+
+<ul>
+<li>they are on the same row or column,</li>
+<li>there are no <i>black</i> cells along the path.</li>
+</ul>
+
+<p>The neighborhood of a cell is made of immediately adjacent cells, vertically and horizontally.</p>
+
+<h2>Not illuminated cells</h2>
+
+<p><b>Case 1.</b> If a cell <code>X</code> is <i>free</i> and there are no other <i>free</i> visible cells, then the cell <code>X</code> must contain a <i>bulb</i>.</p>
+
+<p><b>Case 2.</b> If a cell <code>X</code> is not <i>illuminated</i>, it contains a <i>dot</i>, there's only one <i>free</i> visible cell <code>Y</code>, then the <i>free</i> cell <code>Y</code> must contain a <i>bulb</i>.</p>
+
+<h2>Isolated numeric constraints</h2>
+
+<p>Given a <i>black</i> cell (<code class="b">&nbsp;&nbsp;</code>) <code>C</code> with a numeric <i>constraint</i> (<code>n<sub>C</sub></code>), you need to count in its neighborhood (<code class="n">&nbsp;&nbsp;</code>) the number of <i>bulbs</i> (<code>b<sub>C</sub></code>) and the number of <i>free</i> cells (<code>f<sub>C</sub></code>). The missing <i>bulbs</i> (<code>m<sub>C</sub></code>) are the difference between the numeric <i>constraint</i> and the <i>bulbs</i> counted in the neighborhood (<code>m<sub>C</sub> = n<sub>C</sub> - b<sub>C</sub></code>).</p>
+
+<table>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td class="n"></td><td></td><td></td></tr>
+<tr><td class="n"></td><td class="b">C</td><td class="n"></td><td></td></tr>
+<tr><td></td><td class="n"></td><td></td><td></td></tr>
+
+<p><b>Case 3.</b> <code>m<sub>C</sub> == 0</code>. There are no missing <i>bulbs</i> in the neighborhood. Then all the <i>free</i> cells in the neighborhood must be marked with a <i>dot</i>.</p>
+
+<p><b>Case 4.</b> <code>m<sub>C</sub> == f<sub>C</sub></code>. There are as many missing <i>bulbs</i> as <i>free</i> cells in the neighborhood. Then all the <i>free</i> cells in the neighborhood must contain a <i>bulb</i>.</p>
+
+<p><b>Case 5.</b> <code>f<sub>C</sub> == m<sub>C</sub> + 1</code>. There's one more <i>free</i> cell than missing <i>bulbs</i> in the neighborhood. Then only a single <i>dot</i> has to be marked. The cells in diagonal direction (<code class="d">&nbsp;&nbsp;</code>), between two <i>free</i> cells in the neighborhood, will be certainly <i>illuminated</i>. Then each cell (in diagonal direction) between two <i>free</i> cells in the neighborhood must be marked with a <i>dot</i>.
+
+<table>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td class="d"></td><td class="n"></td><td class="d">&bullet;</td><td></td></tr>
+<tr><td class="b"></td><td class="b">2</td><td class="n"></td><td></td></tr>
+<tr><td class="d"></td><td class="n"></td><td class="d">&bullet;</td><td></td></tr>
+</table>
+
+<h2>Cross numeric constraints</h2>
+
+<p>Given two <i>black</i> cells <code>C</code> and <code>D</code>, both with a numeric <i>constraint</i>, positioned close to each other in a diagonal direction, then you need to count the number of missing <i>bulbs</i> (<code>m<sub>C</sub></code>, <code>m<sub>D</sub></code>) and the number of free cells (<code>f<sub>C</sub></code>, <code>f<sub>D</sub></code>) in the neighborhoods of <code>C</code> and <code>D</code>, respectively. As in the case 5, it must be <code>f<sub>C</sub> == m<sub>C</sub> + 1</code> (there's one more <i>free</i> cell than missing <i>bulbs</i>). Moreover the shared cells in the neighborhoods (adjacent to both <code>C</code> and <code>D</code>) (<code class="s">&nbsp;&nbsp;</code>) must be <i>free</i>.</p>
+
+<table>
+<tr><td></td><td></td><td class="n"></td><td></td></tr>
+<tr><td></td><td class="s"></td><td class="b">D</td><td class="n"></td></tr>
+<tr><td class="n"></td><td class="b">C</td><td class="s"></td><td></td></tr>
+<tr><td></td><td class="n"></td><td></td><td></td></tr>
+</table>
+
+<p><b>Case 6.</b> <code>m<sub>D</sub> == 1</code>. There is only one missing <i>bulb</i> in the neighborhood of <code>D</code>. The two shared cells contain a <i>bulb</i> and a <i>dot</i>. Then you need to apply to <code>C</code> the same counting as in cases 3 and 4, but skipping the shared cells in both the neighborhoods of <code>C</code> and <code>D</code> and subtracting a <i>bulb</i> from the final result. This means you need to put <code>m<sub>C</sub> - 1</code> <i>bulbs</i> (and then <i>dots</i>) in the remaining  <code>f<sub>C</sub> - 2</code> <i>free</i> cells in the neighborhood of <code>C</code>.</p>
+
+<table>
+<tr><td></td><td></td><td class="n"></td><td></td></tr>
+<tr><td></td><td class="s"></td><td class="b">1</td><td class="n"></td></tr>
+<tr><td class="n"></td><td class="b">3</td><td class="s"></td><td></td></tr>
+<tr><td></td><td class="n"></td><td></td><td></td></tr>
+</table>
+
+<table>
+<tr><td></td><td></td><td class="n"></td><td></td></tr>
+<tr><td></td><td class="s"></td><td class="b">1</td><td class="n"></td></tr>
+<tr><td class="n">&curren;</td><td class="b">3</td><td class="s"></td><td></td></tr>
+<tr><td></td><td class="n">&curren;</td><td></td><td></td></tr>
+</table>
+
+<p><b>Case 7.</b> <code>m<sub>C</sub> == 1</code>. The shared cells are the only two <i>free</i> cells in the neighborhood of <code>C</code>. The two <i>free</i> cells have to contain a <i>bulb</i> and a <i>dot</i>. Thus you need to apply to <code>D</code> the same counting as in cases 3 and 4, but skipping the shared cells in both the neighborhoods of <code>C</code> and <code>D</code> and subtracting a <i>bulb</i> from the final result. This means you need to put <code>m<sub>D</sub> - 1</code> <i>bulbs</i> (and then <i>dots</i>) in the remaining <code>f<sub>D</sub> - 2</code> <i>free</i> cells in the neighborhood of <code>D</code>.</p>
+
+<table>
+<tr><td></td><td></td><td class="n"></td><td></td></tr>
+<tr><td></td><td class="s"></td><td class="b">1</td><td class="n"></td></tr>
+<tr><td class="n">&curren;</td><td class="b">3</td><td class="s"></td><td></td></tr>
+<tr><td></td><td class="n">&curren;</td><td></td><td></td></tr>
+</table>
+
+<table>
+<tr><td></td><td></td><td class="n">&bull;</td><td></td></tr>
+<tr><td></td><td class="s"></td><td class="b">1</td><td class="n">&bullet;</td></tr>
+<tr><td class="n">&curren;</td><td class="b">3</td><td class="s"></td><td></td></tr>
+<tr><td></td><td class="n">&curren;</td><td></td><td></td></tr>
+</table>
+
+<h2>Cul-de-sac</h2>
+
+<p><b>Case 8.</b> Given a <i>free</i> cell <code>X</code>, you try to put a <i>bulb</i> in it and then apply all obvious moves (cases 1-7). If the resulting configuration contains an error (violated <i>constraints</i> or <i>bulbs</i> illuminating each other), then the cell <code>X</code> must be marked with a <i>dot</i>.</p>
+
+<p><b>Case 9.</b> Given a <i>free</i> cell <code>X</code>, you try to mark it with a <i>dot</i> and then apply all obvious moves (cases 1-7). If the resulting configuration contains an error (violated <i>constraints</i> or <i>bulbs</i> illuminating each other), then the cell <code>X</code> must contain a <i>bulb</i>.</p>
+
+<h2>Invariant</h2>
+
+<p><b>Case 10.</b> Given a <i>free</i> cell <code>X</code>, you try to mark it with a <i>dot</i> and then apply all obvious moves (cases 1-7). In the same <i>free</i> cell <code>X</code>, you try to put a <i>bulb</i> and then apply all obvious moves (cases 1-7). If the two alternative resulting configurations are equals in certain cells, then those cells have an invariant content, which can be definitely applied to the game board.</p>
+
+<p>If a cell <code>Y</code>, in both possible configurations of <code>X</code>, is marked with a <i>dot</i> or is <i>illuminated</i> (i.e. in both cases it cannot contain a <i>bulb</i>), then on the game board the cell <code>Y</code> must be definitely marked with a <i>dot</i>.</p>
+
+<p>If a cell <code>Y</code>, in both possible configurations of <code>X</code>, contains a <i>bulb</i>, then on the game board the cell <code>Y</code> must definitely contain a <i>bulb</i>.</p>
+
+<address>Michele Tomaiuolo @ <a href="http://www.ce.unipr.it/people/tomamic/">UniPR.it</a></address>
