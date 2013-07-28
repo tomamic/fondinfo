@@ -1,4 +1,4 @@
-**Programming lab @ Information Engineering, Parma**
+**Programming lab @ Information Engineering, University of Parma**
 
 http://www.ce.unipr.it/people/tomamic/fondinfo
 
