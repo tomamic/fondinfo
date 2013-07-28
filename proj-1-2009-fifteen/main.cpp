@@ -4,6 +4,7 @@
  */
 
 #include <QApplication>
+#include <QFile>
 #include <QInputDialog>
 #include <cstdlib>
 #include <ctime>
@@ -12,44 +13,37 @@
 
 using namespace std;
 
-int runConsole(int argc, char* argv[])
-{
-    char symbol;
-    FifteenPuzzle puzzle(2, 3);
-    puzzle.write(cout);
-
-    cin >> symbol;
-    while (cin.good() && !puzzle.isFinished()) {
-        puzzle.move(toupper(symbol));
-        puzzle.write(cout);
-
-        if (puzzle.isFinished()) {
-            cout << "Puzzle solved!" << endl;
-        } else {
-            cin >> symbol;
-        }
-    }
-    return 0;
-}
-
-int runGui(int argc, char* argv[])
-{
-    QApplication a(argc, argv);
-    // a.setStyleSheet("FifteenGui {background: green; }"
-    //                 "FifteenGui QPushButton { background: yellow; }");
-
-    int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
-    int columns = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
-    FifteenPuzzle puzzle(rows, columns);
-    FifteenGui gui(&puzzle);
-
-    return a.exec();
-}
-
 int main(int argc, char* argv[])
-{    
+{
     srand(time(NULL));
+    auto retval = 0;
+    if (argc > 1 && string(argv[1]) == "-nogui") {
+        FifteenPuzzle puzzle{3, 2};
+        cout << puzzle.str();
+        char symbol;
+        while (cin >> symbol) {
+            puzzle.move(toupper(symbol));
+            cout << puzzle.str();
+            if (puzzle.isFinished()) {
+                cout << "Puzzle solved!" << endl;
+                break;
+            }
+        }
+    } else {
+        QApplication a{argc, argv};
 
-    return runGui(argc, argv);
-    // return runConsole(argc, argv);
+        // apply style, from resources
+        QFile file{":stylesheet.qss"};
+        if (file.open(QFile::ReadOnly)) {
+            a.setStyleSheet(file.readAll());
+        }
+
+        int cols = QInputDialog::getInt(NULL, "Cols?", "Cols?", 4, 2, 20);
+        int rows = QInputDialog::getInt(NULL, "Rows?", "Rows?", 4, 2, 20);
+        FifteenPuzzle puzzle{cols, rows};
+        FifteenGui gui{&puzzle};
+
+        retval = a.exec();
+    }
+    return retval;
 }

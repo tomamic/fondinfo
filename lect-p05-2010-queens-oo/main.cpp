@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     cout << "side? ";
     cin >> side;
 
-    Board b(side, side);
+    Board b(side);
     b.solve();
     b.write(cout);
 

@@ -14,17 +14,17 @@ using namespace std;
 class Board
 {
 public:
-    Board(int height, int width);
+    Board(int side);
     bool solve();
     void write(ostream &out);
+    string __str__();
 
 private:
     bool placeQueens(int row);
     bool underAttack(int row, int col);
 
-    int height;
-    int width;
-    vector< vector<bool> > board;
+    int side;
+    vector<bool> board;
 };
 
 #endif // BOARD_H

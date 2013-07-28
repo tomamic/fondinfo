@@ -8,58 +8,60 @@
 #include <QMessageBox>
 #include "fifteengui.h"
 
-FifteenGui::FifteenGui(FifteenPuzzle* game)
+FifteenGui::FifteenGui(FifteenPuzzle* puzzle)
 {
-    this->game = game;
+    this->puzzle = puzzle;
 
     QGridLayout* layout = new QGridLayout();
     buttons = new QButtonGroup(this);
-    for (int y = 0; y < game->getRows(); ++y) {
-        for (int x = 0; x < game->getCols(); ++x) {
+    for (int y = 0; y < puzzle->rows(); ++y) {
+        for (int x = 0; x < puzzle->cols(); ++x) {
             QPushButton* b = new QPushButton();
-            buttons->addButton(b, y * game->getCols() + x);
+            buttons->addButton(b, y * puzzle->cols() + x);
             layout->addWidget(b, y, x);
-            // b->setStyleSheet("background: yellow");
         }
     }
     updateAllButtons();
     setLayout(layout);
+    fixSize();
 
-    connect(buttons, SIGNAL(buttonClicked(int)),
-            this, SLOT(controlButtons(int)));
+    connect(buttons, SIGNAL(buttonClicked(int)), this, SLOT(handleClick(int)));
 
-    // setStyleSheet("background: green");
     setWindowTitle(tr("Fifteen Puzzle"));
     show();
 }
 
+void FifteenGui::fixSize() {
+    layout()->setMargin(0);
+    layout()->setSpacing(0);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    adjustSize();
+}
+
 void FifteenGui::updateAllButtons()
 {
-    for (int y = 0; y < game->getRows(); y++) {
-        for (int x = 0; x < game->getCols(); x++) {
-            char symbol = game->get(y, x);
-            int i = y * game->getCols() + x;
-            buttons->button(i)->setText(QString(symbol));
+    for (int y = 0; y < puzzle->rows(); y++) {
+        for (int x = 0; x < puzzle->cols(); x++) {
+            char symbol = puzzle->get(x, y);
+            int i = y * puzzle->cols() + x;
+            auto b = buttons->button(i);
+            b->setText(QString(symbol));
+            b->setEnabled(symbol != FifteenPuzzle::BLANK_SYMBOL);
         }
     }
-    checkFinished();
 }
 
-void FifteenGui::controlButtons(int i)
+void FifteenGui::handleClick(int i)
 {
-    int y = i / game->getCols();
-    int x = i % game->getCols();
-
-    game->move(y, x);
+    int x = i % puzzle->cols();
+    int y = i / puzzle->cols();
+    puzzle->move(x, y);
     updateAllButtons();
-}
 
-void FifteenGui::checkFinished()
-{
-    if (game->isFinished()) {
-        QMessageBox::information(
-                    this, tr("Game finished!"), tr("Game finished!"));
-        game->shuffle();
+    if (puzzle->isFinished()) {
+        QMessageBox::information(this, tr("Congratulations"),
+                                 tr("Game finished!"));
+        puzzle->shuffle();
         updateAllButtons();
     }
 }

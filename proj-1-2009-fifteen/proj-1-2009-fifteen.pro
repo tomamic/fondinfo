@@ -1,7 +1,6 @@
 TEMPLATE = app
-CONFIG += console
-QT += core gui
-QMAKE_PROJECT_NAME += Fifteen Puzzle
+QT += core gui widgets
+CONFIG += c++11
 
 SOURCES += main.cpp \
            fifteenpuzzle.cpp \
@@ -9,3 +8,8 @@ SOURCES += main.cpp \
 
 HEADERS += fifteenpuzzle.h \
     fifteengui.h
+
+OTHER_FILES +=
+
+RESOURCES += \
+    resources.qrc

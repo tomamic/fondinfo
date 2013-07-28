@@ -9,10 +9,11 @@
 
 using namespace std;
 
-Board::Board(int side)
+Board::Board(int height, int width)
 {
-    this->side = side;
-    board.assign(side * side, false);
+    this->height = height;
+    this->width = width;
+    board.assign(height, vector<bool>(width, false));
 }
 
 bool Board::solve()
@@ -26,10 +27,13 @@ void Board::write(ostream &out)
     const string QUEEN = "|Q";
     const string EMPTY = "| ";
 
-    for (int y = 0; y < side; ++y) {
-        for (int x = 0; x < side; ++x) {
-            if (board[y * side + x]) out << QUEEN;
-            else out << EMPTY;
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            if (board[y][x]) {
+                out << QUEEN;
+            } else {
+                out << EMPTY;
+            }
         }
         out << ENDROW;
     }
@@ -45,48 +49,53 @@ string Board::__str__()
 
 bool Board::underAttack(int row, int col)
 {
+    bool attack = false;
+
     // for each direction up-left, up, up-right...
     // (there are no queens in lower cells)
-    auto dy = -1;
-    for (auto dx : {-1, 0, +1}) {
-        auto y = row + dy;
-        auto x = col + dx;
+    int dy = -1;
+    for (int dx = -1; dx <= +1 && !attack; ++dx) {
+        int y = row + dy;
+        int x = col + dx;
 
         // walk till finding a queen, or border
-        while (0 <= y && y < side && 0 <= x && x < side) {
+        while (0 <= y && y < height && 0 <= x
+               && x < width && !attack) {
 
             // if a queen is found, the square is under attack
-            if (board[y * side + x]) return true;
+            attack = board[y][x];
             y += dy;
             x += dx;
         }
     }
-    return false;
+    return attack;
 }
 
 bool Board::placeQueens(int row)
 {
-    for (auto col = 0; col < side; ++col) {
+    bool result = false;
+    for (int col = 0; col < width && !result; ++col) {
         if (!underAttack(row, col)) {
 
             // this square is not attacked,
             // let's try to place a queen here
-            board[row *side + col] = true;
-            if (row == side - 1) {
+            board[row][col] = true;
+            if (row == height - 1) {
                 // hey! this is the last row!
-                return true;
-            } 
-            if (placeQueens(row + 1)) {
+                result = true;
+            } else {
                 // otherwise, let's try to place
                 // more queens in the following rows
-                return true;
+                result = placeQueens(row+1);
             }
 
-            // no luck this way, let's remove the queen
-            // (backtracking)
-            board[row * side + col] = false;
+            if (!result) {
+                // no luck this way, let's remove the queen
+                // (backtracking)
+                board[row][col] = false;
+            }
         }
     }
-    return false;
+    return result;
 }
 
