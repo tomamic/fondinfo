@@ -6,9 +6,9 @@
 '''
 
 import pygame
-from l4_arena import SimpleActor, SimpleArena, Ball, Ghost
+from l4_arena import Actor, Arena, Ball, Ghost
 
-arena = SimpleArena(16, 12)
+arena = Arena(16, 12)
 ball1 = Ball(arena, 4, 8)
 ball2 = Ball(arena, 8, 4)
 ball3 = Ball(arena, 12, 4)
