@@ -46,16 +46,16 @@ string Board::__str__()
 bool Board::underAttack(int row, int col)
 {
     // for each direction up-left, up, up-right...
-    // (there are no queens in lower cells)
+    // (no queens in lower cells)
     auto dy = -1;
     for (auto dx : {-1, 0, +1}) {
-        auto y = row + dy;
         auto x = col + dx;
+        auto y = row + dy;
 
         // walk till finding a queen, or border
-        while (0 <= y && y < side && 0 <= x && x < side) {
+        while (0 <= x && x < side && 0 <= y && y < side) {
 
-            // if a queen is found, the square is under attack
+            // if a queen is found, the square is menaced
             if (board[y * side + x]) return true;
             y += dy;
             x += dx;
@@ -69,21 +69,20 @@ bool Board::placeQueens(int row)
     for (auto col = 0; col < side; ++col) {
         if (!underAttack(row, col)) {
 
-            // this square is not attacked,
-            // let's try to place a queen here
-            board[row *side + col] = true;
+            // square not menaced, let's try to place a queen here
+            board[row * side + col] = true;
+
+            // is this the last row, already? if so, we've finished!
             if (row == side - 1) {
-                // hey! this is the last row!
                 return true;
             } 
+
+            // otherwise, let's try to place more queens below
             if (placeQueens(row + 1)) {
-                // otherwise, let's try to place
-                // more queens in the following rows
                 return true;
             }
 
-            // no luck this way, let's remove the queen
-            // (backtracking)
+            // no luck this way, let's remove the queen (backtracking)
             board[row * side + col] = false;
         }
     }

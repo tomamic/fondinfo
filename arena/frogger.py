@@ -1,7 +1,7 @@
 from sys import stdin
-from arena import Piece, Actor, Arena
+from arena import Piece, Character, Arena
 
-class Frog(Actor):
+class Frog(Character):
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
     
     def __init__(self, arena: Arena, x: int, y: int):
@@ -27,7 +27,7 @@ class Frog(Actor):
     def set_direction(self, dx: int, dy):
         self._dx, self._dy = dx, dy
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         # the penguin dies as soon as it's touched by anybody
         self._arena.remove_actor(self)
 
@@ -42,7 +42,7 @@ class Frog(Actor):
         return [Piece(self._x, self._y, 10, '@', self)]
 
 
-class Boat(Actor):
+class Boat(Character):
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y, self._z = x, y, -5
         self._arena = arena
@@ -72,7 +72,7 @@ class Boat(Actor):
                 except AttributeError:
                     pass
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         pass
 
     @property
@@ -81,7 +81,7 @@ class Boat(Actor):
                 for d in range(self._size)]
 
 
-class River(Actor):
+class River(Character):
     def __init__(self, arena: Arena, y: int):
         self._x, self._y, self._z = 0, y, -10
         self._arena = arena
@@ -91,7 +91,7 @@ class River(Actor):
     def move(self):
         pass
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         other.interact(self)
 
     @property
@@ -99,7 +99,7 @@ class River(Actor):
         return [Piece(self._x + d, self._y, self._z, '~', self)
                 for d in range(self._size)]
 
-class Truck(Actor):
+class Truck(Character):
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y, self._z = x, y, 0
         self._arena = arena
@@ -121,7 +121,7 @@ class Truck(Actor):
             if piece != None:
                 piece.actor.interact(self)
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         if isinstance(other, Frog):
             other.interact(self)
 

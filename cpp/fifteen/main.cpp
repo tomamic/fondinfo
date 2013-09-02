@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
         while (cin >> symbol) {
             puzzle.move(toupper(symbol));
             cout << puzzle.str();
-            if (puzzle.isFinished()) {
+            if (puzzle.finished()) {
                 cout << "Puzzle solved!" << endl;
                 break;
             }

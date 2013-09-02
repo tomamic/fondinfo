@@ -3,12 +3,12 @@ from collections import namedtuple
 Piece = namedtuple('Piece', 'x y z symbol actor')
 
 
-class Actor:
+class Character:
     
     def move(self):
         raise NotImplementedError('Abstract method')
 
-    def interact(self, other: 'Actor'):
+    def interact(self, other: 'Character'):
         raise NotImplementedError('Abstract method')
 
     @property
@@ -25,10 +25,10 @@ class Arena:
         self._actors = []
         self._pieces = []
 
-    def add_actor(self, a: Actor):
+    def add_actor(self, a: Character):
         self._actors.append(a)
 
-    def remove_actor(self, a: Actor):
+    def remove_actor(self, a: Character):
         self._actors.remove(a)
 
     def move_all(self):

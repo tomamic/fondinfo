@@ -28,9 +28,9 @@ NotepadWindow::NotepadWindow(QWidget *parent)
     tools->addSeparator();
     tools->addAction(exitAct);
 
-    connect(openAct, SIGNAL(triggered()), notepad, SLOT(open()));
-    connect(saveAct, SIGNAL(triggered()), notepad, SLOT(save()));
-    connect(exitAct, SIGNAL(triggered()), notepad, SLOT(exit()));
+    connect(openAct, &QAction::triggered, notepad, &Notepad::open);
+    connect(saveAct, &QAction::triggered, notepad, &Notepad::save);
+    connect(exitAct, &QAction::triggered, notepad, &Notepad::exit);
 }
 
 NotepadWindow::~NotepadWindow()

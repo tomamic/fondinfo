@@ -9,7 +9,7 @@
 #include "fifteenpuzzle.h"
 
 #include <QWidget>
-#include <QButtonGroup>
+#include <QPushButton>
 
 class FifteenGui : public QWidget
 {
@@ -18,16 +18,17 @@ class FifteenGui : public QWidget
 public:
     FifteenGui(FifteenPuzzle* puzzle);
 
-private slots:
-    void handleClick(int i);
-
 private:
     void fixAppearance();
+    void handleClick(int x, int y);
+    void updateButton(int x, int y);
     void updateAllButtons();
-    void checkFinished();
 
-    QButtonGroup* buttons;
-    FifteenPuzzle* puzzle;
+    int cols() { return puzzle_->cols(); }
+    int rows() { return puzzle_->rows(); }
+
+    vector<QPushButton*> buttons_;
+    FifteenPuzzle* puzzle_;
 };
 
 #endif // GAMEGUI_H

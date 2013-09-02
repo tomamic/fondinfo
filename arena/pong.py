@@ -1,7 +1,7 @@
 from sys import stdin
-from arena import Actor, Arena, Piece
+from arena import Character, Arena, Piece
 
-class Ball(Actor):
+class Ball(Character):
     def __init__(self, arena, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 1, 1
@@ -27,7 +27,7 @@ class Ball(Actor):
         self._x += self._dx
         self._y += self._dy
         
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         pass
 
     @property
@@ -57,7 +57,7 @@ class Paddle:
                 if what == None:
                     self._y += self._dy
                     
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         pass
 
     def set_direction(self, dy):

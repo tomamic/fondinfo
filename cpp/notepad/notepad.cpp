@@ -16,9 +16,9 @@ Notepad::Notepad(QWidget *parent)
     // QObject::tr translates GUI texts (see Qt Linguist)
 
     textEdit = new QTextEdit;
-    openButton = new QPushButton{tr("Open")};
-    saveButton = new QPushButton{tr("Save")};
-    exitButton = new QPushButton{tr("Quit")};
+    openButton = new QPushButton{tr("&Open")};
+    saveButton = new QPushButton{tr("&Save")};
+    exitButton = new QPushButton{tr("E&xit")};
 
     QVBoxLayout* buttonLayout = new QVBoxLayout;
     buttonLayout->addWidget(openButton);

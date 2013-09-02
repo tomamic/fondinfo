@@ -1,8 +1,8 @@
 from sys import stdin
 from random import choice
-from arena import Actor, Arena, Piece
+from arena import Character, Arena, Piece
 
-class Penguin(Actor):
+class Penguin(Character):
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
     
     def __init__(self, arena: Arena, x: int, y: int):
@@ -28,7 +28,7 @@ class Penguin(Actor):
             if piece == None:
                 self._x, self._y = new_x, new_y
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         # the penguin dies as soon as it's touched by anybody
         self._arena.remove_actor(self)
 
@@ -37,7 +37,7 @@ class Penguin(Actor):
         return [Piece(self._x, self._y, 0, '&', self)]
 
 
-class Ghost(Actor):
+class Ghost(Character):
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
@@ -59,7 +59,7 @@ class Ghost(Actor):
             if piece == None:
                 self._x, self._y = new_x, new_y
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         # if a player touches a ghost, the player dies
         # otherwise, the ghost dies
         if isinstance(other, Penguin):
@@ -72,7 +72,7 @@ class Ghost(Actor):
         return [Piece(self._x, self._y, 0, '^', self)]
 
 
-class Ice(Actor):  
+class Ice(Character):  
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
@@ -96,7 +96,7 @@ class Ice(Actor):
             if self._x != new_x or self._y != new_y:
                 self._dx, self._dy = 0, 0
 
-    def interact(self, other: Actor):
+    def interact(self, other: Character):
         # if touched by a player
         if isinstance(other, Penguin):
             # find the direction opposite to the player
