@@ -80,13 +80,16 @@ class Tokenizer:
         if self._point < len(self._text):
             raise SyntaxError("Extra stuff after expression")
 
-tokenizer = Tokenizer(text, r'\s*([A-Za-z0-9\.]+|.?)')
+
+regex = r'\s*([A-Za-z0-9\.]+|.?)'
+
 
 # Wrapper function
 def parse_simple_expr(text, values):
-    actions = Actions(values)
-    result = expr(tokenizer, actions)
-    tokenizer.end()
+    tok = Tokenizer(text, regex)
+    act = Actions(values)
+    result = expr(tok, act)
+    tok.end()
     return result
 
 

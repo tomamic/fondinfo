@@ -1,4 +1,4 @@
-from i05_infix_eval import expr, term, factor, tokenizer
+from i05_infix_eval import expr, term, factor, Tokenizer, regex
 
 class Actions:
     def add(self, x, y): return "+ {} {}".format(x, y)
@@ -12,9 +12,10 @@ class Actions:
 
 # Wrapper function
 def parse_simple_expr(text):
-    actions = Actions()
-    result = expr(tokenizer, actions)
-    tokenizer.end()
+    tok = Tokenizer(text, regex)
+    act = Actions()
+    result = expr(tok, act)
+    tok.end()
     return result
 
 
