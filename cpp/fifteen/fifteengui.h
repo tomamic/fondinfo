@@ -19,10 +19,10 @@ public:
     FifteenGui(FifteenPuzzle* puzzle);
 
 private:
-    void fixAppearance();
-    void handleClick(int x, int y);
-    void updateButton(int x, int y);
-    void updateAllButtons();
+    void fix_appearance();
+    void handle_click(int x, int y);
+    void update_button(int x, int y);
+    void update_all_buttons();
 
     int cols() { return puzzle_->cols(); }
     int rows() { return puzzle_->rows(); }

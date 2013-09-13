@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 
-class NotepadWindow : public QMainWindow
-{
+class NotepadWindow : public QMainWindow {
     Q_OBJECT
     
 public:

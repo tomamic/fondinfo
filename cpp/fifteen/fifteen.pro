@@ -1,6 +1,6 @@
 TEMPLATE = app
 QT += core gui widgets
-CONFIG += c++11
+CONFIG += console c++11
 
 SOURCES += main.cpp fifteenpuzzle.cpp fifteengui.cpp
 

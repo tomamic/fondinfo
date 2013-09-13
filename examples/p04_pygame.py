@@ -6,7 +6,7 @@
 '''
 
 import pygame
-from l4_arena import Actor, Arena, Ball, Ghost
+from l4_arena import Character, Arena, Ball, Ghost
 
 arena = Arena(16, 12)
 ball1 = Ball(arena, 4, 8)
@@ -34,11 +34,11 @@ while playing:
     arena.move_all()  # Game logic
         
     screen.fill(BACKGROUND)
-    for a in arena.actors:
-        x, y = a.position
+    for c in arena.characters:
+        x, y = c.position
         p = (x * TILE_SIDE, y * TILE_SIDE)
-        if a.symbol in images:
-            i = images[a.symbol]
+        if c.symbol in images:
+            i = images[c.symbol]
             screen.blit(i, p)
     pygame.display.flip()
     clock.tick(10)

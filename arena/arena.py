@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-Piece = namedtuple('Piece', 'x y z symbol actor')
+Piece = namedtuple('Piece', 'x y z symbol character')
 
 
 class Character:
@@ -22,18 +22,18 @@ class Arena:
     
     def __init__(self, width: int, height: int):
         self._width, self._height = width, height
-        self._actors = []
+        self._characters = []
         self._pieces = []
 
-    def add_actor(self, a: Character):
-        self._actors.append(a)
+    def add_character(self, c: Character):
+        self._characters.append(c)
 
-    def remove_actor(self, a: Character):
-        self._actors.remove(a)
+    def remove_character(self, c: Character):
+        self._characters.remove(c)
 
     def move_all(self):
-        for a in self._actors:
-            a.move()
+        for c in self._characters:
+            c.move()
             self.update()
             
     def get(self, x: int, y: int) -> Piece:
@@ -55,8 +55,8 @@ class Arena:
 
     def update(self):
         self._pieces = []
-        for a in self._actors:
-            self._pieces += a.pieces
+        for c in self._characters:
+            self._pieces += c.pieces
         self._pieces.sort(key=lambda val: val.z)
 
     @property

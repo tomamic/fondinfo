@@ -7,102 +7,95 @@
 
 #include <cstdlib>
 #include <sstream>
+#include <iomanip>
+#include <stdexcept>
 
 using namespace std;
 
-FifteenPuzzle::FifteenPuzzle(int cols, int rows)
-{
-    if (cols < 2) { cols = 2; }
-    if (rows < 2) { rows = 2; }
-    this->cols_ = cols;
-    this->rows_ = rows;
-    board_.assign(cols * rows, +BLANK);
-    sort();
+FifteenPuzzle::FifteenPuzzle(int cols, int rows) {
+    if (cols < 2 || rows < 2)
+        throw invalid_argument("too small puzzle");
+    init(cols, rows);
     shuffle();
 }
 
-void FifteenPuzzle::sort()
-{
-    // put ordered symbols in each cell
-    for (auto i = 0; i < board_.size(); ++i) {
+void FifteenPuzzle::init(int cols, int rows) {
+    // allocate the matrix
+    this->cols_ = cols;
+    this->rows_ = rows;
+    board_.assign(cols * rows, +BLANK);
+    // put ordered values in each cell
+    for (auto i = 0; i < board_.size() - 1; ++i) {
         board_[i] = FIRST + i;
     }
-    // put blank in the last cell
+    // put the blank value in the last cell
+    board_[board_.size() - 1] = BLANK;
     blank_ = {cols_ - 1, rows_ - 1};
-    set({blank_}, BLANK);
     moved_ = blank_;
 }
 
-void FifteenPuzzle::shuffle()
-{
+void FifteenPuzzle::shuffle() {
     do {
-        // perform a random walk (SIZE^2 steps) of the blank cell
+        // random walk: move the blank cell repeatedly
         auto walk_length = rows_ * rows_ * cols_ * cols_;
         for (auto i = 0; i < walk_length; ++i) {
+            // choose randomly one of the 4 neighbors
             auto dir = DIRS[rand() % DIRS.size()];
-            // consider the cell adjacent to the
-            // blank cell, in the current direction
-            auto next = blank_ + dir;
-            // if it is inside the board, then move the blank
-            if (get(next) != OUT_OF_BOUNDS) {
-                moveBlank(dir);
+            auto neighbor = blank_ + dir;
+            if (is_inside(neighbor)) {
+                swap_blank_with(neighbor);
             }
         }
-    } while (finished());
+    } while (is_finished());
 }
 
-void FifteenPuzzle::move(char symbol)
-{
-    // for each direction, while symbol not yet found...
+void FifteenPuzzle::move(int value) {
+    // for each neighbor of blank (4 directions)...
     for (auto dir : DIRS) {
-        // consider the cell next to the blank cell
-        auto next = blank_ + dir;
-        // if the symbol to move is here...
-        if (get(next) == symbol) {
-            // move blank this way!
-            moveBlank(dir);
+        auto neighbor = blank_ + dir;
+        if (is_inside(neighbor) && get(neighbor) == value) {
+            swap_blank_with(neighbor);
             return;
         }
     }
 }
 
-void FifteenPuzzle::move(Coord pos)
-{
-    auto symbol = get(pos);
-    if (symbol != OUT_OF_BOUNDS) {
-        move(symbol);
-    }
+void FifteenPuzzle::move(Coord cell) {
+    // get the value of cell, move that value
+    move(get(cell));
 }
 
-char FifteenPuzzle::get(Coord pos) const
-{
-    auto x = pos.real(), y = pos.imag();
-    auto value = OUT_OF_BOUNDS;
-    if (0 <= x && x < cols_ && 0 <= y && y < rows_) {
-        value = board_[y * cols_ + x];
-    }
-    return value;
+bool  FifteenPuzzle::is_inside(Coord cell) const {
+    auto x = cell.real(), y = cell.imag();
+    return 0 <= x && x < cols_ && 0 <= y && y < rows_;
 }
 
-void FifteenPuzzle::set(Coord pos, char value)
+int FifteenPuzzle::get(Coord cell) const
 {
-    auto x = pos.real(), y = pos.imag();
+    if (!is_inside(cell))
+        throw invalid_argument("out of bounds");
+    auto x = cell.real(), y = cell.imag();
+    return board_[y * cols_ + x];
+}
+
+void FifteenPuzzle::set(Coord cell, int value)
+{
+    auto x = cell.real(), y = cell.imag();
     board_[y * cols_ + x] = value;
 }
 
-void FifteenPuzzle::moveBlank(Coord dir)
+void FifteenPuzzle::swap_blank_with(Coord cell)
 {
     moved_ = blank_;
-    blank_ += dir;
+    blank_ = cell;
     set(moved_, get(blank_));
     set(blank_, BLANK);
 }
 
-bool FifteenPuzzle::finished() const
+bool FifteenPuzzle::is_finished() const
 {
     for (auto i = 0; i < board_.size() - 1; ++i) {
-        // if the cell has the wrong symbol...
-        // puzzle is not yet solved!
+        // a cell with wrong value? puzzle not solved!
         if (board_[i] != FIRST + i) return false;
     }
     return true;
@@ -111,12 +104,9 @@ bool FifteenPuzzle::finished() const
 string FifteenPuzzle::str() const
 {
     ostringstream out;
-    for (auto y = 0; y < rows_; ++y) {
-        for (auto x = 0; x < cols_; ++x) {
-            out << get({x, y});
-        }
-        out << endl;
+    for (auto i = 0; i < board_.size(); ++i) {
+        out << setw(3) << board_[i];
+        if (i % cols_ == cols_ - 1) out << endl;
     }
-    out << endl;
     return out.str();
 }

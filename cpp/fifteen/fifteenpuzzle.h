@@ -17,34 +17,33 @@ typedef complex<int> Coord;
 class FifteenPuzzle
 {
 public:
+    FifteenPuzzle(int cols, int rows);
+    void init(int cols, int rows);
+    void shuffle();
+    void move(int value);
+    void move(Coord cell);
+    int get(Coord cell) const;
+    bool is_inside(Coord cell) const;
+    bool is_finished() const;
+    string str() const;
+
     int cols() const { return cols_; }
     int rows() const { return rows_; }
     Coord blank() const { return blank_; }
     Coord moved() const { return moved_; }
 
-    void sort();
-    void shuffle();
-    void move(char symbol);
-    void move(Coord pos);
-    char get(Coord pos) const;
-    bool finished() const;
-    string str() const;
-    FifteenPuzzle(int cols, int rows);
-
-    static const char FIRST = 'A';
-    static const char BLANK = ' ';
-    static const char OUT_OF_BOUNDS = '!';
-
+    static const int FIRST = 1;
+    static const int BLANK = 0;
 private:
-    void moveBlank(Coord dir);
-    void set(Coord pos, char value);
+    void swap_blank_with(Coord cell);
+    void set(Coord cell, int value);
 
     int cols_;
     int rows_;
 
-    vector<char> board_;
-    Coord blank_;
-    Coord moved_;
+    vector<int> board_;
+    Coord blank_;  // where's the blank?
+    Coord moved_;  // which cell has been moved?
 
     // DIRS is a vector of couples: (dx, dy)
     const vector<Coord> DIRS = {

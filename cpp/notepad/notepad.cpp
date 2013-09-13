@@ -10,46 +10,43 @@
 using namespace std;
 
 Notepad::Notepad(QWidget *parent)
-    : QWidget(parent)
-{
+    : QWidget(parent) {
     // ctor: build the GUI
     // QObject::tr translates GUI texts (see Qt Linguist)
 
-    textEdit = new QTextEdit;
-    openButton = new QPushButton{tr("&Open")};
-    saveButton = new QPushButton{tr("&Save")};
-    exitButton = new QPushButton{tr("E&xit")};
+    text_edit = new QTextEdit;
+    open_button = new QPushButton{tr("&Open")};
+    save_button = new QPushButton{tr("&Save")};
+    exit_button = new QPushButton{tr("E&xit")};
 
-    QVBoxLayout* buttonLayout = new QVBoxLayout;
-    buttonLayout->addWidget(openButton);
-    buttonLayout->addWidget(saveButton);
-    buttonLayout->addWidget(exitButton);
-    buttonLayout->addStretch();
+    auto button_layout = new QVBoxLayout;
+    button_layout->addWidget(open_button);
+    button_layout->addWidget(save_button);
+    button_layout->addWidget(exit_button);
+    button_layout->addStretch();
 
-    QHBoxLayout* mainLayout = new QHBoxLayout;
-    mainLayout->addWidget(textEdit);
-    mainLayout->addLayout(buttonLayout);
-    setLayout(mainLayout);
+    auto main_layout = new QHBoxLayout;
+    main_layout->addWidget(text_edit);
+    main_layout->addLayout(button_layout);
+    setLayout(main_layout);
 
-    connect(openButton, &QPushButton::clicked, this, &Notepad::open);
-    connect(saveButton, &QPushButton::clicked, this, &Notepad::save);
-    connect(exitButton, &QPushButton::clicked, this, &Notepad::exit);
+    connect(open_button, &QPushButton::clicked, this, &Notepad::open);
+    connect(save_button, &QPushButton::clicked, this, &Notepad::save);
+    connect(exit_button, &QPushButton::clicked, this, &Notepad::exit);
 }
 
-Notepad::~Notepad()
-{
-    
+Notepad::~Notepad() {
 }
 
 void Notepad::open() {
     // choose the input file
-    QString fileName = QFileDialog::getOpenFileName(this);
-    if (fileName != "") {
-        ifstream in{fileName.toStdString()};
+    auto filename = QFileDialog::getOpenFileName(this);
+    if (filename != "") {
+        ifstream in{filename.toStdString()};
         if (in.good()) {
             // read the whole text
             string content; getline(in, content, '\0');
-            textEdit->setText(content.c_str());
+            text_edit->setText(content.c_str());
         } else {
             QMessageBox::critical(this, tr("Error"),
                                   tr("Could not open file"));
@@ -59,12 +56,12 @@ void Notepad::open() {
 
 void Notepad::save() {
     // choose the output file
-    QString fileName = QFileDialog::getSaveFileName(this);
-    if (fileName != "") {
-        ofstream out{fileName.toStdString()};
+    auto filename = QFileDialog::getSaveFileName(this);
+    if (filename != "") {
+        ofstream out{filename.toStdString()};
         if (out.good()) {
             // write the whole text
-            QString text = textEdit->toPlainText();
+            QString text = text_edit->toPlainText();
             out << text.toStdString();
         } else {
             QMessageBox::critical(this, tr("Error"),

@@ -4,7 +4,7 @@
 
 import random, sys
 
-class Actor:
+class Character:
     def move(self):
         raise NotImplementedError('Abstract method')
         
@@ -20,23 +20,23 @@ class Arena:
     EMPTY = '-'
     def __init__(self, width: int, height: int):
         self._width, self._height = width, height
-        self._actors = []
+        self._characters = []
 
-    def add_actor(self, a: Actor):
-        self._actors.append(a)
+    def add_character(self, c: Character):
+        self._characters.append(c)
                     
     def move_all(self):
-        for a in self._actors:
-            a.move()
+        for c in self._characters:
+            c.move()
             
     def __str__(self):
         # create an empty matrix
         map = [[Arena.EMPTY] * self._width for y in range(self._height)]
-        # for each actor, place its symbol in the matrix
-        for a in self._actors:
-            x, y = a.position
+        # for each character, place its symbol in the matrix
+        for c in self._characters:
+            x, y = c.position
             if 0 <= x < self._width and 0 <= y < self._height:
-                map[y][x] = a.symbol
+                map[y][x] = c.symbol
         # join the matrix into a string
         rows = [''.join(row) for row in map]
         return '\n'.join(rows)
@@ -50,16 +50,16 @@ class Arena:
         return self._height
 
     @property
-    def actors(self) -> list: 
-        return list(self._actors)
+    def characters(self) -> list: 
+        return list(self._characters)
         
-class Ball(Actor):
+class Ball(Character):
     SYMBOL = '*'
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._dx, self._dy = 1, 1
         self._arena = arena
-        arena.add_actor(self)
+        arena.add_character(self)
         
     def move(self):
         new_x = self._x + self._dx
@@ -79,12 +79,12 @@ class Ball(Actor):
     def position(self):
         return (self._x, self._y)    
     
-class Ghost(Actor):
+class Ghost(Character):
     SYMBOL = '?'
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
-        arena.add_actor(self)
+        arena.add_character(self)
 
     def move(self):
         dx = random.choice([-1, 0, 1])

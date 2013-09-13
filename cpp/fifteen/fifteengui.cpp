@@ -19,14 +19,14 @@ FifteenGui::FifteenGui(FifteenPuzzle* puzzle)
             buttons_.push_back(b);
             grid->addWidget(b, y, x);
             connect(b, &QPushButton::clicked,
-                    [=]{ handleClick(x, y); });
+                    [=]{ handle_click(x, y); });
         }
     }
-    fixAppearance();
-    updateAllButtons();
+    fix_appearance();
+    update_all_buttons();
 }
 
-void FifteenGui::fixAppearance() {
+void FifteenGui::fix_appearance() {
     setWindowTitle(tr("Fifteen Puzzle"));
     layout()->setMargin(0);
     layout()->setSpacing(0);
@@ -35,7 +35,7 @@ void FifteenGui::fixAppearance() {
     show();
 }
 
-void FifteenGui::updateButton(int x, int y) {
+void FifteenGui::update_button(int x, int y) {
     auto val = puzzle_->get({x, y});
     auto symbol = 'A' + val - FifteenPuzzle::FIRST;
     if (val == FifteenPuzzle::BLANK) symbol = ' ';
@@ -44,23 +44,23 @@ void FifteenGui::updateButton(int x, int y) {
     b->setText(QString{symbol});
 }
 
-void FifteenGui::updateAllButtons() {
+void FifteenGui::update_all_buttons() {
     for (auto y = 0; y < rows(); y++)
         for (auto x = 0; x < cols(); x++)
-            updateButton(x, y);
+            update_button(x, y);
 }
 
-void FifteenGui::handleClick(int x, int y)
+void FifteenGui::handle_click(int x, int y)
 {
     puzzle_->move({x, y});
-    for (auto pos : {puzzle_->blank(), puzzle_->moved()}) {
-        updateButton(pos.real(), pos.imag());
+    for (auto cell : {puzzle_->blank(), puzzle_->moved()}) {
+        update_button(cell.real(), cell.imag());
     }
 
-    if (puzzle_->finished()) {
+    if (puzzle_->is_finished()) {
         QMessageBox::information(this, tr("Congratulations"),
                                  tr("Game finished!"));
         puzzle_->shuffle();
-        updateAllButtons();
+        update_all_buttons();
     }
 }
