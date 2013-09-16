@@ -10,7 +10,7 @@ def spiral(w: int, h: int) -> list:
     dx, dy = 0, -1
 
     for i in range(h * w):
-        m[y][x] = i
+        m[y][x] = i + 1
         # bounce against border or visited cell?
         if not empty(m, x + dx, y + dy):
             # turn clockwise
