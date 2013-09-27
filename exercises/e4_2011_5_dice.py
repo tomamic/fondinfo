@@ -13,6 +13,7 @@ def roll_dice(dice: list):
 
 def attack_result(a: list, d: list) -> int:
     attack = 0
+    # compare the best attack dice with the best defence dice
     for i in range(min(len(a), len(d))):
         if a[i] > d[i]:
             attack += 1
