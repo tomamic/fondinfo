@@ -1,35 +1,29 @@
-EMPTY = -1
+def empty(m: list, x: int, y: int) -> bool:
+    w, h = len(m[0]), len(m)
+    return 0 <= x < w and 0 <= y < h and m[y][x] == 0
 
-def empty(matrix: list, x: int, y: int) -> bool:
-    if 0 <= y < len(matrix) and 0 <= x < len(matrix[y]):
-        return (matrix[y][x] == EMPTY)
-    return False
-
-if __name__ == '__main__':
-    rows = int(input('Rows? '))
-    cols = int(input('Cols? '))
-    matrix = [[EMPTY for x in range(cols)] for y in range(rows)]
+def spiral(w: int, h: int) -> list:
+    m = [[0 for x in range(w)] for y in range(h)]
 
     # initially: bottom-left cell, heading up
-    x, y = 0, rows - 1
+    x, y = 0, h - 1
     dx, dy = 0, -1
 
-    for i in range(rows * cols):
-        matrix[y][x] = i
-        # advance
-        x += dx
-        y += dy
+    for i in range(h * w):
+        m[y][x] = i + 1
         # bounce against border or visited cell?
-        if not empty(matrix, x, y):
-            # go one step back
-            x -= dx
-            y -= dy
+        if not empty(m, x + dx, y + dy):
             # turn clockwise
             dx, dy = -dy, dx
-            x += dx
-            y += dy
+        x, y = x + dx, y + dy
+    return m
 
-    for y in range(rows):
-        for x in range(cols):
-            print('{:4}'.format(matrix[y][x]), end='')
+if __name__ == '__main__':
+    w = int(input('w? '))
+    h = int(input('h? '))
+    m = spiral(w, h)
+    for y in range(h):
+        for x in range(w):
+            print('{:3}'.format(m[y][x]), end='', sep='')
         print()
+    print()
