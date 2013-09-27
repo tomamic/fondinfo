@@ -9,21 +9,19 @@ def zigzag(matrix: list):
     for i in range(rows * cols):
         matrix[y][x] = i
 
-        x += dx
-        y += dy
-
-        # if out of bounds...
-        if not (0 <= y < rows and 0 <= x < cols):
-            # invert direction and go one step back
-            dx, dy = -dx, -dy
+        # if in bounds...
+        if 0 <= x + dx < cols and 0 <= y + dy < rows:
+            # advance one step
             x += dx
             y += dy
-
+        else:
             # shift along the border by one
             if x == cols - 1: y -= 1
             elif y == rows - 1: x += 1
             elif y == 0: x += 1
             elif x == 0: y -= 1
+            # invert direction
+            dx, dy = -dx, -dy
 
 if __name__ == '__main__':
     rows = cols = 0
