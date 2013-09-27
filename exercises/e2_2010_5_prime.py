@@ -1,14 +1,13 @@
-'''Proof. Since n is composite, n = d*e for some natural numbers
-d and e which are not zero and not units. If both of them are
-greater than sqrt(n), then n = d*e > sqrt(n)*sqrt(n) = n, so
-n>n, contradiction. So d or e is <= sqrt(n).'''
+'''Proof. Since n is composite, n = d*e for some natural numbers d and e
+(both >= 2, d <= e). If d > sqrt(n) ==> n = d*e > sqrt(n)*sqrt(n) = n,
+i.e. n>n (contraddiction!). So d <= sqrt(n).'''
 
 n = int(input());
 d = 2
 
-# while d < n // 2 && n % d != 0: d += 1 ...
+# while d < n // 2 and n % d != 0: d += 1 ...
 
-if n % d != 0:
+if n % d != 0:  # if odd
     d = 3
     while d * d <= n and n % d != 0:
         d += 2

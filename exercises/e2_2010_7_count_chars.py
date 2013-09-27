@@ -17,6 +17,6 @@ for c in text:
 print(count)
 
 
-##for c in text:
-##    if c in chars:
-##        count += 1
+## for c in text:
+##     if c in chars:
+##         count += 1

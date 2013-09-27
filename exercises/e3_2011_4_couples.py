@@ -25,17 +25,17 @@ matrix = [chr(FIRST + i // 2) for i in range(size)]
 
 for i in range(size):
     print(matrix[i], end='')
-    if (i % cols == cols - 1):
+    if i % cols == cols - 1:
         print()
 print()
 
 random.shuffle(matrix)
-##for i in range(size):
-##    j = random.randrange(size)
-##    matrix[i], matrix[j] = matrix[j], matrix[i]
+## for i in range(size):
+##     j = random.randrange(size)
+##     matrix[i], matrix[j] = matrix[j], matrix[i]
 
 for i in range(size):
     print(matrix[i], end='')
-    if (i % cols == cols - 1):
+    if i % cols == cols - 1:
         print()
 
