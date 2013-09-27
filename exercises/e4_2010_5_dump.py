@@ -8,21 +8,24 @@ else:
     filename = input('Insert the file name: ')
 
 with open(filename, 'rb') as infile:
+    bytes = infile.read()
     line = []
-    count = 0
-    byte = infile.read(1)
-    while byte != b'':
-        print('{:02x} '.format(ord(byte)), end='')
-        if b' ' <= byte <= b'~':
-            line.append(chr(ord(byte)))
+    for b in bytes:
+        # print the hex value of each byte
+        print('{:02x} '.format(b), end='')
+
+        # remember the corresponding char
+        if ord(' ') <= b <= ord('~'):
+            line.append(chr(b))
         else:
             line.append(' ')
-        count += 1
-        if count == LENGTH:
+        
+        # collected 16 chars: print them all
+        if len(line) == LENGTH:
             print('', ''.join(line))
             line = []
-            count = 0        
-        byte = infile.read(1)
 
+    # end of file: remaining chars to print?
     if len(line) > 0:
-        print('   ' * (LENGTH - count), ''.join(line))  # 1234567
+        print('   ' * (LENGTH - len(line)), ''.join(line))
+
