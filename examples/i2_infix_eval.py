@@ -85,9 +85,8 @@ regex = r'\s*([A-Za-z0-9\.]+|.?)'
 
 
 # Wrapper function
-def parse_simple_expr(text, values):
+def parse_expr(text, act):
     tok = Tokenizer(text, regex)
-    act = Actions(values)
     result = expr(tok, act)
     tok.end()
     return result
@@ -95,11 +94,12 @@ def parse_simple_expr(text, values):
 
 # Tests
 values = {'w': 0.0, 'x': 1.0, 'y': 1.5, 'z': 0.5}
+act = Actions(values)
 
 if __name__ == '__main__':
-    assert parse_simple_expr('(((1.5)))', values) == 1.5
-    assert parse_simple_expr('w * -z', values) == 0
-    assert parse_simple_expr('x / z * -y', values) == -3
-    assert parse_simple_expr('x / 0.5 * --y', values) == 3
-    assert parse_simple_expr('w', values) == 0
-    assert parse_simple_expr('(x + w) * (x + y) * (y - z)', values) == 2.5
+    assert parse_expr('(((1.5)))', act) == 1.5
+    assert parse_expr('w * -z', act) == 0
+    assert parse_expr('x / z * -y', act) == -3
+    assert parse_expr('x / 0.5 * --y', act) == 3
+    assert parse_expr('w', act) == 0
+    assert parse_expr('(x + w) * (x + y) * (y - z)', act) == 2.5

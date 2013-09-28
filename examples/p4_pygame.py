@@ -6,13 +6,13 @@
 '''
 
 import pygame
-from l4_arena import Character, Arena, Ball, Ghost
+from p4_arena import Character, Arena, Ball, Ghost
 
-arena = Arena(16, 12)
-ball1 = Ball(arena, 4, 8)
-ball2 = Ball(arena, 8, 4)
-ball3 = Ball(arena, 12, 4)
-ghost = Ghost(arena, 12, 8)
+arena = Arena()
+arena.add(Ball(4, 8))
+arena.add(Ball(8, 4))
+arena.add(Ball(12, 4))
+arena.add(Ghost(12, 8))
 
 TILE_SIDE = 20
 SCREEN_SIZE = (arena.width * TILE_SIDE, arena.height * TILE_SIDE)

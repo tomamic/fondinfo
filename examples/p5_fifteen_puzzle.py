@@ -27,10 +27,18 @@ class FifteenPuzzle:
     def finished(self) -> bool:
         return self._board == self._SOLUTION
 
+    @property
+    def blank(self) -> (int, int):
+        return self._blank
+
+    @property
+    def moved(self) -> (int, int):
+        return self._moved
 
     def sort(self):
-        self._board = list(self._SOLUTION)
+        self._board = list(self._SOLUTION)  # copy the list
         self._blank = (self._cols - 1, self._rows - 1)
+        self._moved = self._blank
 
     def shuffle(self):
         for _ in range(len(self._board)**2):
@@ -45,7 +53,7 @@ class FifteenPuzzle:
                 self._move_blank(dx, dy)
                 return
 
-    def move_position(self, x: int, y: int):
+    def move_pos(self, x: int, y: int):
         self.move_val(self.get(x, y))
 
     def get(self, x: int, y: int) -> int:
@@ -63,13 +71,14 @@ class FifteenPuzzle:
         if val > 0:
             self._set(x, y, val)
             self._set(x + dx, y + dy, 0)
+            self._moved = self._blank
             self._blank = (x + dx, y + dy)
 
     def __str__(self):
         result = StringIO()
         for y in range(self._rows):
             for x in range(self._cols):
-                result.write(str(self.get(x, y)).rjust(3))
+                result.write('{:3}'.format(self.get(x, y)))
             result.write('\n')
         return result.getvalue()
         

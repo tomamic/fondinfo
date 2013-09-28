@@ -18,11 +18,9 @@ class Ball:
         self._dy = +1
         
     def move(self):
-        new_x = self._x + self._dx
-        if not (0 <= new_x < Ball.ARENA_WIDTH):
+        if not (0 <= self._x + self._dx < Ball.ARENA_WIDTH):
             self._dx = -self._dx
-        new_y = self._y + self._dy
-        if not (0 <= new_y < Ball.ARENA_HEIGHT):
+        if not (0 <= self._y + self._dy < Ball.ARENA_HEIGHT):
             self._dy = -self._dy
         self._x += self._dx
         self._y += self._dy

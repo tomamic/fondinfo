@@ -1,6 +1,6 @@
 import math, sys
 
-from exer_4_2011_4_points import Point
+from e4_2011_4_points import Point
 
 class Polygon:
     def __init__(self):

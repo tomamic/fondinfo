@@ -13,16 +13,18 @@ def fibonacci1(n: int) -> int:
     return result
 
 def fibonacci2(n: int) -> int:
-    lookup = [1, 1]
-
     result = 1
-    if n < len(lookup):
-        result = lookup[n]
+    if n < len(fibonacci2.lookup):
+        result = fibonacci2.lookup[n]
     else:
         logging.debug('fib {}'.format(n))
         result = fibonacci2(n - 1) + fibonacci2(n - 2)
-        lookup.append(result)
+        fibonacci2.lookup.append(result)
     return result
+
+fibonacci2.lookup = [1, 1]
+# lookup is a variable associated with the
+# function itself, not a particular activation
 
 def fibonacci3(n: int) -> int:
 
@@ -41,4 +43,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     for line in sys.stdin:
         n = int(line.strip())
+        print('fib1:')
         print(fibonacci1(n))
+        print('---\nfib2:')
+        print(fibonacci2(n))
+        print('---\nfib3')
+        print(fibonacci3(n))
+

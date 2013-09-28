@@ -1,6 +1,6 @@
 import math
 
-from exer_4_2011_4_points import Point
+from e4_2011_4_points import Point
 
 class Circle:
     def __init__(self, center: Point, radius: float):

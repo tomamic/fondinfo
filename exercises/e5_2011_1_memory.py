@@ -1,9 +1,6 @@
 import random
 
 class Memory:
-    # covered cards are represented in lowercase
-    # once guessed, they are substitued by the
-    # corresponding uppercase, in matrix
     JOLLY = '?'
     FIRST = 'A'
 
@@ -14,6 +11,8 @@ class Memory:
         self.shuffle()
 
     def sort(self):
+        # cards: list of ints, representing the cards
+        # visible: list of bools, to keep track of guessed cards
         self._cards = [i // 2 for i in range(rows * cols)]
         self._visible = [False] * (rows * cols)
 
@@ -26,6 +25,7 @@ class Memory:
             and 0 <= pos2 < len(self._cards)):
             self._move1, self._move2 = pos1, pos2
             if self._cards[pos1] == self._cards[pos2]:
+                # mark the guessed couple as visible
                 self._visible[pos1] = True
                 self._visible[pos2] = True
 
@@ -41,14 +41,13 @@ class Memory:
                 result.append(Memory.JOLLY)
             if i % self._cols == self._cols - 1:
                 result.append('\n')
-        result.append('\n')
         return ''.join(result)
 
 if __name__ == '__main__':
     rows = cols = size = 1
     while size % 2 != 0:
-        rows = int(input('Rows? '))
         cols = int(input('Cols? '))
+        rows = int(input('Rows? '))
         size = rows * cols
 
     memory = Memory(rows, cols)

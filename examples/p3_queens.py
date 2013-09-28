@@ -5,16 +5,16 @@
 
 from io import StringIO
 
-def board_str(board):
-    output = StringIO
+def board_str(board: list):
+    output = StringIO()
     for row in board:
         for cell in row:
             if cell: output.write('|Q')
             else: output.write('| ')
         output.write('|\n')
-    return output.str()
+    return output.getvalue()
 
-def under_attack(board, row, col) -> bool:
+def under_attack(board: list, row: int, col: int) -> bool:
     # for each direction up-left, up, up-right (no queens below)...
     dy = -1
     for dx in [-1, 0, +1]:
@@ -23,11 +23,11 @@ def under_attack(board, row, col) -> bool:
         while 0 <= y < len(board) and 0 <= x < len(board[y]):
 
             # if a queen is found, the square is under attack
-            if board[y][x] return True
+            if board[y][x]: return True
             x, y = x + dx, y + dy
     return False
 
-def place_queens(board, row=0) -> bool:
+def place_queens(board: list, row=0) -> bool:
     for col in range(len(board[row])):
         if not under_attack(board, row, col):
             # square not attacked, place a queen

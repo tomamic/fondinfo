@@ -12,7 +12,7 @@ def sqrt_recursion(x: float, low: float, high: float) -> float:
     return y
 
 if __name__ == '__main__':
-    x= float(input())
+    x = float(input())
     
     low, high = 0, x
     if (high < 1):
