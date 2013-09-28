@@ -58,7 +58,7 @@ void FifteenGui::handle_click(int x, int y)
     }
 
     if (puzzle_->is_finished()) {
-        QMessageBox::information(this, tr("Congratulations"),
+        QMessageBox::information(nullptr, tr("Congratulations"),
                                  tr("Game finished!"));
         puzzle_->shuffle();
         update_all_buttons();
