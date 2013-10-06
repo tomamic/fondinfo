@@ -50,18 +50,18 @@ void IntList::insert(int pos, int val) {
 
 int IntList::remove(int pos) {
     if (pos < 0 || pos >= size_) throw out_of_range("wrong pos");
-    Node* x = head_;
+    Node* n = head_;
     if (pos == 0) {
-        head_ = head_->next;
+        head_ = n->next;
     } else {
-        Node* n = head_;
         for (int i = 0; i < pos - 1; ++i) n = n->next;
-        x = n->next;
-        n->next = x->next;
+        Node* prev = n;
+        n = n->next;
+        prev->next = n->next;
     }
     --size_;
-    int val = x->val;
-    delete x;
+    int val = n->val;
+    delete n;
     return val;
 }
 
