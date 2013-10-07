@@ -1,12 +1,12 @@
 from sys import stdin
-from arena import Character, Arena, Piece
+from arena import Character, Arena
 
 class Ball(Character):
     def __init__(self, arena, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 1, 1
         self._arena = arena
-        arena.add_actor(self)
+        arena.add_character(self)
 
     def move(self):
         new_x = self._x + self._dx
@@ -22,7 +22,7 @@ class Ball(Character):
 
         what = self._arena.get(self._x + self._dx, self._y + self._dy)
         if what != None:
-            what.actor.interact(self)
+            what.interact(self)
             self._dx = -self._dx
         self._x += self._dx
         self._y += self._dy
@@ -30,9 +30,14 @@ class Ball(Character):
     def interact(self, other: Character):
         pass
 
+    def symbol_at(self, x: int, y: int) -> str:
+        if self._x == x and self._y == y:
+            return '*'
+        return None
+
     @property
-    def pieces(self):
-        return [Piece(self._x, self._y, 0, '*', self)]
+    def pos(self) -> (int, int):
+        return (self._x, self._y)
 
 
 class Paddle:
@@ -44,7 +49,7 @@ class Paddle:
         self._x, self._y = x, y
         self._dy = 0
         self._arena = arena
-        arena.add_actor(self)
+        arena.add_character(self)
 
     def move(self):
         if self._dy != 0:
@@ -63,11 +68,11 @@ class Paddle:
     def set_direction(self, dy):
         self._dy = dy
 
-    @property
-    def pieces(self):
-        return [Piece(self._x, self._y + i, 0, '|', self)
-                for i in range(self._length)]
-
+    def symbol_at(self, x: int, y: int) -> str:
+        if self._x == x and self._y <= y < self._y + self._length:
+            return '*'
+        return None
+        
 
 class AutoPaddle(Paddle):
     def __init__(self, arena, x, y):
@@ -80,11 +85,11 @@ class AutoPaddle(Paddle):
         
         middle = self._y + (self._length // 2)
         half_width = self._arena.width // 2
-        for piece in self._arena.pieces:
-            if piece.symbol == '*' and abs(self._x - piece.x) < half_width:
-                if piece.y < middle:
+        for c in self._arena.characters:
+            if isinstance(c, Ball) and abs(self._x - c.pos[0]) < half_width:
+                if c.pos[1] < middle:
                     self.set_direction(-1)
-                elif piece.y > middle:
+                elif c.pos[1] > middle:
                     self.set_direction(+1)
         super().move()
 

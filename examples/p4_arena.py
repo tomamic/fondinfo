@@ -7,7 +7,7 @@ import io, random, sys
 class Character:
     def move(self):
         raise NotImplementedError('Abstract method')
-        
+
     @property
     def position(self) -> (int, int):
         raise NotImplementedError('Abstract method')
@@ -25,34 +25,37 @@ class Arena:
 
     def add(self, c: Character):
         self._characters.append(c)
-                    
+
     def move_all(self):
         for c in self._characters:
             c.move()
-            
-    def __str__(self):
-        poss = {}  # empty dict; may use dict comprehension here
+
+    def get_symbol(self, x: int, y: int) -> str:
         for c in self._characters:
-            poss[c.position] = c.symbol
+            if c.position == (x, y):
+                return c.symbol
+        return Arena.EMPTY
+
+    def __str__(self):
         output = io.StringIO()
         for y in range(self._h):
             for x in range(self._w):
-                output.write(poss.get((x, y), Arena.EMPTY))
+                output.write(self.get_symbol(x, y))
             output.write('\n')
         return output.getvalue()
 
     @property
-    def width(self) -> int: 
+    def width(self) -> int:
         return self._w
 
     @property
-    def height(self) -> int: 
+    def height(self) -> int:
         return self._h
 
     @property
-    def characters(self) -> list: 
+    def characters(self) -> list:
         return list(self._characters)
-        
+
 
 class Ball(Character):
     SYMBOL = '*'
@@ -60,7 +63,7 @@ class Ball(Character):
         self._x, self._y = x, y
         self._dx, self._dy = dx, dy
         self._w, self._h = w, h
-        
+
     def move(self):
         new_x = self._x + self._dx
         if not (0 <= new_x < self._w):
@@ -74,11 +77,11 @@ class Ball(Character):
     @property
     def symbol(self):
         return Ball.SYMBOL
-    
+
     @property
     def position(self):
-        return (self._x, self._y)    
-    
+        return (self._x, self._y)
+
 
 class Ghost(Character):
     SYMBOL = '?'
@@ -95,11 +98,11 @@ class Ghost(Character):
     @property
     def symbol(self):
         return Ghost.SYMBOL
-    
+
     @property
     def position(self):
-        return (self._x, self._y)    
-    
+        return (self._x, self._y)
+
 
 if __name__ == '__main__':
     arena = Arena(16, 12)
