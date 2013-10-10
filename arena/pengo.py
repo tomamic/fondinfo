@@ -3,6 +3,7 @@ from random import choice
 from arena import Character, Arena
 
 class Penguin(Character):
+    SYMBOL = '&'
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
     
     def __init__(self, arena: Arena, x: int, y: int):
@@ -34,8 +35,8 @@ class Penguin(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y == y:
-            return '&'
-        return None
+            return Penguin.SYMBOL
+        return Arena.EMPTY
 
     @property
     def pos(self) -> (int, int):
@@ -43,6 +44,7 @@ class Penguin(Character):
 
 
 class Ghost(Character):
+    SYMBOL = '^'
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
@@ -74,11 +76,12 @@ class Ghost(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y == y:
-            return '^'
-        return None
+            return Ghost.SYMBOL
+        return Arena.EMPTY
 
 
-class Ice(Character):  
+class Ice(Character):
+    SYMBOL = '#'
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
@@ -122,8 +125,8 @@ class Ice(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y == y:
-            return '#'
-        return None
+            return Ice.SYMBOL
+        return Arena.EMPTY
 
 
 class PengoArena(Arena):

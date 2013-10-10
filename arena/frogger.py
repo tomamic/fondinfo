@@ -11,6 +11,7 @@ class Passenger:
 
 
 class Frog(Character, Passenger):
+    SYMBOL = '@'
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
     
     def __init__(self, arena: Arena, x: int, y: int):
@@ -48,8 +49,8 @@ class Frog(Character, Passenger):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y == y:
-            return '@'
-        return None
+            return Frog.SYMBOL
+        return Arena.EMPTY
 
     @property
     def pos(self) -> (int, int):
@@ -57,6 +58,7 @@ class Frog(Character, Passenger):
 
 
 class Boat(Character):
+    SYMBOL = 'O'
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
@@ -93,11 +95,12 @@ class Boat(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x <= x < self._x + self._size and y == self._y:
-            return 'O'
-        return None
+            return Boat.SYMBOL
+        return Arena.EMPTY
 
 
 class River(Character):
+    SYMBOL = '~'
     def __init__(self, arena: Arena, y: int):
         self._y = y
         self._arena = arena
@@ -111,15 +114,12 @@ class River(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if y == self._y:
-            return '~'
-        return None
-
-    @property
-    def z(self):
-        return -20
+            return River.SYMBOL
+        return Arena.EMPTY
 
 
 class Truck(Character):
+    SYMBOL = '='
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
@@ -147,8 +147,8 @@ class Truck(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x <= x < self._x + self._size and y == self._y:
-            return '='
-        return None
+            return Truck.SYMBOL
+        return Arena.EMPTY
 
 
 class FroggerArena(Arena):

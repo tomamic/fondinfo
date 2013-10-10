@@ -32,14 +32,14 @@ class Arena:
 
     def get(self, x: int, y: int) -> Character:
         for c in self._characters:
-            if c.symbol_at(x, y) != None:
+            if c.symbol_at(x, y) != Arena.EMPTY:
                 return c;
         return None;
 
     def get_symbol(self, x: int, y: int) -> str:
         for c in self._characters:
             symbol = c.symbol_at(x, y)
-            if symbol != None:
+            if symbol != Arena.EMPTY:
                 return symbol;
         return Arena.EMPTY;
 

@@ -2,6 +2,7 @@ from sys import stdin
 from arena import Character, Arena
 
 class Ball(Character):
+    SYMBOL = '*'
     def __init__(self, arena, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 1, 1
@@ -32,8 +33,8 @@ class Ball(Character):
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y == y:
-            return '*'
-        return None
+            return Ball.SYMBOL
+        return Arena.EMPTY
 
     @property
     def pos(self) -> (int, int):
@@ -41,6 +42,7 @@ class Ball(Character):
 
 
 class Paddle:
+    SYMBOL = '|'
     UP, STAY, DOWN = -1, 0, +1
     INITIAL_LENGTH = 3
 
@@ -70,8 +72,8 @@ class Paddle:
 
     def symbol_at(self, x: int, y: int) -> str:
         if self._x == x and self._y <= y < self._y + self._length:
-            return '*'
-        return None
+            return Paddle.SYMBOL
+        return Arena.EMPTY
         
 
 class AutoPaddle(Paddle):
