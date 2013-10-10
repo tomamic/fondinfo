@@ -1,5 +1,6 @@
-infile = open('exer-3-2010-3-scytale.py')
-text = infile.read()
+text = ''
+with open('e3_2010_3_scytale.py') as infile:
+    text = infile.read()
 
 with open('out.txt', 'w') as outfile:
     FILLER = ' '
