@@ -1,8 +1,9 @@
 DELTA = ord('a') - ord('A')
 DASH = '-'
 
-file = open("e2_2011_6_dash.py")
-text = file.read()
+text = ''
+with open("e2_2011_6_dash.py") as infile:
+    text = infile.read()
 
 dash = False
 
