@@ -10,8 +10,9 @@
 (Se necessario, provare prima a leggere i caratteri da console)
 '''
 
-file = open('exer_3_2011_1_bracket.py')
-text = file.read()
+text = ''
+with open('e3_2011_1_bracket.py') as infile:
+    text = infile.read()
 
 inside = False
 
