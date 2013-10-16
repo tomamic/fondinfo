@@ -5,10 +5,12 @@ class Point:
         self._x, self._y = x, y
 
     @property
-    def x(self) -> float: return self._x
+    def x(self) -> float:
+        return self._x
     
     @property
-    def y(self) -> float: return self._y
+    def y(self) -> float:
+        return self._y
     
     @property
     def angle(self) -> float:
@@ -32,7 +34,7 @@ class Point:
 
     def parse(text: str) -> 'Point':
         dat = text.split(',')
-        return Point(float(dat[0].strip()), float(dat[1].strip()))
+        return Point(float(dat[0]), float(dat[1]))
 
     def __str__(self) -> str:
         return '{}, {}'.format(self._x, self._y)
@@ -59,12 +61,12 @@ if __name__ == '__main__':
         choice = int(input())
         
         if choice == NEW_POINT:
-            p = Point.parse(input('x, y? '))
+            p = Point.parse(input())
             points.append(p)
         elif choice == DEL_POINT:
             id = int(input())
             if 0 <= id < len(points):
-                del  points[id]
+                points.pop(id)
         elif choice == DISTANCE:
             id1 = int(input())
             id2 = int(input())

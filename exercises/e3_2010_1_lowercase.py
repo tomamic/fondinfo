@@ -8,6 +8,6 @@ for c in text:
     elif c.isdigit() or c.islower():
         print(c, end='')
         dash = False
-    elif not dash:
+    else:
         print('-', end='')
         dash = True
