@@ -25,19 +25,19 @@ class Ball:
         self._x += self._dx
         self._y += self._dy
 
-    def __str__(self) -> str:  # output as string
-        return str(self._x) + ', ' + str(self._y)
+    def position(self) -> (int, int):
+        return self._x, self._y
 
 
 if __name__ == '__main__':
     # Create two objects, instances of the Ball class
     b1 = Ball(4, 8)
     b2 = Ball(8, 4)
-    print('Ball 1:', b1)
-    print('Ball 2:', b2)
+    print('Ball 1 @', b1.position())
+    print('Ball 2 @', b2.position())
 
     for line in sys.stdin:
         b1.move()
         b2.move()
-        print('Ball 1:', b1)
-        print('Ball 2:', b2)
+        print('Ball 1:', b1.position())
+        print('Ball 2:', b2.position())
