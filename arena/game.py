@@ -6,13 +6,13 @@
 '''
 
 import pygame
-from p4_arena import Character, Arena, Ball, Ghost
+from arena import Character, Arena
+from ball import Ball, Ghost
 
-arena = Arena()
-arena.add(Ball(4, 8))
-arena.add(Ball(8, 4))
-arena.add(Ball(12, 4))
-arena.add(Ghost(12, 8))
+arena = Arena(16, 12)
+Ball(arena, 4, 8)
+Ball(arena, 8, 4)
+Ghost(arena, 12, 8)
 
 TILE_SIDE = 20
 SCREEN_SIZE = (arena.width * TILE_SIDE, arena.height * TILE_SIDE)
@@ -34,12 +34,12 @@ while playing:
     arena.move_all()  # Game logic
         
     screen.fill(BACKGROUND)
-    for c in arena.characters:
-        x, y = c.position
-        p = (x * TILE_SIDE, y * TILE_SIDE)
-        if c.symbol in images:
-            i = images[c.symbol]
-            screen.blit(i, p)
+    for y in range(arena.height):
+        for x in range(arena.width):
+            symbol = arena.get_symbol(x, y)
+            if symbol in images:
+                i = images[symbol]
+                screen.blit(i, (x * TILE_SIDE, y * TILE_SIDE))
     pygame.display.flip()
     clock.tick(10)
 pygame.quit()

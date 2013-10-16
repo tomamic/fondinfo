@@ -27,7 +27,7 @@ class Point:
         self._x = radius * math.cos(angle * math.pi / 180.0)
         self._y = radius * math.sin(angle * math.pi / 180.0)        
 
-    def distance(self, other) -> float:
+    def distance(self, other: 'Point') -> float:
         dx = self._x - other._x
         dy = self._y - other._y
         return math.sqrt(dx ** 2 + dy ** 2);
