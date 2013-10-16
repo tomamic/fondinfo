@@ -39,5 +39,5 @@ if __name__ == '__main__':
     for line in sys.stdin:
         b1.move()
         b2.move()
-        print('Ball 1:', b1.position())
-        print('Ball 2:', b2.position())
+        print('Ball 1 @', b1.position())
+        print('Ball 2 @', b2.position())
