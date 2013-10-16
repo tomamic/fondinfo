@@ -25,14 +25,6 @@ class Ball:
         self._x += self._dx
         self._y += self._dy
 
-    @property
-    def x(self) -> int:
-        return self._x
-        
-    @property
-    def y(self) -> int:
-        return self._y
-        
     def __str__(self) -> str:  # output as string
         return str(self._x) + ', ' + str(self._y)
 
