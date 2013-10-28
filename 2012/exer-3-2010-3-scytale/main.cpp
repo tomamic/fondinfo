@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char*argv[]) {
 
-    ifstream in("../2010-e3-3-scytale/main.cpp");
+    ifstream in("../exer-3-2010-3-scytale/main.cpp");
     ofstream out("out.txt");
     in >> noskipws;
 
