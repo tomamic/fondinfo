@@ -25,7 +25,7 @@ int main(int argc, char*argv[]) {
         for (int y = 0; y < ROWS; ++y) {
             for (int x = 0; x < COLS; ++x) {
                 char c = FILLER;
-                in >> c; // is "in" still good?
+                in >> c;  // is `in` still good?
                 matrix[y][x] = c;
             }
         }

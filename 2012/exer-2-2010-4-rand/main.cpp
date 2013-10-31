@@ -9,8 +9,7 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     const int MAX_VAL = 90, MAX_TRIES = 10;
     int secret, guess, tries = 0;
 
@@ -34,6 +33,4 @@ int main(int argc, char *argv[])
             cout << "Congratulations, you guessed in " << tries << " tries" << endl;
         }
     } while (secret != guess && tries < MAX_TRIES);
-
-    return 0;
 }
