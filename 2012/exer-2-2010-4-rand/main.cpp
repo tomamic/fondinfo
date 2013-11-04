@@ -13,11 +13,10 @@ int main(int argc, char *argv[]) {
     const int MAX_VAL = 90, MAX_TRIES = 10;
     int secret, guess, tries = 0;
 
-    /* initialize the seed for random numbers */
-    srand(time(NULL));
+    srand(time(NULL));  // just once! initial seed for random numbers
 
-    /* generate the secret number */
-    secret = (rand() % MAX_VAL) + 1;
+    
+    secret = (rand() % MAX_VAL) + 1;  // generate the secret number
 
     do {
         cout << "Guess the number (1-90): ";

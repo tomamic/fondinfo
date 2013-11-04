@@ -5,6 +5,7 @@ from arena import Character, Arena
 class Penguin(Character):
     SYMBOL = '&'
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
+    DIRS = (STAY, UP, LEFT, DOWN, RIGHT)
     
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
@@ -13,7 +14,8 @@ class Penguin(Character):
         arena.add_character(self)
 
     def set_direction(self, dx: int, dy: int):
-        self._dx, self._dy = dx, dy
+        if (dx, dy) in Penguin.DIRS:
+            self._dx, self._dy = dx, dy
 
     def move(self):
         new_x = self._x + self._dx
