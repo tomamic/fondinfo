@@ -128,7 +128,7 @@ class Truck(Character):
         self._arena = arena
         arena.add_character(self)
         self._turn = 0
-        self._dx = 2 * (y % 2) - 1
+        self._dx = 2 * (y % 2) - 1  # -1 if y is even, +1 if odd
         self._size = 1
 
     def move(self):
