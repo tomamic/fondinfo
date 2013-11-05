@@ -102,8 +102,7 @@ class Ice(Character):
             # if the cell is free, eventually, move there
             if self._arena.get(new_x, new_y) == None:
                 self._x, self._y = new_x, new_y
-
-            if self._x != new_x or self._y != new_y:
+            else:
                 self._dx, self._dy = 0, 0
 
     def interact(self, other: Character):
