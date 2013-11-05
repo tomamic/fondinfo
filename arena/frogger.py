@@ -141,7 +141,7 @@ class Truck(Character):
             if self._x >= self._arena.width: self._x = 0
 
             what = self._arena.get(self._x, self._y);
-            if what != None:
+            if what != None and what != self:
                 what.interact(self)
 
     def interact(self, other: Character):
