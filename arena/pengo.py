@@ -23,11 +23,12 @@ class Penguin(Character):
 
         if ((self._dx, self._dy) != Penguin.STAY
             and self._arena.is_inside(new_x, new_y)):
-            what = self._arena.get(new_x, new_y)
             # touch everybody who's in the way
+            what = self._arena.get(new_x, new_y)
             if what != None:
                 what.interact(self)
             # if the cell is free, move there
+            what = self._arena.get(new_x, new_y)
             if what == None:
                 self._x, self._y = new_x, new_y
 
