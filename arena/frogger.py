@@ -61,13 +61,14 @@ class Frog(Character, Passenger):
 
 class Boat(Character):
     SYMBOL = 'O'
+    DEF_SIZE, MARGIN = 3, 4
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
         arena.add_character(self)
         self._turn = 0
         self._dx = 2 * (y % 2) - 1  # -1 if y is even, +1 if odd
-        self._size = 3
+        self._size = Boat.DEF_SIZE
 
     def move(self):
         WAIT = 2
@@ -83,8 +84,8 @@ class Boat(Character):
                         passengers.append(c)
 
             self._x += self._dx
-            if self._x < -5: self._x = self._arena.width + 4
-            if self._x > self._arena.width + 4: self._x = -4
+            if self._x < -Boat.MARGIN: self._x = self._arena.width + Boat.MARGIN
+            if self._x > self._arena.width + Boat.MARGIN: self._x = -Boat.MARGIN
             
             for a in passengers:
                 try:
