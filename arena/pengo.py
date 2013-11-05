@@ -28,8 +28,7 @@ class Penguin(Character):
             if what != None:
                 what.interact(self)
             # if the cell is free, move there
-            what = self._arena.get(new_x, new_y)
-            if what == None:
+            if self._arena.get(new_x, new_y) == None:
                 self._x, self._y = new_x, new_y
 
     def interact(self, other: Character):
@@ -61,12 +60,12 @@ class Ghost(Character):
         self._turn += 1
         if (self._turn % WAIT == 0
             and self._arena.is_inside(new_x, new_y)):
-            what = self._arena.get(new_x, new_y)
             # don't touch anybody... but players
+            what = self._arena.get(new_x, new_y)
             if what != None and isinstance(what, Penguin):
                 what.interact(self)
             # if the cell is free, move there
-            if what == None:
+            if self._arena.get(new_x, new_y) == None:
                 self._x, self._y = new_x, new_y
 
     def interact(self, other: Character):
@@ -96,8 +95,8 @@ class Ice(Character):
         new_y = self._y + self._dy
         if ((self._dx != 0 or self._dy != 0)
             and self._arena.is_inside(new_x, new_y)):
-            what = self._arena.get(new_x, new_y)
             # touch everybody who's in the way
+            what = self._arena.get(new_x, new_y)
             if what != None:
                 what.interact(self)
             # if the cell is free, eventually, move there
