@@ -163,11 +163,11 @@ if __name__ == '__main__':
 
     COMMANDS = {'w': Penguin.UP, 'a': Penguin.LEFT,
                 's': Penguin.DOWN, 'd': Penguin.RIGHT}
-    for line in stdin:
-        direction = COMMANDS.get(line.strip(), Penguin.STAY)
+    while not arena.lost and not arena.won:
+        line = input()
+        direction = COMMANDS.get(line, Penguin.STAY)
         penguin.set_direction(*direction)
 
         arena.move_all()
         print(arena)
-        if arena.lost or arena.won:
-            break
+

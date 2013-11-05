@@ -193,11 +193,11 @@ if __name__ == '__main__':
 
     COMMANDS = {'w': Frog.UP, 'a': Frog.LEFT,
                 's': Frog.DOWN, 'd': Frog.RIGHT}
-    for line in stdin:
-        direction = COMMANDS.get(line.strip(), Frog.STAY)
+    while not arena.lost and not arena.won:
+        line = input()
+        direction = COMMANDS.get(line, Frog.STAY)
         frog.set_direction(*direction)
 
         arena.move_all()
         print(arena)
-        if arena.lost or arena.won:
-            break
+
