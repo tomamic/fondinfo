@@ -79,13 +79,12 @@ class Boat(Character):
             for c in self._arena.characters:
                 if (isinstance(c, Passenger)):
                     cx, cy = c.pos
-                    if (self._y == c.pos[1] and x0 <= c.pos[0] < x1
-                        and not c in passengers):
+                    if (self._y == cy and x0 <= cx < x1 and not c in passengers):
                         passengers.append(c)
 
             self._x += self._dx
-            if self._x < -Boat.MARGIN: self._x = self._arena.width + Boat.MARGIN
-            if self._x > self._arena.width + Boat.MARGIN: self._x = -Boat.MARGIN
+            if self._x < -Boat.MARGIN: self._x = self._arena.width - 1 + Boat.MARGIN
+            if self._x >= self._arena.width + Boat.MARGIN: self._x = -Boat.MARGIN
             
             for a in passengers:
                 try:
@@ -123,13 +122,14 @@ class River(Character):
 
 class Truck(Character):
     SYMBOL = '='
+    DEF_SIZE, MARGIN = 2, 1
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
         arena.add_character(self)
         self._turn = 0
         self._dx = 2 * (y % 2) - 1  # -1 if y is even, +1 if odd
-        self._size = 1
+        self._size = Truck.DEF_SIZE
 
     def move(self):
         WAIT = 2
@@ -137,8 +137,8 @@ class Truck(Character):
         if self._turn % WAIT == 0:
             
             self._x += self._dx
-            if self._x < 0: self._x = self._arena.width - 1
-            if self._x >= self._arena.width: self._x = 0
+            if self._x < -Truck.MARGIN: self._x = self._arena.width - 1 + Truck.MARGIN
+            if self._x >= self._arena.width + Truck.MARGIN: self._x = -Truck.MARGIN
 
             what = self._arena.get(self._x, self._y);
             if what != None and what != self:
@@ -149,7 +149,8 @@ class Truck(Character):
             other.interact(self)
 
     def symbol_at(self, x: int, y: int) -> str:
-        if self._x <= x < self._x + self._size and y == self._y:
+        if (self._dx < 0 and self._x <= x < self._x + self._size and y == self._y
+            or self._dx > 0 and self._x - self._size < x <= self._x and y == self._y):
             return Truck.SYMBOL
         return Arena.EMPTY
 
@@ -179,12 +180,12 @@ if __name__ == '__main__':
     arena = FroggerArena(15, 7)
 
     frog = Frog(arena, 7, 6)
-    Truck(arena, 3, 4);
-    Truck(arena, 5, 4);
+    Truck(arena, 2, 4);
+    Truck(arena, 6, 4);
     Truck(arena, 9, 4);
     Truck(arena, 2, 5);
-    Truck(arena, 4, 5);
-    Truck(arena, 8, 5);
+    Truck(arena, 5, 5);
+    Truck(arena, 9, 5);
     Boat(arena, 2, 1)
     Boat(arena, 10, 1)
     Boat(arena, 2, 2)
