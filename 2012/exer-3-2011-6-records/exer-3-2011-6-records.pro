@@ -1,7 +1,6 @@
 TEMPLATE = app
 CONFIG -= qt
 CONFIG += console
+CONFIG += c++11
 
 SOURCES += main.cpp
-
-QMAKE_CXXFLAGS += -std=c++11

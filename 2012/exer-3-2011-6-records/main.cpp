@@ -17,11 +17,12 @@ int main(int argc, char *argv[])
 
     map<string, int> records;
 
-    ifstream in("../2011-e3-6-records/list.txt");
+    ifstream in("../exer-3-2011-6-records/list.txt");
 
+    // alternative solution, without istringstream
 //    getline(in, name, ':');
 //    in >> points;
-//    getline(in, remaining);
+//    getline(in, remaining);  // consume the newline!
 //    while (in.good()) {
 //        records[name] = points;
 //        getline(in, name, ':');
@@ -29,34 +30,25 @@ int main(int argc, char *argv[])
 //        getline(in, remaining);
 //    }
 
-    getline(in, line);
-    while (in.good()) {
+    while (getline(in, line)) {
+        istringstream line_stream(line);
+        getline(line_stream, name, ':');
+        line_stream >> points;
 
-        istringstream lineStream(line);
-
-        getline(lineStream, name, ':');
-        lineStream >> points;
-
-        clog << name << ": " << points << endl;
         records[name] = points;
-
-        getline(in, line);
     }
 
-    // a taste of C++11 - add this line in .pro:
-    // QMAKE_CXXFLAGS += -std=c++11
-//    for (auto i : records) {
-//        clog << i.first << ": " << i.second << endl;
-//    }
+    // in. pro: CONFIG += c++11
+    for (auto i : records) {
+        clog << i.first << ": " << i.second << endl;
+    }
 
     string userName;
     cout << "User?" << endl;
-    getline(cin, userName);
-    while (cin.good()) {
+    while (getline(cin, userName)) {
         if (records.count(userName)) cout << records[userName] << endl;
         else cout << "Unknown user" << endl;
         cout << "User?" << endl;
-        getline(cin, userName);
     }
 
     return 0;
