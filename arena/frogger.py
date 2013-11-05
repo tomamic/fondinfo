@@ -13,7 +13,8 @@ class Passenger:
 class Frog(Character, Passenger):
     SYMBOL = '@'
     STAY, UP, LEFT, DOWN, RIGHT = (0, 0), (0, -1), (-1, 0), (0, 1), (1, 0)
-    
+    DIRS = (STAY, UP, LEFT, DOWN, RIGHT)
+
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
         self._arena = arena
@@ -35,7 +36,8 @@ class Frog(Character, Passenger):
                 self._x, self._y = new_x, new_y
 
     def set_direction(self, dx: int, dy):
-        self._dx, self._dy = dx, dy
+        if (dx, dy) in Frog.DIRS:
+            self._dx, self._dy = dx, dy
 
     def interact(self, other: Character):
         # the penguin dies as soon as it's touched by anybody
