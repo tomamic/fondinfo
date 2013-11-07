@@ -39,12 +39,10 @@ int main(int argc, char *argv[])
         ifstream in(fileNames[i].c_str());
 
         string word;
-        in >> word;
-        while (in.good()) {
+        while (in >> word) {
             if (count(words.begin(), words.end(), word) == 0) {
                 words.push_back(word);
             }
-            in >> word;
         }
     }
 

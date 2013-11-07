@@ -26,7 +26,7 @@ class Ball:
         self._y += self._dy
 
     def position(self) -> (int, int):
-        return self._x, self._y
+        return (self._x, self._y)
 
 
 if __name__ == '__main__':

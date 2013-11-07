@@ -43,10 +43,11 @@ int main(int argc, char *argv[])
         clog << i.first << ": " << i.second << endl;
     }
 
-    string userName;
+    string username;
     cout << "User?" << endl;
-    while (getline(cin, userName)) {
-        if (records.count(userName)) cout << records[userName] << endl;
+    while (getline(cin, username)) {
+        if (records.count(username))
+            cout << records[username] << endl;
         else cout << "Unknown user" << endl;
         cout << "User?" << endl;
     }
