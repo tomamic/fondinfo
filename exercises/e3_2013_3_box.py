@@ -10,7 +10,7 @@ class Box:
         return 2 * (self._w + self._h)
 
     def dimensions(self) -> (int, int):
-        return self._w, self._h
+        return (self._w, self._h)
     
 if __name__ == '__main__':
     width = int(input('width? '))

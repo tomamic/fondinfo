@@ -1,7 +1,7 @@
 # expr = term {( '+' | '-' ) term}
 # term = factor {( '*' | '/' ) factor}
-# factor = '-' factor | '(' expr ')' | val
-# val = 'x' | 'y' | 'z'
+# factor = '-' factor | '(' expr ')' | var | num
+# var = 'w' | 'x' | 'y' | 'z'
 
 import re
 
