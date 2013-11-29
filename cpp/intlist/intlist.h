@@ -15,6 +15,7 @@ class IntList {
 public:
     IntList();
     IntList(int size, int val);
+    ~IntList();
     int get(int pos);
     void set(int pos, int val);
     void push(int val);

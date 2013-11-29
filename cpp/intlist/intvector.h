@@ -10,6 +10,7 @@ class IntVector {
 public:
     IntVector();
     IntVector(int size, int val);
+    ~IntVector();
     int get(int pos);
     void set(int pos, int val);
     void push(int val);

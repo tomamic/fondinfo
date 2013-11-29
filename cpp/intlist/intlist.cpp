@@ -14,17 +14,31 @@ IntList::IntList(int size, int val) {
     size_ = size;
 }
 
+IntList::~IntList() {
+    while (size_ > 0) {
+        remove(0);
+    }
+}
+
 int IntList::get(int pos) {
-    if (pos < 0 || pos >= size_) throw out_of_range("wrong pos");
+    if (pos < 0 || pos >= size_) {
+        throw out_of_range("wrong pos");
+    }
     Node* n = head_;
-    for (int i = 0; i < pos; ++i) n = n->next;
+    for (int i = 0; i < pos; ++i) {
+        n = n->next;
+    }
     return n->val;
 }
 
 void IntList::set(int pos, int val) {
-    if (pos < 0 || pos >= size_) throw out_of_range("wrong pos");
+    if (pos < 0 || pos >= size_) {
+        throw out_of_range("wrong pos");
+    }
     Node* n = head_;
-    for (int i = 0; i < pos; ++i) n = n->next;
+    for (int i = 0; i < pos; ++i) {
+        n = n->next;
+    }
     n->val = val;
 }
 
@@ -37,24 +51,32 @@ int IntList::pop() {
 }
 
 void IntList::insert(int pos, int val) {
-    if (pos < 0 || pos > size_) throw out_of_range("wrong pos");
+    if (pos < 0 || pos > size_) {
+        throw out_of_range("wrong pos");
+    }
     if (pos == 0) {
         head_ = new Node{val, head_};
     } else {
         Node* n = head_;
-        for (int i = 0; i < pos - 1; ++i) n = n->next;
+        for (int i = 0; i < pos - 1; ++i) {
+            n = n->next;
+        }
         n->next = new Node{val, n->next};
     }
     ++size_;
 }
 
 int IntList::remove(int pos) {
-    if (pos < 0 || pos >= size_) throw out_of_range("wrong pos");
+    if (pos < 0 || pos >= size_) {
+        throw out_of_range("wrong pos");
+    }
     Node* n = head_;
     if (pos == 0) {
         head_ = n->next;
     } else {
-        for (int i = 0; i < pos - 1; ++i) n = n->next;
+        for (int i = 0; i < pos - 1; ++i) {
+            n = n->next;
+        }
         Node* prev = n;
         n = n->next;
         prev->next = n->next;
@@ -70,7 +92,9 @@ string IntList::str() {
     Node* n = head_;
     while (n != nullptr) {
         out << n->val;
-        if (n->next != nullptr) out << ' ';
+        if (n->next != nullptr) {
+            out << ' ';
+        }
         n = n->next;
     }
     return out.str();
