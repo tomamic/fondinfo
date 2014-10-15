@@ -1,129 +1,138 @@
 from sys import stdin
 from arena import Character, Arena
 
-class Ball(Character):
-    SYMBOL = '*'
-    def __init__(self, arena, x, y):
-        self._x, self._y = x, y
-        self._dx, self._dy = 1, 1
-        self._arena = arena
-        arena.add_character(self)
-
-    def move(self):
-        new_x = self._x + self._dx
-        if new_x < 0:
-            self._arena.score_points(self._arena.RIGHT, 1)
-            self._dx = -self._dx
-        elif new_x >= self._arena.width:
-            self._arena.score_points(self._arena.LEFT, 1)
-            self._dx = -self._dx
-        new_y = self._y + self._dy
-        if not (0 <= new_y < self._arena.height):
-            self._dy = -self._dy
-
-        what = self._arena.get(self._x + self._dx, self._y + self._dy)
-        if what != None:
-            what.interact(self)
-            self._dx = -self._dx
-        self._x += self._dx
-        self._y += self._dy
-        
-    def interact(self, other: Character):
-        pass
-
-    def symbol_at(self, x: int, y: int) -> str:
-        if self._x == x and self._y == y:
-            return Ball.SYMBOL
-        return Arena.EMPTY
-
-    @property
-    def pos(self) -> (int, int):
-        return (self._x, self._y)
-
-
-class Paddle:
-    SYMBOL = '|'
-    UP, STAY, DOWN = -1, 0, +1
-    INITIAL_LENGTH = 3
-
-    def __init__(self, arena, x, y):
-        self._length = Paddle.INITIAL_LENGTH
-        self._x, self._y = x, y
-        self._dy = 0
-        self._arena = arena
-        arena.add_character(self)
-
-    def move(self):
-        if self._dy != 0:
-            if self._dy == -1:
-                new_y = self._y - 1
-            else:
-                new_y = self._y + self._length
-            if 0 <= new_y < self._arena.height:
-                what = self._arena.get(self._x, new_y)
-                if what == None:
-                    self._y += self._dy
-                    
-    def interact(self, other: Character):
-        pass
-
-    def set_direction(self, dy):
-        self._dy = dy
-
-    def symbol_at(self, x: int, y: int) -> str:
-        if self._x == x and self._y <= y < self._y + self._length:
-            return Paddle.SYMBOL
-        return Arena.EMPTY
-        
-
-class AutoPaddle(Paddle):
-    def __init__(self, arena, x, y):
-        super().__init__(arena, x, y)
-        self._turn = 0
-
-    def move(self):
-        self._turn += 1
-        if self._turn % 3 == 0: return
-        
-        middle = self._y + (self._length // 2)
-        half_width = self._arena.width // 2
-        for c in self._arena.characters:
-            if isinstance(c, Ball) and abs(self._x - c.pos[0]) < half_width:
-                if c.pos[1] < middle:
-                    self.set_direction(-1)
-                elif c.pos[1] > middle:
-                    self.set_direction(+1)
-        super().move()
-
-
 class PongArena(Arena):
     LEFT, RIGHT = 0, 1
     
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         super().__init__(width, height)
         self._points = [0, 0]
 
-    def score_points(self, side, val):
+    def score(self, side: int, val: int):
         self._points[side] += val
 
-    def get_points(self, side):
-        return self._points[side]
+    def points(self) -> (int, int):
+        return self._points[0], self._points[1]
+
+
+class Ball(Character):
+    
+    def __init__(self, arena: PongArena, x: int, y: int):
+        self._x, self._y = x, y
+        self._dx, self._dy = 16, 12
+        self._w, self._h = 20, 20
+        self._arena = arena
+        arena.add(self)
+
+    def move(self):
+        arena_w, arena_h = self._arena.size()
+
+        self._x += self._dx
+        if not 0 <= self._x < arena_w - self._w:
+            self.score()
+            self.bounce_h(arena_w, 0)
+            
+        self._y = self._y + self._dy
+        if not 0 <= self._y < arena_h - self._h:
+            self.bounce_v(arena_h, 0)
+
+    def bounce_h(self, obstacle_at_right: int, obstacle_at_left: int):
+        if self._dx > 0:
+            self._x = 2 * (obstacle_at_right - self._w) - self._x
+        else:
+            self._x = 2 * obstacle_at_left - self._x
+        self._dx = -self._dx
+
+    def bounce_v(self, obstacle_below: int, obstacle_above: int):
+        if self._dy > 0:
+            self._y = 2 * (obstacle_below - self._h) - self._y
+        else:
+            self._y = 2 * obstacle_above - self._y
+        self._dy = -self._dy
+            
+    def score(self):
+        if self._dx > 0:
+            self._arena.score(PongArena.LEFT, 1)
+        else:
+            self._arena.score(PongArena.RIGHT, 1)
+                
+    def hit(self, other: Character):
+        x1, y1, w1, h1 = other.rect()
+        self.bounce_h(x1, x1 + w1)
+
+    def symbol(self) -> int:
+        return 0
+
+    def rect(self) -> (int, int, int, int):
+        return (self._x, self._y, self._w, self._h)
+
+
+class Paddle:
+    SPEED = 8
+
+    def __init__(self, arena: PongArena, x: int, y: int):
+        self._x, self._y = x, y
+        self._w, self._h = 5, 50
+        self._dy = 0
+        self._arena = arena
+        arena.add(self)
+
+    def move(self):
+        arena_w, arena_h = self._arena.size()
+        self._y += self._dy
+        if self._y < 0:
+            self._y = 0
+        elif self._y > arena_h - self._h:
+            self._y = arena_h - self._h
+
+    def hit(self, other: Character):
+        other.bounce_h(self._x, self._x + self._w)
+
+    def go_up(self):
+        self._dy = -self.SPEED
+        
+    def go_down(self):
+        self._dy = self.SPEED
+
+    def stay(self):
+        self._dy = 0
+
+    def symbol(self) -> int:
+        return 0
+        
+    def rect(self) -> (int, int, int, int):
+        return (self._x, self._y, self._w, self._h)
+        
+
+class AutoPaddle(Paddle):
+    def __init__(self, arena: PongArena, x: int, y: int, amplitude: int):
+        super().__init__(arena, x, y)
+        self._ymin, self._ymax = y, y + amplitude
+        self._dy = self.SPEED // 2
+
+    def move(self):
+        if not (self._ymin <= self._y + self._dy < self._ymax):
+            self._dy = -self._dy
+        self._y += self._dy
 
 
 if __name__ == '__main__':
-    arena = PongArena(51, 19)
-    Ball(arena, 15, 6)
-    paddle = Paddle(arena, 4, 9);
-    AutoPaddle(arena, 0, 9);
-    AutoPaddle(arena, 46, 9);
-    AutoPaddle(arena, 50, 9);
+    arena = PongArena(600, 400)
+    Ball(arena, 300, 200)
+    paddle = Paddle(arena, 100, 200);
+    AutoPaddle(arena, 200, 50, 250);
+    AutoPaddle(arena, 500, 200, 100);
+    AutoPaddle(arena, 400, 50, 100);
     print(arena)
 
-    COMMANDS = {'w': Paddle.UP, 's': Paddle.DOWN}
     for line in stdin:
-        direction = COMMANDS.get(line.strip(), Paddle.STAY)
-        paddle.set_direction(direction)
+        if line.strip() == 'w':
+            paddle.go_up()
+        elif line.strip() == 's':
+            paddle.go_down()
+        else:
+            paddle.stay()
 
         arena.move_all()
         print(arena)
-        print(arena.get_points(0), arena.get_points(1))
+        print(arena.points())
