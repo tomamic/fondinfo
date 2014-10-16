@@ -86,7 +86,8 @@ class Paddle:
             self._y = arena_h - self._h
 
     def hit(self, other: Character):
-        other.bounce_h(self._x, self._x + self._w)
+        # other.bounce_h(self._x, self._x + self._w)
+        pass
 
     def go_up(self):
         self._dy = -self.SPEED
