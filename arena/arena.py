@@ -9,6 +9,7 @@ class Character:
         raise NotImplementedError('Abstract method')
 
     def symbol(self) -> int:
+        '''return 0, or the index of current image'''
         raise NotImplementedError('Abstract method')
 
     def rect(self) -> (int, int, int, int):
@@ -60,7 +61,7 @@ class Arena:
         return 0 <= y <= self._h - h and 0 <= x <= self._w - w
 
     def __str__(self):
-        output = ''
+        output = StringIO()
         for c in self._characters:
-            output += '{} @ {} \n'.format(type(c).__name__, c.rect())
-        return output
+            print(type(c).__name__, '@', c.rect(), file=output)
+        return output.getvalue()
