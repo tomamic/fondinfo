@@ -7,8 +7,11 @@
 * Portare tutti i dischi dal primo all'ultimo paletto
 * Si può spostare solo un disco alla volta
 * Non si può mettere un disco su uno più piccolo
+
 (Usare la ricorsione. Immediato spostare un solo disco.
-N dischi: spostarne N-1 sul piolo né origine né dest., spostare l'ultimo disco sul piolo giusto, spostare ancora gli altri N-1 dischi.)
+N dischi: spostarne N-1 sul piolo né origine né dest.,
+spostare l'ultimo disco sul piolo giusto,
+spostare ancora gli altri N-1 dischi.)
 '''
 
 def print_towers(towers: list):
@@ -34,7 +37,7 @@ def move_towers(towers: list, n: int, src: int, tmp: int, dst: int):
         move_towers(towers, n - 1, tmp, src, dst)
 
 if __name__ == '__main__':
-    DISCS = 5
+    DISCS = 3
     POLES = 3
     towers = [[] for p in range(POLES)]
     for d in reversed(range(DISCS)):

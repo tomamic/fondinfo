@@ -6,6 +6,7 @@
 * Leggere due numeri
 * Calcolare il loro Massimo Comun Divisore
 * Visualizzare il risultato
+
 (Provare ad usare sia l'iterazione che la ricorsione)
 (Euclide: MCD(m, n) = MCD(n, m mod n), se n > 0; MCD(m, n) = m, se n = 0)
 '''
