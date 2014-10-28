@@ -28,9 +28,9 @@ def mcd2(a: int, b: int) -> int:
     return a
 
 if __name__ == '__main__':
+    # logging.basicConfig(level=logging.DEBUG)
     # a, b = 1071, 1029
     a = int(input())
     b = int(input())
-    logging.basicConfig(level=logging.DEBUG)
     print(mcd1(a, b))
     print(mcd2(a, b))
