@@ -13,14 +13,14 @@
 
 import logging
 
-def mcd1(a: int, b: int) -> int:
+def gcd1(a: int, b: int) -> int:
     logging.debug('mcd1 {} {}'.format(a, b))
     if b == 0:
         return a
     else:
         return mcd1(b, a % b)
 
-def mcd2(a: int, b: int) -> int:
+def gcd2(a: int, b: int) -> int:
     logging.debug('mcd2 {} {}'.format(a, b))
     while b != 0:
         a, b = b, a % b
@@ -32,5 +32,5 @@ if __name__ == '__main__':
     # a, b = 1071, 1029
     a = int(input())
     b = int(input())
-    print(mcd1(a, b))
-    print(mcd2(a, b))
+    print(gcd1(a, b))
+    print(gcd2(a, b))
