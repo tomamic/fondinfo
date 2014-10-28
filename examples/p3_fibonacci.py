@@ -3,8 +3,9 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import logging, sys
+import logging, sys, time, functools
 
+# @functools.lru_cache()
 def fibonacci1(n: int) -> int:
     result = 1
     if n >= 2:
@@ -14,15 +15,15 @@ def fibonacci1(n: int) -> int:
 
 def fibonacci2(n: int) -> int:
     result = 1
-    if n < len(fibonacci2.lookup):
-        result = fibonacci2.lookup[n]
+    if n < len(fibonacci2._lookup):
+        result = fibonacci2._lookup[n]
     else:
         logging.debug('fib {}'.format(n))
         result = fibonacci2(n - 1) + fibonacci2(n - 2)
-        fibonacci2.lookup.append(result)
+        fibonacci2._lookup.append(result)
     return result
 
-fibonacci2.lookup = [1, 1]
+fibonacci2._lookup = [1, 1]
 # lookup is a variable associated with the
 # function itself, not a particular activation
 
@@ -40,13 +41,20 @@ def fibonacci3(n: int) -> int:
     return result;
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    #logging.basicConfig(level=logging.DEBUG)
     for line in sys.stdin:
-        n = int(line.strip())
-        print('fib1:')
-        print(fibonacci1(n))
-        print('---\nfib2:')
-        print(fibonacci2(n))
-        print('---\nfib3')
-        print(fibonacci3(n))
+        n = int(line)
+
+        start = time.clock()
+        fib = fibonacci1(n)
+        print('fib1:', fib, time.clock() - start)
+
+        start = time.clock()
+        fib = fibonacci2(n)
+        print('fib2:', fib, time.clock() - start)
+
+        start = time.clock()
+        fib = fibonacci3(n)
+        print('fib3:', fib, time.clock() - start)
+
 
