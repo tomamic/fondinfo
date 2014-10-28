@@ -22,7 +22,6 @@ background = (255, 255, 255)
 images = {Ball: pygame.image.load('ball.bmp'),
           Ghost: pygame.image.load('ghost.bmp'),
           Turtle: pygame.image.load('turtle.bmp')}
-# if img size ≠ 20x20: pygame.transform.scale
 
 playing = True
 while playing:
@@ -43,7 +42,7 @@ while playing:
             turtle.stay()
 
     arena.move_all()  # Game logic
-        
+
     screen.fill(background)
     for c in arena.characters():
         x, y, w, h = c.rect()
