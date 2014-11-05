@@ -1,10 +1,10 @@
 def to_infix(tokens: list) -> list:
     token = tokens.pop(0)
 
-    try:
+    if '0' <= token[0] <= '9':
         value = float(token)
         return [token]
-    except:
+    else:
         result = ['(']
         result += to_infix(tokens)
         result += [' ', token, ' ']
@@ -15,10 +15,9 @@ def to_infix(tokens: list) -> list:
 def evaluate(tokens: list) -> float:
     token = tokens.pop(0)
 
-    try:
-        value = float(token)
-        return value
-    except:
+    if '0' <= token[0] <= '9':
+        return float(token)
+    else:
         a = evaluate(tokens)
         b = evaluate(tokens)
 
