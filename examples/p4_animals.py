@@ -25,7 +25,8 @@ class Pig(Animal):
 
 
 # a list of Animal objects
-animals = [Dog('danny'), Cat('candy'), Pig('peppa'), Pig('george')]
+animals = [Dog('danny'), Cat('candy'),
+           Pig('peppa'), Pig('george')]
 
 for a in animals:
     a.say()
