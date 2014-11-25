@@ -39,7 +39,7 @@ char TicTacToe::get(int x, int y) {
 bool TicTacToe::check_line(int x, int y, int dx, int dy) {
     auto player = get(x, y);
     if (player == NONE) return false;
-    for (auto i = 0; i < side_; ++i) {
+    for (auto i = 1; i < side_; ++i) {
         if (get(x + dx * i, y + dy * i) != player) {
             return false;
         }
