@@ -82,7 +82,7 @@ void FifteenPuzzle::set(Coord cell, int value) {
 void FifteenPuzzle::swap_blank_with(Coord cell) {
     moved_ = blank_;
     blank_ = cell;
-    set(moved_, get(blank_));
+    set(moved_, get(cell));
     set(blank_, BLANK);
 }
 
