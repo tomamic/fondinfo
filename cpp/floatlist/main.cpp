@@ -72,8 +72,13 @@ int main() {
     l.push(11);
     assert(l.str() == "0 2 3 10 4 11");
 
+    // test generic list
+
     GenericList<int> m{3, 10};
     assert(m.str() == "10 10 10");
+
+    m.push(11);
+    assert(m.str() == "10 10 10 11");
 
     return 0;
 }
