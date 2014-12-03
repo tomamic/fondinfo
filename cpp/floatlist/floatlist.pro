@@ -6,9 +6,11 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     floatvector.cpp \
-    floatlist.cpp
+    floatlist.cpp \
+    genericlist.cpp
 
 HEADERS += \
     floatvector.h \
-    floatlist.h
+    floatlist.h \
+    genericlist.h
 

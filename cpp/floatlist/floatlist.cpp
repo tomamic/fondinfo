@@ -92,7 +92,7 @@ string FloatList::str() {
     ostringstream out;
     Node* n = head_;
     while (n != nullptr) {
-        out << fixed << setprecision(1) << n->val;
+        out << n->val;
         if (n->next != nullptr) {
             out << ' ';
         }

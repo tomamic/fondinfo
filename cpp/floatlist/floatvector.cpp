@@ -79,7 +79,7 @@ int FloatVector::size() {
 string FloatVector::str() {
     ostringstream out;
     for (int i = 0; i < size_; ++i) {
-        out << fixed << setprecision(1) << data_[i];
+        out << data_[i];
         if (i < size_ - 1) {
             out << ' ';
         }
