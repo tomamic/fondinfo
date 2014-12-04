@@ -16,7 +16,7 @@ public:
     static const char OUT = '!';
 
     TicTacToe(int side);
-    void clear();
+    void reset(int side);
     void play_at(int x, int y);
     char get(int x, int y);
     bool check_line(int x, int y, int dx, int dy);

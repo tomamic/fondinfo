@@ -1,15 +1,12 @@
 #include "tictactoe.h"
 
 TicTacToe::TicTacToe(int side) {
-    side_ = side;
-    matrix_.assign(side * side, +NONE);
-    clear();
+    reset(side);
 }
 
-void TicTacToe::clear() {
-    for (int i = 0; i < matrix_.size(); ++i) {
-        matrix_[i] = NONE;
-    }
+void TicTacToe::reset(int side) {
+    side_ = side;
+    matrix_.assign(side * side, +NONE);
     turn_ = 0;
 }
 
