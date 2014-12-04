@@ -41,6 +41,12 @@ void GameGui::create_buttons()
     adjustSize();
 }
 
+void GameGui::new_game(int side)
+{
+    game_->reset(side);
+    create_buttons();
+}
+
 void GameGui::handle_click(int x, int y)
 {
     game_->play_at(x, y);
@@ -72,12 +78,5 @@ void GameGui::update_all_buttons()
     for (auto y = 0; y < rows(); y++)
         for (auto x = 0; x < cols(); x++)
             update_button(x, y);
-}
-
-void GameGui::new_game(int side)
-{
-    delete game_;
-    game_ = new TicTacToe(side);
-    create_buttons();
 }
 
