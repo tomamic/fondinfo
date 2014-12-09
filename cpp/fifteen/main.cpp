@@ -32,7 +32,7 @@ void run_gui(int argc, char* argv[]) {
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
-    // run_gui(argc, argv);
+    run_gui(argc, argv);
 
     FifteenPuzzle puzzle{3, 2};
     cout << puzzle.str();

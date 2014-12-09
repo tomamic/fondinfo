@@ -6,6 +6,11 @@ FifteenGui QPushButton {
     border: 0;
     margin: 2px;
 }
-FifteenGui QPushButton:disabled {
+
+[fifteen=blank] {
+    background: white;
+}
+
+[fifteen=moved] {
     background: springgreen;
 }
