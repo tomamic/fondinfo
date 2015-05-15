@@ -1,8 +1,13 @@
+'''
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 from sys import stdin
 from random import choice
-from arena import Character, Arena
+from arena import *
 
-class Ball(Character):
+class Ball(Actor):
     W, H = 20, 20
 
     def __init__(self, arena: Arena, x: int, y: int):
@@ -20,7 +25,7 @@ class Ball(Character):
         if not (0 <= self._y < arena_h - self.H):
             self._dy = -self._dy
 
-    def hit(self, other: Character):
+    def hit(self, other: Actor):
         pass
         
     def rect(self) -> (int, int, int, int):
@@ -30,7 +35,7 @@ class Ball(Character):
         return 0
 
 
-class Ghost(Character):
+class Ghost(Actor):
     W, H = 20, 20
 
     def __init__(self, arena: Arena, x: int, y: int):
@@ -45,7 +50,7 @@ class Ghost(Character):
         self._x = (self._x + dx) % arena_w
         self._y = (self._y + dy) % arena_h
 
-    def hit(self, other: Character):
+    def hit(self, other: Actor):
         pass
         
     def rect(self) -> (int, int, int, int):
@@ -55,7 +60,7 @@ class Ghost(Character):
         return 0
 
 
-class Turtle(Character):
+class Turtle(Actor):
     W, H = 20, 20
     SPEED = 2
 
@@ -94,7 +99,7 @@ class Turtle(Character):
     def stay(self):
         self._dx, self._dy = 0, 0
 
-    def hit(self, other: Character):
+    def hit(self, other: Actor):
         pass
         
     def rect(self) -> (int, int, int, int):
@@ -104,13 +109,18 @@ class Turtle(Character):
         return 0
 
 
+def print_arena(arena):
+    for a in arena.actors():
+        print(type(a).__name__, '@', a.rect())
+
+    
 if __name__ == '__main__':
     arena = Arena(320, 240)
     Ball(arena, 40, 80)
     Ball(arena, 80, 40)
     Ghost(arena, 120, 80)
-    print(arena)
+    print_arena(arena)
 
     for line in stdin:
         arena.move_all()
-        print(arena)
+        print_arena(arena)

@@ -1,5 +1,11 @@
+'''
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 from sys import stdin
-from arena import Character, Arena
+from arena import *
+
 
 class PongArena(Arena):
     LEFT, RIGHT = 0, 1
@@ -15,7 +21,7 @@ class PongArena(Arena):
         return self._points[0], self._points[1]
 
 
-class Ball(Character):
+class Ball(Actor):
     
     def __init__(self, arena: PongArena, x: int, y: int):
         self._x, self._y = x, y
@@ -56,7 +62,7 @@ class Ball(Character):
         else:
             self._arena.score(PongArena.RIGHT, 1)
                 
-    def hit(self, other: Character):
+    def hit(self, other: Actor):
         x1, y1, w1, h1 = other.rect()
         self.bounce_h(x1, x1 + w1)
 
@@ -85,7 +91,7 @@ class Paddle:
         elif self._y > arena_h - self._h:
             self._y = arena_h - self._h
 
-    def hit(self, other: Character):
+    def hit(self, other: Actor):
         pass
 
     def go_up(self):
@@ -114,25 +120,3 @@ class AutoPaddle(Paddle):
         if not (self._ymin <= self._y + self._dy < self._ymax):
             self._dy = -self._dy
         self._y += self._dy
-
-
-if __name__ == '__main__':
-    arena = PongArena(600, 400)
-    Ball(arena, 300, 200)
-    paddle = Paddle(arena, 100, 200);
-    AutoPaddle(arena, 200, 50, 250);
-    AutoPaddle(arena, 500, 200, 100);
-    AutoPaddle(arena, 400, 50, 100);
-    print(arena)
-
-    for line in stdin:
-        if line.strip() == 'w':
-            paddle.go_up()
-        elif line.strip() == 's':
-            paddle.go_down()
-        else:
-            paddle.stay()
-
-        arena.move_all()
-        print(arena)
-        print(arena.points())

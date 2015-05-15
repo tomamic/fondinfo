@@ -6,8 +6,8 @@
 '''
 
 import pygame
-from arena import Character, Arena
-from bounce import Ball, Ghost, Turtle
+from arena import *
+from bounce import *
 
 arena = Arena(320, 240)
 Ball(arena, 40, 80)
@@ -19,9 +19,9 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(arena.size())
 background = (255, 255, 255)
-images = {Ball: pygame.image.load('ball.bmp'),
-          Ghost: pygame.image.load('ghost.bmp'),
-          Turtle: pygame.image.load('turtle.bmp')}
+images = {Ball: pygame.image.load('ball.png'),
+          Ghost: pygame.image.load('ghost.png'),
+          Turtle: pygame.image.load('turtle.png')}
 
 playing = True
 while playing:
@@ -44,11 +44,15 @@ while playing:
     arena.move_all()  # Game logic
 
     screen.fill(background)
-    for c in arena.characters():
-        x, y, w, h = c.rect()
-        img = images[type(c)]
+    for a in arena.actors():
+        x, y, w, h = a.rect()
+        img = images[type(a)]
         screen.blit(img, (x, y))
+        # use the following line if an actor has multiple images
+        # screen.blit(img, (x, y), area=(a.symbol() * w, 0, w, h))
 
     pygame.display.flip()
     clock.tick(30)
+    
+pygame.quit()
 

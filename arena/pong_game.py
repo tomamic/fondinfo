@@ -6,8 +6,8 @@
 '''
 
 import pygame
-from arena import Character, Arena
-from pong import PongArena, Ball, Paddle, AutoPaddle
+from arena import *
+from pong import *
 
 arena = PongArena(600, 400)
 Ball(arena, 300, 200)
@@ -20,10 +20,9 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(arena.size())
 background = (255, 255, 255)
-images = {Ball: pygame.image.load('ball.bmp')}
+images = {Ball: pygame.image.load('ball.png')}
 colors = {Paddle: (0, 0, 255),
           AutoPaddle: (0, 0, 255)}
-# if img size ≠ 20x20: pygame.transform.scale
 
 playing = True
 while playing:
@@ -45,13 +44,13 @@ while playing:
     arena.move_all()
         
     screen.fill(background)
-    for c in arena.characters():
-        if type(c) in images:
-            img = images[type(c)]
-            screen.blit(img, c.rect())
+    for a in arena.actors():
+        if type(a) in images:
+            img = images[type(a)]
+            screen.blit(img, a.rect())
         else:
-            col = colors.get(type(c), (127, 127, 127))
-            pygame.draw.rect(screen, col, c.rect())
+            col = colors.get(type(a), (127, 127, 127))
+            pygame.draw.rect(screen, col, a.rect())
 
     # print points        
     font = pygame.font.SysFont('arial', 24)
@@ -63,3 +62,4 @@ while playing:
     pygame.display.flip()
     clock.tick(30)
 
+pygame.quit()
