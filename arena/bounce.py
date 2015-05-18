@@ -9,10 +9,11 @@ from arena import *
 
 class Ball(Actor):
     W, H = 20, 20
+    SPEED = 5
 
     def __init__(self, arena: Arena, x: int, y: int):
         self._x, self._y = x, y
-        self._dx, self._dy = 5, 5
+        self._dx, self._dy = self.SPEED, self.SPEED
         self._arena = arena
         arena.add(self)
 
@@ -26,7 +27,15 @@ class Ball(Actor):
             self._dy = -self._dy
 
     def hit(self, other: Actor):
-        pass
+        x, y, w, h = other.rect()
+        if x < self._x:
+            self._dx = self.SPEED
+        else:
+            self._dx = -self.SPEED
+        if y < self._y:
+            self._dy = self.SPEED
+        else:
+            self._dy = -self.SPEED
         
     def rect(self) -> (int, int, int, int):
         return self._x, self._y, self.W, self.H
