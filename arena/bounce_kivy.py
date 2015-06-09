@@ -1,4 +1,4 @@
-from kivy.app import App
+from kivy.app import runTouchApp
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Rectangle, Ellipse
 from kivy.clock import Clock
@@ -27,6 +27,25 @@ class GameWidget(Widget):
         self._touch_orig = None
         Clock.schedule_interval(self.advance_game, 1 / 30)
 
+        self._kbd = Window.request_keyboard(
+            self.kbd_closed, self)
+        self._kbd.bind(on_key_down=self.kbd_down)
+
+    def kbd_closed(self):
+        print('My keyboard have been closed!')
+        self._kbd.unbind(on_key_down=self.kbd_down)
+        self._kbd = None
+
+    def kbd_down(self, kbd, keycode, text, modifiers):
+        print('Key pressed:', keycode, text, modifiers)
+
+        # keycode is a tuple (int, str)
+        if keycode[1] == 'escape':
+            kbd.release()
+
+        return True  # accept the key
+
+
     def on_touch_down(self, touch):
         self._touch_orig = touch.x, touch.y
 
@@ -50,8 +69,6 @@ class GameWidget(Widget):
     def advance_game(self, dt):
         arena.move_all()
         self.draw_game()
-        if False: #arena.won() or arena.lost():
-            App.get_running_app().stop()
 
     def draw_game(self):
         self.canvas.clear()
@@ -74,10 +91,5 @@ class GameWidget(Widget):
                     Rectangle(pos=(x, arena.size()[1] - y - h), size=(w, h))
 
 
-class GameApp(App):
-    def build(self):
-        return GameWidget()
-
-
 if __name__ == '__main__':
-    GameApp().run()
+    runTouchApp(GameWidget())
