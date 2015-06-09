@@ -14,7 +14,6 @@ from p5_fifteen_puzzle import FifteenPuzzle
 
 class GridButton(Button):
     grid_pos = ListProperty((0, 0))
-    def __repr__(self): return self.text
 
 class FifteenGui(GridLayout):
     def __init__(self):
