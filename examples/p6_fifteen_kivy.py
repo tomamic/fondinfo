@@ -17,8 +17,8 @@ class GridButton(Button):
 
 class FifteenGui(GridLayout):
     def __init__(self):
-        GridLayout.__init__(self, cols=3)
-        self._puzzle = FifteenPuzzle(3, 2)
+        GridLayout.__init__(self, cols=4)
+        self._puzzle = FifteenPuzzle(4, 4)
         for y in range(self._puzzle.rows):
             for x in range(self._puzzle.cols):
                 btn = GridButton(grid_pos=(x, y),
