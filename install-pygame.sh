@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo add-apt-repository ppa:thopiekar/pygame
+sudo apt-get update
 sudo apt-get install python3-pygame
 
 # ... otherwise, uncomment the following lines:
