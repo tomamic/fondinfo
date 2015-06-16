@@ -56,7 +56,7 @@ class Arena:
         '''
         for a in self.actors():
             a.move()
-            for other in reversed(self._actors):
+            for other in reversed(self.actors()):
                 # reversed order, so actors drawn on top of others
                 # (towards the end of the cycle) are checked first
                 if self.check_collision(a, other):
