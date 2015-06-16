@@ -26,7 +26,7 @@ class Ball(Actor):
         if not (0 <= self._y < arena_h - self.H):
             self._dy = -self._dy
 
-    def hit(self, other: Actor):
+    def collide(self, other: Actor):
         x, y, w, h = other.rect()
         if x < self._x:
             self._dx = self.SPEED
@@ -59,7 +59,7 @@ class Ghost(Actor):
         self._x = (self._x + dx) % arena_w
         self._y = (self._y + dy) % arena_h
 
-    def hit(self, other: Actor):
+    def collide(self, other: Actor):
         pass
         
     def rect(self) -> (int, int, int, int):
@@ -108,7 +108,7 @@ class Turtle(Actor):
     def stay(self):
         self._dx, self._dy = 0, 0
 
-    def hit(self, other: Actor):
+    def collide(self, other: Actor):
         pass
         
     def rect(self) -> (int, int, int, int):

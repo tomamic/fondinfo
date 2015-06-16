@@ -62,7 +62,7 @@ class Ball(Actor):
         else:
             self._arena.score(PongArena.RIGHT, 1)
                 
-    def hit(self, other: Actor):
+    def collide(self, other: Actor):
         x1, y1, w1, h1 = other.rect()
         self.bounce_h(x1, x1 + w1)
 
@@ -91,7 +91,7 @@ class Paddle:
         elif self._y > arena_h - self._h:
             self._y = arena_h - self._h
 
-    def hit(self, other: Actor):
+    def collide(self, other: Actor):
         pass
 
     def go_up(self):

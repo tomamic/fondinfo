@@ -1,9 +1,9 @@
 from kivy.app import runTouchApp
 from kivy.uix.widget import Widget
-from kivy.graphics import Color, Rectangle, Ellipse
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.core.image import Image
+from kivy.graphics import *
 
 from arena import *
 from bounce import *
@@ -16,9 +16,10 @@ Ghost(arena, 120, 80)
 turtle = Turtle(arena, 80, 80)
 
 
-images = {Ball: Image('ball.png'),
-          Ghost: Image('ghost.png'),
-          Turtle: Image('turtle.png')}
+images = {Ball: Image('ball.png').texture,
+          Ghost: Image('ghost.png').texture,
+          Turtle: Image('turtle.png').texture}
+
 
 class GameWidget(Widget):
     def __init__(self):
@@ -26,25 +27,6 @@ class GameWidget(Widget):
         Window.size = arena.size()
         self._touch_orig = None
         Clock.schedule_interval(self.advance_game, 1 / 30)
-
-        self._kbd = Window.request_keyboard(
-            self.kbd_closed, self)
-        self._kbd.bind(on_key_down=self.kbd_down)
-
-    def kbd_closed(self):
-        print('My keyboard have been closed!')
-        self._kbd.unbind(on_key_down=self.kbd_down)
-        self._kbd = None
-
-    def kbd_down(self, kbd, keycode, text, modifiers):
-        print('Key pressed:', keycode, text, modifiers)
-
-        # keycode is a tuple (int, str)
-        if keycode[1] == 'escape':
-            kbd.release()
-
-        return True  # accept the key
-
 
     def on_touch_down(self, touch):
         self._touch_orig = touch.x, touch.y
@@ -74,7 +56,7 @@ class GameWidget(Widget):
         self.canvas.clear()
         with self.canvas:
             Color(.5, 1, .5)
-            self.rect = Rectangle(size=self.size, pos=self.pos)
+            Rectangle(size=self.size, pos=self.pos)
             t_orig = self._touch_orig
             if t_orig is not None:
                 Color(.8, .8, .8)
@@ -83,8 +65,7 @@ class GameWidget(Widget):
                 x, y, w, h = c.rect()
                 if type(c) in images:
                     Color(1, 1, 1)
-                    img = images[type(c)].texture
-                    img = img.get_region(c.symbol() * w, 0, w, h)
+                    img = images[type(c)].get_region(c.symbol() * w, 0, w, h)
                     Rectangle(texture=img, pos=(x, arena.size()[1] - y - h), size=(w, h))
                 else:
                     Color(.5, .5, .5)

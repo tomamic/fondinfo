@@ -10,7 +10,7 @@ class Actor:
         '''Called by Arena, at the actor's turn'''
         raise NotImplementedError('Abstract method')
 
-    def hit(self, other: 'Actor'):
+    def collide(self, other: 'Actor'):
         '''Called by Arena, when the actor collides with onother one
         Args:
           other -- the other actor involved in the collision
@@ -51,8 +51,8 @@ class Arena:
 
     def move_all(self):
         '''Move all actors (through their own move method).
-        After each single move, collitions are checked and
-        The hit methods of both colliding actors are called
+        After each single move, collisions are checked and
+        The collide methods of both colliding actors are called
         '''
         for a in self.actors():
             a.move()
@@ -60,8 +60,8 @@ class Arena:
                 # reversed order, so actors drawn on top of others
                 # (towards the end of the cycle) are checked first
                 if self.check_collision(a, other):
-                    a.hit(other)
-                    other.hit(a)
+                    a.collide(other)
+                    other.collide(a)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check two actors for mutual collision
