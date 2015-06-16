@@ -11,7 +11,7 @@ class Actor:
         raise NotImplementedError('Abstract method')
 
     def collide(self, other: 'Actor'):
-        '''Called by Arena, when the actor collides with onother one
+        '''Called by Arena, when the actor collides with another one
         Args:
           other -- the other actor involved in the collision
         '''
