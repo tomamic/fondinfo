@@ -23,7 +23,7 @@ images = {Ball: Image('ball.png').texture,
 
 class GameWidget(Widget):
     def __init__(self):
-        super().__init__()
+        Widget.__init__(self)
         Window.size = arena.size()
         self._touch_orig = None
         Clock.schedule_interval(self.advance_game, 1 / 30)
