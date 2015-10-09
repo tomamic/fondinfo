@@ -83,7 +83,6 @@ class Arena(object):
         Returns:
             bool -- Collision value
         '''
-        
         x1, y1, w1, h1 = a1.rect()
         x2, y2, w2, h2 = a2.rect()
         return (a1 is not a2

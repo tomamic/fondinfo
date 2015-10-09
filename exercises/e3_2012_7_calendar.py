@@ -25,7 +25,7 @@ for y in range(MAX_WEEKS):
 print()
 
 for y in range(WEEK_DAYS):
-    for x in range(WEEK_DAYS):
+    for x in range(MAX_WEEKS):
         day = y + x * WEEK_DAYS + 1 - first
         if 0 < day <= length:
             print('{:3}'.format(day), end='')

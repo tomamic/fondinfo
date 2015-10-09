@@ -1,4 +1,5 @@
-counters = [0] * 26
+N = 26
+counters = [0] * N
 
 text = input('text? ')
 
@@ -7,5 +8,6 @@ for c in text:
         index = ord(c) - ord('A')
         counters[index] += 1
 
-for i in range(26):
-    print(chr(i + ord('A')), counters[i])
+for i in range(N):
+    code = i + ord('A')
+    print(chr(code), counters[i])
