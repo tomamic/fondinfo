@@ -5,8 +5,6 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import sys
-
 class Ball:
     W, H = 20, 20
     ARENA_W, ARENA_H = 320, 240
@@ -36,7 +34,7 @@ if __name__ == '__main__':
     print('Ball 1 @', b1.rect())
     print('Ball 2 @', b2.rect())
 
-    for line in sys.stdin:
+    while input() != 'x':
         b1.move()
         b2.move()
         print('Ball 1 @', b1.rect())

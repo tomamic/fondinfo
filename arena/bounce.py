@@ -18,12 +18,14 @@ class Ball(Actor):
         arena.add(self)
 
     def move(self):
-        self._x += self._dx
-        self._y += self._dy
         arena_w, arena_h = self._arena.size()
-        if not (0 <= self._x < arena_w - self.W):
+        if 0 <= self._x + self._dx < arena_w - self.W:
+            self._x += self._dx
+        else:
             self._dx = -self._dx
-        if not (0 <= self._y < arena_h - self.H):
+        if 0 <= self._y + self._dy < arena_h - self.H:
+            self._y += self._dy
+        else:
             self._dy = -self._dy
 
     def collide(self, other):
