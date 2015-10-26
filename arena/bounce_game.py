@@ -48,8 +48,9 @@ while playing:
         x, y, w, h = a.rect()
         img = images[type(a)]
         screen.blit(img, (x, y))
-        # use the following line if an actor has multiple images
-        # screen.blit(img, (x, y), area=(a.symbol() * w, 0, w, h))
+        # use the following lines to cut a sprite from a larger image
+        # xs, ys = a.symbol()
+        # screen.blit(img, (x, y), area=(xs, ys, w, h))
 
     pygame.display.flip()
     clock.tick(30)

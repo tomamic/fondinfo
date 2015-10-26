@@ -17,18 +17,18 @@ class Actor(object):
         '''
         raise NotImplementedError('Abstract method')
 
-    def symbol(self):
-        '''Return (0, 0) or the (x, y) position of current sprite in a
-           larger image (containing more sprites)
-        Returns:
-            (int, int) -- the position of current image
-        '''
-        raise NotImplementedError('Abstract method')
-
     def rect(self):
         '''Return the rectangle containing the actor, as a 4-tuple of ints
         Returns:
             (int, int, int, int) -- (left, top, width, height)
+        '''
+        raise NotImplementedError('Abstract method')
+
+    def symbol(self):
+        '''Return (0, 0) or the (x, y) position of current sprite in a
+           larger image, containing more sprites
+        Returns:
+            (int, int) -- the position of current sprite
         '''
         raise NotImplementedError('Abstract method')
 

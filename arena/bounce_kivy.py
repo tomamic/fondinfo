@@ -65,7 +65,8 @@ class GameWidget(Widget):
                 x, y, w, h = c.rect()
                 if type(c) in images:
                     Color(1, 1, 1)
-                    img = images[type(c)].get_region(c.symbol() * w, 0, w, h)
+                    xs, ys = c.symbol()
+                    img = images[type(c)].get_region(xs, ys, w, h)
                     Rectangle(texture=img, pos=(x, arena.size()[1] - y - h), size=(w, h))
                 else:
                     Color(.5, .5, .5)
