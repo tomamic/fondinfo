@@ -67,7 +67,7 @@ class Ball(Actor):
         self.bounce_h(x1, x1 + w1)
 
     def symbol(self) -> int:
-        return 0
+        return 0, 0
 
     def rect(self) -> (int, int, int, int):
         return (self._x, self._y, self._w, self._h)
@@ -104,7 +104,7 @@ class Paddle:
         self._dy = 0
 
     def symbol(self) -> int:
-        return 0
+        return 0, 0
         
     def rect(self) -> (int, int, int, int):
         return (self._x, self._y, self._w, self._h)

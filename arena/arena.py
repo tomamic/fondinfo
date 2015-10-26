@@ -18,9 +18,10 @@ class Actor(object):
         raise NotImplementedError('Abstract method')
 
     def symbol(self):
-        '''Return 0, or the index of current image
+        '''Return (0, 0) or the (x, y) position of current sprite in a
+           larger image (containing more sprites)
         Returns:
-            int -- the index of current image
+            (int, int) -- the position of current image
         '''
         raise NotImplementedError('Abstract method')
 
