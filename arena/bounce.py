@@ -3,7 +3,6 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from sys import stdin
 from random import choice
 from arena import *
 
@@ -123,13 +122,17 @@ def print_arena(arena):
         print(type(a).__name__, '@', a.rect())
 
     
-if __name__ == '__main__':
+def main():
     arena = Arena(320, 240)
     Ball(arena, 40, 80)
     Ball(arena, 80, 40)
     Ghost(arena, 120, 80)
     print_arena(arena)
 
-    for line in stdin:
+    while input() != 'x':
         arena.move_all()
         print_arena(arena)
+
+if __name__ == '__main__':
+    main()
+    
