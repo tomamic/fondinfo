@@ -1,12 +1,13 @@
-i = 1
-n = int(input('n ? '))
-found = False
+n = int(input('n? '))
+result = 0
 
+i = 1
 while i * i <= n:
     if i * i == n:
-        print(i)
-        found = True
+        result = i
     i += 1
 
-if not found:
+if result == 0:
     print('no')
+else:
+    print(result)
