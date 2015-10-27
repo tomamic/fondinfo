@@ -20,7 +20,8 @@ def print_towers(towers: list):
         for d in t:
             print(d, end='')
         print()
-    input()
+    print()
+
 
 def move_towers(towers: list, n: int, src: int, tmp: int, dst: int):
     # if there are discs above, move n-1 away
@@ -36,13 +37,17 @@ def move_towers(towers: list, n: int, src: int, tmp: int, dst: int):
     if n > 1:
         move_towers(towers, n - 1, tmp, src, dst)
 
-if __name__ == '__main__':
-    DISCS = 3
+
+def main():
+    discs = int(input('Discs? '))
     POLES = 3
     towers = [[] for p in range(POLES)]
-    for d in reversed(range(DISCS)):
+    for d in reversed(range(discs)):
         towers[0].append(d + 1)
     print_towers(towers)
 
     # move all discs from pole 0 to pole 2
-    move_towers(towers, DISCS, 0, 1, 2)
+    move_towers(towers, discs, 0, 1, 2)
+
+if __name__ == '__main__':
+    main()
