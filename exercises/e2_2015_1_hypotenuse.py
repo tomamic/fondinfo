@@ -1,7 +1,6 @@
 def hypotenuse(side1: float, side2: float) -> float:
-    hyp = (side1 ** 2 + side2 ** 2) ** 0.5
-    print(a)
-    return hyp
+    result = (side1 ** 2 + side2 ** 2) ** 0.5
+    return result
 
 def main():
     a = float(input('a? '))
