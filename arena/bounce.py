@@ -65,7 +65,7 @@ class Ghost(Actor):
         return self._x, self._y, self.W, self.H
 
     def symbol(self):
-        return 0, 0
+        return 20, 0
 
 
 class Turtle(Actor):
@@ -114,7 +114,7 @@ class Turtle(Actor):
         return self._x, self._y, self.W, self.H
 
     def symbol(self):
-        return 0, 0
+        return 0, 20
 
 
 def print_arena(arena):

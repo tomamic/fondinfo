@@ -19,9 +19,11 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(arena.size())
 background = (255, 255, 255)
-images = {Ball: pygame.image.load('ball.png'),
-          Ghost: pygame.image.load('ghost.png'),
-          Turtle: pygame.image.load('turtle.png')}
+sprites = pygame.image.load('sprites.png')
+
+##images = {Ball: pygame.image.load('ball.png'),
+##          Ghost: pygame.image.load('ghost.png'),
+##          Turtle: pygame.image.load('turtle.png')}
 
 playing = True
 while playing:
@@ -46,11 +48,14 @@ while playing:
     screen.fill(background)
     for a in arena.actors():
         x, y, w, h = a.rect()
-        img = images[type(a)]
-        screen.blit(img, (x, y))
         # use the following lines to cut a sprite from a larger image
-        # xs, ys = a.symbol()
-        # screen.blit(img, (x, y), area=(xs, ys, w, h))
+        xs, ys = a.symbol()
+        screen.blit(sprites, (x, y), area=(xs, ys, w, h))
+
+        # as an alternative, keep an image
+        # associated with each actor type
+##        img = images[type(a)]
+##        screen.blit(img, (x, y))
 
     pygame.display.flip()
     clock.tick(30)

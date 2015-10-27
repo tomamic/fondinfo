@@ -15,10 +15,7 @@ Ball(arena, 80, 40)
 Ghost(arena, 120, 80)
 turtle = Turtle(arena, 80, 80)
 
-
-images = {Ball: Image('ball.png').texture,
-          Ghost: Image('ghost.png').texture,
-          Turtle: Image('turtle.png').texture}
+sprites = Image('sprites.png').texture
 
 
 class GameWidget(Widget):
@@ -63,14 +60,10 @@ class GameWidget(Widget):
                 Ellipse(pos=(t_orig[0] - 10, t_orig[1] - 10), size=(20, 20))
             for c in arena.actors():
                 x, y, w, h = c.rect()
-                if type(c) in images:
-                    Color(1, 1, 1)
-                    xs, ys = c.symbol()
-                    img = images[type(c)].get_region(xs, ys, w, h)
-                    Rectangle(texture=img, pos=(x, arena.size()[1] - y - h), size=(w, h))
-                else:
-                    Color(.5, .5, .5)
-                    Rectangle(pos=(x, arena.size()[1] - y - h), size=(w, h))
+                Color(1, 1, 1)
+                xs, ys = c.symbol()
+                img = sprites.get_region(xs, sprites.height - ys - h, w, h)
+                Rectangle(texture=img, pos=(x, arena.size()[1] - y - h), size=(w, h))
 
 
 if __name__ == '__main__':
