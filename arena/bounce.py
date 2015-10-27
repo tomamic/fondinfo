@@ -18,9 +18,9 @@ class Ball(Actor):
 
     def move(self):
         arena_w, arena_h = self._arena.size()
-        if not (0 <= self._x + self._dx < arena_w - self.W):
+        if not (0 <= self._x + self._dx <= arena_w - self.W):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy < arena_h - self.H):
+        if not (0 <= self._y + self._dy <= arena_h - self.H):
             self._dy = -self._dy
         self._x += self._dx
         self._y += self._dy

@@ -16,9 +16,9 @@ class Ball:
         self._dy = 5
 
     def move(self):
-        if not (0 <= self._x + self._dx < Ball.ARENA_W - Ball.W):
+        if not (0 <= self._x + self._dx <= Ball.ARENA_W - Ball.W):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy < Ball.ARENA_H - Ball.H):
+        if not (0 <= self._y + self._dy <= Ball.ARENA_H - Ball.H):
             self._dy = -self._dy
 
         self._x += self._dx
