@@ -14,7 +14,7 @@ class File(Node):
         return len(self._text)
 
     def print(self, indent: int):
-        print(' ' * indent, self._name, sep='')
+        print(' ' * indent + self._name)
 
 class Folder(Node):
     def __init__(self, name: str):
@@ -31,15 +31,15 @@ class Folder(Node):
         return total_size
     
     def print(self, indent: int):
-        print(' ' * indent, self._name, sep='')
+        print(' ' * indent + self._name)
         for n in self._subnodes:
             n.print(indent + 4)
 
-if __name__ == '__main__':
-    a1_0 = File('a1.txt', 'bla bla 0')
+def main():
     ball = File('ball.gif', 'an image')
     data = Folder('data')
     data.add_node(ball)
+    a1_0 = File('a1.txt', 'bla bla 0')
     cmpt166 = Folder('cmpt166')
     cmpt166.add_node(a1_0)
     cmpt166.add_node(data)
@@ -54,3 +54,6 @@ if __name__ == '__main__':
 
     print()
     desktop.print(0)
+
+if __name__ == '__main__':
+    main()
