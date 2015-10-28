@@ -3,7 +3,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from random import choice
+from random import choice, randrange
 from arena import *
 
 class Ball(Actor):
@@ -26,15 +26,16 @@ class Ball(Actor):
         self._y += self._dy
 
     def collide(self, other):
-        x, y, w, h = other.rect()
-        if x < self._x:
-            self._dx = self.SPEED
-        else:
-            self._dx = -self.SPEED
-        if y < self._y:
-            self._dy = self.SPEED
-        else:
-            self._dy = -self.SPEED
+        if not isinstance(other, Ghost):
+            x, y, w, h = other.rect()
+            if x < self._x:
+                self._dx = self.SPEED
+            else:
+                self._dx = -self.SPEED
+            if y < self._y:
+                self._dy = self.SPEED
+            else:
+                self._dy = -self.SPEED
         
     def rect(self):
         return self._x, self._y, self.W, self.H
@@ -50,6 +51,7 @@ class Ghost(Actor):
         self._x, self._y = x, y
         self._arena = arena
         arena.add(self)
+        self._visible = True
 
     def move(self):
         dx = choice([-5, 0, 5])
@@ -58,6 +60,9 @@ class Ghost(Actor):
         self._x = (self._x + dx) % arena_w
         self._y = (self._y + dy) % arena_h
 
+        if randrange(100) == 0:
+            self._visible = not self._visible
+
     def collide(self, other):
         pass
         
@@ -65,7 +70,9 @@ class Ghost(Actor):
         return self._x, self._y, self.W, self.H
 
     def symbol(self):
-        return 20, 0
+        if self._visible:
+            return 20, 0
+        return 20, 20
 
 
 class Turtle(Actor):
