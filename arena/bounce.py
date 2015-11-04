@@ -90,26 +90,26 @@ class Turtle(Actor):
         self._y += self._dy
         if self._y < 0:
             self._y = 0
-        elif self._y > arena_h - Turtle.H:
-            self._y = arena_h - Turtle.H
+        elif self._y > arena_h - self.H:
+            self._y = arena_h - self.H
 
         self._x += self._dx
         if self._x < 0:
             self._x = 0
-        elif self._x > arena_w - Turtle.W:
-            self._x = arena_w - Turtle.W
+        elif self._x > arena_w - self.W:
+            self._x = arena_w - self.W
 
     def go_left(self):
-        self._dx, self._dy = -Turtle.SPEED, 0
+        self._dx, self._dy = -self.SPEED, 0
         
     def go_right(self):
-        self._dx, self._dy = +Turtle.SPEED, 0
+        self._dx, self._dy = +self.SPEED, 0
 
     def go_up(self):
-        self._dx, self._dy = 0, -Turtle.SPEED
+        self._dx, self._dy = 0, -self.SPEED
         
     def go_down(self):
-        self._dx, self._dy = 0, +Turtle.SPEED
+        self._dx, self._dy = 0, +self.SPEED
 
     def stay(self):
         self._dx, self._dy = 0, 0
