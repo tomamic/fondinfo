@@ -6,7 +6,7 @@
 '''
 
 import pygame
-from arena import *
+from actor import *
 from bounce import *
 
 arena = Arena(320, 240)

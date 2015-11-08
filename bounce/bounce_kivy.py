@@ -5,7 +5,7 @@ from kivy.core.window import Window
 from kivy.core.image import Image
 from kivy.graphics import *
 
-from arena import *
+from actor import *
 from bounce import *
 
 

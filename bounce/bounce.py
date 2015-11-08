@@ -4,7 +4,7 @@
 '''
 
 from random import choice, randrange
-from arena import *
+from actor import *
 
 class Ball(Actor):
     W, H = 20, 20
