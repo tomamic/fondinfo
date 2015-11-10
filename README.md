@@ -1,6 +1,6 @@
 **Programming lab @ Information Engineering, University of Parma**
 
-http://www.ce.unipr.it/people/tomamic/fondinfo
+http://tomamic.github.io/fondinfo/
 
 Python and C++ examples
 
