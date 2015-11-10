@@ -1,4 +1,4 @@
 QT += core gui widgets
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += c++11
 SOURCES += main.cpp
