@@ -64,7 +64,7 @@ int TicTacToe::side() {
 }
 
 string TicTacToe::str() {
-    string out = "";  // Using a StringIO is more efficient
+    string out = "";
     for (auto y = 0; y < side_; ++y) {
         for (auto x = 0; x < side_; ++x) {
             out += matrix_[y * side_ + x];
