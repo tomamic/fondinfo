@@ -66,17 +66,17 @@ class Arena(object):
         After each single move, collisions are checked and
         The collide methods of both colliding actors are called
         '''
-        actors = self.actors()
-        for a in reversed(actors):
+        actors = list(reversed(self._actors))
+        for a in actors:
             previous_pos = a.rect()
             a.move()
             if a.rect() != previous_pos:
-                for other in reversed(actors):
+                for other in actors:
                     # reversed order, so actors drawn on top of others
                     # (towards the end of the cycle) are checked first
                     if other is not a and self.check_collision(a, other):
-                        a.collide(other)
-                        other.collide(a)
+                            a.collide(other)
+                            other.collide(a)
 
     def check_collision(self, a1, a2):
         '''Check two actors for mutual collision
@@ -90,7 +90,8 @@ class Arena(object):
         x1, y1, w1, h1 = a1.rect()
         x2, y2, w2, h2 = a2.rect()
         return (y2 < y1 + h1 and y1 < y2 + h2
-            and x2 < x1 + w1 and x1 < x2 + w2)
+            and x2 < x1 + w1 and x1 < x2 + w2
+            and a1 in self._actors and a2 in self._actors)
 
     def actors(self):
         '''Return a copy of the list of actors
