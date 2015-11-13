@@ -9,7 +9,7 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.properties import ListProperty
  
-from p5_fifteen_puzzle import FifteenPuzzle
+from p6_fifteen import FifteenPuzzle
 
 
 class GridButton(Button):

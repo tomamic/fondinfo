@@ -2,10 +2,12 @@ TEMPLATE = app
 QT += core gui widgets
 CONFIG += console c++11
 
-SOURCES += main.cpp fifteenpuzzle.cpp fifteengui.cpp
+SOURCES += main.cpp \
+    gamegui.cpp \
+    fifteen.cpp \
+    mainwindow.cpp
 
-HEADERS += fifteenpuzzle.h fifteengui.h
-
-OTHER_FILES += stylesheet.qss
-
-RESOURCES += resources.qrc
+HEADERS += \
+    gamegui.h \
+    fifteen.h \
+    mainwindow.h
