@@ -21,7 +21,7 @@ int main_console() {
         cout << puzzle.str() << endl;
         if (puzzle.is_finished()) {
             cout << "Puzzle solved!" << endl;
-            break;
+            puzzle.new_game();
         }
     }
     return 0;

@@ -46,6 +46,8 @@ class Fifteen:
         '''Search around the blank cell,
            if val is found in a cell,
            then swap it with the blank cell'''
+        if val < 1 or val >= len(self._board):
+            return
         x0, y0 = self._blank
         for dx, dy in self._DIRS:
             x, y = x0 + dx, y0 + dy
@@ -91,7 +93,7 @@ def main():
         puzzle.move_val(int(line))
         print(puzzle)
         
-        if puzzle.finished:
+        if puzzle.finished():
             print('Congatulations!')
             puzzle.new_game()
             print(puzzle)
