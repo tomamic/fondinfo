@@ -16,12 +16,11 @@ class GameGui : public QWidget
 
 public:
     GameGui(Fifteen* puzzle);
-
-private:
     void handle_click(int x, int y);
     void update_button(int x, int y);
     void update_all_buttons();
 
+private:
     Fifteen* puzzle_;
     int cols_;
     int rows_;

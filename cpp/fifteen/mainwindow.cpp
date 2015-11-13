@@ -22,7 +22,9 @@ MainWindow::MainWindow(Fifteen* puzzle)
 
 void MainWindow::new_game(int cols, int rows)
 {
-    if (cols > 0 && rows > 0) puzzle_->init(cols, rows);
+    if (cols > 0 && rows > 0) {
+        puzzle_->init(cols, rows);
+    }
     if (centralWidget() != nullptr) {
         delete centralWidget();
     }

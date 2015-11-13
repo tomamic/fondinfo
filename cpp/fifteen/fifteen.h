@@ -22,11 +22,11 @@ public:
     void new_game();
     void move_val(int value);
     void move_pos(int x, int y);
+
     int get(int x, int y) const;
     bool is_finished() const;
     int cols() const { return cols_; }
     int rows() const { return rows_; }
-
     Coord blank() const { return blank_; }
     Coord moved() const { return moved_; }
     string str() const;

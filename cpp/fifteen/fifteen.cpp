@@ -44,6 +44,7 @@ void Fifteen::new_game() {
 }
 
 void Fifteen::move_val(int value) {
+    if (value < 1 || value >= board_.size()) return;
     // Search around the blank cell,
     // if val is found in a cell,
     // then swap it with the blank cell'''
