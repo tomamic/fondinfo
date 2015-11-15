@@ -4,7 +4,26 @@ from random import choice
 from io import StringIO
 from sys import argv, stdin                          
 
-class Fifteen:
+class Game:
+    
+    def play_at(x: int, y: int):
+        raise NotImplementedError("Abstract method")
+    
+    def get_val(x: int, y: int) -> str:
+        raise NotImplementedError("Abstract method")
+    
+    def size() -> (int, int):
+        raise NotImplementedError("Abstract method")
+    
+    def is_finished() -> bool:
+        raise NotImplementedError("Abstract method")
+    
+    def get_message() -> str:
+        raise NotImplementedError("Abstract method")
+    
+
+class Fifteen(Game):
+    
     _DIRS = ((0, -1), (+1, 0), (0, +1), (-1, 0))  # dx, dy
 
     def __init__(self, cols: int, rows: int):
@@ -29,7 +48,7 @@ class Fifteen:
     def size(self) -> (int, int):
         return self._cols, self._rows
 
-    def finished(self) -> bool:
+    def is_finished(self) -> bool:
         '''Puzzle solved'''
         return self._board == self._SOLUTION
 
@@ -55,7 +74,7 @@ class Fifteen:
                 self._swap_blank_with(x, y)
                 return
 
-    def move_pos(self, x: int, y: int):
+    def play_at(self, x: int, y: int):
         self.move_val(self.get(x, y))
 
     def get(self, x: int, y: int) -> int:
@@ -64,6 +83,11 @@ class Fifteen:
         if 0 <= y < self._rows and 0 <= x < self._cols:
             return self._board[y * self._cols + x]
         return -1
+
+    def get_val(self, x: int, y: int) -> str:
+        val = self.get(x, y)
+        if val <= 0: return ""
+        return str(val)
 
     def _swap_blank_with(self, x: int, y: int):
         '''Swap the blank cell with a neighbor cell'''
@@ -74,6 +98,9 @@ class Fifteen:
             self._board[y0 * self._cols + x0] = val
             self._blank = x, y
             self._moved = x0, y0
+
+    def get_message(self) -> str:
+        return "Puzzle solved!"
 
     def __str__(self):
         '''Get a string representaion of the game'''

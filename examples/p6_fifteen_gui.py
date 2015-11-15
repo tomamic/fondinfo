@@ -3,14 +3,14 @@
 from sys import argv
 from PySide.QtGui import (QButtonGroup, QGridLayout, QPushButton,
                           QWidget, QMessageBox, QApplication)
-from p6_fifteen import Fifteen
+from p6_fifteen import Game, Fifteen
 
 
 class GameGui(QWidget):
-    def __init__(self, puzzle: Fifteen):
-        super().__init__()
-        self._puzzle = puzzle
-        self._cols, self._rows = puzzle.size()
+    def __init__(self, game: Game):
+        QWidget.__init__(self)
+        self._game = game
+        self._cols, self._rows = game.size()
         self.setLayout(QGridLayout())
         for y in range(self._rows):
             for x in range(self._cols):
@@ -23,12 +23,9 @@ class GameGui(QWidget):
         self.show()
 
     def update_button(self, x: int, y: int):
-        val = self._puzzle.get(x, y)
-        symbol = ' '
-        if val > 0: symbol = str(val)
-
+        val = self._game.get_val(x, y)
         b = self.layout().itemAt(y * self._cols + x).widget()
-        b.setText(symbol)
+        b.setText(val)
 
     def update_all_buttons(self):
         for y in range(self._rows):
@@ -36,22 +33,19 @@ class GameGui(QWidget):
                 self.update_button(x, y)
                 
     def handle_click(self, x: int, y: int):
-        self._puzzle.move_pos(x, y)
+        self._game.play_at(x, y)
         self.update_all_buttons()
-        ##self.update_button(*self._puzzle.blank())  # args unpacking
-        ##self.update_button(*self._puzzle.moved())
-
-        if self._puzzle.finished():
-            QMessageBox.information(self, self.tr('Congratulations'),
-                                    self.tr('Game finished!'))
-            self._puzzle.new_game()
-            self.update_all_buttons()
+        
+        if self._game.is_finished():
+            QMessageBox.information(self, self.tr('Game finished'),
+                                    self.tr(self._game.get_message()))
+            self.window().close()
             
 
 def main():
     app = QApplication(argv)
-    puzzle = Fifteen(4, 4)
-    gui = GameGui(puzzle)
+    game = Fifteen(4, 4)
+    gui = GameGui(game)
     app.exec_()
 
 if __name__ == '__main__':
