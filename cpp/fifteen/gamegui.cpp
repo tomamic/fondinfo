@@ -49,10 +49,10 @@ void GameGui::handle_click(int x, int y)
     game_->play_at(x, y);
     update_all_buttons();
 
-    if (game_->is_finished()) {
+    if (game_->finished()) {
         QMessageBox::information(this,
                                  tr("Game finished"),
-                                 tr(game_->get_message().c_str()));
+                                 tr(game_->message().c_str()));
         window()->close();
     }
 }

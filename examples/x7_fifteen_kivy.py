@@ -43,9 +43,9 @@ class GameGui(GridLayout):
         self.__game.play_at(*btn.grid_pos)  # args unpacking
         self.update_all_buttons()
 
-        if self.__game.is_finished():
+        if self.__game.finished():
             popup = Popup(title='Game finished',
-                          content=Button(text=self.__game.get_message()))
+                          content=Button(text=self.__game.message()))
             popup.content.bind(on_release=popup.dismiss)
             popup.open()
             stopTouchApp()

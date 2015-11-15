@@ -15,10 +15,10 @@ class Game:
     def size(self) -> (int, int):
         raise NotImplementedError("Abstract method")
     
-    def is_finished(self) -> bool:
+    def finished(self) -> bool:
         raise NotImplementedError("Abstract method")
     
-    def get_message(self) -> str:
+    def message(self) -> str:
         raise NotImplementedError("Abstract method")
     
 
@@ -48,7 +48,7 @@ class Fifteen(Game):
     def size(self) -> (int, int):
         return self._cols, self._rows
 
-    def is_finished(self) -> bool:
+    def finished(self) -> bool:
         '''Puzzle solved'''
         return self._board == self._SOLUTION
 
@@ -99,7 +99,7 @@ class Fifteen(Game):
             self._blank = x, y
             self._moved = x0, y0
 
-    def get_message(self) -> str:
+    def message(self) -> str:
         return "Puzzle solved!"
 
     def __str__(self):
@@ -120,7 +120,7 @@ def main():
         puzzle.move_val(int(line))
         print(puzzle)
         
-        if puzzle.is_finished():
+        if puzzle.finished():
             print('Congatulations!')
             puzzle.new_game()
             print(puzzle)

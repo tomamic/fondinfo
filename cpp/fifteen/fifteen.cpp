@@ -40,7 +40,7 @@ void Fifteen::new_game() {
         swap_blank_with(x, y);
     }
     // may happen, with small boards...
-    if (is_finished()) new_game();
+    if (finished()) new_game();
 }
 
 void Fifteen::move_val(int value) {
@@ -87,7 +87,7 @@ void Fifteen::swap_blank_with(int x, int y) {
     }
 }
 
-bool Fifteen::is_finished() const {
+bool Fifteen::finished() const {
     for (auto i = 0; i < board_.size() - 1; ++i) {
         // a cell with wrong value? puzzle not solved!
         if (board_[i] != i + 1) return false;

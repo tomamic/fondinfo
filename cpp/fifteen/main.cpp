@@ -19,7 +19,7 @@ int main_console() {
     while (cin >> val) {
         puzzle.move_val(val);
         cout << puzzle.str() << endl;
-        if (puzzle.is_finished()) {
+        if (puzzle.finished()) {
             cout << "Puzzle solved!" << endl;
             puzzle.new_game();
         }

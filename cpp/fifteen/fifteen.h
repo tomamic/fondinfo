@@ -29,8 +29,8 @@ public:
 
     void play_at(int x, int y) override;
     std::string get_val(int x, int y) const override;
-    bool is_finished() const override;
-    std::string get_message() const override { return "Puzzle solved!"; }
+    bool finished() const override;
+    std::string message() const override { return "Puzzle solved!"; }
     int cols() const override { return cols_; }
     int rows() const override { return rows_; }
 private:
