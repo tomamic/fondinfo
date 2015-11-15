@@ -11,11 +11,11 @@
 #include <QStyle>
 #include <QVariant>
 
-GameGui::GameGui(Fifteen* puzzle)
+GameGui::GameGui(Game* game)
 {
-    puzzle_ = puzzle;
-    cols_ = puzzle->cols();
-    rows_ = puzzle->rows();
+    game_ = game;
+    cols_ = game->cols();
+    rows_ = game->rows();
 
     auto grid = new QGridLayout; setLayout(grid);
     for (auto y = 0; y < rows_; ++y) {
@@ -31,12 +31,9 @@ GameGui::GameGui(Fifteen* puzzle)
 }
 
 void GameGui::update_button(int x, int y) {
-    auto val = puzzle_->get(x, y);
-    string symbol = "";
-    if (val > 0) symbol = to_string(val);
-
+    auto val = game_->get_val(x, y);
     auto b = layout()->itemAt(y * cols_ + x)->widget();
-    dynamic_cast<QPushButton*>(b)->setText(symbol.c_str());
+    dynamic_cast<QPushButton*>(b)->setText(val.c_str());
 }
 
 void GameGui::update_all_buttons() {
@@ -49,13 +46,14 @@ void GameGui::update_all_buttons() {
 
 void GameGui::handle_click(int x, int y)
 {
-    puzzle_->move_pos(x, y);
+    game_->play_at(x, y);
     update_all_buttons();  // ...
 
-    if (puzzle_->is_finished()) {
-        QMessageBox::information(nullptr, tr("Congratulations"),
-                                 tr("Game finished!"));
-        puzzle_->new_game();
-        update_all_buttons();
+    if (game_->is_finished()) {
+        QMessageBox::information(nullptr, tr("Game finished"),
+                                 tr(game_->get_message().c_str()));
+        window()->close();
+        //game_->new_game();
+        //update_all_buttons();
     }
 }

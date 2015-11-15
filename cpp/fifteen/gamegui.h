@@ -6,7 +6,7 @@
 #ifndef GAMEGUI_H
 #define GAMEGUI_H
 
-#include "fifteen.h"
+#include "game.h"
 
 #include <QWidget>
 
@@ -15,13 +15,13 @@ class GameGui : public QWidget
     Q_OBJECT
 
 public:
-    GameGui(Fifteen* puzzle);
+    GameGui(Game* game);
     void handle_click(int x, int y);
     void update_button(int x, int y);
     void update_all_buttons();
 
 private:
-    Fifteen* puzzle_;
+    Game* game_;
     int cols_;
     int rows_;
 };

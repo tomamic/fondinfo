@@ -6,6 +6,7 @@
 #ifndef FIFTEEN_H
 #define FIFTEEN_H
 
+#include "game.h"
 #include <iostream>
 #include <vector>
 #include <complex>
@@ -14,22 +15,24 @@ using namespace std;
 
 typedef complex<int> Coord;
 
-class Fifteen
+class Fifteen : public Game
 {
 public:
     Fifteen(int cols, int rows);
     void init(int cols, int rows);
     void new_game();
     void move_val(int value);
-    void move_pos(int x, int y);
-
     int get(int x, int y) const;
-    bool is_finished() const;
-    int cols() const { return cols_; }
-    int rows() const { return rows_; }
     Coord blank() const { return blank_; }
     Coord moved() const { return moved_; }
     string str() const;
+
+    void play_at(int x, int y) override;
+    std::string get_val(int x, int y) const override;
+    bool is_finished() const override;
+    std::string get_message() const override { return "Puzzle solved!"; }
+    int cols() const override { return cols_; }
+    int rows() const override { return rows_; }
 private:
     void swap_blank_with(int x, int y);
 

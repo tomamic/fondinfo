@@ -31,7 +31,7 @@ void Fifteen::init(int cols, int rows) {
 
 void Fifteen::new_game() {
     // random walk: move the blank cell repeatedly
-    auto walk_length = rows_ * rows_ * cols_ * cols_;
+    auto walk_length = 1; // rows_ * rows_ * cols_ * cols_;
     for (auto i = 0; i < walk_length; ++i) {
         // choose randomly one of the 4 neighbors
         auto dir = DIRS[rand() % DIRS.size()];
@@ -58,9 +58,15 @@ void Fifteen::move_val(int value) {
     }
 }
 
-void Fifteen::move_pos(int x, int y) {
+void Fifteen::play_at(int x, int y) {
     // get the value of cell, move that value
     move_val(get(x, y));
+}
+
+string Fifteen::get_val(int x, int y) const {
+    int val = get(x, y);
+    if (val == 0) return "";
+    return to_string(val);
 }
 
 int Fifteen::get(int x, int y) const {

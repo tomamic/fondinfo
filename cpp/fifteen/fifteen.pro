@@ -10,4 +10,5 @@ SOURCES += main.cpp \
 HEADERS += \
     gamegui.h \
     fifteen.h \
-    mainwindow.h
+    mainwindow.h \
+    game.h

@@ -13,7 +13,7 @@
 using namespace std;
 
 int main_console() {
-    Fifteen puzzle{3, 2};
+    Fifteen puzzle{4, 4};
     cout << puzzle.str();
     auto val = 0;
     while (cin >> val) {
