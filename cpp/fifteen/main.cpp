@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     //return main_console();
 
     QApplication a{argc, argv};
-    Fifteen puzzle{4, 4};
+    Fifteen puzzle{2, 2};
     //MainWindow window{&puzzle}; window.show();
     GameGui gui{&puzzle}; gui.show();
 

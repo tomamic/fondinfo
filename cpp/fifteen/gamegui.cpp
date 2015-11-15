@@ -47,13 +47,12 @@ void GameGui::update_all_buttons() {
 void GameGui::handle_click(int x, int y)
 {
     game_->play_at(x, y);
-    update_all_buttons();  // ...
+    update_all_buttons();
 
     if (game_->is_finished()) {
-        QMessageBox::information(nullptr, tr("Game finished"),
+        QMessageBox::information(this,
+                                 tr("Game finished"),
                                  tr(game_->get_message().c_str()));
         window()->close();
-        //game_->new_game();
-        //update_all_buttons();
     }
 }

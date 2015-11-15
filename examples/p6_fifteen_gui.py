@@ -37,7 +37,8 @@ class GameGui(QWidget):
         self.update_all_buttons()
         
         if self._game.is_finished():
-            QMessageBox.information(self, self.tr('Game finished'),
+            QMessageBox.information(self,
+                                    self.tr('Game finished'),
                                     self.tr(self._game.get_message()))
             self.window().close()
             
