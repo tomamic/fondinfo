@@ -52,5 +52,5 @@ class GameGui(GridLayout):
 
             
 if __name__ == '__main__':
-    game = Fifteen(2, 2)
+    game = Fifteen(4, 4)
     runTouchApp(GameGui(game))
