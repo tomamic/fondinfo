@@ -8,8 +8,6 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QStyle>
-#include <QVariant>
 
 GameGui::GameGui(Game* game)
 {
