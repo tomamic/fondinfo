@@ -11,6 +11,7 @@ from pacman import *
 from pacman_map import *
 
 arena = Arena(232, 256)
+##arena = PacManArena(232, 256)
 
 for x, y, w, h in walls_pos:
     Wall(arena, x, y, w, h)

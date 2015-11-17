@@ -26,6 +26,10 @@ def going_to_wall(arena: Arena, actor: Actor, dx: int, dy: int) -> bool:
     return rect_in_wall(arena, (x + dx, y + dy, w, h))
 
 
+##class PacManArena(Arena):
+##    pass
+
+
 # Size and position hints for Pac-Man characters
 # Everything needs yet to be fixed!
 
@@ -137,10 +141,11 @@ class PacMan(Actor):  # ...
         arena.add(self)
 
     def move(self):
-        if not going_to_wall(self._arena, self,
-                             self._user_dx, self._user_dy):
-            self._dx = self._user_dx
-            self._dy = self._user_dy
+        if self._x % 8 == 0 and self._y %8 == 0:
+            if not going_to_wall(self._arena, self,
+                              self._user_dx, self._user_dy):
+                self._dx = self._user_dx
+                self._dy = self._user_dy
             
         self._y += self._dy
         self._x += self._dx
@@ -171,4 +176,5 @@ class PacMan(Actor):  # ...
 
     def symbol(self):
         return 0, 0
+
 
