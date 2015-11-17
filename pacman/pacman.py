@@ -105,14 +105,16 @@ class Ghost(Actor):  # ...
         arena.add(self)
 
     def move(self):
-        moves = [(0, -self.SPEED),
-                 (self.SPEED, 0),
-                 (0, self.SPEED),
-                 (-self.SPEED, 0)]
         if self._x % 8 == 0 and self._y %8 == 0:
+            moves = [(0, -self.SPEED),
+                     (self.SPEED, 0),
+                     (0, self.SPEED),
+                     (-self.SPEED, 0)]
+            opposite = (-self._dx, -self._dy)
             dx, dy = choice(moves)
-            while ((dx, dy) == (-self._dx, -self._dy) or
+            while ((dx, dy) == opposite or
                    going_to_wall(self._arena, self, dx, dy)):
+                moves.remove((dx, dy))  # don't try it again!
                 dx, dy = choice(moves)
             self._dx, self._dy = dx, dy
             
@@ -162,14 +164,11 @@ class PacMan(Actor):  # ...
     def go_down(self):
         self._user_dx, self._user_dy = 0, +self.SPEED
 
-    def stay(self):
-        self._dx, self._dy = 0, 0
-
     def collide(self, other):
         if isinstance(other, Wall):
             self._x -= self._dx
             self._y -= self._dy
-            self.stay()
+            self._dx, self._dy = 0, 0
         
     def rect(self):
         return self._x, self._y, self.W, self.H
