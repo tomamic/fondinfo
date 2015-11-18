@@ -48,10 +48,10 @@ class TicTacToe(Game):
                 return False
         return True
 
-    def is_finished(self) -> bool:
+    def finished(self) -> bool:
         return self._winner != self.NONE
         
-    def get_message(self) -> str:
+    def message(self) -> str:
         return "Winner: " + self._winner
         
     def winner(self) -> str:
