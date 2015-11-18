@@ -7,8 +7,7 @@
 #include <QToolBar>
 #include <QStyle>
 
-NotepadWindow::NotepadWindow(QWidget *parent)
-    : QMainWindow(parent) {
+NotepadWindow::NotepadWindow() {
     auto notepad = new Notepad; setCentralWidget(notepad);
 
     auto menu = menuBar()->addMenu(tr("&File"));  // QMenu*

@@ -9,7 +9,7 @@ class Notepad : public QWidget {
     Q_OBJECT
     
 public:
-    Notepad(QWidget *parent = 0);
+    Notepad();
     ~Notepad();
 
 public slots:   // special methods, to connect with signals

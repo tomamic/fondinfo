@@ -9,8 +9,7 @@
 
 using namespace std;
 
-Notepad::Notepad(QWidget *parent)
-    : QWidget(parent) {
+Notepad::Notepad() {
     // ctor: build the GUI
     // QObject::tr translates GUI texts (see Qt Linguist)
 

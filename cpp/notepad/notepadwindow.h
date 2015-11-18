@@ -7,7 +7,7 @@ class NotepadWindow : public QMainWindow {
     Q_OBJECT
     
 public:
-    NotepadWindow(QWidget *parent = 0);
+    NotepadWindow();
     ~NotepadWindow();
 };
 
