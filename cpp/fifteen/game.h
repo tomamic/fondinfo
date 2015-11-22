@@ -12,6 +12,8 @@ public:
     virtual std::string get_val(int x, int y) const = 0;
     virtual bool finished() const = 0;
     virtual std::string message() const = 0;
+
+    virtual ~Game() {}
 };
 
 #endif // GAME_H

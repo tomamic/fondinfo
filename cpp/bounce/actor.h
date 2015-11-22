@@ -33,6 +33,7 @@ public:
     bool check_collision(Actor* a1, Actor* a2);
     vector<Actor*> actors();
     Rect rect();
+    ~Arena();
 };
 
 
