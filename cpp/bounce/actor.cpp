@@ -49,3 +49,9 @@ vector<Actor*> Arena::actors() { return actors_; }
 
 Rect Arena::rect() { return {0, 0, w_, h_}; }
 
+Arena::~Arena() {
+    while (!actors_.empty()) {
+        delete actors_.back();
+        actors_.pop_back();
+    }
+}
