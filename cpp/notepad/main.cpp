@@ -8,8 +8,8 @@ int main(int argc, char *argv[]) {
     Notepad n;
     n.show();
 
-//    NotepadWindow w;
-//    w.show();
+    //NotepadWindow w;
+    //w.show();
 
     return a.exec();
 }

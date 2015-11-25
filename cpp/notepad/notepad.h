@@ -12,7 +12,7 @@ public:
     Notepad();
     ~Notepad();
 
-public slots:   // special methods, to connect with signals
+    // slots, to connect with signals
     void open();
     void save();
     void exit();

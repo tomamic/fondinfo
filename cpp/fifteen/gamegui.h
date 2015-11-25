@@ -16,7 +16,7 @@ class GameGui : public QWidget
 
 public:
     GameGui(Game* game);
-    void handle_click(int x, int y);
+    void handle_click();
     void update_button(int x, int y);
     void update_all_buttons();
 
