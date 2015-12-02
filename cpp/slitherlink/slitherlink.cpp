@@ -21,6 +21,22 @@ Slitherlink::Slitherlink()
         {'+', ' ', '+', ' ', '+', ' ', '+', ' ', '+', ' ', '+'} };
 }
 
+Slitherlink::Slitherlink(string filename)
+{
+    ifstream in{filename};
+    string line;
+    while (getline(in, line)) {
+        // board_.push_back({begin(line), end(line)});
+        vector<char> chars;
+        for (auto c: line) {
+            chars.push_back(c);
+        }
+        board_.push_back(chars);
+    }
+    rows_ = board_.size();
+    if (rows_ > 0) cols_ = board_[0].size();
+}
+
 void Slitherlink::play_at(int x, int y)
 {
     /* ADD YOUR CODE HERE */
@@ -58,7 +74,8 @@ bool Slitherlink::finished() const
 //    for (auto move : moves) {
 //        if (move != -dir && check_line(pos + move)) {
 //            return count_loop(pos + 2 * move, move,
-//                              stop, lines + 1);  // tail recursion
+//                              stop, lines + 1);
+//            // tail recursion
 //        }
 //    }
 //}

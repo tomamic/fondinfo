@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "fifteen.h"
+#include "slitherlink.h"
 #include <QMainWindow>
+#include <string>
 
 class MainWindow : public QMainWindow
 {
@@ -10,10 +11,10 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
-    void new_game(int cols, int rows);
+    void new_game(std::string filename);
 
 private:
-    Fifteen* puzzle_ = nullptr;
+    Slitherlink* puzzle_ = nullptr;
 };
 
 #endif // MAINWINDOW_H

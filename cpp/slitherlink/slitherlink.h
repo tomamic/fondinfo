@@ -8,7 +8,7 @@ class Slitherlink : public Game
 {
 public:
     Slitherlink();
-//    Slitherlink(std::string filename);
+    Slitherlink(std::string filename);
 //    void write(std::string filename) const;
     virtual void play_at(int x, int y);
     virtual int cols() const {return cols_; }

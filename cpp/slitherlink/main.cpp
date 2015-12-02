@@ -37,10 +37,9 @@ int main(int argc, char* argv[])
     //return main_console();
 
     QApplication a{argc, argv};
-    //Fifteen puzzle{4, 4};
-    Slitherlink puzzle;
-    GameGui gui{&puzzle}; gui.show();
-    //MainWindow window; window.show();
+    //Slitherlink puzzle;
+    //GameGui gui{&puzzle}; gui.show();
+    MainWindow window; window.show();
 
     return a.exec();
 }
