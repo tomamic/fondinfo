@@ -1,4 +1,5 @@
 #include "slitherlink.h"
+#include <fstream>
 
 using namespace std;
 
@@ -18,7 +19,6 @@ Slitherlink::Slitherlink()
         {'+', ' ', '+', ' ', '+', ' ', '+', ' ', '+', ' ', '+'},
         {' ', ' ', ' ', '2', ' ', ' ', ' ', '2', ' ', ' ', ' '},
         {'+', ' ', '+', ' ', '+', ' ', '+', ' ', '+', ' ', '+'} };
-
 }
 
 void Slitherlink::play_at(int x, int y)

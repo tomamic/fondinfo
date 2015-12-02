@@ -20,7 +20,10 @@ GameGui::GameGui(Game* game)
     for (auto y = 0; y < rows_; ++y) {
         for (auto x = 0; x < cols_; ++x) {
             auto b = new QPushButton;
-            b->setFixedSize(30, 30);
+            auto w = 30, h = 30;
+//            if (x % 2 == 0) w = 15;
+//            if (y % 2 == 0) h = 15;
+            b->setFixedSize(w, h);
             grid->addWidget(b, y, x);
             connect(b, &QPushButton::clicked,
                     [=]{ handle_click(x, y); });
