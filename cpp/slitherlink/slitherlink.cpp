@@ -78,6 +78,7 @@ bool Slitherlink::finished() const
 //            // tail recursion
 //        }
 //    }
+//    return 0;  // this way, open paths may be considered
 //}
 
 //int Slitherlink::count_loop_iter(Coord pos, Coord dir,
