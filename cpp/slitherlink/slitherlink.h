@@ -3,6 +3,9 @@
 
 #include "game.h"
 #include <vector>
+#include <complex>
+
+typedef std::complex<int> Coord;
 
 class Slitherlink : public Game
 {
@@ -16,6 +19,10 @@ public:
     virtual std::string get_val(int x, int y) const;
     virtual bool finished() const;
     virtual std::string message() const { return "Puzzle solved"; }
+    int count_first_loop();
+    int count_loop(Coord pos, Coord dir, Coord stop, int lines) const;
+    bool check_sign(Coord pos, char sign) const;
+    std::string str() const;
 private:
     int cols_ = 0;
     int rows_ = 0;

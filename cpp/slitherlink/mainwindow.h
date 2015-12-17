@@ -13,6 +13,7 @@ public:
     MainWindow();
     void new_game(std::string filename);
 
+    void find_loop();
 private:
     Slitherlink* puzzle_ = nullptr;
 };
