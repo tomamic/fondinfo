@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 - You have some number `n` of black marbles and the same number of white marbles
 - You have a playing board which consists simply of a line of `2n+1` spaces to put the marbles in
@@ -7,6 +8,9 @@
 - At each move, a marble can either:
     - Move one space ahead, if that space is clear, or
     - Jump ahead over exactly one marble of the opposite color, if the space just beyond that marble is clear
+
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
 def get_move(board: list, x: int) -> int:

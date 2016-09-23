@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 def advance(row: list, dx: int, dy: int):
     head_x, head_y = row[-1]
     row.append((head_x + dx, head_y + dy))

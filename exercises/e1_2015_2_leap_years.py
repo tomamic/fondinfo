@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 year = int(input("Year? "))
 while year != 0:
     if year % 4 == 0 and not(year % 100 == 0 and year % 400 != 0):

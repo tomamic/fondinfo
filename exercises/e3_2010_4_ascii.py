@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 FIRST = 32
 LAST = 126
 ROWS = 10

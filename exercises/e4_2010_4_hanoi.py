@@ -1,7 +1,5 @@
+#!/usr/bin/env python3
 '''
-@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
-
 4.4 Torre di Hanoi
 * Tre paletti + N dischi di diametro decrescente
 * Portare tutti i dischi dal primo all'ultimo paletto
@@ -12,6 +10,9 @@
 N dischi: spostarne N-1 sul piolo né origine né dest.,
 spostare l'ultimo disco sul piolo giusto,
 spostare ancora gli altri N-1 dischi.)
+
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
 def print_towers(towers: list):

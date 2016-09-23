@@ -1,7 +1,5 @@
+#!/usr/bin/env python3
 '''
-@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
-
 3.4 Matrice, coppie
 * Allocare una matrice, dimensione rows×cols
   * rows e cols scelti dall'utente, ma celle in numero pari
@@ -9,6 +7,9 @@
 * Inserire in ordine le prime lettere dell'alfabeto, ciascuna ripetuta due volte
 * Ripetutamente, scegliere due celle a caso e scambiarne il contenuto
 * Mostrare la matrice risultante
+
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
 import random

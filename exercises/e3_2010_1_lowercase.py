@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 text = "Hey!! It's 2010, yet"
 dash = False
 

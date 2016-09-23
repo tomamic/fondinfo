@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 def empty(m: list, x: int, y: int) -> bool:
     w, h = len(m[0]), len(m)
     return 0 <= x < w and 0 <= y < h and m[y][x] == 0

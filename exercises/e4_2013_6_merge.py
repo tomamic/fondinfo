@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 with open("file1.dat") as f1:
     with open("file2.dat") as f2:
         with open("merge.dat", "w") as out:

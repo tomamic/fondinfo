@@ -1,12 +1,13 @@
+#!/usr/bin/env python3
 '''
-@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
-
 3.5 Sottostringhe
 * Leggere da tastiera un testo generico
 * Estrarre le parti comprese tra '<' e '>'
 * Riprodurre in output, ciascuna su una riga, le parti selezionate
 (Es. “Scrivete a < john@example.com > per informazioni” → “john@example.com”)
+
+@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
 text = 'Scrivete a <john@example.com> o <tom@example.com> per informazioni'

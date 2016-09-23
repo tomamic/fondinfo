@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+
+@link    https://www.brython.info/static_doc/en/intro.html
+@link    https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+'''
+
 html = '''<!DOCTYPE html>
 <html>
     <head>
@@ -17,12 +26,12 @@ except:
     # if not in browser...
     import sys, webbrowser, http.server as hs, socketserver as ss
 
-    # prepare a custom tmp.html file
+    # prepare a custom html file
     script_name = sys.argv[0].split('/')[-1]
     with open("~tmp.html", "w") as f:
         print(html.replace("__script__", script_name), file=f)
 
-    # open tmp.html in the default browser
+    # open html file in default browser
     webbrowser.open("http://127.0.0.1:8000/~tmp.html")    
 
     # minimal web server, for files in current dir
@@ -88,4 +97,5 @@ def audio_play(audio: AUDIO, loop=False) -> None:
     
 def audio_pause(audio: AUDIO) -> None:
     audio.pause()
+
 

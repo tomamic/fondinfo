@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 text = ("Python is a general-purpose, high-level programming language "
         + "whose design philosophy emphasizes code readability. Python's "
         + "syntax allows programmers to express concepts in fewer lines "
