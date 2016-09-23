@@ -19,11 +19,11 @@ except:
 
     # prepare a custom tmp.html file
     script_name = sys.argv[0].split('/')[-1]
-    with open("tmp.html", "w") as f:
+    with open("~tmp.html", "w") as f:
         print(html.replace("__script__", script_name), file=f)
 
     # open tmp.html in the default browser
-    webbrowser.open("http://127.0.0.1:8000/tmp.html")    
+    webbrowser.open("http://127.0.0.1:8000/~tmp.html")    
 
     # minimal web server, for files in current dir
     ss.TCPServer.allow_reuse_address = True
