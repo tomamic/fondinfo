@@ -33,17 +33,15 @@ except:
 
 
 K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
-		
+
 def screen_set_mode(size: (int, int)) -> CANVAS:
-    '''Add a new CANVAS to the page, and return it'''
+    '''Set size of first CANVAS and return it'''
     canvas = doc[CANVAS][0]
     canvas.width, canvas.height = size
     return canvas
 
 def screen_fill(canvas: CANVAS, color: (int, int, int)) -> None:
-    ctx = canvas.getContext("2d")
-    ctx.fillStyle = "rgb" + str(color)
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    draw_rect(canvas, color, (0, 0, canvas.width, canvas.height))
 
 def draw_circle(canvas: CANVAS, color: (int, int, int), center: (int, int), radius: int) -> None:
     from math import pi
