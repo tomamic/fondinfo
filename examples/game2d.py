@@ -28,19 +28,19 @@ except:
     # minimal web server, for files in current dir
     ss.TCPServer.allow_reuse_address = True
     httpd = ss.TCPServer(("", 8000), hs.SimpleHTTPRequestHandler)
-    print("serving at port", 8000)
+    print("Serving at port", 8000)
     httpd.serve_forever()
 
 
 K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
 
-def screen_set_mode(size: (int, int)) -> CANVAS:
+def canvas_init(size: (int, int)) -> CANVAS:
     '''Set size of first CANVAS and return it'''
     canvas = doc[CANVAS][0]
     canvas.width, canvas.height = size
     return canvas
 
-def screen_fill(canvas: CANVAS, color: (int, int, int)) -> None:
+def canvas_fill(canvas: CANVAS, color: (int, int, int)) -> None:
     draw_rect(canvas, color, (0, 0, canvas.width, canvas.height))
 
 def draw_circle(canvas: CANVAS, color: (int, int, int), center: (int, int), radius: int) -> None:
@@ -88,5 +88,4 @@ def audio_play(audio: AUDIO, loop=False) -> None:
     
 def audio_pause(audio: AUDIO) -> None:
     audio.pause()
-    
 

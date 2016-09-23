@@ -7,7 +7,7 @@ from bounce import *
 def update():
     arena.move_all()  # Game logic
 
-    screen_fill(canvas, (255, 255, 255))
+    canvas_fill(canvas, (255, 255, 255))
     for a in arena.actors():
         x, y, w, h = a.rect()
         # use the following lines to cut a sprite from a larger image
@@ -33,7 +33,7 @@ Ball(arena, 80, 40)
 Ghost(arena, 120, 80)
 turtle = Turtle(arena, 80, 80)
 
-canvas = screen_set_mode(arena.size())
+canvas = canvas_init(arena.size())
 sprites = image_load("sprites.png")
 
 doc.onkeydown = keydown
