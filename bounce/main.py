@@ -38,4 +38,4 @@ sprites = image_load("sprites.png")
 
 doc.onkeydown = keydown
 doc.onkeyup = keyup
-timer.set_interval(update, 30)
+timer.set_interval(update, 1000//30)  # millis

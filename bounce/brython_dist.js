@@ -1,0 +1,1 @@
+../examples/brython_dist.js
