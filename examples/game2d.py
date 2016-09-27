@@ -56,7 +56,7 @@ def draw_line(canvas: CANVAS, color: (int, int, int), pt1: (int, int), pt2: (int
     ctx = canvas.getContext("2d")
     x1, y1 = pt1
     x2, y2 = pt2
-    ctx.fillStyle = "rgb" + str(color)
+    ctx.strokeStyle = "rgb" + str(color)
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
     ctx.stroke()

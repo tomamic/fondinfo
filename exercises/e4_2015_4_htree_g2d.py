@@ -21,7 +21,7 @@ def htree(screen, rect: (int, int, int, int), level: int):
         rect1 = x, y, w, h / 2
         rect2 = x, y + h / 2, w, h / 2
 
-    draw_line(canvas, (255, 0, 255),
+    draw_line(canvas, (255, 0, 0),
               center(rect1), center(rect2))
     htree(screen, rect1, level - 1)
     htree(screen, rect2, level - 1)
