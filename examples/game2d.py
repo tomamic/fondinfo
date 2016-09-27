@@ -52,6 +52,15 @@ def canvas_init(size: (int, int)) -> CANVAS:
 def canvas_fill(canvas: CANVAS, color: (int, int, int)) -> None:
     draw_rect(canvas, color, (0, 0, canvas.width, canvas.height))
 
+def draw_line(canvas: CANVAS, color: (int, int, int), pt1: (int, int), pt2: (int, int)) -> None:
+    ctx = canvas.getContext("2d")
+    x1, y1 = pt1
+    x2, y2 = pt2
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    ctx.stroke()
+
 def draw_circle(canvas: CANVAS, color: (int, int, int), center: (int, int), radius: int) -> None:
     from math import pi
     ctx = canvas.getContext("2d")
