@@ -15,7 +15,7 @@ html = '''<!DOCTYPE html>
     </head>
     <body onload="brython(1)">
         <script type="text/python" src="__script__"></script>
-        <canvas style="border: 1px solid black"></canvas>
+        <canvas style="border: 1px solid silver"></canvas>
     </body>
 </html>'''
 
