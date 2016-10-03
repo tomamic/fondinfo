@@ -7,9 +7,10 @@
 from game2d import *
 
 palette = []
-f = open('palette.txt', 'r')
-with f:
-    for line in f:
+palette_file = open('palette.txt', 'r')
+with palette_file:
+    print(locals())
+    for line in palette_file:
         if len(line) > 0:
             vals = line.split()
             color = (int(vals[0]), int(vals[1]), int(vals[2]))
