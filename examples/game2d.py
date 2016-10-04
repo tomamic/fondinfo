@@ -20,8 +20,9 @@ html = '''<!DOCTYPE html>
 </html>'''
 
 try:
-    from browser import doc, alert, timer
+    from browser import doc, alert, timer, DOMEvent
     from browser.html import CANVAS, IMG, AUDIO
+    from browser.timer import set_interval, clear_interval
 except:
     # if not in browser...
     import sys, webbrowser, http.server as hs, socketserver as ss

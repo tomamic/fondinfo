@@ -39,4 +39,4 @@ def update():
 
 aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
 canvas = canvas_init((320, 240))
-timer.set_interval(update, 1000 // 30)  # Millis
+set_interval(update, 1000 // 30)  # Millis

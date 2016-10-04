@@ -10,10 +10,17 @@ def update():
     global x
     canvas_fill(canvas, (255, 255, 255))  # Draw background        
     image_blit(canvas, image, (x, 50))    # Draw foreground
-    x = (x + 5) % 320                     # Update ball's position
+    x = (x + dx) % 320                     # Update ball's position
+
+def keydown(e):
+    global dx
+    if e.code == "Space":
+        dx *= -1
 
 canvas = canvas_init((320, 240))
 image = image_load("ball.png")
 x = 50
+dx = 5
 
-timer.set_interval(update, 1000 // 30)    # Call update 30 times/second
+set_interval(update, 1000 // 30)    # Call update 30 times/second
+doc.onkeydown = keydown

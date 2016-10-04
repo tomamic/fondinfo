@@ -9,7 +9,6 @@ from game2d import *
 palette = []
 palette_file = open('palette.txt', 'r')
 with palette_file:
-    print(locals())
     for line in palette_file:
         if len(line) > 0:
             vals = line.split()

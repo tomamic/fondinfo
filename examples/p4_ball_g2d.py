@@ -15,5 +15,5 @@ def update():
 
 balls = [Ball(40, 80), Ball(80, 40)]
 canvas = canvas_init((Ball.ARENA_W, Ball.ARENA_H))
-timer.set_interval(update, 1000 // 30)  # Millis
+set_interval(update, 1000 // 30)  # Millis
 
