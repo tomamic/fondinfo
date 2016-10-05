@@ -15,7 +15,7 @@ def update():
 def keydown(e):
     global dx
     if e.code == "Space":
-        dx *= -1
+        dx = -dx
 
 canvas = canvas_init((320, 240))
 image = image_load("ball.png")
