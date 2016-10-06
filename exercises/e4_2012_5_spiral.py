@@ -19,7 +19,7 @@ def spiral(w: int, h: int) -> list:
         m[y][x] = i + 1
         # bounce against border or visited cell?
         if not empty(m, x + dx, y + dy):
-            # turn 90° clockwise: (x', y') = (y, -x)
+            # turn 90° clockwise, carthesian: (x', y') = (y, -x)
             dx, dy = -dy, dx
         x, y = x + dx, y + dy
     return m
