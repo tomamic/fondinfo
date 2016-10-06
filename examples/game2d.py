@@ -28,7 +28,7 @@ except:
     import sys, webbrowser, http.server as hs, socketserver as ss
 
     # prepare a custom html file
-    script_name = sys.argv[0].split('/')[-1]
+    script_name = sys.argv[0].replace('\\', '/').split('/')[-1]
     with open("~tmp.html", "w") as f:
         print(html.replace("__script__", script_name), file=f)
 
