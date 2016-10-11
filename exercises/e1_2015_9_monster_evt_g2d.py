@@ -16,13 +16,13 @@ def keydown(e):
     if player != monster and player != gold:
         draw_tile(canvas, color_old, player)
         x, y = player
-        if e.keyCode == K_UP and y > 0:
+        if e.code == "ArrowUp" and y > 0:
             player = x, y - 1
-        elif e.keyCode == K_LEFT and x > 0:
+        elif e.code == "ArrowLeft" and x > 0:
             player = x - 1, y
-        elif e.keyCode == K_DOWN and y < H - 1:
+        elif e.code == "ArrowDown" and y < H - 1:
             player = x, y + 1
-        elif e.keyCode == K_RIGHT and x < W - 1:
+        elif e.code == "ArrowRight" and x < W - 1:
             player = x + 1, y
 
         if player == monster:

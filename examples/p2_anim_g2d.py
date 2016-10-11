@@ -10,11 +10,11 @@ def update():
     global x
     canvas_fill(canvas, (255, 255, 255))  # Draw background        
     image_blit(canvas, image, (x, 50))    # Draw foreground
-    x = (x + dx) % 320                     # Update ball's position
+    x = (x + dx) % 320                    # Update ball's position
 
-def keydown(e):
+def keydown(event):
     global dx
-    if e.code == "Space":
+    if event.code == "Space":
         dx = -dx
 
 canvas = canvas_init((320, 240))

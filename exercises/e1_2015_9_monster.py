@@ -8,32 +8,36 @@ from random import randrange
 
 W, H = 5, 5
 
-player = 0, 0
-monster = player
-while monster == player:
-    monster = randrange(W), randrange(H)
-gold = player
-while gold == player or gold == monster:
-    gold = randrange(W), randrange(H)
+player_x = 0
+player_y = 0
+monster_x = player_x
+monster_y = player_y
+while monster_x == player_x and monster_y == player_y:
+    monster_x = randrange(W)
+    monster_y = randrange(H)
+gold_x = player_x
+gold_y = player_y
+while (gold_x == player_x and gold_y == player_y) or (gold_x == monster_x and gold_y == monster_y):
+    gold_x = randrange(W)
+    gold_y = randrange(H)
 
-#print('Monster:', monster)
-#print('Gold:', gold)
-print('Player:', player)
+#print('Monster:', monster_x, monster_y)
+#print('Gold:', gold_x, gold_y)
+print('Player:', player_x, player_y)
 
-while player != monster and player != gold:
+while (player_x != monster_x or player_y != monster_y) and (player_x != gold_x or player_y != gold_y):
     direction = input('wasd? ')
-    x, y = player
-    if direction == 'w' and y > 0:
-        player = x, y - 1
-    elif direction == 'a' and x > 0:
-        player = x - 1, y
-    elif direction == 's' and y < H - 1:
-        player = x, y + 1
-    elif direction == 'd' and x < W - 1:
-        player = x + 1, y
-    print('Player:', player)
+    if direction == 'w' and player_y > 0:
+        player_y -= 1
+    elif direction == 'a' and player_x > 0:
+        player_x -= 1
+    elif direction == 's' and player_y < H - 1:
+        player_y += 1
+    elif direction == 'd' and player_x < W - 1:
+        player_x += 1
+    print('Player:', player_x, player_y)
 
-if player == gold:
+if player_x == gold_x and player_y == gold_y:
     print('Gold!')
 else:
     print('Monster!')
