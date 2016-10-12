@@ -27,7 +27,7 @@ class Ball:
         return self._x, self._y, Ball.W, Ball.H
 
 
-if __name__ == '__main__':
+def main():
     # Create two objects, instances of the Ball class
     b1 = Ball(40, 80)
     b2 = Ball(80, 40)
@@ -39,3 +39,6 @@ if __name__ == '__main__':
         b2.move()
         print('Ball 1 @', b1.rect())
         print('Ball 2 @', b2.rect())
+        
+if __name__ == '__main__':
+  main()

@@ -16,8 +16,7 @@ def troll(text: str) -> str:
             output += c
     return output
 
-with open('troll.out.txt', 'w') as out:
-    with open('troll.txt', 'r') as f:
-        for line in f:
-            res = troll(line)
-            print(res, file=out, end='')
+with open('troll.txt', 'r') as f, open('troll.out.txt', 'w') as out:
+    for line in f:
+        res = troll(line)
+        print(res, file=out, end='')

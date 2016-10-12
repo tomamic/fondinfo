@@ -93,10 +93,19 @@ def image_blit(canvas: CANVAS, image: IMG, pos: (int, int), area: (int, int, int
     ctx = canvas.getContext("2d")
     x, y = pos
     if area:
-      xa, ya, w, h = area
-      ctx.drawImage(image, xa, ya, w, h, x, y, w, h)
+      ax, ay, aw, ah = area
+      ctx.drawImage(image, ax, ay, aw, ah, x, y, aw, ah)
     else:
       ctx.drawImage(image, x, y)
+
+def image_blit_scaled(canvas: CANVAS, image: IMG, pos: (int, int, int, int), area: (int, int, int, int)=None) -> None:
+    ctx = canvas.getContext("2d")
+    x, y, w, h = pos
+    if area:
+      ax, ay, aw, ah = area
+      ctx.drawImage(image, ax, ay, aw, ah, x, y, w, h)
+    else:
+      ctx.drawImage(image, x, y, w, h)
 
 def audio_load(url: str) -> AUDIO:
     return AUDIO(src=url)
