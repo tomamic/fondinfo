@@ -13,8 +13,8 @@ class Actor():
         raise NotImplementedError('Abstract method')
 
     def collide(self, other: Actor):
-        '''Called by Arena, when the actor collides with another one.
-        The `other` arg is the other actor involved in the collision
+        '''Called by Arena, whenever the `self` actor collides with some
+        `other` actor
         '''
         raise NotImplementedError('Abstract method')
 
@@ -25,8 +25,8 @@ class Actor():
         raise NotImplementedError('Abstract method')
 
     def symbol(self) -> (int, int):
-        '''Return (0, 0) or the (x, y) position of current sprite in a
-        larger image, containing more sprites
+        '''Return the (x, y) position of current sprite, if it is contained in
+        a larger image, with other sprites. Otherwise, simply return (0, 0)
         '''
         raise NotImplementedError('Abstract method')
 
@@ -41,7 +41,7 @@ class Arena():
         self._actors = []
 
     def add(self, a: Actor):
-        '''Register an actor into this arena
+        '''Register an actor into this arena.
         Actors are blitted in their order of registration
         '''
         if a not in self._actors:
@@ -56,13 +56,13 @@ class Arena():
     def move_all(self):
         '''Move all actors (through their own move method).
         After each single move, collisions are checked and eventually
-        the collide methods of both colliding actors are called
+        the `collide` methods of both colliding actors are called
         '''
         actors = list(reversed(self._actors))
         for a in actors:
             previous_pos = a.rect()
             a.move()
-            if a.rect() != previous_pos:  # optimize for stationary actors
+            if a.rect() != previous_pos:  # optimization for stationary actors
                 for other in actors:
                     # reversed order, so actors drawn on top of others
                     # (towards the end of the cycle) are checked first
@@ -86,6 +86,6 @@ class Arena():
         return list(self._actors)
 
     def size(self) -> (int, int):
-        '''Return the size of the arena as a 2-tuple of ints: (width, height)
+        '''Return the size of the arena as a couple: (width, height)
         '''
         return (self._w, self._h)
