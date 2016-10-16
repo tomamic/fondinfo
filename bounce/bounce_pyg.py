@@ -42,7 +42,7 @@ while playing:
         elif e.type == pygame.KEYUP:
             turtle.stay()
 
-    #arena.move_all()  # Game logic
+    arena.move_all()  # Game logic
 
     screen.fill(background)
     for a in arena.actors():
