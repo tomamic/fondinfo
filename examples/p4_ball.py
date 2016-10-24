@@ -15,16 +15,16 @@ class Ball:
         self._dy = 5
 
     def move(self):
-        if not (0 <= self._x + self._dx <= Ball.ARENA_W - Ball.W):
+        if not (0 <= self._x + self._dx <= self.ARENA_W - self.W):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= Ball.ARENA_H - Ball.H):
+        if not (0 <= self._y + self._dy <= self.ARENA_H - self.H):
             self._dy = -self._dy
 
         self._x += self._dx
         self._y += self._dy
 
     def rect(self) -> (int, int, int, int):
-        return self._x, self._y, Ball.W, Ball.H
+        return self._x, self._y, self.W, self.H
 
 
 def main():
