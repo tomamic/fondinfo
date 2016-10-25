@@ -12,7 +12,7 @@ def print_board(board: list):
         print('|')
 
 def under_attack(board: list, x: int, y: int) -> bool:
-    for i in range(y):
+    for i in range(y):  # for all rows above y
         d = y - i
         # directions: ↖↑↗ (no queens below)
         if board[i] in (x - d, x, x + d):
