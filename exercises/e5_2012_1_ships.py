@@ -13,7 +13,7 @@ class Sea:
 
     def __init__(self, rows: int, cols: int):
         self._rows, self._cols = rows, cols
-        self._matrix = [[False] * cols for y in range(rows)]
+        self._matrix = [[False for x in range(cols)] for y in range(rows)]
 
     def place(self, x: int, y: int, dx: int, dy: int, size: int) -> bool:
         if not (0 <= y < self._rows
