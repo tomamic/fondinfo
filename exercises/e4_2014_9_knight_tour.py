@@ -36,7 +36,7 @@ def knight_tour(board, x, y) -> bool:
 
     moves = find_moves(board, x, y)
 ##    moves.sort(key=lambda m: border_distance(m[0], m[1], w, h))
-    moves.sort(key=lambda m: len(find_moves(board, m[0], m[1])))
+##    moves.sort(key=lambda m: len(find_moves(board, m[0], m[1])))
 
     # try each possible move (recursively)
     for xm, ym in moves:
@@ -52,9 +52,9 @@ def knight_tour(board, x, y) -> bool:
 def main():
     w = h = int(input('size? '))
     board = [[0 for x in range(w)] for y in range(h)]
-    board[w//2][h//2] = 1
+    board[0][0] = 1
 
-    print(knight_tour(board, w//2, h//2))
+    print(knight_tour(board, 0, 0))
 
     for y in range(h):
         for x in range(w):
