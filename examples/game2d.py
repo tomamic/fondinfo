@@ -10,6 +10,7 @@
 html = '''<!DOCTYPE html>
 <html>
     <head>
+        <title>__script__</title>
         <meta charset="UTF-8">
         <script type="text/javascript" src="brython_dist.js"></script>
     </head>
