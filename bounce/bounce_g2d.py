@@ -20,13 +20,13 @@ def update():
         image_blit(canvas, sprites, (x, y), area=(xs, ys, w, h))    
 
 def keydown(e):
-    if e.keyCode == K_UP:
+    if e.code == "ArrowUp":
         turtle.go_up()
-    elif e.keyCode == K_DOWN:
+    elif e.code == "ArrowDown":
         turtle.go_down()
-    elif e.keyCode == K_LEFT:
+    elif e.code == "ArrowLeft":
         turtle.go_left()
-    elif e.keyCode == K_RIGHT:
+    elif e.code == "ArrowRight":
         turtle.go_right()
 
 def keyup(e):
