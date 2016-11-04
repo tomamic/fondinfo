@@ -29,33 +29,14 @@ class Ball(Actor):
 
     def collide(self, other):
         if isinstance(other, Wall):
-            x, y, w, h = other.rect()
-            
-            border_left, border_right = x - self.W, x + w
-            border_top, border_bottom = y - self.H, y + h
-            # now set either self._x or self._y, to the nearest border
-            
-            if abs(border_left - self._x) < abs(border_right - self._x):
-                nearest_x = border_left
-            else:
-                nearest_x = border_right
-            
-            if abs(border_top - self._y) < abs(border_bottom - self._y):
-                nearest_y = border_top
-            else:
-                nearest_y = border_bottom
-
-            if abs(nearest_x - self._x) < abs(nearest_y - self._y):
-                self._x = nearest_x
-            else:
-                self._y = nearest_y
-            
-##            move_x = min(x - self.W - self._x, x + w - self._x, key=abs)
-##            move_y = min(y - self.H - self._y, y + h - self._y, key=abs)
-##            if abs(move_x) < abs(move_y):
-##                self._x += move_x
-##            else:
-##                self._y += move_y
+            bx, by, bw, bh = self.rect()  # ball's pos
+            wx, wy, ww, wh = other.rect() # wall's pos
+            borders_dist = [(wx - bw - bx, 0), (wx + ww - bx, 0),
+                            (0, wy - bh - by), (0, wy + wh - by)]
+            # move to the nearest border: left, right, top or bottom
+            move = min(borders_dist, key=lambda m: abs(m[0] + m[1]))
+            self._x += move[0]
+            self._y += move[1]
 
     def rect(self):
         return self._x, self._y, self.W, self.H
@@ -99,8 +80,8 @@ def update():
 
 arena = Arena(320, 240)
 Ball(arena, 40, 80)
-Ball(arena, 80, 40)
-Wall(arena, 120, 80, 100, 20)
+Ball(arena, 85, 40)
+Wall(arena, 115, 80, 100, 20)
 
 canvas = canvas_init(arena.size())
 sprites = image_load("sprites.png")
