@@ -8,7 +8,7 @@ class Planet:
         self._orbit = orbit
         self._theta = random.uniform(0, math.pi * 2)
         self._omega = random.uniform(0.01, 0.04)
-        self._diam = random.randint(10, 20)
+        self._diameter = random.randint(10, 20)
         self._color = (random.randrange(256),
                        random.randrange(256),
                        random.randrange(256))
@@ -22,21 +22,22 @@ class Planet:
         self._theta += self._omega
 
     def diameter(self):
-        return self._diam
+        return self._diameter
 
     def color(self):
         return self._color
 
 
 def new_frame():
+    center_x, center_y = canvas.width // 2, canvas.height // 2
     canvas_fill(canvas, (255, 255, 255))
-    draw_circle(canvas, (255, 255, 0), (canvas.width // 2, canvas.height // 2), 30)
+    draw_circle(canvas, (255, 255, 0), (center_x, center_y), 30)
     for p in planets:
         p.move()
         x, y = p.pos()
-        diam = p.diameter()
-        color = p.color()
-        draw_circle(canvas, color, (canvas.width // 2 + x, canvas.height // 2+ y), diam // 2)
+        radius = p.diameter() // 2
+        draw_circle(canvas, p.color(),
+                    (center_x + x, center_y + y), p.diameter() // 2)
 
 planets = []
 for i in range(5):
