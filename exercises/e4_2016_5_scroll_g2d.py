@@ -72,7 +72,8 @@ class Plane(Actor):
 
 
 def update():
-    image_blit(canvas, background, (0, 0), area=(vx, vy, vw, vh))  # BG
+    image_blit(canvas, background, (0, 0),
+               area=(view_x, view_y, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
         x, y, w, h = a.rect()
