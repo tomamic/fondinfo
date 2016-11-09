@@ -34,9 +34,9 @@ class Ball(Actor):
             borders_distance = [(wx - bw - bx, 0), (wx + ww - bx, 0),
                                 (0, wy - bh - by), (0, wy + wh - by)]
             # move to the nearest border: left, right, top or bottom
-            mx, my = min(borders_distance, key=lambda m: abs(m[0] + m[1]))
-            self._x += mx
-            self._y += my
+            move = min(borders_distance, key=lambda m: abs(m[0] + m[1]))
+            self._x += move[0]
+            self._y += move[1]
 
     def rect(self):
         return self._x, self._y, self.W, self.H
