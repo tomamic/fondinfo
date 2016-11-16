@@ -16,11 +16,11 @@ class Memory:
         self._cards = [chr(i // 2 + ord('A')) for i in range(n)]
         self._visible = [False for i in range(n)]
 
-        # random.shuffle(self._cards)
-        cards = self._cards
-        for i in range(n):
-            j = random.randrange(n)
-            cards[i], cards[j] = cards[j], cards[i]
+        random.shuffle(self._cards)
+##        cards = self._cards
+##        for i in range(n):
+##            j = random.randrange(n)
+##            cards[i], cards[j] = cards[j], cards[i]
 
     def uncover(self, pos1: int, pos2: int):
         cards = self._cards
