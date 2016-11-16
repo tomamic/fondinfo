@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "gamegui.h"
+#include "fifteen.h"
 
 #include <QMenuBar>
 #include <QMenu>
@@ -21,11 +22,11 @@ MainWindow::MainWindow()
 
 void MainWindow::new_game(int cols, int rows)
 {
-    if (puzzle_ != nullptr) delete puzzle_;
+    if (game_ != nullptr) delete game_;
     if (centralWidget() != nullptr) delete centralWidget();
 
-    puzzle_ = new Fifteen{cols, rows};
-    setCentralWidget(new GameGui(puzzle_));
+    game_ = new Fifteen{cols, rows};
+    setCentralWidget(new GameGui{game_});
     adjustSize();
 }
 

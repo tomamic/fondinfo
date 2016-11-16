@@ -22,18 +22,18 @@ public:
     void init(int cols, int rows);
     void new_game();
     void move_val(int value);
-    int get(int x, int y) const;
-    Coord blank() const { return blank_; }
-    Coord moved() const { return moved_; }
-    void write(ostream &out) const;
-    string str() const;
+    int get(int x, int y);
+    Coord blank() { return blank_; }
+    Coord moved() { return moved_; }
+    void write(ostream &out);
+    string str();
 
     void play_at(int x, int y) override;
-    std::string get_val(int x, int y) const override;
-    bool finished() const override;
-    std::string message() const override { return "Puzzle solved!"; }
-    int cols() const override { return cols_; }
-    int rows() const override { return rows_; }
+    std::string get_val(int x, int y) override;
+    bool finished() override;
+    std::string message() override { return "Puzzle solved!"; }
+    int cols() override { return cols_; }
+    int rows() override { return rows_; }
 private:
     void swap_blank_with(int x, int y);
 

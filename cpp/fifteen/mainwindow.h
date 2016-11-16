@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "fifteen.h"
+#include "game.h"
 #include <QMainWindow>
 
 class MainWindow : public QMainWindow
@@ -13,7 +13,7 @@ public:
     void new_game(int cols, int rows);
 
 private:
-    Fifteen* puzzle_ = nullptr;
+    Game* game_ = nullptr;
 };
 
 #endif // MAINWINDOW_H

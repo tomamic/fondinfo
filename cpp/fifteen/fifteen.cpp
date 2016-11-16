@@ -63,13 +63,13 @@ void Fifteen::play_at(int x, int y) {
     move_val(get(x, y));
 }
 
-string Fifteen::get_val(int x, int y) const {
+string Fifteen::get_val(int x, int y) {
     int val = get(x, y);
     if (val <= 0) return "";
     return to_string(val);
 }
 
-int Fifteen::get(int x, int y) const {
+int Fifteen::get(int x, int y) {
     if (0 <= x && x < cols_ && 0 <= y && y < rows_) {
         return board_[y * cols_ + x];
     }
@@ -87,7 +87,7 @@ void Fifteen::swap_blank_with(int x, int y) {
     }
 }
 
-bool Fifteen::finished() const {
+bool Fifteen::finished() {
     for (auto i = 0; i < board_.size() - 1; ++i) {
         // a cell with wrong value? puzzle not solved!
         if (board_[i] != i + 1) return false;
@@ -95,7 +95,7 @@ bool Fifteen::finished() const {
     return true;
 }
 
-void Fifteen::write(ostream& out) const {
+void Fifteen::write(ostream& out) {
     for (auto y = 0; y < rows_; ++y) {
         for (auto x = 0; x < cols_; ++x) {
             out << setw(3) << board_[y * cols_ + x];
@@ -104,7 +104,7 @@ void Fifteen::write(ostream& out) const {
     }
 }
 
-string Fifteen::str() const {
+string Fifteen::str() {
     ostringstream out;
     write(out);
     return out.str();
