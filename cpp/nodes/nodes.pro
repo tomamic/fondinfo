@@ -6,11 +6,11 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     node.cpp \
-    file.cpp \
-    folder.cpp
+    folder.cpp \
+    document.cpp
 
 HEADERS += \
     node.h \
-    file.h \
-    folder.h
+    folder.h \
+    document.h
 

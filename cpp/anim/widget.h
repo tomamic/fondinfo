@@ -8,11 +8,12 @@ class Widget : public QWidget
     Q_OBJECT
 private:
     int x = 0;
+    int dx = 5;
     QPixmap image{"../anim/ball.png"};
-protected:
+public:
     void timerEvent(QTimerEvent *event);
     void paintEvent(QPaintEvent *event);
-public:
+    void keyPressEvent(QKeyEvent *event);
     Widget();
 };
 

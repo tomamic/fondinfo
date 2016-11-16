@@ -1,19 +1,19 @@
-#include "file.h"
+#include "document.h"
 
 using namespace std;
 
-File::File(string name, string text)
+Document::Document(string name, string text)
 {
     this->name = name;
     this->text = text;
 }
 
-int File::size()
+int Document::size()
 {
     return text.size();
 }
 
-void File::print(int indent)
+void Document::print(int indent)
 {
     for (auto i = 0; i < indent; ++i) cout << ' ';
     cout << name << endl;

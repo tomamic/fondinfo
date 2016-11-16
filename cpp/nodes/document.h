@@ -1,14 +1,14 @@
-#ifndef FILE_H
-#define FILE_H
+#ifndef DOCUMENT_H
+#define DOCUMENT_H
 
 #include "node.h"
 #include <string>
 #include <iostream>
 
-class File : public Node
+class Document : public Node
 {
 public:
-    File(std::string name, std::string text);
+    Document(std::string name, std::string text);
     int size();
     void print(int indent);
 
@@ -17,4 +17,4 @@ private:
     std::string text;
 };
 
-#endif // FILE_H
+#endif // DOCUMENT_H

@@ -5,11 +5,18 @@ Widget::Widget() {
 }
 
 void Widget::timerEvent(QTimerEvent* event) {
-    x = (x + 5) % width();
+    x = (x + dx + width()) % width();
     update();  // async: this widget should be redrawn
 }
 
 void Widget::paintEvent(QPaintEvent* event) {
     QPainter painter{this};
-    painter.drawPixmap(x, 10, image);
+    painter.drawPixmap(x, height() / 2, image);
+}
+
+void Widget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space) {
+        dx = -dx;
+    }
 }
