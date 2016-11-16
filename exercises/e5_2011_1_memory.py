@@ -36,16 +36,16 @@ class Memory:
         return not (False in self._visible)
 
     def __str__(self) -> str:
-        result = []
+        result = ""    # StringIO is more efficient
         for y in range(self._rows):
             for x in range(self._cols):
                 i = y * self._cols + x
                 if self._visible[i] or i == self._pos1 or i == self._pos2:
-                    result.append(self._cards[i])
+                    result += self._cards[i]
                 else:
-                    result.append('?')
-            result.append('\n')
-        return ''.join(result)
+                    result += '?'
+            result += '\n'
+        return result
 
 
 def main():
