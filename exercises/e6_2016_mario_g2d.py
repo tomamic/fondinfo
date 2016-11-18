@@ -79,6 +79,9 @@ class Mario(Jumper):
 
 class Goomba(Jumper):
     def move(self):
+        # random move, just as an example
+        # implement your desired behaviour here
+        
         r = randrange(30)
         if r == 0:
             self.go_left()
