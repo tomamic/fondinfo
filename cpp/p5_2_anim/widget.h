@@ -9,7 +9,7 @@ class Widget : public QWidget
 private:
     int x = 0;
     int dx = 5;
-    QPixmap image{"../anim/ball.png"};
+    QPixmap image{"../../bounce/ball.png"};
 public:
     void timerEvent(QTimerEvent *event);
     void paintEvent(QPaintEvent *event);

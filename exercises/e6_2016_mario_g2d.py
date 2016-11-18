@@ -77,7 +77,7 @@ class Mario(Jumper):
     pass
 
 
-class Goomba(Jumper):
+class CrazyGoomba(Jumper):
     def move(self):
         # random move, just as an example
         # implement your desired behaviour here
@@ -142,8 +142,8 @@ def keyup(e):
 
 arena = Arena(320, 240)
 mario = Mario(arena, 80, 80)
-Goomba(arena, 180, 80)
-Goomba(arena, 150, 80)
+CrazyGoomba(arena, 180, 80)
+CrazyGoomba(arena, 150, 80)
 Wall(arena, 200, 80, 80, 20)
 Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
