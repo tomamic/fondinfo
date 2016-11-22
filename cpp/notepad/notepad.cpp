@@ -13,11 +13,6 @@ Notepad::Notepad() {
     // ctor: build the GUI
     // QObject::tr translates GUI texts (see Qt Linguist)
 
-    text_edit = new QTextEdit;
-    open_button = new QPushButton{tr("&Open")};
-    save_button = new QPushButton{tr("&Save")};
-    exit_button = new QPushButton{tr("E&xit")};
-
     auto button_layout = new QVBoxLayout;
     button_layout->addWidget(open_button);
     button_layout->addWidget(save_button);

@@ -18,10 +18,10 @@ public:
     void exit();
 
 private:
-    QTextEdit* text_edit;
-    QPushButton* open_button;
-    QPushButton* save_button;
-    QPushButton* exit_button;
+    QTextEdit* text_edit = new QTextEdit;
+    QPushButton* open_button = new QPushButton{tr("&Open")};
+    QPushButton* save_button = new QPushButton{tr("&Save")};
+    QPushButton* exit_button = new QPushButton{tr("E&xit")};
 };
 
 #endif // NOTEPAD_H

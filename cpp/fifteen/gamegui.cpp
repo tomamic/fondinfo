@@ -26,6 +26,12 @@ GameGui::GameGui(Game* game)
         }
     }
     update_all_buttons();
+
+    // fix appearance
+    layout()->setMargin(0);
+    layout()->setSpacing(0);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    adjustSize();
 }
 
 void GameGui::update_button(int x, int y)
@@ -33,6 +39,9 @@ void GameGui::update_button(int x, int y)
     auto val = game_->get_val(x, y);
     auto b = layout()->itemAt(y * cols_ + x)->widget();
     dynamic_cast<QPushButton*>(b)->setText(val.c_str());
+    
+    if (val == "") b->setStyleSheet("background: black; color: white;");
+    else b->setStyleSheet("background: white; color: black;");
 }
 
 void GameGui::update_all_buttons()
