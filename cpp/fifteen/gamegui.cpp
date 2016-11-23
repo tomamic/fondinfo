@@ -40,8 +40,13 @@ void GameGui::update_button(int x, int y)
     auto b = layout()->itemAt(y * cols_ + x)->widget();
     dynamic_cast<QPushButton*>(b)->setText(val.c_str());
     
+<<<<<<< HEAD
     // if (val == "") b->setStyleSheet("background: black; color: white;");
     // else b->setStyleSheet("background: white; color: black;");
+=======
+    if (val == "") b->setStyleSheet("background: black; color: white;");
+    else b->setStyleSheet("background: white; color: black;");
+>>>>>>> 03b0e6c5d8b90c8eec2dbc5c44ecf978ebc329b6
 }
 
 void GameGui::update_all_buttons()
