@@ -36,8 +36,9 @@ int main(int argc, char* argv[])
     //return main_console();
 
     QApplication a{argc, argv};
-    Fifteen puzzle{4, 4};
-    GameGui gui{&puzzle}; gui.show();
+    auto game = new Fifteen{4, 4};
+    GameGui gui{game}; gui.show();
+
     //MainWindow window; window.show();
 
     return a.exec();

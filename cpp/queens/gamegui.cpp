@@ -19,7 +19,7 @@ GameGui::GameGui(Game* game)
     for (auto y = 0; y < rows_; ++y) {
         for (auto x = 0; x < cols_; ++x) {
             auto b = new QPushButton;
-            b->setFixedSize(50, 50);
+            b->setFixedSize(25, 25);
             grid->addWidget(b, y, x);
             connect(b, &QPushButton::clicked,
                     [=]{ handle_click(x, y); });
@@ -30,8 +30,6 @@ GameGui::GameGui(Game* game)
     // fix appearance
     layout()->setMargin(0);
     layout()->setSpacing(0);
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
-    adjustSize();
 }
 
 void GameGui::update_button(int x, int y)
@@ -39,9 +37,6 @@ void GameGui::update_button(int x, int y)
     auto val = game_->get_val(x, y);
     auto b = layout()->itemAt(y * cols_ + x)->widget();
     dynamic_cast<QPushButton*>(b)->setText(val.c_str());
-    
-    if (val == "") b->setStyleSheet("background: black; color: white;");
-    else b->setStyleSheet("background: white; color: black;");
 }
 
 void GameGui::update_all_buttons()
