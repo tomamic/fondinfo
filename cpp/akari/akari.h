@@ -3,13 +3,15 @@
 
 #include <vector>
 #include <complex>
+#include "game.h"
 
 using namespace std;
 
-class Akari
+class Akari : public Game
 {
 public:
     Akari();
+    Akari(string filename);
     void play_at(int x, int y);
     string get_val(int x, int y);
     bool finished();
@@ -18,8 +20,9 @@ public:
     int cols() {return cols_; }
     int rows() { return rows_; }
     string message() { return "Puzzle solved"; }
+    bool is_white(int x, int y);
 
-    static const char EMPTY = ' ';
+    static const char EMPTY = '.';
     static const char BULB  = '@';
     static const char FLAG  = 'x';
     static const char LIGHT = '+';
@@ -34,13 +37,13 @@ private:
     int cols_ = 7;
     int rows_ = 7;
     vector< vector<char> > board_ = {
-        {' ', ' ', ' ', '5', '5', '1', ' '},
-        {' ', '5', ' ', ' ', ' ', ' ', ' '},
-        {'1', ' ', ' ', '5', ' ', '0', ' '},
-        {' ', '5', ' ', ' ', ' ', '5', ' '},
-        {' ', '1', ' ', '3', ' ', ' ', '2'},
-        {' ', ' ', ' ', ' ', ' ', '2', ' '},
-        {' ', '5', '5', '5', ' ', ' ', ' '} };
+        {'.', '.', '.', '5', '5', '1', '.'},
+        {'.', '5', '.', '.', '.', '.', '.'},
+        {'1', '.', '.', '5', '.', '0', '.'},
+        {'.', '5', '.', '.', '.', '5', '.'},
+        {'.', '1', '.', '3', '.', '.', '2'},
+        {'.', '.', '.', '.', '.', '2', '.'},
+        {'.', '5', '5', '5', '.', '.', '.'} };
     // '5' is for unnumbered walls:
     // no constraint on surrounding bulbs
 };

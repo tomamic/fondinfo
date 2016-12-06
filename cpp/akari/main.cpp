@@ -31,16 +31,14 @@ void run_console() {
 
 int main(int argc, char* argv[])
 {
-    /*
     QApplication a{argc, argv};
 
-    //MainWindow window; window.show();
+    MainWindow window; window.show();
 
-    auto game = new Queens{6}; // = new Akari;
-    GameGui gui(game); gui.show();
+    //auto game = new Akari;
+    //GameGui gui(game); gui.show();
 
     return a.exec();
-    */
 
-    run_console();
+    // run_console();
 }
