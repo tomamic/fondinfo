@@ -29,7 +29,7 @@ def set_knight(board: list, cover: list, pos: int, val: int) -> None:
        if sign is -1, remove the knight.
     '''
     board[pos] += val
-    for m in find_moves(board, pos):
+    for m in find_moves([0] * len(board), pos):
         cover[m] += val
 
 def dominate(board: list, cover: list, n: int) -> bool:
@@ -37,12 +37,12 @@ def dominate(board: list, cover: list, n: int) -> bool:
         return 0 not in cover
 
     # try each cell, among those covering the first zero
-##    moves = find_moves(board, cover.index(0))
+    moves = find_moves(board, cover.index(0))
     
-    zeros = [i for i, val in enumerate(cover) if val == 0]
-    pos_zero = min(zeros, key=lambda i: len(find_moves(board, i)))
-    moves = find_moves(board, pos_zero)
-    moves.sort(key=lambda i: -len(find_moves(cover, i)))
+##    zeros = [i for i, val in enumerate(cover) if val == 0]
+##    pos_zero = min(zeros, key=lambda i: len(find_moves(board, i)))
+##    moves = find_moves(board, pos_zero)
+##    moves.sort(key=lambda i: -len(find_moves(cover, i)))
 
     for m in moves:
         set_knight(board, cover, m, +1)
