@@ -28,5 +28,4 @@ void MainWindow::new_game()
 
     // fix appearance
     adjustSize();
-    setFixedSize(sizeHint());
 }
