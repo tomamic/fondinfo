@@ -20,6 +20,10 @@ MainWindow::MainWindow()
     connect(load_act, &QAction::triggered,
             this, &MainWindow::load_game);
 
+    auto suggest_act = menu->addAction(tr("Suggest"));
+    connect(suggest_act, &QAction::triggered,
+            this, &MainWindow::suggest);
+
     new_game();
 }
 
@@ -28,7 +32,8 @@ void MainWindow::new_game()
     if (centralWidget() != nullptr) delete centralWidget();
     if (game_ != nullptr) delete game_;
     game_ = new Akari;
-    setCentralWidget(new GameGui{game_});
+    gui_ = new GameGui{game_};
+    setCentralWidget(gui_);
     adjustSize();
 }
 
@@ -40,7 +45,14 @@ void MainWindow::load_game()
         if (game_ != nullptr) delete game_;
 
         game_ = new Akari{fn.toStdString()};
-        setCentralWidget(new GameGui{game_});
+        gui_ = new GameGui{game_};
+        setCentralWidget(gui_);
         adjustSize();
     }
+}
+
+void MainWindow::suggest()
+{
+    // game_->autocomplete();
+    gui_->update_all_buttons();
 }
