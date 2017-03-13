@@ -37,6 +37,7 @@ class GameGui(QWidget):
                 self.update_button(x, y)
                 
     def handle_click(self, x: int, y: int):
+        #print(x, y)
         self._game.play_at(x, y)
         self.update_all_buttons()
         
