@@ -7,7 +7,7 @@
 class Literal : public Expression
 {
 private:
-    int val_;
+    float val_;
 public:
     Literal(float val);
     float eval();
