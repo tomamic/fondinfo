@@ -18,7 +18,7 @@ while val > 0:
     val = float(input('Val? '))
 
 WIDTH, HEIGHT = 600, 400
-canvas = canvas_init((WIDTH, HEIGHT))
+canvas_init((WIDTH, HEIGHT))
 
 if len(values) > 0:
     w = WIDTH / len(values)
@@ -27,4 +27,4 @@ if len(values) > 0:
     for i in range(len(values)):
         val, gray = values[i]
         rect = int(w * i), int(HEIGHT - h * val), int(w - 1), int(h * val)
-        draw_rect(canvas, (gray, gray, gray), rect)
+        draw_rect((gray, gray, gray), rect)

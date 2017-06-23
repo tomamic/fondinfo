@@ -119,25 +119,25 @@ class Wall(Actor):
 def update():
     arena.move_all()  # Game logic
 
-    canvas_fill(canvas, (255, 255, 255))
+    canvas_fill((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
-            draw_rect(canvas, (127, 127, 127), a.rect())
+            draw_rect((127, 127, 127), a.rect())
         else:
             x, y, w, h = a.rect()
             xs, ys = a.symbol()
-            image_blit(canvas, sprites, (x, y), area=(xs, ys, w, h))
+            image_blit(sprites, (x, y), area=(xs, ys, w, h))
 
-def keydown(e):
-    if e.code == "Space":
+def keydown(code):
+    if code == "Space":
         mario.jump()
-    elif e.code == "ArrowLeft":
+    elif code == "ArrowLeft":
         mario.go_left()
-    elif e.code == "ArrowRight":
+    elif code == "ArrowRight":
         mario.go_right()
 
-def keyup(e):
-    if e.code in ("ArrowLeft", "ArrowRight"):
+def keyup(code):
+    if code in ("ArrowLeft", "ArrowRight"):
         mario.stay()
 
 arena = Arena(320, 240)
@@ -148,10 +148,9 @@ Wall(arena, 200, 80, 80, 20)
 Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
 
-canvas = canvas_init(arena.size())
+canvas_init(arena.size())
 sprites = image_load("sprites.png")
 
-doc.onkeydown = keydown
-doc.onkeyup = keyup
+handle_keyboard(keydown, keyup)
 set_interval(update, 1000 // 30)  # millis
     

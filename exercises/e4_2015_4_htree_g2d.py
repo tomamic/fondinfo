@@ -10,7 +10,7 @@ def center(rect: (int, int, int, int)) -> (int, int):
     x, y, w, h = rect
     return x + w / 2, y + h / 2
 
-def htree(screen, rect: (int, int, int, int), level: int):
+def htree(rect: (int, int, int, int), level: int):
     x, y, w, h = rect
     if level == 0 or w < 3 or h < 3:
         return
@@ -21,13 +21,13 @@ def htree(screen, rect: (int, int, int, int), level: int):
         rect1 = x, y, w, h / 2
         rect2 = x, y + h / 2, w, h / 2
 
-    draw_line(canvas, (255, 0, 0),
+    draw_line((255, 0, 0),
               center(rect1), center(rect2))
-    htree(screen, rect1, level - 1)
-    htree(screen, rect2, level - 1)
+    htree(rect1, level - 1)
+    htree(rect2, level - 1)
 
 level = int(input('level? '))  ## -1 = infinite
 side = 600
 
-canvas = canvas_init((side, side))
-htree(canvas, (0, 0, side, side), level)
+canvas_init((side, side))
+htree((0, 0, side, side), level)

@@ -72,18 +72,17 @@ class Plane(Actor):
 
 
 def update():
-    image_blit(canvas, background, (0, 0),
+    image_blit(background, (0, 0),
                area=(view_x, view_y, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
         x, y, w, h = a.rect()
-        draw_rect(canvas, (127, 127, 127),
+        draw_rect((127, 127, 127),
                   (x - view_x, y - view_y, w, h))  # FG
 
-def key_down(event):
+def keydown(code):
     global view_x, view_y
     arena_w, arena_h = arena.size()
-    code = event.code
     if code == "ArrowRight":
         view_x = min(view_x + 10, arena_w - view_w)
     elif code == "ArrowLeft":
@@ -99,9 +98,9 @@ a2 = FallingBall(arena, 80, 40)
 a3 = Plane(arena, 60, 60)
 
 view_x, view_y, view_w, view_h = 0, 0, 300, 200
-canvas = canvas_init((view_w, view_h))
+canvas_init((view_w, view_h))
 
 background = image_load("viewport.png")
 
+handle_keyboard(keydown, None)
 set_interval(update, 1000 // 30)  # Millis
-doc.onkeydown = key_down

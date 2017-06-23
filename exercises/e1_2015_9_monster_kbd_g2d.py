@@ -7,32 +7,32 @@
 from game2d import *
 from random import randrange
 
-def draw_tile(canvas, color: (int, int, int), pos: (int, int)):
+def draw_tile(color: (int, int, int), pos: (int, int)):
     x, y = pos
-    draw_rect(canvas, color, (x * TILE, y * TILE, TILE - 1, TILE - 1))
+    draw_rect(color, (x * TILE, y * TILE, TILE - 1, TILE - 1))
 
-def keydown(e):
+def keydown(code):
     global player
     if player != monster and player != gold:
-        draw_tile(canvas, color_old, player)
+        draw_tile(color_old, player)
         x, y = player
-        if e.code == "ArrowUp" and y > 0:
+        if code == "ArrowUp" and y > 0:
             player = x, y - 1
-        elif e.code == "ArrowLeft" and x > 0:
+        elif code == "ArrowLeft" and x > 0:
             player = x - 1, y
-        elif e.code == "ArrowDown" and y < H - 1:
+        elif code == "ArrowDown" and y < H - 1:
             player = x, y + 1
-        elif e.code == "ArrowRight" and x < W - 1:
+        elif code == "ArrowRight" and x < W - 1:
             player = x + 1, y
 
         if player == monster:
-            draw_tile(canvas, color_monster, player)
+            draw_tile(color_monster, player)
             alert('Monster!')
         elif player == gold:
-            draw_tile(canvas, color_gold, player)
+            draw_tile(color_gold, player)
             alert('Gold!')
         else:
-            draw_tile(canvas, color_now, player)
+            draw_tile(color_now, player)
 
 color_now = (0, 0, 0)
 color_old = (127, 127, 127)
@@ -41,7 +41,7 @@ color_monster = (255, 0, 0)
 
 W, H = 5, 5
 TILE = 20
-canvas = canvas_init((W * TILE, H * TILE))
+canvas_init((W * TILE, H * TILE))
 
 player = 0, 0
 monster = player
@@ -52,6 +52,6 @@ while gold == player or gold == monster:
     gold = randrange(W), randrange(H)    
 print('Monster:', monster)
 print('Gold:', gold)
-draw_tile(canvas, (0, 0, 0), player)
+draw_tile((0, 0, 0), player)
 
-doc.onkeydown = keydown
+handle_keyboard(keydown, None)

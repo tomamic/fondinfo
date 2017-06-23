@@ -53,9 +53,7 @@ class GameWidget(Widget):
 
     def advance_game(self, dt):
         arena.move_all()
-        self.draw_game()
-
-    def draw_game(self):
+        
         self.canvas.clear()
         with self.canvas:
             Color(.5, 1, .5)

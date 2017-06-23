@@ -30,13 +30,13 @@ class Alien:
 
 
 def update():
-    canvas_fill(canvas, (255, 255, 255))  # Draw background 
+    canvas_fill((255, 255, 255))  # Draw background 
 
     for a in aliens:
         a.move()                # Apply game logic
                                 # Draw foreground
-        draw_rect(canvas, (127, 127, 127), a.rect())
+        draw_rect((127, 127, 127), a.rect())
 
 aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
-canvas = canvas_init((320, 240))
+canvas_init((320, 240))
 set_interval(update, 1000 // 30)  # Millis

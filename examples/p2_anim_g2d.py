@@ -8,13 +8,13 @@ from game2d import *
 
 def update():
     global x
-    canvas_fill(canvas, (255, 255, 255))  # Draw background        
-    image_blit(canvas, image, (x, 50))    # Draw foreground
+    canvas_fill((255, 255, 255))  # Draw background        
+    image_blit(image, (x, 50))    # Draw foreground
     x = (x + dx) % 320                    # Update ball's position
 
-def keydown(event):
+def keydown(code):
     global dx
-    if event.code == "Space":
+    if code == "Space":
         dx = -dx
 
 canvas = canvas_init((320, 240))
@@ -22,5 +22,5 @@ image = image_load("ball.png")
 x = 50
 dx = 5
 
+handle_keyboard(keydown, None)
 set_interval(update, 1000 // 30)    # Call update 30 times/second
-doc.onkeydown = keydown

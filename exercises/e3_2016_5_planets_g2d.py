@@ -30,19 +30,19 @@ class Planet:
 
 def new_frame():
     center_x, center_y = canvas.width // 2, canvas.height // 2
-    canvas_fill(canvas, (255, 255, 255))
-    draw_circle(canvas, (255, 255, 0), (center_x, center_y), 30)
+    canvas_fill((255, 255, 255))
+    draw_circle((255, 255, 0), (center_x, center_y), 30)
     for p in planets:
         p.move()
         x, y = p.pos()
         radius = p.diameter() // 2
-        draw_circle(canvas, p.color(),
+        draw_circle(p.color(),
                     (center_x + x, center_y + y), p.diameter() // 2)
 
 planets = []
 for i in range(5):
     p = Planet(100 + i * 40)
     planets.append(p)
-canvas = canvas_init((600, 600))
+canvas_init((600, 600))
 
 set_interval(new_frame, 1000 // 30)

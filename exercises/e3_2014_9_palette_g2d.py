@@ -20,9 +20,9 @@ n = int(input('squares? '))
 side = 400.0
 delta = side / n
 
-canvas = canvas_init((int(side), int(side)))
+canvas_init((int(side), int(side)))
 
 for i in range(n):
     color = palette[i % len(palette)]
-    draw_rect(canvas, color, (0, 0, int(side), int(side)))
+    draw_rect(color, (0, 0, int(side), int(side)))
     side -= delta

@@ -6,10 +6,10 @@
 
 from game2d import *
 
-canvas = canvas_init((300, 300))
+canvas_init((300, 300))
 
 for i in range(5):
     x = i * 40
     y = i * 40
     red = i * 60
-    draw_rect(canvas, (red, 0, 0), (x, y, 140, 140))
+    draw_rect((red, 0, 0), (x, y, 140, 140))

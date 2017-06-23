@@ -17,10 +17,10 @@ m = int(input('repetitions? '))
 side = 400.0
 delta = side / (len(grays) * m)
 
-canvas = canvas_init((int(side), int(side)))
+canvas_init((int(side), int(side)))
 
 for i in range(m):
     for val in grays:
-        draw_rect(canvas, (val, val, val),
+        draw_rect((val, val, val),
                   (0, 0, int(side), int(side)))
         side -= delta

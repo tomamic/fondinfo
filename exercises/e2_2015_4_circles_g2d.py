@@ -9,7 +9,7 @@ from game2d import *
 n = int(input('Circles? '))
 
 SIDE = 600
-canvas = canvas_init((SIDE, SIDE))
+canvas_init((SIDE, SIDE))
 
 center = SIDE // 2, SIDE // 2
 delta_radius = SIDE / (2 * n)
@@ -20,4 +20,4 @@ if n > 1:
 for i in range(n):
     radius = int(SIDE // 2 - i * delta_radius)
     color = int(255.0 - i * delta_color)
-    draw_circle(canvas, (color, 0, 0), center, radius)
+    draw_circle((color, 0, 0), center, radius)
