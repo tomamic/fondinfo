@@ -6,18 +6,17 @@
 
 from game2d import *
 from random import choice, randrange
-from actor import *
+from actor import Actor, Arena
 
 
 class Jumper(Actor):
-    W, H = 20, 20
-    SPEED = 4
-    MAX_SPEED = 8
-    GRAVITY = 0.4
-
     def __init__(self, arena, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
+        self._w, self._h = 20, 20
+        self._speed = 4
+        self._max_speed = 8
+        self._gravity = 0.4
         self._landed = False
         self._arena = arena
         arena.add(self)
@@ -26,27 +25,27 @@ class Jumper(Actor):
         arena_w, arena_h = self._arena.size()
         self._y += self._dy
         if not self._landed:
-            self._dy += self.GRAVITY
-            self._dy = min(self._dy, self.MAX_SPEED)
+            self._dy += self._gravity
+            self._dy = min(self._dy, self._max_speed)
 
         self._landed = False
 
         self._x += self._dx
         if self._x < 0:
             self._x = 0
-        elif self._x > arena_w - self.W:
-            self._x = arena_w - self.W
+        elif self._x > arena_w - self._w:
+            self._x = arena_w - self._w
 
     def jump(self):
         if self._landed:
-            self._dy = -self.MAX_SPEED
+            self._dy = -self._max_speed
             self._landed = False
         
     def go_left(self):
-        self._dx = -self.SPEED
+        self._dx = -self._speed
         
     def go_right(self):
-        self._dx = +self.SPEED
+        self._dx = +self._speed
 
     def stay(self):
         self._dx = 0
@@ -67,7 +66,7 @@ class Jumper(Actor):
                 self._landed = True
         
     def rect(self):
-        return self._x, self._y, self.W, self.H
+        return self._x, self._y, self._w, self._h
 
     def symbol(self):
         return 0, 20

@@ -10,12 +10,11 @@ from actor import *
 
 
 class Turtle(Actor):
-    W, H = 20, 20
-    SPEED = 4
-
     def __init__(self, arena, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
+        self._w, self._h = 20, 20
+        self._speed = 4
         self._landed = False
         self._arena = arena
         arena.add(self)
@@ -25,8 +24,8 @@ class Turtle(Actor):
         self._y += self._dy
         if self._y < 0:
             self._y = 0
-        elif self._y > arena_h - self.H:
-            self._y = arena_h - self.H
+        elif self._y > arena_h - self._h:
+            self._y = arena_h - self._h
             self._landed = True
 
         if not self._landed:
@@ -35,19 +34,19 @@ class Turtle(Actor):
         self._x += self._dx
         if self._x < 0:
             self._x = 0
-        elif self._x > arena_w - self.W:
-            self._x = arena_w - self.W
+        elif self._x > arena_w - self._w:
+            self._x = arena_w - self._w
 
     def jump(self):
         if self._landed:
-            self._dy = -self.SPEED * 2
+            self._dy = -self._speed * 2
             self._landed = False
         
     def go_left(self):
-        self._dx = -self.SPEED
+        self._dx = -self._speed
         
     def go_right(self):
-        self._dx = +self.SPEED
+        self._dx = +self._speed
 
     def stay(self):
         self._dx = 0
@@ -56,7 +55,7 @@ class Turtle(Actor):
         pass
         
     def rect(self):
-        return self._x, self._y, self.W, self.H
+        return self._x, self._y, self._w, self._h
 
     def symbol(self):
         return 0, 20

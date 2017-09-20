@@ -4,27 +4,28 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-class Ball:
-    W, H = 20, 20
-    ARENA_W, ARENA_H = 320, 240
+ARENA_W, ARENA_H = 320, 240
 
+class Ball:
     def __init__(self, x: int, y: int):
         self._x = x
         self._y = y
         self._dx = 5
         self._dy = 5
+        self._w = 20
+        self._h = 20
 
     def move(self):
-        if not (0 <= self._x + self._dx <= self.ARENA_W - self.W):
+        if not (0 <= self._x + self._dx <= ARENA_W - self._w):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= self.ARENA_H - self.H):
+        if not (0 <= self._y + self._dy <= ARENA_H - self._h):
             self._dy = -self._dy
 
         self._x += self._dx
         self._y += self._dy
 
     def rect(self) -> (int, int, int, int):
-        return self._x, self._y, self.W, self.H
+        return self._x, self._y, self._w, self._h
 
 
 def main():
