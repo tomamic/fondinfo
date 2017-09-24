@@ -21,7 +21,7 @@ html = '''<!DOCTYPE html>
 </html>'''
 
 try:
-    from browser import doc, alert, timer, DOMEvent
+    from browser import doc, alert, DOMEvent
     from browser.html import CANVAS, IMG, AUDIO
     from browser.timer import set_interval, clear_interval
 except:
@@ -29,7 +29,9 @@ except:
     import os, sys, urllib.request, webbrowser, http.server, socketserver
 
     if not os.path.isfile('brython_dist.js'):
-        with urllib.request.urlopen('http://brython.info/src/brython_dist.js') as response:
+        url = 'http://brython.info/src/brython_dist.js'
+        #url = 'https://raw.githubusercontent.com/brython-dev/brython/3dd0b0e648e75100d0c4806c39fd18edbea927b6/www/src/brython_dist.js'
+        with urllib.request.urlopen(url) as response:
             content = response.read()
             with open('brython_dist.js', 'wb') as brython_file:
                 brython_file.write(content)

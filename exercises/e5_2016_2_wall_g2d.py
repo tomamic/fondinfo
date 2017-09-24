@@ -4,9 +4,9 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 from random import choice, randrange
-from actor import *
+from actor import Actor, Arena
 
 class Ball(Actor):
     W, H = 20, 20
@@ -69,22 +69,22 @@ class Wall(Actor):
 def update():
     arena.move_all()  # Game logic
 
-    canvas_fill((255, 255, 255))
+    game2d.canvas_fill((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
-            draw_rect((127, 127, 127), a.rect())
+            game2d.draw_rect((127, 127, 127), a.rect())
         else:
             x, y, w, h = a.rect()
             xs, ys = a.symbol()
-            image_blit(sprites, (x, y), area=(xs, ys, w, h))
+            game2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
 
 arena = Arena(320, 240)
 Ball(arena, 40, 80)
 Ball(arena, 85, 40)
 Wall(arena, 115, 80, 100, 20)
 
-canvas_init(arena.size())
-sprites = image_load("sprites.png")
+game2d.canvas_init(arena.size())
+sprites = game2d.image_load("sprites.png")
 
-set_interval(update, 1000//30)  # millis
+game2d.set_interval(update, 1000//30)  # millis
     

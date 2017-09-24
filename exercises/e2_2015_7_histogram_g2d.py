@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
 values = []
 
@@ -18,7 +18,7 @@ while val > 0:
     val = float(input('Val? '))
 
 WIDTH, HEIGHT = 600, 400
-canvas_init((WIDTH, HEIGHT))
+game2d.canvas_init((WIDTH, HEIGHT))
 
 if len(values) > 0:
     w = WIDTH / len(values)
@@ -27,4 +27,4 @@ if len(values) > 0:
     for i in range(len(values)):
         val, gray = values[i]
         rect = int(w * i), int(HEIGHT - h * val), int(w - 1), int(h * val)
-        draw_rect((gray, gray, gray), rect)
+        game2d.draw_rect((gray, gray, gray), rect)

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 from random import choice, randrange
 from actor import Actor, Arena
 
@@ -118,14 +118,14 @@ class Wall(Actor):
 def update():
     arena.move_all()  # Game logic
 
-    canvas_fill((255, 255, 255))
+    game2d.canvas_fill((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
-            draw_rect((127, 127, 127), a.rect())
+            game2d.draw_rect((127, 127, 127), a.rect())
         else:
             x, y, w, h = a.rect()
             xs, ys = a.symbol()
-            image_blit(sprites, (x, y), area=(xs, ys, w, h))
+            game2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
 
 def keydown(code):
     if code == "Space":
@@ -147,9 +147,9 @@ Wall(arena, 200, 80, 80, 20)
 Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
 
-canvas_init(arena.size())
-sprites = image_load("sprites.png")
+game2d.canvas_init(arena.size())
+sprites = game2d.image_load("sprites.png")
 
-handle_keyboard(keydown, keyup)
-set_interval(update, 1000 // 30)  # millis
-    
+game2d.handle_keyboard(keydown, keyup)
+game2d.set_interval(update, 1000 // 30)  # millis
+

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
 def center(rect: (int, int, int, int)) -> (int, int):
     x, y, w, h = rect
@@ -21,13 +21,13 @@ def htree(rect: (int, int, int, int), level: int):
         rect1 = x, y, w, h / 2
         rect2 = x, y + h / 2, w, h / 2
 
-    draw_line((255, 0, 0),
-              center(rect1), center(rect2))
+    game2d.draw_line((255, 0, 0),
+                     center(rect1), center(rect2))
     htree(rect1, level - 1)
     htree(rect2, level - 1)
 
 level = int(input('level? '))  ## -1 = infinite
 side = 600
 
-canvas_init((side, side))
+game2d.canvas_init((side, side))
 htree((0, 0, side, side), level)

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
 def sierpinski(x0, y0, w0, h0, level):
     w1 = w0 // 3
@@ -16,13 +16,13 @@ def sierpinski(x0, y0, w0, h0, level):
             x1 = x0 + x * w1
             y1 = y0 + y * h1
             if x == 1 and y == 1:
-                draw_rect((255, 255, 255), (x1, y1, w1, h1))
+                game2d.draw_rect((255, 255, 255), (x1, y1, w1, h1))
             else:
                 sierpinski(x1, y1, w1, h1, level - 1)
 
 level = int(input('level? '))  ## -1 = infinite
 side = 600
 
-canvas_init((side, side))
-canvas_fill((0, 0, 0))
+game2d.canvas_init((side, side))
+game2d.canvas_fill((0, 0, 0))
 sierpinski(0, 0, side, side, level)

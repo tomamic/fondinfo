@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
 palette = []
 palette_file = open('palette.txt', 'r')
@@ -20,9 +20,9 @@ n = int(input('squares? '))
 side = 400.0
 delta = side / n
 
-canvas_init((int(side), int(side)))
+game2d.canvas_init((int(side), int(side)))
 
 for i in range(n):
     color = palette[i % len(palette)]
-    draw_rect(color, (0, 0, int(side), int(side)))
+    game2d.draw_rect(color, (0, 0, int(side), int(side)))
     side -= delta
