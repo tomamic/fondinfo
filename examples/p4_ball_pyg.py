@@ -4,8 +4,9 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from p4_ball import *
+from p4_ball import Ball, ARENA_W, ARENA_H
 import pygame
+
 pygame.init()                     # Prepare pygame
 clock = pygame.time.Clock()       # To set game speed
 screen = pygame.display.set_mode((ARENA_W, ARENA_H))
