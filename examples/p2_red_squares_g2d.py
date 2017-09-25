@@ -4,12 +4,12 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
-canvas_init((300, 300))
+game2d.canvas_init((300, 300))
 
 for i in range(5):
     x = i * 40
     y = i * 40
     red = i * 60
-    draw_rect((red, 0, 0), (x, y, 140, 140))
+    game2d.draw_rect((red, 0, 0), (x, y, 140, 140))

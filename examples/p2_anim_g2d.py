@@ -4,12 +4,12 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
 def update():
     global x
-    canvas_fill((255, 255, 255))  # Draw background        
-    image_blit(image, (x, 50))    # Draw foreground
+    game2d.canvas_fill((255, 255, 255))  # Draw background        
+    game2d.image_blit(image, (x, 50))    # Draw foreground
     x = (x + dx) % 320                    # Update ball's position
 
 def keydown(code):
@@ -17,10 +17,10 @@ def keydown(code):
     if code == "Space":
         dx = -dx
 
-canvas = canvas_init((320, 240))
-image = image_load("ball.png")
+game2d.canvas_init((320, 240))
+image = game2d.image_load("ball.png")
 x = 50
 dx = 5
 
-handle_keyboard(keydown, None)
-set_interval(update, 1000 // 30)    # Call update 30 times/second
+game2d.handle_keyboard(keydown, None)
+game2d.set_interval(update, 1000 // 30)    # Call update 30 times/second

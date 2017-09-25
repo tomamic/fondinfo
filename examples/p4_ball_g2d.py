@@ -4,16 +4,16 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
-from p4_ball import *
+import game2d
+from p4_ball import Ball, ARENA_W, ARENA_H
 
 def update():
-    canvas_fill((255, 255, 255))  # BG
+    game2d.canvas_fill((255, 255, 255))  # BG
     for b in balls:
         b.move()
-        draw_rect((127, 127, 127), b.rect())  # FG
+        game2d.draw_rect((127, 127, 127), b.rect())  # FG
 
 balls = [Ball(40, 80), Ball(80, 40)]
-canvas_init((ARENA_W, ARENA_H))
-set_interval(update, 1000 // 30)  # Millis
+game2d.canvas_init((ARENA_W, ARENA_H))
+game2d.set_interval(update, 1000 // 30)  # Millis
 

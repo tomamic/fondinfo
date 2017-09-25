@@ -4,11 +4,11 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from game2d import *
+import game2d
 
-canvas_init((400, 400))
+game2d.canvas_init((400, 400))
 
-draw_rect((165, 0, 255), (100, 100, 250, 250))
-draw_circle((255, 0, 0), (100, 100), 20)
+game2d.draw_rect((165, 0, 255), (100, 100, 250, 250))
+game2d.draw_circle((255, 0, 0), (100, 100), 20)
 
-draw_text("Hello", (0, 255, 0), (0, 0), 60)
+game2d.draw_text("Hello", (0, 255, 0), (0, 0), 60)

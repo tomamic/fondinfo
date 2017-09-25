@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d as g
+import game2d
 
 from bounce import Arena, Ball, Ghost, Turtle
 
@@ -18,21 +18,21 @@ def setup():
     Ghost(arena, 120, 80)
     turtle = Turtle(arena, 80, 80)
 
-    g.canvas_init(arena.size())
+    game2d.canvas_init(arena.size())
     sprites = game2d.image_load("sprites.png")
 
-    g.handle_keyboard(keydown, keyup)
-    g.set_interval(update, 1000//30)  # millis
+    game2d.handle_keyboard(keydown, keyup)
+    game2d.set_interval(update, 1000//30)  # millis
 
 def update():
     arena.move_all()  # Game logic
 
-    g.canvas_fill((255, 255, 255))
+    game2d.canvas_fill((255, 255, 255))
     for a in arena.actors():
         x, y, w, h = a.rect()
         # use the following lines to cut a sprite from a larger image
         xs, ys = a.symbol()
-        g.image_blit(sprites, (x, y), area=(xs, ys, w, h))    
+        game2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))    
 
 def keydown(code):
     print(code + " dn")
