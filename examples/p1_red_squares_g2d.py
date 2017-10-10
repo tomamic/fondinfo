@@ -8,8 +8,10 @@ import game2d
 
 game2d.canvas_init((300, 300))
 
-for i in range(5):
+i = 0
+while i < 5:
     x = i * 40
     y = i * 40
     red = i * 60
     game2d.draw_rect((red, 0, 0), (x, y, 140, 140))
+    i += 1

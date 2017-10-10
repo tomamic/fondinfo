@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "fifteen.h"
-#include "gamegui.h"
+#include "boardgamegui.h"
 #include "mainwindow.h"
 
 using namespace std;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
     QApplication a{argc, argv};
     auto game = new Fifteen{4, 4};
-    GameGui gui{game}; gui.show();
+    BoardGameGui gui{game}; gui.show();
 
     //MainWindow window; window.show();
 

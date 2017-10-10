@@ -7,11 +7,11 @@
 from sys import argv
 from PySide.QtGui import (QButtonGroup, QGridLayout, QPushButton,
                           QWidget, QMessageBox, QApplication)
-from p6_fifteen import Game, Fifteen
+from p4_board_game import BoardGame, Knights
 
 
 class GameGui(QWidget):
-    def __init__(self, game: Game):
+    def __init__(self, game: BoardGame):
         QWidget.__init__(self)
         self._game = game
         self._cols, self._rows = game.size()
@@ -50,7 +50,7 @@ class GameGui(QWidget):
 
 def main():
     app = QApplication(argv)
-    game = Fifteen(4, 4)
+    game = Knights(6, 6, 8)  # try creating a Fifteen or a TicTacToe
     gui = GameGui(game)
     app.exec_()
 

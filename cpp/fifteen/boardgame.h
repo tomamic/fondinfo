@@ -1,9 +1,9 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef BOARDGAME_H
+#define BOARDGAME_H
 
 #include <string>
 
-class Game
+class BoardGame
 {
 public:
     virtual void play_at(int x, int y) = 0;
@@ -13,7 +13,7 @@ public:
     virtual bool finished() = 0;
     virtual std::string message() = 0;
 
-    virtual ~Game() {}
+    virtual ~BoardGame() {}
 };
 
-#endif // GAME_H
+#endif // BOARDGAME_H

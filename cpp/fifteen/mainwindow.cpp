@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "gamegui.h"
+#include "boardgamegui.h"
 #include "fifteen.h"
 
 #include <QMenuBar>
@@ -26,7 +26,7 @@ void MainWindow::new_game(int cols, int rows)
     if (centralWidget() != nullptr) delete centralWidget();
 
     game_ = new Fifteen{cols, rows};
-    setCentralWidget(new GameGui{game_});
+    setCentralWidget(new BoardGameGui{game_});
     adjustSize();
 }
 

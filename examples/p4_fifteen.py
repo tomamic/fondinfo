@@ -4,29 +4,10 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+from p4_board_game import BoardGame
 from random import choice
-from io import StringIO
-from sys import argv, stdin                          
 
-class Game:
-    
-    def play_at(self, x: int, y: int):
-        raise NotImplementedError("Abstract method")
-    
-    def get_val(self, x: int, y: int) -> str:
-        raise NotImplementedError("Abstract method")
-    
-    def size(self) -> (int, int):
-        raise NotImplementedError("Abstract method")
-    
-    def finished(self) -> bool:
-        raise NotImplementedError("Abstract method")
-    
-    def message(self) -> str:
-        raise NotImplementedError("Abstract method")
-    
-
-class Fifteen(Game):
+class Fifteen(BoardGame):
     
     _DIRS = ((0, -1), (+1, 0), (0, +1), (-1, 0))  # dx, dy
 
@@ -107,27 +88,25 @@ class Fifteen(Game):
         return "Puzzle solved!"
 
     def __str__(self):
-        '''Get a string representaion of the game'''
-        result = StringIO()
+        '''Get a string representation of the game'''
+        result = []
         for y in range(self._rows):
             for x in range(self._cols):
-                result.write('{:3}'.format(self.get(x, y)))
-            result.write('\n')
-        return result.getvalue()
+                result.append('{:3}'.format(self.get(x, y)))
+            result.append('\n')
+        return "".join(result)
         
 
 def main():
     puzzle = Fifteen(4, 4)
     print(puzzle)
     
-    for line in stdin:
-        puzzle.move_val(int(line))
+    while not puzzle.finished():
+        val = int(input())
+        puzzle.move_val(val)
         print(puzzle)
-        
-        if puzzle.finished():
-            print('Congatulations!')
-            puzzle.new_game()
-            print(puzzle)
+
+    print(puzzle.message())
 
 if __name__ == '__main__':
     main()

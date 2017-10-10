@@ -6,9 +6,9 @@
 
 import sys
 
-from p6_fifteen import Game
+from p4_board_game import BoardGame, console_play
 
-class TicTacToe(Game):
+class TicTacToe(BoardGame):
     NONE = '.'
     PLR1 = 'X'
     PLR2 = 'O'
@@ -81,29 +81,17 @@ class TicTacToe(Game):
         return self._side, self._side
 
     def __str__(self):
-        out = ''  # Using a StringIO would be more efficient
+        '''Get a string representation of the game'''
+        result = []
         for y in range(self._side):
             for x in range(self._side):
-                out += self._matrix[y * self._side + x]
-            out += '\n'
-        return out
+                result.append(self.get_val(x, y))
+            result.append('\n')
+        return "".join(result)
 
 def main():
     game = TicTacToe(3)
-    print(game)
-    
-    x = int(input('x? '))
-    y = int(input('y? '))
-    while x >= 0 and y >= 0:
-        game.play_at(x, y)
-        print(game)
-        winner = game.winner()
-        if winner != TicTacToe.NONE:
-            print('Game finished. Winner:', winner)
-            game.clear()
-            print(game)
-        x = int(input('x? '))
-        y = int(input('y? '))
+    console_play(game)    
 
 if __name__ == '__main__':
     main()

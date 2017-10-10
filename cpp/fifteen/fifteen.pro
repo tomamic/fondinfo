@@ -3,12 +3,12 @@ QT += core gui widgets
 CONFIG += console c++11
 
 SOURCES += main.cpp \
-    gamegui.cpp \
+    boardgamegui.cpp \
     fifteen.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    gamegui.h \
+    boardgamegui.h \
     fifteen.h \
     mainwindow.h \
-    game.h
+    boardgame.h

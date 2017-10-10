@@ -6,7 +6,7 @@
 #ifndef FIFTEEN_H
 #define FIFTEEN_H
 
-#include "game.h"
+#include "boardgame.h"
 #include <iostream>
 #include <vector>
 #include <complex>
@@ -15,7 +15,7 @@ using namespace std;
 
 typedef complex<int> Coord;
 
-class Fifteen : public Game
+class Fifteen : public BoardGame
 {
 public:
     Fifteen(int cols, int rows);
