@@ -50,7 +50,7 @@ class GameGui(QWidget):
 
 def main():
     app = QApplication(argv)
-    game = Knights(6, 6, 8)  # try creating a Fifteen or a TicTacToe
+    game = Knights(6)  # try creating a Fifteen or a TicTacToe
     gui = GameGui(game)
     app.exec_()
 

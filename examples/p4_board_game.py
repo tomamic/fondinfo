@@ -23,19 +23,25 @@ class BoardGame:
     
 
 class Knights(BoardGame):
+    '''Knights domination game: knights have to cover all cells'''
     
-    def __init__(self, cols: int, rows: int, n: int):
-        self._cols = cols
-        self._rows = rows
-        self._n = n
+    def __init__(self, side: int):
+        solutions = (0, 1, 4, 4, 4, 5, 8, 10, 12, 14, 16, 21,
+                     24, 28, 32, 36, 40, 46, 52, 57, 62)
+
+        self._cols = side
+        self._rows = side
+        self._n = solutions[side]
         self._dirs = ((-1, -2), (+1, -2), (+2, -1), (+2, +1),
                       (+1, +2), (-1, +2), (-2, +1), (-2, -1))  # dx, dy
-        self._board = [[False for x in range(cols)] for y in range(rows)]
+        self._board = [[False for x in range(side)] for y in range(side)]
 
     def size(self) -> (int, int):
+        '''Get the number of columns and rows'''
         return self._cols, self._rows
 
     def _covered(self, x: int, y: int) -> bool:
+        '''Is cell (x, y) covered by a knight?'''
         for dx, dy in self._dirs:
             if (0 <= x + dx < self._cols and
                 0 <= y + dy < self._rows and
@@ -44,7 +50,7 @@ class Knights(BoardGame):
         return False
 
     def finished(self) -> bool:
-        '''Puzzle solved?'''
+        '''Game solved?'''
         knights = 0
         for y in range(self._rows):
             for x in range(self._cols):
@@ -55,6 +61,7 @@ class Knights(BoardGame):
         return self._n == knights
 
     def play_at(self, x: int, y: int):
+        '''Place (or remove) a knight at cell (x, y)'''
         if 0 <= x < self._cols and 0 <= y < self._rows:
             self._board[y][x] = not self._board[y][x]
 
@@ -66,7 +73,8 @@ class Knights(BoardGame):
         return '-'
 
     def message(self) -> str:
-        return "Puzzle solved!"
+        '''Message to show when the game is solved'''
+        return "Game solved!"
 
     def __str__(self):
         '''Get a string representaion of the game'''
@@ -76,7 +84,7 @@ class Knights(BoardGame):
                 result.append(self.get_val(x, y))
             result.append('\n')
         return "".join(result)
-        
+
 
 def console_play(game: BoardGame):
     print(game)
@@ -86,13 +94,13 @@ def console_play(game: BoardGame):
         game.play_at(int(x), int(y))
         print(game)
         
-    print(puzzle.message())
+    print(game.message())
+
 
 def main():
-    # solutions = (0, 1, 4, 4, 4, 5, 8, 10, 12, 14, 16, 21, 24, 28, 32, 36, 40, 46, 52, 57, 62)
-
-    game = Knights(6, 6, 8)
+    game = Knights(6)
     console_play(game)
+
 
 if __name__ == '__main__':
     main()
