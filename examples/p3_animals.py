@@ -20,7 +20,7 @@ class Cat(Animal):
         self._name = name
 
     def say(self):
-        print("I'm " + self._name + " Cat. I say: MIAOW!")
+        print("I'm " + self._name + " Cat. I say: MEOW!")
 
 class Pig(Animal):
     def __init__(self, name):
