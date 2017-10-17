@@ -13,26 +13,26 @@ class Dog(Animal):
         self._name = name
 
     def say(self):
-        print(self._name, 'says :',  'bau')
+        print("I'm " + self._name + " Dog. I say: WOOF!")
 
 class Cat(Animal):
     def __init__(self, name):
         self._name = name
 
     def say(self):
-        print(self._name, 'says :',  'miao')
+        print("I'm " + self._name + " Cat. I say: MIAOW!")
 
 class Pig(Animal):
     def __init__(self, name):
         self._name = name
 
     def say(self):
-        print(self._name, 'says :',  'oink')
+        print("I'm " + self._name + " Pig. I say: OINK!")
 
 
 # a list of Animal objects
-animals = [Dog('danny'), Cat('candy'),
-           Pig('peppa'), Pig('george')]
+animals = [Dog('Danny'), Cat('Candy'),
+           Pig('Peppa'), Pig('George')]
 
 for a in animals:
     a.say()
