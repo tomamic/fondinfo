@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-def palindrome(text) -> bool:
+def palindrome(text: str) -> bool:
     if len(text) <= 1:
         return True
     return text[0] == text[-1] and palindrome(text[1:-1])
