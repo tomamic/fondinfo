@@ -22,6 +22,8 @@ class Ball(Actor):
             self._dx = -self._dx
         if not (0 <= self._y + self._dy <= arena_h - self._h):
             self._dy = -self._dy
+        else:
+            self._dy += 0.4
         self._x += self._dx
         self._y += self._dy
 

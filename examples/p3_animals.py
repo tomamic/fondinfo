@@ -19,7 +19,7 @@ class Cat(Animal):
     def __init__(self, name):
         self._name = name
 
-    def say(self):
+    def sey(self):
         print("I'm " + self._name + " Cat. I say: MEOW!")
 
 class Pig(Animal):
@@ -31,8 +31,12 @@ class Pig(Animal):
 
 
 # a list of Animal objects
-animals = [Dog('Danny'), Cat('Candy'),
-           Pig('Peppa'), Pig('George')]
+d = Dog('Danny')
+c = Cat('Candy')
+p1 = Pig('Peppa')
+p2 = Pig('George')
+
+animals = [d, c, p1, p2]
 
 for a in animals:
     a.say()
