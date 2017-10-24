@@ -30,6 +30,6 @@ if __name__ == '__main__':
     m = spiral(w, h)
     for y in range(h):
         for x in range(w):
-            print('{:3}'.format(m[y][x]), end='', sep='')
+            print('{:3}'.format(m[y][x]), end='')
         print()
     print()
