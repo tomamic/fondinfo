@@ -6,7 +6,7 @@
 
 import unittest
 
-from p4_ball import Ball
+from p3_ball import Ball
 
 class ParamBallTest(unittest.TestCase):
     TEST_VALUES = ( (40, 80, 45, 85),
