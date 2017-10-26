@@ -66,41 +66,37 @@ class Knights(BoardGame):
             self._board[y][x] = not self._board[y][x]
 
     def get_val(self, x: int, y: int) -> str:
-        if not (0 <= x < self._cols and 0 <= y < self._rows):
-            return  '!'
-        if self._board[y][x]:
-            return 'K'
+        if (0 <= x < self._cols and
+            0 <= y < self._rows and
+            self._board[y][x]):
+            return '♞'
         return '-'
 
     def message(self) -> str:
         '''Message to show when the game is solved'''
-        return "Game solved!"
+        return "Knights dominate the board!"
 
-    def __str__(self):
-        '''Get a string representaion of the game'''
-        result = []
-        for y in range(self._rows):
-            for x in range(self._cols):
-                result.append(self.get_val(x, y))
-            result.append('\n')
-        return "".join(result)
 
+def print_game(game: BoardGame):
+    cols, rows = game.size()
+    for y in range(rows):
+        for x in range(cols):
+            print('{:3}'.format(game.get_val(x, y)), end='')
+        print()
 
 def console_play(game: BoardGame):
-    print(game)
+    print_game(game)
     
     while not game.finished():
         x, y = input().split()
         game.play_at(int(x), int(y))
-        print(game)
+        print_game(game)
         
     print(game.message())
-
 
 def main():
     game = Knights(6)
     console_play(game)
-
 
 if __name__ == '__main__':
     main()

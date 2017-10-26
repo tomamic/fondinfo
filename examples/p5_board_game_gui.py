@@ -5,8 +5,8 @@
 '''
 
 from sys import argv
-from PySide.QtGui import (QButtonGroup, QGridLayout, QPushButton,
-                          QWidget, QMessageBox, QApplication)
+from PyQt5.QtWidgets import (QButtonGroup, QGridLayout, QPushButton,
+                             QWidget, QMessageBox, QApplication)
 from p4_board_game import BoardGame, Knights
 
 
@@ -20,7 +20,7 @@ class GameGui(QWidget):
             for x in range(self._cols):
                 b = QPushButton()
                 self.layout().addWidget(b, y, x)
-                b.clicked.connect(lambda x=x, y=y:
+                b.clicked.connect(lambda state, x=x, y=y:
                     self.handle_click(x, y))
         self.update_all_buttons()
         self.setWindowTitle(self.tr('Fifteen Puzzle'))
