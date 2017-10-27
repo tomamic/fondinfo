@@ -43,9 +43,12 @@ def image_blit(image: pygame.Surface, pos: (int, int), area: (int, int, int, int
     canvas.blit(image, pos, area)
 
 def image_blit_scaled(image: pygame.Surface, pos: (int, int, int, int), area: (int, int, int, int)=None) -> None:
-    x, y, w, h = pos
-    scaled = scale(image, (w, h))
-    canvas.blit(scaled, pos, area)
+    if area is None:
+        area = image.get_rect()
+    x0, y0, w0, h0 = area
+    x1, y1, w1, h1 = pos
+    scaled = pygame.transform.smoothscale(image, (int(image.get_width() * w1 / w0), int(image.get_height() * h1 / h0)))
+    canvas.blit(scaled, pos, area=(x0 * w1 / w0, y0 * h1 / h0, w1, h1))
 
 def audio_load(url: str) -> pygame.mixer.Sound:
     return pygame.mixer.Sound(url)
