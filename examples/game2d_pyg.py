@@ -9,8 +9,6 @@
 
 import pygame
 
-K_LEFT, K_UP, K_RIGHT, K_DOWN = 276, 273, 275, 274
-
 canvas = None
 onkeydown = None
 onkeyup = None
@@ -63,7 +61,6 @@ def handle_keyboard(keydown, keyup):
     onkeydown, onkeyup = keydown, keyup
 
 def web_key(key: int) -> str:
-    result = ""
     word = pygame.key.name(key)
     word = word[0].upper() + word[1:]
     if len(word) == 1 and word.isalpha():
@@ -72,8 +69,7 @@ def web_key(key: int) -> str:
         word = "Digit" + word
     elif word in ("Up", "Down", "Right", "Left"):
         word = "Arrow" + word
-    result = word + result
-    return result
+    return word
 
 def set_interval(update, millis: float) -> None:
     global playing
