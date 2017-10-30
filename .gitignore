@@ -2,3 +2,4 @@
 *build*
 *.user
 *__pycache__*
+brython_dist.js
