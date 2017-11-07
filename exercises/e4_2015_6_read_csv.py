@@ -11,9 +11,11 @@ with open('matrix.csv', 'r') as file1:
     for line in file1:
         splitted = line.split(',')
         vals = [int(i) for i in splitted]
-        if cols == 0: cols = len(vals)
         matrix.append(vals)
         ## matrix += vals  # for a simple list (ex. 4.5)
+        
+        if cols == 0:
+            cols = len(vals)
         rows += 1
 
 print(cols, 'x', rows)
