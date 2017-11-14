@@ -1,12 +1,12 @@
 #ifndef KNIGHTDOM_H
 #define KNIGHTDOM_H
 
-#include "game.h"
+#include "boardgame.h"
 #include <vector>
 
 using namespace std;
 
-class KnightDom : public Game
+class KnightDom : public BoardGame
 {
 public:
     bool finished();

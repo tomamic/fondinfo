@@ -3,13 +3,13 @@
  * @license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
-#include "gamegui.h"
+#include "boardgamegui.h"
 
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QPushButton>
 
-GameGui::GameGui(Game* game)
+BoardGameGui::BoardGameGui(BoardGame* game)
 {
     game_ = game;
     cols_ = game->cols();
@@ -32,14 +32,14 @@ GameGui::GameGui(Game* game)
     layout()->setSpacing(0);
 }
 
-void GameGui::update_button(int x, int y)
+void BoardGameGui::update_button(int x, int y)
 {
     auto val = game_->get_val(x, y);
     auto b = layout()->itemAt(y * cols_ + x)->widget();
     dynamic_cast<QPushButton*>(b)->setText(val.c_str());
 }
 
-void GameGui::update_all_buttons()
+void BoardGameGui::update_all_buttons()
 {
     for (auto y = 0; y < rows_; y++) {
         for (auto x = 0; x < cols_; x++) {
@@ -48,7 +48,7 @@ void GameGui::update_all_buttons()
     }
 }
 
-void GameGui::handle_click(int x, int y)
+void BoardGameGui::handle_click(int x, int y)
 {
     game_->play_at(x, y);
     update_all_buttons();

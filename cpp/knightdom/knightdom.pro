@@ -3,12 +3,12 @@ QT += core gui widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    gamegui.cpp \
+    boardgamegui.cpp \
     knightdom.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    gamegui.h \
+    boardgamegui.h \
     knightdom.h \
     mainwindow.h \
-    game.h
+    boardgame.h

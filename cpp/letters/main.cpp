@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     ifstream fin{"essay.txt"};
 
     string line;
-    if (fin.good()) {
+    if (fin) {
         getline(fin, line, '\0');
     }
     fin.close();

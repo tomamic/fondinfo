@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "gamegui.h"
+#include "boardgamegui.h"
 #include "knightdom.h"
 
 #include <QMenuBar>
@@ -25,7 +25,7 @@ void MainWindow::new_game()
 
     auto side = QInputDialog::getInt(this, "Side", "Side", 1, 1, 20);
     game_ = new KnightDom{side};
-    setCentralWidget(new GameGui{game_});
+    setCentralWidget(new BoardGameGui{game_});
 
     // fix appearance
     adjustSize();
