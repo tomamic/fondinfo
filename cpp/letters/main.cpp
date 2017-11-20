@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     vector<int> letters;
     letters.assign(26, 0);
 
-    ifstream fin{"essay.txt"};
+    ifstream fin{"../../exercises/cpp.txt"};
 
     string line;
     if (fin) {
@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     ofstream fout{"letters.txt"};
     if (fout) {
         for (auto i = 0; i < letters.size(); ++i) {
+            cout << char('a' + i) << ": " << letters[i] << endl;
             fout << char('a' + i) << ": " << letters[i] << endl;
         }
     }
