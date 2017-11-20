@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     ofstream fout{"letters.txt"};
     if (fout) {
         for (auto i = 0; i < letters.size(); ++i) {
-            cout << char('a' + i) << ": " << letters[i] << endl;
             fout << char('a' + i) << ": " << letters[i] << endl;
         }
     }
