@@ -18,7 +18,6 @@ public:
     std::string message() { return "Solved!"; }
 private:
     vector<int> board_;
-    vector<int> cover_;
     int side_;
     int knights_;
 };

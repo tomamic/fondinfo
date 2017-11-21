@@ -23,7 +23,7 @@ void MainWindow::new_game()
     if (game_ != nullptr) delete game_;
     if (centralWidget() != nullptr) delete centralWidget();
 
-    auto side = QInputDialog::getInt(this, "Side", "Side", 1, 1, 20);
+    auto side = QInputDialog::getInt(this, "Side", "Side", 4, 1, 16);
     game_ = new KnightDom{side};
     setCentralWidget(new BoardGameGui{game_});
 
