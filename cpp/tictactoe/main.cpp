@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void print(TicTacToe* game) {
+void print(BoardGame* game) {
     for (auto y = 0; y < game->rows(); ++y) {
         for (auto x = 0; x < game->cols(); ++x) {
             cout << '|' << game->get_val(x, y);
