@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/translations">
-        <file>pong_it.qm</file>
-    </qresource>
-    <qresource prefix="/levels">
-        <file>pong-1.dat</file>
-    </qresource>
-</RCC>
