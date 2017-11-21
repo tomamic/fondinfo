@@ -7,4 +7,5 @@ SOURCES += main.cpp \
     tictactoe.cpp
 
 HEADERS += \
+    boardgame.h \
     tictactoe.h

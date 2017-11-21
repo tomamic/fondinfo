@@ -3,12 +3,11 @@
  * @license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
-#include <QtWidgets>
-#include <cstdlib>
-#include <ctime>
+#include <QApplication>
+//#include "mainwindow.h"
 #include <iostream>
 #include <iomanip>
-#include "fifteen.h"
+#include "knightdom.h"
 #include "boardgamegui.h"
 #include "mainwindow.h"
 
@@ -40,8 +39,7 @@ int console_play(BoardGame* game) {
 
 int main(int argc, char* argv[])
 {
-    srand(time(nullptr));
-    auto game = new Fifteen{4, 4};
+    auto game = new KnightDom{6};
 //    return console_play(game);
 
     QApplication a{argc, argv};

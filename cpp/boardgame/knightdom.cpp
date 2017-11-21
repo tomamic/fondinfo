@@ -42,7 +42,7 @@ string KnightDom::get_val(int x, int y)
         if (board_[pos] >= 10) return "@";
         if (board_[pos] != 0) return "+";
     }
-    return " ";
+    return ".";
 }
 
 bool KnightDom::finished()
