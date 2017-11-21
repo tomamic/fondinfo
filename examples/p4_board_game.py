@@ -12,7 +12,10 @@ class BoardGame:
     def get_val(self, x: int, y: int) -> str:
         raise NotImplementedError("Abstract method")
     
-    def size(self) -> (int, int):
+    def cols(self) -> int:
+        raise NotImplementedError("Abstract method")
+    
+    def rows(self) -> int:
         raise NotImplementedError("Abstract method")
     
     def finished(self) -> bool:
@@ -36,9 +39,13 @@ class Knights(BoardGame):
                       (+1, +2), (-1, +2), (-2, +1), (-2, -1))  # dx, dy
         self._board = [[False for x in range(side)] for y in range(side)]
 
-    def size(self) -> (int, int):
-        '''Get the number of columns and rows'''
-        return self._cols, self._rows
+    def cols(self) -> int:
+        '''Get the number of columns'''
+        return self._cols
+
+    def rows(self) -> int:
+        '''Get the number of rows'''
+        return self._rows
 
     def _covered(self, x: int, y: int) -> bool:
         '''Is cell (x, y) covered by a knight?'''
@@ -78,9 +85,8 @@ class Knights(BoardGame):
 
 
 def print_game(game: BoardGame):
-    cols, rows = game.size()
-    for y in range(rows):
-        for x in range(cols):
+    for y in range(game.rows()):
+        for x in range(game.cols()):
             print('{:3}'.format(game.get_val(x, y)), end='')
         print()
 

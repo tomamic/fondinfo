@@ -77,8 +77,11 @@ class TicTacToe(BoardGame):
             return self.DRAW
         return self.NONE
 
-    def size(self) -> (int, int):
-        return self._side, self._side
+    def cols(self) -> int:
+        return self._side
+
+    def rows(self) -> int:
+        return self._side
 
     def __str__(self):
         '''Get a string representation of the game'''

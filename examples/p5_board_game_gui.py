@@ -14,7 +14,7 @@ class GameGui(QWidget):
     def __init__(self, game: BoardGame):
         QWidget.__init__(self)
         self._game = game
-        self._cols, self._rows = game.size()
+        self._cols, self._rows = game.cols(), game.rows()
         self.setLayout(QGridLayout())
         for y in range(self._rows):
             for x in range(self._cols):

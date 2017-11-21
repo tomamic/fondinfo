@@ -30,8 +30,11 @@ class Fifteen(BoardGame):
             x, y = x0 + dx, y0 + dy
             self._swap_blank_with(x, y)
 
-    def size(self) -> (int, int):
-        return self._cols, self._rows
+    def cols(self) -> int:
+        return self._cols
+
+    def rows(self) -> int:
+        return self._rows
 
     def finished(self) -> bool:
         '''Puzzle solved'''
