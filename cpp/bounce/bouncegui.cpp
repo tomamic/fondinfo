@@ -27,12 +27,17 @@ void BounceGui::paintEvent(QPaintEvent* event) {
 }
 
 void BounceGui::keyPressEvent(QKeyEvent* event) {
-    switch (event->key()) {
-    case Qt::Key_Left: turtle_->go_left(); break;
-    case Qt::Key_Right: turtle_->go_right(); break;
-    case Qt::Key_Up: turtle_->go_up(); break;
-    case Qt::Key_Down: turtle_->go_down(); break;
-    default: QWidget::keyPressEvent(event);
+    auto k = event->key();
+    if (k == Qt::Key_Left) {
+        turtle_->go_left();
+    } else if (k == Qt::Key_Right) {
+        turtle_->go_right();
+    } else if (k == Qt::Key_Up) {
+        turtle_->go_up();
+    } else if (k == Qt::Key_Down) {
+        turtle_->go_down();
+    } else {
+        QWidget::keyPressEvent(event);
     }
 }
 
