@@ -4,24 +4,24 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-def to_infix(tokens: list) -> list:
+def to_infix(tokens: list) -> str:
     token = tokens.pop(0)
 
-    if '0' <= token[0] <= '9':
-        value = float(token)
-        return [token]
+    if '0' <= token[-1] <= '9':
+        return token
     else:
-        result = ['(']
-        result += to_infix(tokens)
-        result += [' ', token, ' ']
-        result += to_infix(tokens)
-        result += [')']
+        a = to_infix(tokens)
+        b = to_infix(tokens)
+
+        result = a + ' ' + token + ' ' + b
+        if token in ('+', '-'):
+            result = '(' + result + ')'
         return result
 
 def evaluate(tokens: list) -> float:
     token = tokens.pop(0)
 
-    if '0' <= token[0] <= '9':
+    if '0' <= token[-1] <= '9':
         return float(token)
     else:
         a = evaluate(tokens)
@@ -39,6 +39,6 @@ if __name__ == '__main__':
 
     infix = to_infix(polish[:])
     value = evaluate(polish[:])
-    print(''.join(infix), '==', value)
+    print(infix, '==', value)
 
-    # ((((1 + 2) * (2 + 3)) + 4) mod 5) == 4
+    # (((1 + 2) * (2 + 3)) + 4) mod 5 == 4
