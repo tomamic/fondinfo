@@ -12,15 +12,10 @@
 
 class BoardGameGui : public QWidget
 {
-    Q_OBJECT
-
+    BoardGame* game;
 public:
     BoardGameGui(BoardGame* game);
-    void handle_click();
-    void update_all_buttons();
-
-private:
-    BoardGame* game;
+    void update_buttons();
 };
 
 #endif // BOARDGAMEGUI_H

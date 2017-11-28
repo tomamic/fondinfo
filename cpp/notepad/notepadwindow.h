@@ -4,8 +4,6 @@
 #include <QMainWindow>
 
 class NotepadWindow : public QMainWindow {
-    Q_OBJECT
-    
 public:
     NotepadWindow();
     ~NotepadWindow();

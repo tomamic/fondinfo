@@ -6,17 +6,13 @@
 #include <QPushButton>
 
 class Notepad : public QWidget {
-    Q_OBJECT
-    
 public:
     Notepad();
     ~Notepad();
-
     // slots, to connect with signals
     void open();
     void save();
     void exit();
-
 private:
     QTextEdit* text_edit = new QTextEdit;
     QPushButton* open_button = new QPushButton{tr("&Open")};

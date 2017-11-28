@@ -23,18 +23,18 @@ BoardGameGui::BoardGameGui(BoardGame* g)
             // lambda function; closure captures this, x, y
             connect(b, &QPushButton::clicked, [=]{
                 game->play_at(x, y);
-                update_all_buttons();
+                update_buttons();
             });
         }
     }
-    update_all_buttons();
+    update_buttons();
 
     // fix appearance
     layout()->setMargin(0);
     layout()->setSpacing(0);
 }
 
-void BoardGameGui::update_all_buttons()
+void BoardGameGui::update_buttons()
 {
     for (auto y = 0; y < game->rows(); ++y) {
         for (auto x = 0; x < game->cols(); ++x) {

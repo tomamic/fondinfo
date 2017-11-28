@@ -34,12 +34,12 @@ Notepad::~Notepad() {
 
 void Notepad::open() {
     // choose the input file
-    auto filename = QFileDialog::getOpenFileName(this);
+    auto filename = QFileDialog::getOpenFileName(this).toStdString();
     if (filename != "") {
-        ifstream in{filename.toStdString()};
-        if (in.good()) {
+        ifstream fin{filename};
+        if (fin) {
             // read the whole text
-            string content; getline(in, content, '\0');
+            string content; getline(fin, content, '\0');
             text_edit->setText(content.c_str());
         } else {
             QMessageBox::critical(this, tr("Error"),
@@ -50,13 +50,13 @@ void Notepad::open() {
 
 void Notepad::save() {
     // choose the output file
-    auto filename = QFileDialog::getSaveFileName(this);
+    auto filename = QFileDialog::getSaveFileName(this).toStdString();
     if (filename != "") {
-        ofstream out{filename.toStdString()};
-        if (out.good()) {
+        ofstream fout{filename};
+        if (fout) {
             // write the whole text
-            QString text = text_edit->toPlainText();
-            out << text.toStdString();
+            auto text = text_edit->toPlainText().toStdString();
+            fout << text;
         } else {
             QMessageBox::critical(this, tr("Error"),
                                   tr("Could not save file"));
@@ -65,7 +65,7 @@ void Notepad::save() {
 }
 
 void Notepad::exit() {
-    int button = QMessageBox::question(
+    auto button = QMessageBox::question(
                 this,
                 tr("Notepad - Quit"),
                 tr("Do you really want to quit?"),
