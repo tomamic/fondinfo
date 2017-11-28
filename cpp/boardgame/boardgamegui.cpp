@@ -8,21 +8,23 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QVariant>
 
-BoardGameGui::BoardGameGui(BoardGame* game)
+BoardGameGui::BoardGameGui(BoardGame* g)
 {
-    game_ = game;
-    cols_ = game->cols();
-    rows_ = game->rows();
-
-    auto grid = new QGridLayout; setLayout(grid);
-    for (auto y = 0; y < rows_; ++y) {
-        for (auto x = 0; x < cols_; ++x) {
+    game = g;
+    auto grid = new QGridLayout;
+    setLayout(grid);
+    for (auto y = 0; y < game->rows(); ++y) {
+        for (auto x = 0; x < game->cols(); ++x) {
             auto b = new QPushButton;
             b->setFixedSize(25, 25);
             grid->addWidget(b, y, x);
-            connect(b, &QPushButton::clicked,
-                    [=]{ handle_click(x, y); });
+            // lambda function; closure captures this, x, y
+            connect(b, &QPushButton::clicked, [=]{
+                game->play_at(x, y);
+                update_all_buttons();
+            });
         }
     }
     update_all_buttons();
@@ -32,31 +34,19 @@ BoardGameGui::BoardGameGui(BoardGame* game)
     layout()->setSpacing(0);
 }
 
-void BoardGameGui::update_button(int x, int y)
-{
-    auto val = game_->get_val(x, y);
-    auto b = layout()->itemAt(y * cols_ + x)->widget();
-    dynamic_cast<QPushButton*>(b)->setText(val.c_str());
-}
-
 void BoardGameGui::update_all_buttons()
 {
-    for (auto y = 0; y < rows_; y++) {
-        for (auto x = 0; x < cols_; x++) {
-            update_button(x, y);
+    for (auto y = 0; y < game->rows(); y++) {
+        for (auto x = 0; x < game->cols(); x++) {
+            auto val = game->get_val(x, y);
+            auto i = y * game->cols() + x;
+            auto b = layout()->itemAt(i)->widget();
+            b->setProperty("text", val.c_str());
         }
     }
-}
-
-void BoardGameGui::handle_click(int x, int y)
-{
-    game_->play_at(x, y);
-    update_all_buttons();
-
-    if (game_->finished()) {
-        QMessageBox::information(this,
-                                 tr("Game finished"),
-                                 tr(game_->message().c_str()));
+    if (game->finished()) {
+        auto msg = game->message().c_str();
+        QMessageBox::information(this, tr("Game finished"), tr(msg));
         window()->close();
     }
 }

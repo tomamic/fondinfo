@@ -10,48 +10,41 @@ from PyQt5.QtWidgets import (QButtonGroup, QGridLayout, QPushButton,
 from p4_board_game import BoardGame, Knights
 
 
-class GameGui(QWidget):
-    def __init__(self, game: BoardGame):
+class BoardGameGui(QWidget):
+    def __init__(self, g: BoardGame):
         QWidget.__init__(self)
-        self._game = game
-        self._cols, self._rows = game.cols(), game.rows()
+        self._game = g
         self.setLayout(QGridLayout())
-        for y in range(self._rows):
-            for x in range(self._cols):
+        for y in range(g.rows()):
+            for x in range(g.cols()):
                 b = QPushButton()
                 self.layout().addWidget(b, y, x)
                 b.clicked.connect(lambda state, x=x, y=y:
-                    self.handle_click(x, y))
+                                  self.handle_click(x, y))
         self.update_all_buttons()
-        self.setWindowTitle(self.tr('Fifteen Puzzle'))
-        self.show()
 
-    def update_button(self, x: int, y: int):
-        val = self._game.get_val(x, y)
-        b = self.layout().itemAt(y * self._cols + x).widget()
-        b.setText(val)
-
-    def update_all_buttons(self):
-        for y in range(self._rows):
-            for x in range(self._cols):
-                self.update_button(x, y)
-                
     def handle_click(self, x: int, y: int):
-        #print(x, y)
         self._game.play_at(x, y)
         self.update_all_buttons()
-        
+
+    def update_all_buttons(self):
+        for y in range(self._game.rows()):
+            for x in range(self._game.cols()):
+                val = self._game.get_val(x, y)
+                i = y * self._game.cols() + x
+                b = self.layout().itemAt(i).widget()
+                b.setText(val)
         if self._game.finished():
-            QMessageBox.information(self,
-                                    self.tr('Game finished'),
+            QMessageBox.information(self, self.tr('Game finished'),
                                     self.tr(self._game.message()))
             self.window().close()
-            
+
 
 def main():
     app = QApplication(argv)
     game = Knights(6)  # try creating a Fifteen or a TicTacToe
-    gui = GameGui(game)
+    gui = BoardGameGui(game)
+    gui.show()
     app.exec_()
 
 if __name__ == '__main__':

@@ -16,14 +16,10 @@ class BoardGameGui : public QWidget
 
 public:
     BoardGameGui(BoardGame* game);
-    void handle_click(int x, int y);
-    void update_button(int x, int y);
     void update_all_buttons();
 
 private:
-    BoardGame* game_;
-    int cols_;
-    int rows_;
+    BoardGame* game;
 };
 
 #endif // BOARDGAMEGUI_H
