@@ -8,9 +8,7 @@ vector<vector<int>> moves = { {-1, -2}, {+1, -2}, {+2, -1}, {+2, +1},
 
 KnightDom::KnightDom(int side)
 {
-    side = max(1, side);
-    side = min(side, 16);
-    side_ = side;
+    side_ = max(1, min(side, 16));
     knights_ = knights[side];
     board_.assign(side * side, 0);
 }
