@@ -6,6 +6,4 @@ CONFIG -= qt
 SOURCES += main.cpp \
     tictactoe.cpp
 
-HEADERS += \
-    boardgame.h \
-    tictactoe.h
+HEADERS += tictactoe.h

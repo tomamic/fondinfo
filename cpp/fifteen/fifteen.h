@@ -6,7 +6,6 @@
 #ifndef FIFTEEN_H
 #define FIFTEEN_H
 
-#include "boardgame.h"
 #include <iostream>
 #include <vector>
 #include <complex>
@@ -15,7 +14,7 @@ using namespace std;
 
 typedef complex<int> Coord;
 
-class Fifteen : public BoardGame
+class Fifteen
 {
 public:
     Fifteen(int cols, int rows);
@@ -28,12 +27,12 @@ public:
     void write(ostream &out);
     string str();
 
-    void play_at(int x, int y) override;
-    std::string get_val(int x, int y) override;
-    bool finished() override;
-    std::string message() override { return "Puzzle solved!"; }
-    int cols() override { return cols_; }
-    int rows() override { return rows_; }
+    void play_at(int x, int y);
+    std::string get_val(int x, int y);
+    bool finished();
+    std::string message() { return "Puzzle solved!"; }
+    int cols() { return cols_; }
+    int rows() { return rows_; }
 private:
     void swap_blank_with(int x, int y);
 

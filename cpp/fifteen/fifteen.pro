@@ -1,14 +1,9 @@
 TEMPLATE = app
-QT += core gui widgets
 CONFIG += console c++11
+CONFIG -= app_bundle
+CONFIG -= qt
 
 SOURCES += main.cpp \
-    boardgamegui.cpp \
-    fifteen.cpp \
-    mainwindow.cpp
+    fifteen.cpp
 
-HEADERS += \
-    boardgamegui.h \
-    fifteen.h \
-    mainwindow.h \
-    boardgame.h
+HEADERS += fifteen.h

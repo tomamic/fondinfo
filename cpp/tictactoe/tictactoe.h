@@ -3,11 +3,10 @@
 
 #include <vector>
 #include <string>
-#include "boardgame.h"
 
 using namespace std;
 
-class TicTacToe : public BoardGame
+class TicTacToe
 {
 public:
     TicTacToe();
