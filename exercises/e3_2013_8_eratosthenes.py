@@ -4,9 +4,29 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+def primes(n: int) -> list:
+    nums = []
+    is_prime = [True] * (n + 1)
+    for x in range(2, n + 1):
+        if is_prime[x]:
+            nums.append(x)
+            for i in range(x, n // x + 1):
+                is_prime[x * i] = False
+    return nums
+
+def main():
+    n = int(input('n? '))
+    result = primes(n)
+    print(result)
+    print(len(result), 'primes found')
+
+if __name__ == '__main__':
+    main()
+
+'''
 import time
 
-def primes1(n: int):
+def primes_slow(n: int) -> list:
     nums = list(range(2, n + 1))
     j = 0
     while j < len(nums):
@@ -19,23 +39,14 @@ def primes1(n: int):
         j += 1
     return nums
 
-def primes2(n: int):
-    nums = []
-    is_prime = [True] * (n + 1)
-    for x in range(2, n + 1):
-        if is_prime[x]:
-            nums.append(x)
-            for i in range(x, n // x + 1):
-                is_prime[x * i] = False
-    return nums
-
-if __name__ == '__main__':
+def test():
     n = int(input('n? '))
     t0 = time.clock()
-    res1 = primes1(n)
+    res1 = primes(n)
     t1 = time.clock()
-    res2 = primes2(n)
+    res2 = primes_slow(n)
     t2 = time.clock()
     print(res1)
     print('A.', len(res1), 'primes found in', t1 - t0, 'seconds')
     print('B.', len(res2), 'primes found in', t2 - t1, 'seconds')
+'''
