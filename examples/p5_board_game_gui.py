@@ -20,20 +20,16 @@ class BoardGameGui(QWidget):
                 b = QPushButton()
                 self.layout().addWidget(b, y, x)
                 b.clicked.connect(lambda state, x=x, y=y:
-                                  self.handle_click(x, y))
-        self.update_all_buttons()
+                                  (self._game.play_at(x, y),
+                                   self.update_buttons()))
+        self.update_buttons()
 
-    def handle_click(self, x: int, y: int):
-        self._game.play_at(x, y)
-        self.update_all_buttons()
-
-    def update_all_buttons(self):
+    def update_buttons(self):
         for y in range(self._game.rows()):
             for x in range(self._game.cols()):
-                val = self._game.get_val(x, y)
                 i = y * self._game.cols() + x
                 b = self.layout().itemAt(i).widget()
-                b.setText(val)
+                b.setText(self._game.get_val(x, y))
         if self._game.finished():
             QMessageBox.information(self, self.tr('Game finished'),
                                     self.tr(self._game.message()))

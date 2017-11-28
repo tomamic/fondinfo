@@ -16,6 +16,7 @@ class BoardGameGui : public QWidget
 
 public:
     BoardGameGui(BoardGame* game);
+    void handle_click();
     void update_all_buttons();
 
 private:

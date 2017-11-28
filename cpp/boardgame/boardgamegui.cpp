@@ -36,12 +36,12 @@ BoardGameGui::BoardGameGui(BoardGame* g)
 
 void BoardGameGui::update_all_buttons()
 {
-    for (auto y = 0; y < game->rows(); y++) {
-        for (auto x = 0; x < game->cols(); x++) {
-            auto val = game->get_val(x, y);
+    for (auto y = 0; y < game->rows(); ++y) {
+        for (auto x = 0; x < game->cols(); ++x) {
+            auto val = game->get_val(x, y).c_str();
             auto i = y * game->cols() + x;
             auto b = layout()->itemAt(i)->widget();
-            b->setProperty("text", val.c_str());
+            b->setProperty("text", val);
         }
     }
     if (game->finished()) {
