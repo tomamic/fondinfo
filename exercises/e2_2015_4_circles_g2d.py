@@ -4,12 +4,12 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 
 n = int(input('Circles? '))
 
 SIDE = 600
-game2d.canvas_init((SIDE, SIDE))
+g2d.canvas_init((SIDE, SIDE))
 
 center = SIDE // 2, SIDE // 2
 delta_radius = SIDE / (2 * n)
@@ -20,4 +20,4 @@ if n > 1:
 for i in range(n):
     radius = int(SIDE // 2 - i * delta_radius)
     color = int(255.0 - i * delta_color)
-    game2d.draw_circle((color, 0, 0), center, radius)
+    g2d.draw_circle((color, 0, 0), center, radius)

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 
 class Alien:
     SPEED = 5
@@ -30,13 +30,13 @@ class Alien:
 
 
 def update():
-    game2d.canvas_fill((255, 255, 255))  # Draw background 
+    g2d.canvas_fill((255, 255, 255))  # Draw background 
 
     for a in aliens:
         a.move()                # Apply game logic
                                 # Draw foreground
-        game2d.draw_rect((127, 127, 127), a.rect())
+        g2d.draw_rect((127, 127, 127), a.rect())
 
 aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
-game2d.canvas_init((320, 240))
-game2d.set_interval(update, 1000 // 30)  # Millis
+g2d.canvas_init((320, 240))
+g2d.set_interval(update, 1000 // 30)  # Millis

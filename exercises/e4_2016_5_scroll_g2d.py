@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 from actor import Actor, Arena
     
 class FallingBall(Actor):
@@ -72,12 +72,12 @@ class Plane(Actor):
 
 
 def update():
-    game2d.image_blit(background, (0, 0),
+    g2d.image_blit(background, (0, 0),
                       area=(view_x, view_y, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
         x, y, w, h = a.rect()
-        game2d.draw_rect((127, 127, 127),
+        g2d.draw_rect((127, 127, 127),
                          (x - view_x, y - view_y, w, h))  # FG
 
 def keydown(code):
@@ -98,9 +98,9 @@ a2 = FallingBall(arena, 80, 40)
 a3 = Plane(arena, 60, 60)
 
 view_x, view_y, view_w, view_h = 0, 0, 300, 200
-game2d.canvas_init((view_w, view_h))
+g2d.canvas_init((view_w, view_h))
 
-background = game2d.image_load("viewport.png")
+background = g2d.image_load("viewport.png")
 
-game2d.handle_keyboard(keydown, None)
-game2d.set_interval(update, 1000 // 30)  # Millis
+g2d.handle_keyboard(keydown, None)
+g2d.set_interval(update, 1000 // 30)  # Millis

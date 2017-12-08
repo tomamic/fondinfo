@@ -4,13 +4,13 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 
 cols = int(input('Cols? '))
 rows = int(input('Rows? '))
 
 WIDTH, HEIGHT = 600, 400
-game2d.canvas_init((WIDTH, HEIGHT))
+g2d.canvas_init((WIDTH, HEIGHT))
 
 w, h = WIDTH / cols, HEIGHT / rows
 delta_blue, delta_green = 0, 0
@@ -23,4 +23,4 @@ for y in range(rows):
     for x in range(cols):
         color = 0, int(delta_green * y), int(delta_blue * x)
         rect = int(w * x), int(h * y), int(w - 1), int(h - 1)
-        game2d.draw_rect(color, rect)
+        g2d.draw_rect(color, rect)

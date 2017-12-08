@@ -1,4 +1,4 @@
-import game2d
+import game2d as g2d
 import math
 import random
 
@@ -29,14 +29,14 @@ class Planet:
 
 
 def new_frame():
-    center_x, center_y = game2d.canvas.width // 2, game2d.canvas.height // 2
-    game2d.canvas_fill((255, 255, 255))
-    game2d.draw_circle((255, 255, 0), (center_x, center_y), 30)
+    center_x, center_y = g2d.canvas.width // 2, g2d.canvas.height // 2
+    g2d.canvas_fill((255, 255, 255))
+    g2d.draw_circle((255, 255, 0), (center_x, center_y), 30)
     for p in planets:
         p.move()
         x, y = p.pos()
         radius = p.diameter() // 2
-        game2d.draw_circle(p.color(),
+        g2d.draw_circle(p.color(),
                            (center_x + x, center_y + y),
                            p.diameter() // 2)
 
@@ -44,6 +44,6 @@ planets = []
 for i in range(5):
     p = Planet(100 + i * 40)
     planets.append(p)
-game2d.canvas_init((600, 600))
+g2d.canvas_init((600, 600))
 
-game2d.set_interval(new_frame, 1000 // 30)
+g2d.set_interval(new_frame, 1000 // 30)

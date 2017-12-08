@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 
 from actor import Arena, Actor
 from random import randrange
@@ -56,19 +56,19 @@ def setup():
     for i in range(5):
         Ball(arena)
 
-    game2d.canvas_init(arena.size())
-    sprites = game2d.image_load("sprites.png")
-    game2d.set_interval(update, 1000//30)  # millis
+    g2d.canvas_init(arena.size())
+    sprites = g2d.image_load("sprites.png")
+    g2d.set_interval(update, 1000//30)  # millis
 
 def update():
     arena.move_all()  # Game logic
 
-    game2d.canvas_fill((255, 255, 255))
+    g2d.canvas_fill((255, 255, 255))
     for a in arena.actors():
         x, y, w, h = a.rect()
         # use the following lines to cut a sprite from a larger image
         xs, ys = a.symbol()
-        game2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))    
+        g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))    
 
 def keyup(code):
     print(code + " up")

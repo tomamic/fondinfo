@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d
+import game2d as g2d
 from actor import Actor, Arena
 from dk_elements import map_elements
 
@@ -167,12 +167,12 @@ class Ladder(Actor):
 def update():
     arena.move_all()  # Game logic
 
-    game2d.image_blit(background, (0, 0))
+    g2d.image_blit(background, (0, 0))
     for a in arena.actors():
         x, y, w, h = a.rect()
         xs, ys = a.symbol()
         if xs >= 0 and ys >= 0:
-            game2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
+            g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
             
 def keydown(code):
     if code == "Space":
@@ -204,11 +204,11 @@ def main():
         elif t == "Ladder":
             Ladder(arena, int(x), int(y), int(h))
 
-    game2d.canvas_init(arena.size())
-    sprites = game2d.image_load("dk_sprites.png")
-    background = game2d.image_load("dk_background.png")
+    g2d.canvas_init(arena.size())
+    sprites = g2d.image_load("dk_sprites.png")
+    background = g2d.image_load("dk_background.png")
 
-    game2d.handle_keyboard(keydown, keyup)
-    game2d.set_interval(update, 1000 // 30)  # millis
+    g2d.handle_keyboard(keydown, keyup)
+    g2d.set_interval(update, 1000 // 30)  # millis
     
 main()
