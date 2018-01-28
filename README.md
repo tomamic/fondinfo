@@ -1,4 +1,4 @@
-**Programming lab @ Information Engineering, University of Parma**
+**Programming lab @ Computer Engineering, University of Parma**
 
 http://tomamic.github.io/fondinfo/
 
