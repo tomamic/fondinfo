@@ -10,3 +10,5 @@ set PATH=%MINGW_HOME%\bin
 g++ -std=c++11 -D_hypot=hypot -c %MODULE%.cpp %MODULE%_wrap.cxx -I"%PYTHON_HOME%\include"
 g++ -shared *.o "%PYTHON_HOME%\libs\libpython36.a" -o _%MODULE%.pyd
 set PATH=%SAVED_PATH%
+
+pause
