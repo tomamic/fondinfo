@@ -1,6 +1,6 @@
 set MODULE=knightdom
 
-set SWIG_HOME=%USERPROFILE%\Downloads\swigwin-3.0.12\swigwin-3.0.12
+set SWIG_HOME=swigwin-3.0.12
 set PYTHON_HOME=%LOCALAPPDATA%\Programs\Python\Python36-32
 set MINGW_HOME=%PROGRAMFILES(X86)%\CodeBlocks\MinGW
 
