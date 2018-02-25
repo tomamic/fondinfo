@@ -7,9 +7,9 @@
 import sys
 
 calories = {}
-with open('calories.txt', 'r') as f:
+with open("calories.txt", "r") as f:
     for line in f:
-        splitted = line.split('\t')
+        splitted = line.split("\t")
         food = splitted[0]
         val = splitted[1]
         calories[food] = float(val)
