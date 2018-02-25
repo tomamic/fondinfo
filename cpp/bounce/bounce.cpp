@@ -10,9 +10,9 @@ Ghost::Ghost(Arena* arena, int x, int y) {
 void Ghost::move() {
     auto dx = (rand() % 3 - 1) * SPEED;
     auto dy = (rand() % 3 - 1) * SPEED;
-    auto as = arena_->rect();
-    x_ = (x_ + dx + as.w) % as.w;
-    y_ = (y_ + dy + as.h) % as.h;
+    auto as = arena_->size();
+    x_ = (x_ + dx + as[0]) % as[0];
+    y_ = (y_ + dy + as[1]) % as[1];
     if (rand() % 100 == 0) {
         visible_ = !visible_;
     }
@@ -20,9 +20,9 @@ void Ghost::move() {
 
 void Ghost::collide(Actor* other) { }
 
-Rect Ghost::rect() { return {x_, y_, W, H}; }
+vector<int> Ghost::rect() { return {x_, y_, W, H}; }
 
-Rect Ghost::symbol() {
+vector<int> Ghost::symbol() {
     if (visible_) return {20, 0, W, H};
     return {20, 20, W, H};
 }
@@ -36,11 +36,11 @@ Ball::Ball(Arena* arena, int x, int y) {
 }
 
 void Ball::move() {
-    auto as = arena_->rect();
-    if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.w - W)) {
+    auto as = arena_->size();
+    if (!(0 <= x_ + dx_ &&  x_ + dx_<= as[0] - W)) {
         dx_ = -dx_;
     }
-    if (!(0 <= y_ + dy_ &&  y_ + dy_<= as.h - H)) {
+    if (!(0 <= y_ + dy_ &&  y_ + dy_<= as[1] - H)) {
         dy_ = -dy_;
     }
     x_ += dx_;
@@ -51,12 +51,12 @@ void Ball::collide(Actor* other) {
     auto ghost = dynamic_cast<Ghost*>(other);
     if (ghost == nullptr) {
         auto op = other->rect();
-        if (op.x < x_) {
+        if (op[0] < x_) {
             dx_ = SPEED;
         } else {
             dx_ = -SPEED;
         }
-        if (op.y < y_) {
+        if (op[1] < y_) {
             dy_ = SPEED;
         } else {
             dy_ = -SPEED;
@@ -64,9 +64,9 @@ void Ball::collide(Actor* other) {
     }
 }
 
-Rect Ball::rect() { return {x_, y_, W, H}; }
+vector<int> Ball::rect() { return {x_, y_, W, H}; }
 
-Rect Ball::symbol() { return {0, 0, W, H}; }
+vector<int> Ball::symbol() { return {0, 0, W, H}; }
 
 
 Turtle::Turtle(Arena* arena, int x, int y) {
@@ -77,26 +77,26 @@ Turtle::Turtle(Arena* arena, int x, int y) {
 }
 
 void Turtle::move() {
-    auto as = arena_->rect();
+    auto as = arena_->size();
     y_ += dy_;
     if (y_ < 0) {
         y_ = 0;
-    } else if (y_ > as.h - H) {
-        y_ = as.h - H;
+    } else if (y_ > as[1] - H) {
+        y_ = as[1] - H;
     }
     x_ += dx_;
     if (x_ < 0) {
         x_ = 0;
-    } else if (x_ > as.w - W) {
-        x_ = as.w - W;
+    } else if (x_ > as[0] - W) {
+        x_ = as[0] - W;
     }
 }
 
 void Turtle::collide(Actor* other) { }
 
-Rect Turtle::rect() { return {x_, y_, W, H}; }
+vector<int> Turtle::rect() { return {x_, y_, W, H}; }
 
-Rect Turtle::symbol() { return {0, 20, W, H}; }
+vector<int> Turtle::symbol() { return {0, 20, W, H}; }
 
 void Turtle::go_left() { dx_ = -SPEED; dy_ = 0; }
 

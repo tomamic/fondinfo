@@ -10,7 +10,7 @@ cols = int(input('Cols? '))
 rows = int(input('Rows? '))
 
 WIDTH, HEIGHT = 600, 400
-g2d.canvas_init((WIDTH, HEIGHT))
+g2d.init_canvas((WIDTH, HEIGHT))
 
 w, h = WIDTH / cols, HEIGHT / rows
 delta_blue, delta_green = 0, 0

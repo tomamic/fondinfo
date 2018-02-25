@@ -20,7 +20,7 @@ n = int(input('squares? '))
 side = 400.0
 delta = side / n
 
-g2d.canvas_init((int(side), int(side)))
+g2d.init_canvas((int(side), int(side)))
 
 for i in range(n):
     color = palette[i % len(palette)]

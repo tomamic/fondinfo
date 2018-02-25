@@ -55,10 +55,10 @@ class Jumper(Actor):
         if self._landed:
             self._dy = -self._max_speed
             self._landed = False
-        
+
     def go_left(self):
         self._dx = -self._speed
-        
+
     def go_right(self):
         self._dx = +self._speed
 
@@ -66,7 +66,7 @@ class Jumper(Actor):
         if self._ladder and (self._climbing or self._landed):
             self._climbing = True
             self._dy = -self._speed
-        
+
     def go_down(self):
         if self._ladder and (self._climbing or self._landed):
             self._climbing = True
@@ -88,7 +88,7 @@ class Jumper(Actor):
                 self._landed = True
         elif isinstance(other, Barrel) and wy <= by + bh // 2 <= wy + wh:
             self._arena.remove(self)
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -109,7 +109,7 @@ class Barrel(Jumper):
         self._w, self._h = 12, 12
         self._speed, self._max_speed = 2, 4
         self.go_right()
-        
+
     def move(self):
         aw, ah = self._arena.size()
         if self._x + self._w >= aw:
@@ -137,7 +137,7 @@ class Platform(Actor):
 
     def collide(self, other):
         pass
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -157,7 +157,7 @@ class Ladder(Actor):
 
     def collide(self, other):
         pass
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -173,7 +173,7 @@ def update():
         xs, ys = a.symbol()
         if xs >= 0 and ys >= 0:
             g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
-            
+
 def keydown(code):
     if code == "Space":
         mario.jump()
@@ -192,7 +192,7 @@ def keyup(code):
 
 def main():
     global arena, mario, sprites, background
-    
+
     arena = Arena(224, 256)
     mario = Mario(arena, 50, 230)
     Barrel(arena, 180, 70)
@@ -204,11 +204,11 @@ def main():
         elif t == "Ladder":
             Ladder(arena, int(x), int(y), int(h))
 
-    g2d.canvas_init(arena.size())
+    g2d.init_canvas(arena.size())
     sprites = g2d.image_load("dk_sprites.png")
     background = g2d.image_load("dk_background.png")
 
     g2d.handle_keyboard(keydown, keyup)
-    g2d.set_interval(update, 1000 // 30)  # millis
-    
+    g2d.main_loop(update, 1000 // 30)  # millis
+
 main()

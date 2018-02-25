@@ -26,8 +26,7 @@ void Arena::move_all() {
         auto prev = a->rect();
         a->move();
         auto curr = a->rect();
-        if (curr.x != prev.x || curr.y != prev.y
-                || curr.w != prev.w || curr.h != prev.h) {
+        if (curr != prev) {
             for (auto other : acts) {
                 if (other != a && check_collision(a, other)) {
                     a->collide(other);
@@ -41,13 +40,13 @@ void Arena::move_all() {
 bool Arena::check_collision(Actor* a1, Actor* a2) {
     auto r1 = a1->rect();
     auto r2 = a2->rect();
-    return (r2.y < r1.y + r1.h && r1.y < r2.y + r2.h
-        && r2.x < r1.x + r1.w and r1.x < r2.x + r2.w);
+    return (r2[1] < r1[1] + r1[3] && r1[1] < r2[1] + r2[3]
+        && r2[0] < r1[0] + r1[2] and r1[0] < r2[0] + r2[2]);
 }
 
 vector<Actor*> Arena::actors() { return actors_; }
 
-Rect Arena::rect() { return {0, 0, w_, h_}; }
+vector<int> Arena::size() { return {w_, h_}; }
 
 Arena::~Arena() {
     while (!actors_.empty()) {

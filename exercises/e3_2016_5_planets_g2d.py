@@ -44,6 +44,6 @@ planets = []
 for i in range(5):
     p = Planet(100 + i * 40)
     planets.append(p)
-g2d.canvas_init((600, 600))
+g2d.init_canvas((600, 600))
 
-g2d.set_interval(new_frame, 1000 // 30)
+g2d.main_loop(new_frame, 1000 // 30)

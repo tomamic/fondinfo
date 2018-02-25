@@ -17,7 +17,7 @@ m = int(input('repetitions? '))
 side = 400.0
 delta = side / (len(grays) * m)
 
-g2d.canvas_init((int(side), int(side)))
+g2d.init_canvas((int(side), int(side)))
 
 for i in range(m):
     for val in grays:

@@ -18,7 +18,7 @@ while val > 0:
     val = float(input('Val? '))
 
 WIDTH, HEIGHT = 600, 400
-g2d.canvas_init((WIDTH, HEIGHT))
+g2d.init_canvas((WIDTH, HEIGHT))
 
 if len(values) > 0:
     w = WIDTH / len(values)

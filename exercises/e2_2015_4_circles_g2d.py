@@ -9,7 +9,7 @@ import game2d as g2d
 n = int(input('Circles? '))
 
 SIDE = 600
-g2d.canvas_init((SIDE, SIDE))
+g2d.init_canvas((SIDE, SIDE))
 
 center = SIDE // 2, SIDE // 2
 delta_radius = SIDE / (2 * n)

@@ -41,7 +41,7 @@ class Ball(Actor):
         if self._count == 0:
             self._dx = -self._dx
             self._count = self._safety
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -56,9 +56,9 @@ def setup():
     for i in range(5):
         Ball(arena)
 
-    g2d.canvas_init(arena.size())
+    g2d.init_canvas(arena.size())
     sprites = g2d.image_load("sprites.png")
-    g2d.set_interval(update, 1000//30)  # millis
+    g2d.main_loop(update, 1000//30)  # millis
 
 def update():
     arena.move_all()  # Game logic
@@ -68,7 +68,7 @@ def update():
         x, y, w, h = a.rect()
         # use the following lines to cut a sprite from a larger image
         xs, ys = a.symbol()
-        g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))    
+        g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
 
 def keyup(code):
     print(code + " up")

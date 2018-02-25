@@ -41,7 +41,7 @@ color_monster = (255, 0, 0)
 
 W, H = 5, 5
 TILE = 20
-g2d.canvas_init((W * TILE, H * TILE))
+g2d.init_canvas((W * TILE, H * TILE))
 
 player = 0, 0
 monster = player
@@ -49,7 +49,7 @@ while monster == player:
     monster = randrange(W), randrange(H)
 gold = player
 while gold == player or gold == monster:
-    gold = randrange(W), randrange(H)    
+    gold = randrange(W), randrange(H)
 print('Monster:', monster)
 print('Gold:', gold)
 draw_tile((0, 0, 0), player)

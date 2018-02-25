@@ -4,31 +4,25 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from p4_board_game import BoardGame
+from boardgame import BoardGame, console_play
+##from boardgame_tk import BoardGameGui
 from random import choice
 
 class Fifteen(BoardGame):
     
-    _DIRS = ((0, -1), (+1, 0), (0, +1), (-1, 0))  # dx, dy
-
     def __init__(self, cols: int, rows: int):
         self._cols = cols
         self._rows = rows
-        self._SOLUTION = list(range(1, cols * rows)) + [0]
-        self.new_game()
+        self._solution = list(range(1, cols * rows)) + [0]
 
-    def new_game(self):
         '''Sort the game, matching its solution'''
-        self._board = list(self._SOLUTION)  # copy the list
-        self._blank = (self._cols - 1, self._rows - 1)
-        self._moved = self._blank
+        self._board = list(self._solution)  # copy the list
+        self._blx, self._bly = self._cols - 1, self._rows - 1
 
         '''Do a random walk of the blank cell'''
         for _ in range(len(self._board) ** 2):
-            x0, y0 = self._blank
-            dx, dy = choice(self._DIRS)
-            x, y = x0 + dx, y0 + dy
-            self._swap_blank_with(x, y)
+            dx, dy = choice(((0, -1), (+1, 0), (0, +1), (-1, 0)))
+            self.play_at(self._blx + dx, self._bly + dy)
 
     def cols(self) -> int:
         return self._cols
@@ -38,16 +32,7 @@ class Fifteen(BoardGame):
 
     def finished(self) -> bool:
         '''Puzzle solved'''
-        return self._board == self._SOLUTION
-
-    def blank(self) -> (int, int):
-        '''Position of blank cell'''
-        return self._blank
-
-    def moved(self) -> (int, int):
-        '''Position of last moved cell'''
-        return self._moved
-
+        return self._board == self._solution
 
     def move_val(self, val: int):
         '''Search around the blank cell,
@@ -63,53 +48,29 @@ class Fifteen(BoardGame):
                 return
 
     def play_at(self, x: int, y: int):
-        self.move_val(self.get(x, y))
-
-    def get(self, x: int, y: int) -> int:
-        '''Get the content of a cell,
-           or -1 if (x, y) out of range'''
-        if 0 <= y < self._rows and 0 <= x < self._cols:
-            return self._board[y * self._cols + x]
-        return -1
+        if (0 <= y < self._rows and 0 <= x < self._cols and
+            abs(self._blx - x) + abs(self._bly - y) == 1):
+            moved = y * self._cols + x
+            blank = self._bly * self._cols + self._blx
+            self._board[blank] = self._board[moved]
+            self._board[moved] = 0
+            self._blx, self._bly = x, y
 
     def get_val(self, x: int, y: int) -> str:
-        val = self.get(x, y)
-        if val <= 0: return ""
-        return str(val)
-
-    def _swap_blank_with(self, x: int, y: int):
-        '''Swap the blank cell with a neighbor cell'''
-        x0, y0 = self._blank
-        val = self.get(x, y)
-        if val > 0:
-            self._board[y * self._cols + x] = 0
-            self._board[y0 * self._cols + x0] = val
-            self._blank = x, y
-            self._moved = x0, y0
+        if (0 <= y < self._rows and 0 <= x < self._cols and
+            self._board[y * self._cols + x] > 0):
+            return str(self._board[y * self._cols + x])
+        return ""
 
     def message(self) -> str:
         return "Puzzle solved!"
 
-    def __str__(self):
-        '''Get a string representation of the game'''
-        result = []
-        for y in range(self._rows):
-            for x in range(self._cols):
-                result.append('{:3}'.format(self.get(x, y)))
-            result.append('\n')
-        return "".join(result)
-        
 
 def main():
-    puzzle = Fifteen(4, 4)
-    print(puzzle)
-    
-    while not puzzle.finished():
-        val = int(input())
-        puzzle.move_val(val)
-        print(puzzle)
-
-    print(puzzle.message())
+    game = Fifteen(3, 2)
+    ##gui = BoardGameGui(game)
+    ##gui.mainloop()
+    console_play(game)
 
 if __name__ == '__main__':
     main()

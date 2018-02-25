@@ -6,7 +6,7 @@
 
 import game2d as g2d
 from actor import Actor, Arena
-    
+
 class FallingBall(Actor):
     W, H = 20, 20
 
@@ -98,9 +98,9 @@ a2 = FallingBall(arena, 80, 40)
 a3 = Plane(arena, 60, 60)
 
 view_x, view_y, view_w, view_h = 0, 0, 300, 200
-g2d.canvas_init((view_w, view_h))
+g2d.init_canvas((view_w, view_h))
 
 background = g2d.image_load("viewport.png")
 
 g2d.handle_keyboard(keydown, None)
-g2d.set_interval(update, 1000 // 30)  # Millis
+g2d.main_loop(update, 1000 // 30)  # Millis

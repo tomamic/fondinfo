@@ -6,7 +6,7 @@
 
 import game2d as g2d
 
-g2d.canvas_init((300, 300))
+g2d.init_canvas((300, 300))
 
 i = 0
 while i < 5:
@@ -15,3 +15,5 @@ while i < 5:
     red = i * 60
     g2d.draw_rect((red, 0, 0), (x, y, 140, 140))
     i += 1
+
+g2d.main_loop()

@@ -2,11 +2,11 @@
 import sys
 sys.path.append('../../examples/')
 
-from knightdom import KnightDom
+from fifteen import Fifteen
 from boardgame_tk import BoardGameGui
 
 def main():
-    game = KnightDom(6)
+    game = Fifteen(3, 2)
     gui = BoardGameGui(game)
     gui.mainloop()
     

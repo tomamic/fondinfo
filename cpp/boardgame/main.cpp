@@ -3,13 +3,9 @@
  * @license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
-#include <QApplication>
-//#include "mainwindow.h"
 #include <iostream>
 #include <iomanip>
 #include "knightdom.h"
-#include "boardgamegui.h"
-#include "mainwindow.h"
 
 using namespace std;
 
@@ -22,7 +18,10 @@ void print_game(BoardGame* game) {
     }
 }
 
-int console_play(BoardGame* game) {
+int main(int argc, char* argv[])
+{
+    auto game = new KnightDom{6};
+
     print_game(game);
 
     while (! game->finished()) {
@@ -35,17 +34,4 @@ int console_play(BoardGame* game) {
     }
     cout << game->message() << endl;
     return 0;
-}
-
-int main(int argc, char* argv[])
-{
-    auto game = new KnightDom{6};
-//    return console_play(game);
-
-    QApplication a{argc, argv};
-    BoardGameGui gui{game}; gui.show();
-
-    //MainWindow window; window.show();
-
-    return a.exec();
 }

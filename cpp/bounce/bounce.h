@@ -2,6 +2,9 @@
 #define BOUNCE_H
 
 #include "actor.h"
+#include <vector>
+
+using namespace std;
 
 class Ghost : public Actor
 {
@@ -14,8 +17,8 @@ public:
     Ghost(Arena* arena, int x, int y);
     void move();
     void collide(Actor* other);
-    Rect rect();
-    Rect symbol();
+    vector<int> rect();
+    vector<int> symbol();
 };
 
 
@@ -29,8 +32,8 @@ public:
     Ball(Arena* arena, int x, int y);
     void move();
     void collide(Actor* other);
-    Rect rect();
-    Rect symbol();
+    vector<int> rect();
+    vector<int> symbol();
 };
 
 
@@ -44,8 +47,8 @@ public:
     Turtle(Arena* arena, int x, int y);
     void move();
     void collide(Actor* other);
-    Rect rect();
-    Rect symbol();
+    vector<int> rect();
+    vector<int> symbol();
     void go_left();
     void go_right();
     void go_up();

@@ -41,10 +41,10 @@ class Turtle(Actor):
         if self._landed:
             self._dy = -self._speed * 2
             self._landed = False
-        
+
     def go_left(self):
         self._dx = -self._speed
-        
+
     def go_right(self):
         self._dx = +self._speed
 
@@ -53,14 +53,14 @@ class Turtle(Actor):
 
     def collide(self, other):
         pass
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
         return 0, 20
 
-  
+
 def update():
     arena.move_all()  # Game logic
 
@@ -85,8 +85,8 @@ def keyup(code):
 arena = Arena(320, 240)
 turtle = Turtle(arena, 80, 80)
 
-g2d.canvas_init(arena.size())
+g2d.init_canvas(arena.size())
 sprites = g2d.image_load("sprites.png")
 
 g2d.handle_keyboard(keydown, keyup)
-g2d.set_interval(update, 1000//30)  # millis
+g2d.main_loop(update, 1000//30)  # millis

@@ -40,10 +40,10 @@ class Jumper(Actor):
         if self._landed:
             self._dy = -self._max_speed
             self._landed = False
-        
+
     def go_left(self):
         self._dx = -self._speed
-        
+
     def go_right(self):
         self._dx = +self._speed
 
@@ -64,7 +64,7 @@ class Jumper(Actor):
                 self._dy = 1
             if move[1] < 0:
                 self._landed = True
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -80,7 +80,7 @@ class CrazyGoomba(Jumper):
     def move(self):
         # random move, just as an example
         # implement your desired behaviour here
-        
+
         r = randrange(30)
         if r == 0:
             self.go_left()
@@ -107,7 +107,7 @@ class Wall(Actor):
 
     def collide(self, other):
         pass
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
@@ -147,9 +147,9 @@ Wall(arena, 200, 80, 80, 20)
 Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
 
-g2d.canvas_init(arena.size())
+g2d.init_canvas(arena.size())
 sprites = g2d.image_load("sprites.png")
 
 g2d.handle_keyboard(keydown, keyup)
-g2d.set_interval(update, 1000 // 30)  # millis
+g2d.main_loop(update, 1000 // 30)  # millis
 

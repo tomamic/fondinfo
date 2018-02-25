@@ -6,106 +6,48 @@
 #include "fifteen.h"
 
 #include <cstdlib>
-#include <sstream>
-#include <iomanip>
+#include <ctime>
 
 using namespace std;
 
 Fifteen::Fifteen(int cols, int rows) {
-    init(cols, rows);
-}
-
-void Fifteen::init(int cols, int rows) {
+    srand(time(nullptr));
     // allocate the matrix
-    this->cols_ = cols;
-    this->rows_ = rows;
+    cols_ = cols, rows_ = rows;
     board_.assign(cols * rows, 0);
     // put ordered values in each cell
     for (auto i = 0; i < board_.size() - 1; ++i) {
         board_[i] = i + 1;
     }
-    blank_ = {cols_ - 1, rows_ - 1};
-    moved_ = blank_;
-    new_game();
-}
+    solution_ = board_;
+    blx_ = cols_ - 1, bly_ = rows_ - 1;
 
-void Fifteen::new_game() {
     // random walk: move the blank cell repeatedly
     auto walk_length = rows_ * rows_ * cols_ * cols_;
-    for (auto i = 0; i < walk_length; ++i) {
+    for (auto i = 0; i < walk_length || finished(); ++i) {
         // choose randomly one of the 4 neighbors
-        auto dir = DIRS[rand() % DIRS.size()];
-        auto neighbor = blank_ + dir;
-        auto x = neighbor.real(), y = neighbor.imag();
-        swap_blank_with(x, y);
-    }
-    // may happen, with small boards...
-    if (finished()) new_game();
-}
-
-void Fifteen::move_val(int value) {
-    if (value < 1 || value >= board_.size()) return;
-    // Search around the blank cell,
-    // if val is found in a cell,
-    // then swap it with the blank cell'''
-    for (auto dir : DIRS) {
-        auto neighbor = blank_ + dir;
-        auto x = neighbor.real(), y = neighbor.imag();
-        if (get(x, y) == value) {
-            swap_blank_with(x, y);
-            return;
-        }
+        const vector<vector<int>> dirs = { {0, -1}, {-1, 0}, {0, 1}, {1, 0} };
+        auto dir = dirs[rand() % dirs.size()];
+        play_at(blx_ + dir[0], bly_ + dir[1]);
     }
 }
 
 void Fifteen::play_at(int x, int y) {
-    // get the value of cell, move that value
-    move_val(get(x, y));
+    if (0 <= x && x < cols_ && 0 <= y && y < rows_ &&
+            abs(blx_ - x) + abs(bly_ - y) == 1) {
+        board_[bly_ * cols_ + blx_] = board_[y * cols_ + x];
+        board_[y * cols_ + x] = 0;
+        blx_ = x, bly_ = y;
+    }
 }
 
 string Fifteen::get_val(int x, int y) {
-    int val = get(x, y);
-    if (val <= 0) return "";
-    return to_string(val);
-}
-
-int Fifteen::get(int x, int y) {
     if (0 <= x && x < cols_ && 0 <= y && y < rows_) {
-        return board_[y * cols_ + x];
-    }
-    return -1;
-}
-
-void Fifteen::swap_blank_with(int x, int y) {
-    auto x0 = blank_.real(), y0 = blank_.imag();
-    auto val = get(x, y);
-    if (val > 0) {
-        board_[y0 * cols_ + x0] = val;
-        board_[y * cols_ + x] = 0;
-        moved_ = blank_;
-        blank_ = {x, y};
-    }
-}
-
-bool Fifteen::finished() {
-    for (auto i = 0; i < board_.size() - 1; ++i) {
-        // a cell with wrong value? puzzle not solved!
-        if (board_[i] != i + 1) return false;
-    }
-    return true;
-}
-
-void Fifteen::write(ostream& out) {
-    for (auto y = 0; y < rows_; ++y) {
-        for (auto x = 0; x < cols_; ++x) {
-            out << setw(3) << board_[y * cols_ + x];
+        auto val = board_[y * cols_ + x];
+        if (val > 0) {
+            return to_string(val);
         }
-        out << endl;
     }
+    return "";
 }
 
-string Fifteen::str() {
-    ostringstream out;
-    write(out);
-    return out.str();
-}

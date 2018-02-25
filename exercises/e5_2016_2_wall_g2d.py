@@ -58,14 +58,14 @@ class Wall(Actor):
 
     def collide(self, other):
         pass
-        
+
     def rect(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
         return 0, 0
 
-  
+
 def update():
     arena.move_all()  # Game logic
 
@@ -83,8 +83,8 @@ Ball(arena, 40, 80)
 Ball(arena, 85, 40)
 Wall(arena, 115, 80, 100, 20)
 
-g2d.canvas_init(arena.size())
+g2d.init_canvas(arena.size())
 sprites = g2d.image_load("sprites.png")
 
-g2d.set_interval(update, 1000//30)  # millis
-    
+g2d.main_loop(update, 1000//30)  # millis
+

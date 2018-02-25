@@ -30,7 +30,7 @@ class Alien:
 
 
 def update():
-    g2d.canvas_fill((255, 255, 255))  # Draw background 
+    g2d.canvas_fill((255, 255, 255))  # Draw background
 
     for a in aliens:
         a.move()                # Apply game logic
@@ -38,5 +38,5 @@ def update():
         g2d.draw_rect((127, 127, 127), a.rect())
 
 aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
-g2d.canvas_init((320, 240))
-g2d.set_interval(update, 1000 // 30)  # Millis
+g2d.init_canvas((320, 240))
+g2d.main_loop(update, 1000 // 30)  # Millis

@@ -18,7 +18,7 @@ color_monster = (255, 0, 0)
 
 W, H = 5, 5
 TILE = 20
-g2d.canvas_init((W * TILE, H * TILE))
+g2d.init_canvas((W * TILE, H * TILE))
 
 player = 0, 0
 monster = player
