@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-##from boardgame_tk import BoardGameGui
+from boardgame_tk import BoardGameGui
 from random import choice
 
 class Fifteen(BoardGame):
@@ -67,10 +67,11 @@ class Fifteen(BoardGame):
 
 
 def main():
-    game = Fifteen(3, 2)
-    ##gui = BoardGameGui(game)
-    ##gui.mainloop()
-    console_play(game)
+    game = Fifteen(4, 4)
+    gui = BoardGameGui(game)
+    gui.resizable(0, 0)
+    gui.mainloop()
+    ##console_play(game)
 
 if __name__ == '__main__':
     main()

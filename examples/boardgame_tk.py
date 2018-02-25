@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
 from tkinter import Tk, Button, messagebox
-
 from boardgame import BoardGame
 
 class BoardGameGui(Tk):
     def __init__(self, g: BoardGame):
         Tk.__init__(self)
         self._game = g
-
+        
         for y in range(g.rows()):
             for x in range(g.cols()):
-                b = Button(self, width=1, height=1, font=('', 16))
+                b = Button(self, width=3, height=2, font=('', 16))
                 b['command'] = (lambda x=x, y=y:
                                 (self._game.play_at(x, y),
                                  self.update_buttons()))
                 b.grid(column=x, row=y)
+        self.resizable(0, 0)
         self.update_buttons()
 
     def update_buttons(self):
