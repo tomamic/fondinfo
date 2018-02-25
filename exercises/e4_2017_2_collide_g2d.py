@@ -46,10 +46,21 @@ class Ball(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 0
+        return 0, 0, self._w, self._h
 
 
-def setup():
+def update():
+    arena.move_all()  # Game logic
+
+    g2d.fill_canvas((255, 255, 255))
+    for a in arena.actors():
+        g2d.draw_image_clip(sprites, a.rect(), a.symbol())
+
+def keyup(code):
+    print(code + " up")
+    turtle.stay()
+
+def main():
     global arena, turtle, sprites
 
     arena = Arena(320, 240)
@@ -57,21 +68,7 @@ def setup():
         Ball(arena)
 
     g2d.init_canvas(arena.size())
-    sprites = g2d.image_load("sprites.png")
+    sprites = g2d.load_image("sprites.png")
     g2d.main_loop(update, 1000//30)  # millis
 
-def update():
-    arena.move_all()  # Game logic
-
-    g2d.canvas_fill((255, 255, 255))
-    for a in arena.actors():
-        x, y, w, h = a.rect()
-        # use the following lines to cut a sprite from a larger image
-        xs, ys = a.symbol()
-        g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
-
-def keyup(code):
-    print(code + " up")
-    turtle.stay()
-
-setup()
+main()

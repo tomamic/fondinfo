@@ -69,7 +69,7 @@ class Jumper(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 20
+        return 0, 20, self._w, self._h
 
 
 class Mario(Jumper):
@@ -91,7 +91,7 @@ class CrazyGoomba(Jumper):
         Jumper.move(self)
 
     def symbol(self):
-        return 20, 0
+        return 20, 0, self._w, self._h
 
 
 class Wall(Actor):
@@ -112,20 +112,18 @@ class Wall(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 0
+        return 0, 0, self._w, self._h
 
 
 def update():
     arena.move_all()  # Game logic
 
-    g2d.canvas_fill((255, 255, 255))
+    g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
             g2d.draw_rect((127, 127, 127), a.rect())
         else:
-            x, y, w, h = a.rect()
-            xs, ys = a.symbol()
-            g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
+            g2d.draw_image_clip(sprites, a.rect(), a.symbol())
 
 def keydown(code):
     if code == "Space":
@@ -148,7 +146,7 @@ Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
 
 g2d.init_canvas(arena.size())
-sprites = g2d.image_load("sprites.png")
+sprites = g2d.load_image("sprites.png")
 
 g2d.handle_keyboard(keydown, keyup)
 g2d.main_loop(update, 1000 // 30)  # millis

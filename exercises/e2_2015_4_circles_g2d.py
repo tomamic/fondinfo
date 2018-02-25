@@ -21,3 +21,5 @@ for i in range(n):
     radius = int(SIDE // 2 - i * delta_radius)
     color = int(255.0 - i * delta_color)
     g2d.draw_circle((color, 0, 0), center, radius)
+
+g2d.main_loop()

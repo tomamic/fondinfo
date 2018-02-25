@@ -24,5 +24,7 @@ level = int(input('level? '))  ## -1 = infinite
 side = 600
 
 g2d.init_canvas((side, side))
-g2d.canvas_fill((0, 0, 0))
+g2d.fill_canvas((0, 0, 0))
 sierpinski(0, 0, side, side, level)
+
+g2d.main_loop()

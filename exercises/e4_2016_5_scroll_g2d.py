@@ -38,7 +38,7 @@ class FallingBall(Actor):
         return
 
     def symbol(self) -> (int, int):
-        return 0, 0
+        return 0, 0, self.W, self.H
 
 
 class Plane(Actor):
@@ -68,12 +68,12 @@ class Plane(Actor):
             self._after_collision = 60
 
     def symbol(self) -> (int, int):
-        return 0, 0
+        return 0, 0, self.W, self.H
 
 
 def update():
-    g2d.image_blit(background, (0, 0),
-                      area=(view_x, view_y, view_w, view_h))  # BG
+    g2d.draw_image_clip(background, (0, 0, view_w, view_h),
+                        (view_x, view_y, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
         x, y, w, h = a.rect()
@@ -92,15 +92,20 @@ def keydown(code):
     elif code == "ArrowUp":
         view_y = max(view_y - 10, 0)
 
-arena = Arena(500, 250)
-a1 = FallingBall(arena, 40, 80)
-a2 = FallingBall(arena, 80, 40)
-a3 = Plane(arena, 60, 60)
+def main():
+    global arena, view_x, view_y, view_w, view_h, background
 
-view_x, view_y, view_w, view_h = 0, 0, 300, 200
-g2d.init_canvas((view_w, view_h))
+    arena = Arena(500, 250)
+    FallingBall(arena, 40, 80)
+    FallingBall(arena, 80, 40)
+    Plane(arena, 60, 60)
 
-background = g2d.image_load("viewport.png")
+    view_x, view_y, view_w, view_h = 0, 0, 300, 200
+    g2d.init_canvas((view_w, view_h))
 
-g2d.handle_keyboard(keydown, None)
-g2d.main_loop(update, 1000 // 30)  # Millis
+    background = g2d.load_image("viewport.png")
+
+    g2d.handle_keyboard(keydown, None)
+    g2d.main_loop(update, 1000 // 30)  # Millis
+
+main()

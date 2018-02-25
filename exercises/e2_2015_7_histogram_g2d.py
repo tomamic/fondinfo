@@ -28,3 +28,5 @@ if len(values) > 0:
         val, gray = values[i]
         rect = int(w * i), int(HEIGHT - h * val), int(w - 1), int(h * val)
         g2d.draw_rect((gray, gray, gray), rect)
+
+g2d.main_loop()

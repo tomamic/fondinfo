@@ -16,7 +16,7 @@ class Planet:
     def pos(self):
         x = self._orbit * math.cos(self._theta)
         y = self._orbit * math.sin(self._theta)
-        return x, y
+        return int(x), int(y)
 
     def move(self):
         self._theta += self._omega
@@ -29,21 +29,27 @@ class Planet:
 
 
 def new_frame():
-    center_x, center_y = g2d.canvas.width // 2, g2d.canvas.height // 2
-    g2d.canvas_fill((255, 255, 255))
+    center_x, center_y = canvas_w // 2, canvas_h // 2
+    g2d.fill_canvas((255, 255, 255))
     g2d.draw_circle((255, 255, 0), (center_x, center_y), 30)
     for p in planets:
         p.move()
         x, y = p.pos()
         radius = p.diameter() // 2
         g2d.draw_circle(p.color(),
-                           (center_x + x, center_y + y),
-                           p.diameter() // 2)
+                        (center_x + x, center_y + y),
+                        p.diameter() // 2)
 
-planets = []
-for i in range(5):
-    p = Planet(100 + i * 40)
-    planets.append(p)
-g2d.init_canvas((600, 600))
+def main():
+    global planets, canvas_w, canvas_h
+    
+    canvas_w, canvas_h = 600, 600
+    planets = []
+    for i in range(5):
+        p = Planet(100 + i * 40)
+        planets.append(p)
+    g2d.init_canvas((canvas_w, canvas_h))
 
-g2d.main_loop(new_frame, 1000 // 30)
+    g2d.main_loop(new_frame, 1000 // 30)
+
+main()

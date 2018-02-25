@@ -42,7 +42,7 @@ class Ball(Actor):
         return self._x, self._y, self.W, self.H
 
     def symbol(self):
-        return 0, 0
+        return 0, 0, self.W, self.H
 
 
 class Wall(Actor):
@@ -63,20 +63,18 @@ class Wall(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 0
+        return 0, 0, self._w, self._h
 
 
 def update():
     arena.move_all()  # Game logic
 
-    g2d.canvas_fill((255, 255, 255))
+    g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
             g2d.draw_rect((127, 127, 127), a.rect())
         else:
-            x, y, w, h = a.rect()
-            xs, ys = a.symbol()
-            g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
+            g2d.draw_image_clip(sprites, a.rect(), a.symbol())
 
 arena = Arena(320, 240)
 Ball(arena, 40, 80)
@@ -84,7 +82,7 @@ Ball(arena, 85, 40)
 Wall(arena, 115, 80, 100, 20)
 
 g2d.init_canvas(arena.size())
-sprites = g2d.image_load("sprites.png")
+sprites = g2d.load_image("sprites.png")
 
 g2d.main_loop(update, 1000//30)  # millis
 

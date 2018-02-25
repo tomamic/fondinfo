@@ -10,6 +10,7 @@ from random import randrange
 def draw_tile(color: (int, int, int), pos: (int, int)):
     x, y = pos
     g2d.draw_rect(color, (x * TILE, y * TILE, TILE - 1, TILE - 1))
+    g2d.update_canvas()
 
 color_now = (0, 0, 0)
 color_old = (127, 127, 127)
@@ -48,7 +49,9 @@ while player != monster and player != gold:
 
 if player == gold:
     draw_tile(color_gold, player)
-    g2d.alert('Gold!')
+    g2d.draw_text('Gold!', (0, 0, 255), (0, 0), 24)
 else:
     draw_tile(color_monster, player)
-    g2d.alert('Monster!')
+    g2d.draw_text('Monster!', (0, 0, 255), (0, 0), 24)
+
+g2d.main_loop()

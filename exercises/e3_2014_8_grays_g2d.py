@@ -24,3 +24,5 @@ for i in range(m):
         g2d.draw_rect((val, val, val),
                          (0, 0, int(side), int(side)))
         side -= delta
+
+g2d.main_loop()

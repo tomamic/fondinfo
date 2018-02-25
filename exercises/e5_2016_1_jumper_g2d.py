@@ -58,17 +58,15 @@ class Turtle(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 20
+        return 0, 20, self._w, self._h
 
 
 def update():
     arena.move_all()  # Game logic
 
-    g2d.canvas_fill((255, 255, 255))
+    g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
-        x, y, w, h = a.rect()
-        xs, ys = a.symbol()
-        g2d.image_blit(sprites, (x, y), area=(xs, ys, w, h))
+        g2d.draw_image_clip(sprites, a.rect(), a.symbol())
 
 def keydown(code):
     if code == "Space":
@@ -82,11 +80,16 @@ def keyup(code):
     if code in ("ArrowLeft", "ArrowRight"):
         turtle.stay()
 
-arena = Arena(320, 240)
-turtle = Turtle(arena, 80, 80)
+def main():
+    global arena, turtle, sprites
 
-g2d.init_canvas(arena.size())
-sprites = g2d.image_load("sprites.png")
+    arena = Arena(320, 240)
+    turtle = Turtle(arena, 80, 80)
 
-g2d.handle_keyboard(keydown, keyup)
-g2d.main_loop(update, 1000//30)  # millis
+    g2d.init_canvas(arena.size())
+    sprites = g2d.load_image("sprites.png")
+
+    g2d.handle_keyboard(keydown, keyup)
+    g2d.main_loop(update, 1000 // 30)
+
+main()

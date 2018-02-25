@@ -67,8 +67,8 @@ def pause_audio(audio: pygame.mixer.Sound) -> None:
     audio.stop()
 
 def handle_keyboard(keydown, keyup):
-    global onkeydown, onkeyup
-    onkeydown, onkeyup = keydown, keyup
+    global _onkeydown, _onkeyup
+    _onkeydown, _onkeyup = keydown, keyup
 
 def web_key(key: int) -> str:
     word = pygame.key.name(key)
@@ -92,10 +92,10 @@ def main_loop(update=None, millis=100) -> None:
                 pygame.quit()
                 playing = False
                 return
-            elif e.type == pygame.KEYDOWN and onkeydown:
-                onkeydown(web_key(e.key))
-            elif e.type == pygame.KEYUP and onkeyup:
-                onkeyup(web_key(e.key))
+            elif e.type == pygame.KEYDOWN and _onkeydown:
+                _onkeydown(web_key(e.key))
+            elif e.type == pygame.KEYUP and _onkeyup:
+                _onkeyup(web_key(e.key))
         if update:
             update()
         pygame.display.flip()

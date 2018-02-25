@@ -26,3 +26,5 @@ for i in range(n):
     color = palette[i % len(palette)]
     g2d.draw_rect(color, (0, 0, int(side), int(side)))
     side -= delta
+
+g2d.main_loop()

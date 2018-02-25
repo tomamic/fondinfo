@@ -31,3 +31,5 @@ side = 600
 
 g2d.init_canvas((side, side))
 htree((0, 0, side, side), level)
+
+g2d.main_loop()

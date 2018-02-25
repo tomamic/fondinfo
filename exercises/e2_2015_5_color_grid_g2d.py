@@ -24,3 +24,5 @@ for y in range(rows):
         color = 0, int(delta_green * y), int(delta_blue * x)
         rect = int(w * x), int(h * y), int(w - 1), int(h - 1)
         g2d.draw_rect(color, rect)
+
+g2d.main_loop()
