@@ -5,8 +5,8 @@
 for file in $(ls *.i); do
     module=$(basename $file .i)
     swig -python -c++ $module.i
-    g++ -fPIC -c *.cpp *.cxx -I/usr/include/python3.6m
-    g++ -fPIC -shared *.o -o _$module.so
+    g++ -fPIC -shared *.cpp *.cxx -I/usr/include/python3.6m -o _$module.so
+    rm $module\_wrap.cxx
 done
 
 

@@ -54,9 +54,10 @@ except:
 K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
 
 _canvas = None
-_usr_keydown = None
-_usr_keyup = None
+_usr_keydown, _usr_keyup = None, None
+_usr_mousedown, _usr_mouseup, _usr_mousemove = None, None, None
 _key_pressed = {}
+_timer = None
 
 def init_canvas(size: (int, int)) -> None:
     '''Set size of first CANVAS and return it'''
@@ -98,9 +99,31 @@ def draw_rect(color: (int, int, int), rectangle: (int, int, int, int)) -> None:
 def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
     ctx = _canvas.getContext("2d")
     x, y = pos
-    ctx.fillStyle = "rgb" + str(color)
     ctx.font = str(size) + "px sans-serif";
+
+    # draw background rect assuming height of font
+    ctx.fillStyle = "rgb(255, 255, 255)"
+    width = ctx.measureText(txt).width;
+    ctx.fillRect(x, y, width, size);
+
+    ctx.fillStyle = "rgb" + str(color)
     ctx.textBaseline = "top";
+    ctx.textAlign="left";
+    ctx.fillText(txt, x, y)
+
+def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
+    ctx = _canvas.getContext("2d")
+    x, y = pos
+    ctx.font = str(size) + "px sans-serif";
+
+    # draw background rect assuming height of font
+    ctx.fillStyle = "rgb(255, 255, 255)"
+    width = ctx.measureText(txt).width;
+    ctx.fillRect(x - width//2, y - size//2, width, size);
+
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.textBaseline = "middle";
+    ctx.textAlign="center";
     ctx.fillText(txt, x, y)
 
 def load_image(url: str) -> IMG:
@@ -131,9 +154,19 @@ def handle_keyboard(keydown, keyup) -> None:
     global _usr_keydown, _usr_keyup
     _usr_keydown, _usr_keyup = keydown, keyup
 
+def handle_mouse(mousedown, mouseup, mousemove) -> None:
+    global _usr_mousedown, _usr_mouseup, _usr_mousemove
+    _usr_mousedown, _usr_mouseup, _usr_mousemove = mousedown, mouseup, mousemove
+
 def main_loop(update=None, millis=100) -> None:
-    if update:
-        set_interval(update, millis)
+    if update and not _timer:
+        _timer = set_interval(update, millis)
+
+def exit() -> None:
+    handle_keyboard(None, None)
+    handle_mouse(None, None, None)
+    if _timer:
+        clear_interval(_timer)
 
 def _g2d_keydown(e: DOMEvent) -> None:
     if e.code in _key_pressed:
@@ -152,6 +185,26 @@ def _g2d_focus(e: DOMEvent) -> None:
     global _key_pressed
     _key_pressed = {}
 
+def mouse_pos(e: DOMEvent) -> (int, int):
+    rect = _canvas.getBoundingClientRect()
+    return e.clientX - rect.left, e.clientY - rect.top
+
+def _g2d_mousedown(e: DOMEvent) -> None:
+    if _usr_mousedown:
+        _usr_mousedown(mouse_pos(e), e.buttons)
+
+def _g2d_mouseup(e: DOMEvent) -> None:
+    if _usr_mouseup:
+        _usr_mouseup(mouse_pos(e), e.buttons)
+
+def _g2d_mousemove(e: DOMEvent) -> None:
+    if _usr_mousemove:
+        _usr_mousemove(mouse_pos(e), e.buttons)
+
 doc.onkeydown = _g2d_keydown
 doc.onkeyup = _g2d_keyup
 doc.onfocus = _g2d_focus
+
+doc.onmousedown = _g2d_mousedown
+doc.onmouseup = _g2d_mouseup
+doc.onmouseover = _g2d_mousemove

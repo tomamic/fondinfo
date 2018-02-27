@@ -1,7 +1,6 @@
 #include <iostream>
 
-#include "document.h"
-#include "folder.h"
+#include "node.h"
 
 using namespace std;
 

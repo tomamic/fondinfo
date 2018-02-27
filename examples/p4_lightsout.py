@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-##from boardgame_tk import BoardGameGui
+from boardgame_g2d import BoardGameGui
 from random import randrange
 
 class LightsOut(BoardGame):
@@ -51,9 +51,9 @@ class LightsOut(BoardGame):
 
 def main():
     game = LightsOut()
-##    gui = BoardGameGui(game)
-##    gui.mainloop()
-    console_play(game)
+    gui = BoardGameGui(game)
+    gui.main_loop()
+    ##console_play(game)
 
 if __name__ == '__main__':
     main()

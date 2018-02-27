@@ -3,12 +3,12 @@ import sys
 sys.path.append('../../examples/')
 
 from fifteen import Fifteen
-from boardgame_tk import BoardGameGui
+from boardgame_g2d import BoardGameGui
 
 def main():
     game = Fifteen(3, 2)
     gui = BoardGameGui(game)
-    gui.mainloop()
+    gui.main_loop()
     
 if __name__ == '__main__':
     main()

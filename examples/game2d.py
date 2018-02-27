@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 '''
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
@@ -14,9 +14,15 @@ except:
     os.system("py -3 -m pip install pygame")
     import pygame
 
+import sys
+from tkinter import Tk, messagebox, simpledialog
+
+_tkmain = Tk()
+_tkmain.wm_withdraw() #to hide the main window
+
 _canvas = None
-_onkeydown = None
-_onkeyup = None
+_keydown, _keyup = None, None
+_mousedown, _mouseup, _mousemove = None, None, None
 
 def init_canvas(size: (int, int)):
     '''Set size of first CANVAS and return it'''
@@ -42,8 +48,14 @@ def draw_rect(color: (int, int, int), rectangle: (int, int, int, int)) -> None:
 
 def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
     font = pygame.font.SysFont('sans-serif', size)
-    surface = font.render(txt, True, color)
+    surface = font.render(txt, True, color, (255, 255, 255))
     _canvas.blit(surface, pos)
+
+def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
+    font = pygame.font.SysFont('sans-serif', size)
+    surface = font.render(txt, True, color, (255, 255, 255))
+    w, h = surface.get_size()
+    _canvas.blit(surface, (pos[0] - w // 2, pos[1] - h // 2))
 
 def load_image(url: str) -> pygame.Surface:
     return pygame.image.load(url)
@@ -66,9 +78,22 @@ def play_audio(audio: pygame.mixer.Sound, loop=False) -> None:
 def pause_audio(audio: pygame.mixer.Sound) -> None:
     audio.stop()
 
+def alert(message: str) -> None:
+    messagebox.showinfo(" ", message)
+
+def confirm(message: str) -> bool:
+    return messagebox.askokcancel(" ", message)
+
+def prompt(message: str) -> str:
+    return simpledialog.askstring(" ", message, parent=_tkmain)
+
 def handle_keyboard(keydown, keyup):
-    global _onkeydown, _onkeyup
-    _onkeydown, _onkeyup = keydown, keyup
+    global _keydown, _keyup
+    _keydown, _keyup = keydown, keyup
+
+def handle_mouse(mousedown, mouseup, mousemove):
+    global _mousedown, _mouseup, _mousemove
+    _mousedown, _mouseup, _mousemove = mousedown, mouseup, mousemove
 
 def web_key(key: int) -> str:
     word = pygame.key.name(key)
@@ -81,22 +106,37 @@ def web_key(key: int) -> str:
         word = "Arrow" + word
     return word
 
+def web_button() -> int:
+    button = 0
+    pressed = pygame.mouse.get_pressed()
+    if pressed[0]: button += 1
+    if pressed[1]: button += 2
+    if pressed[2]: button += 4
+    return button
+
 def main_loop(update=None, millis=100) -> None:
-    global playing
-    playing = True
     clock = pygame.time.Clock()
-    while playing:
+    while True:
         for e in pygame.event.get():
             # print(e)
             if e.type == pygame.QUIT:
-                pygame.quit()
-                playing = False
-                return
-            elif e.type == pygame.KEYDOWN and _onkeydown:
-                _onkeydown(web_key(e.key))
-            elif e.type == pygame.KEYUP and _onkeyup:
-                _onkeyup(web_key(e.key))
+                exit()
+            elif e.type == pygame.KEYDOWN and _keydown:
+                _keydown(web_key(e.key))
+            elif e.type == pygame.KEYUP and _keyup:
+                _keyup(web_key(e.key))
+            elif e.type == pygame.MOUSEBUTTONDOWN and _mousedown:
+                _mousedown(pygame.mouse.get_pos(), web_button())
+            elif e.type == pygame.MOUSEBUTTONUP and _mouseup:
+                _mouseup(pygame.mouse.get_pos(), web_button())
+            elif e.type == pygame.MOUSEMOTION and _mousemove:
+                _mousemove(pygame.mouse.get_pos(), web_button())
         if update:
             update()
         pygame.display.flip()
         clock.tick(1000/millis)
+    exit()
+
+def exit() -> None:
+    pygame.quit()
+    sys.exit()

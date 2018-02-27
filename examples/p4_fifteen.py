@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-from boardgame_tk import BoardGameGui
+from boardgame_g2d import BoardGameGui
 from random import choice
 
 class Fifteen(BoardGame):
@@ -20,9 +20,10 @@ class Fifteen(BoardGame):
         self._blx, self._bly = self._cols - 1, self._rows - 1
 
         '''Do a random walk of the blank cell'''
-        for _ in range(len(self._board) ** 2):
-            dx, dy = choice(((0, -1), (+1, 0), (0, +1), (-1, 0)))
-            self.play_at(self._blx + dx, self._bly + dy)
+        while self.finished():
+            for _ in range(len(self._board) ** 2):
+                dx, dy = choice(((0, -1), (+1, 0), (0, +1), (-1, 0)))
+                self.play_at(self._blx + dx, self._bly + dy)
 
     def cols(self) -> int:
         return self._cols
@@ -67,10 +68,9 @@ class Fifteen(BoardGame):
 
 
 def main():
-    game = Fifteen(4, 4)
+    game = Fifteen(3, 2)
     gui = BoardGameGui(game)
-    gui.resizable(0, 0)
-    gui.mainloop()
+    gui.main_loop()
     ##console_play(game)
 
 if __name__ == '__main__':

@@ -2,9 +2,9 @@
 
 set SWIG_HOME=%TMP%\swigwin-3.0.12
 set PYTHON_HOME=%LOCALAPPDATA%\Programs\Python\Python36-32
-set MINGW_HOME=%PROGRAMFILES(X86)%\CodeBlocks\MinGW
+set CODEB_HOME=%PROGRAMFILES(X86)%\CodeBlocks
 
-set PATH=%MINGW_HOME%\bin;%SWIG_HOME%;%PATH%
+set PATH=C:\MinGW\bin;%CODEB_HOME%\MinGW\bin;%SWIG_HOME%;%PATH%
 setlocal ENABLEDELAYEDEXPANSION
 for %%f in (*.i) do (
     set MODULE=%%~nf
