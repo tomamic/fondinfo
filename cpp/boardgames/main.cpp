@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "knightdom.h"
+#include "lightsout.h"
 
 using namespace std;
 
@@ -18,10 +18,7 @@ void print_game(BoardGame* game) {
     }
 }
 
-int main(int argc, char* argv[])
-{
-    auto game = new KnightDom{6};
-
+void play_game(BoardGame* game) {
     print_game(game);
 
     while (! game->finished()) {
@@ -33,5 +30,11 @@ int main(int argc, char* argv[])
         print_game(game);
     }
     cout << game->message() << endl;
+}
+
+int main(int argc, char* argv[])
+{
+    auto game = new LightsOut{4, 5, 5};
+    play_game(game);
     return 0;
 }

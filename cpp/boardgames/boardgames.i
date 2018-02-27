@@ -1,15 +1,17 @@
-%module fifteen
+%module boardgames
 
 %include <std_string.i>
-%include <std_vector.i>
 
 %{
 /* Includes the header in the wrapper code */
 
-#include "fifteen.h"
+#include "boardgame.h"
+#include "lightsout.h"
 
 %}
 
 /* Parse the header file to generate wrappers */
 
-%include "fifteen.h"
+%include "boardgame.h"
+%include "lightsout.h"
+
