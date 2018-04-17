@@ -9,13 +9,13 @@ import game2d as g2d
 values = []
 
 max_val = 0
-val = float(input('Val? '))
+val = float(input("Val? "))
 while val > 0:
-    gray = float(input('Gray? '))
+    gray = float(input("Gray? "))
     values.append((val, gray))
     if val > max_val:
         max_val = val
-    val = float(input('Val? '))
+    val = float(input("Val? "))
 
 WIDTH, HEIGHT = 600, 400
 g2d.init_canvas((WIDTH, HEIGHT))

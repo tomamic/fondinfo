@@ -4,11 +4,11 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-text = ''
-with open('e3_2010_3_scytale.py') as infile:
+text = ""
+with open("e3_2010_3_scytale.py") as infile:
     text = infile.read()
 
-with open('out.txt', 'w') as outfile:
+with open("out.txt", "w") as outfile:
     FILLER = ' '
     ROWS = 3
     COLS = 4
@@ -26,4 +26,4 @@ with open('out.txt', 'w') as outfile:
 
         for x in range(COLS):
             for y in range(ROWS):
-                print(matrix[y][x], end='', file=outfile)
+                print(matrix[y][x], end="", file=outfile)

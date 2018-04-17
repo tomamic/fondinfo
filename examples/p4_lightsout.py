@@ -11,7 +11,7 @@ from random import randrange
 class LightsOut(BoardGame):
     '''https://en.wikipedia.org/wiki/Lights_Out_(game)'''
     
-    def __init__(self, level=4, cols=5, rows=5, level=4):
+    def __init__(self, side=5, level=4):
         self._cols, self._rows = side, side
         self._board = [[False for x in range(side)] for y in range(side)]
         for _ in range(level):
