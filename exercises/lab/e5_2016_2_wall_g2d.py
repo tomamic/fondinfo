@@ -38,7 +38,7 @@ class Ball(Actor):
             self._x += move[0]
             self._y += move[1]
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self.W, self.H
 
     def symbol(self):
@@ -59,7 +59,7 @@ class Wall(Actor):
     def collide(self, other):
         pass
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):

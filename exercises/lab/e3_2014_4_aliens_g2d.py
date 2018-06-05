@@ -25,7 +25,7 @@ class Alien:
             self._dx = -self._dx
             self._y += self.SPEED
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self.W, self.H
 
 
@@ -35,7 +35,7 @@ def update():
     for a in aliens:
         a.move()                # Apply game logic
                                 # Draw foreground
-        g2d.draw_rect((127, 127, 127), a.rect())
+        g2d.draw_rect((127, 127, 127), a.position())
 
 aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
 g2d.init_canvas((320, 240))

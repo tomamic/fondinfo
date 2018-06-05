@@ -57,7 +57,7 @@ class Turtle(Actor):
     def rect(self):
         return self._x, self._y, self._w, self._h
 
-    def symbol(self):
+    def position(self):
         return 0, 20, self._w, self._h
 
 

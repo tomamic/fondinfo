@@ -52,8 +52,8 @@ class Jumper(Actor):
 
     def collide(self, other):
         if isinstance(other, Wall):
-            bx, by, bw, bh = self.rect()  # ball's pos
-            wx, wy, ww, wh = other.rect() # wall's pos
+            bx, by, bw, bh = self.position()  # ball's pos
+            wx, wy, ww, wh = other.position() # wall's pos
             borders_distance = [(wx - bw - bx, 0), (wx + ww - bx, 0),
                                 (0, wy - bh - by), (0, wy + wh - by)]
             # move to the nearest border: left, right, top or bottom
@@ -65,7 +65,7 @@ class Jumper(Actor):
             if move[1] < 0:
                 self._landed = True
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
@@ -108,7 +108,7 @@ class Wall(Actor):
     def collide(self, other):
         pass
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
@@ -121,9 +121,9 @@ def update():
     g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
         if isinstance(a, Wall):
-            g2d.draw_rect((127, 127, 127), a.rect())
+            g2d.draw_rect((127, 127, 127), a.position())
         else:
-            g2d.draw_image_clip(sprites, a.rect(), a.symbol())
+            g2d.draw_image_clip(sprites, a.position(), a.symbol())
 
 def keydown(code):
     if code == "Space":

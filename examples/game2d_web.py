@@ -16,7 +16,7 @@ html = '''<!DOCTYPE html>
     </head>
     <body onload="brython(1)">
         <script type="text/python" src="__script__"></script>
-        <canvas style="border: 1px solid silver"></canvas>
+        <canvas id="g2d-canvas" style="border: 1px solid silver"></canvas>
     </body>
 </html>'''
 
@@ -62,8 +62,18 @@ _timer = None
 def init_canvas(size: (int, int)) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas
-    _canvas = doc[CANVAS][0]
+    elems = doc.select("#g2d-canvas")
+    print(elems)
+    if elems:
+        _canvas = elems[0]
+    else:
+        _canvas = CANVAS(id="g2d-canvas")
+        _canvas.style = {"background": "white", "border": "1px solid silver",
+                         "position": "absolute", "z-index": "100",
+                         "right": "25px", "top": "25px"}
+        doc.select("body")[0] <= _canvas
     _canvas.width, _canvas.height = size
+    _canvas.style.width, _canvas.style.height = size
 
 def fill_canvas(color: (int, int, int)) -> None:
     draw_rect(color, (0, 0, _canvas.width, _canvas.height))

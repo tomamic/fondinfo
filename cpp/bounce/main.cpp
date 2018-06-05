@@ -21,7 +21,7 @@ int main()
 
         arena->move_all();
         for (auto a : arena->actors()) {
-            auto pos = a->rect();
+            auto pos = a->position();
             cout << pos[0] << " " << pos[1] << endl;
         }
         cout << endl;

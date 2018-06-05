@@ -11,7 +11,7 @@ def update():
     g2d.fill_canvas((255, 255, 255))  # BG
     for b in balls:
         b.move()
-        g2d.draw_rect((127, 127, 127), b.rect())  # FG
+        g2d.draw_rect((127, 127, 127), b.position())  # FG
 
 balls = [Ball(40, 80), Ball(80, 40)]
 g2d.init_canvas((ARENA_W, ARENA_H))

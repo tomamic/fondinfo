@@ -3,14 +3,14 @@
 - Copy main.cbp into a subfolder
 - Open the new cbp file with CodeBlocks
 - Add all other cpp and h files to the project
-  (Right click on project - Add existing directory)
+  (Menu: Project - Add files recursively)
 
 ## If you use QtCreator
 
 - Copy main.pro into a subfolder
 - Open the new pro file with QtCreator
 - Add all other cpp and h files to the project
-  (Menu: Project - Add files recursively)
+  (Right click on project - Add existing directory - Uncheck main.cpp)
 
 ## Create a Python module in Windows
 

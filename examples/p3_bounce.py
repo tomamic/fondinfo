@@ -27,7 +27,7 @@ class Ball(Actor):
 
     def collide(self, other):
         if not isinstance(other, Ghost):
-            x, y, w, h = other.rect()
+            x, y, w, h = other.position()
             if x < self._x:
                 self._dx = self._speed
             else:
@@ -37,7 +37,7 @@ class Ball(Actor):
             else:
                 self._dy = -self._speed
         
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
@@ -65,7 +65,7 @@ class Ghost(Actor):
     def collide(self, other):
         pass
         
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
@@ -115,7 +115,7 @@ class Turtle(Actor):
     def collide(self, other):
         pass
         
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
@@ -124,7 +124,7 @@ class Turtle(Actor):
 
 def print_arena(arena):
     for a in arena.actors():
-        print(type(a).__name__, '@', a.rect())
+        print(type(a).__name__, '@', a.position())
 
     
 def main():
@@ -132,11 +132,10 @@ def main():
     Ball(arena, 40, 80)
     Ball(arena, 80, 40)
     Ghost(arena, 120, 80)
-    print_arena(arena)
 
-    while input() != 'x':
-        arena.move_all()
+    for i in range(25):
         print_arena(arena)
+        arena.move_all()
 
 if __name__ == '__main__':
     main()

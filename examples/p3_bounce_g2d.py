@@ -14,7 +14,7 @@ def update():
 
     g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, a.rect(), a.symbol())
+        g2d.draw_image_clip(sprites, a.position(), a.symbol())
 
 def keydown(code):
     #print(code + " dn")
@@ -35,9 +35,9 @@ def main():
     global arena, turtle, sprites
 
     arena = Arena(320, 240)
-    Ball(arena, 40, 80)
-    Ball(arena, 80, 40)
-    Ghost(arena, 120, 80)
+    b1 = Ball(arena, 40, 80)
+    b2 = Ball(arena, 80, 40)
+    g = Ghost(arena, 120, 80)
     turtle = Turtle(arena, 80, 80)
 
     g2d.init_canvas(arena.size())

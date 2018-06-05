@@ -20,7 +20,7 @@ void Ghost::move() {
 
 void Ghost::collide(Actor* other) { }
 
-vector<int> Ghost::rect() { return {x_, y_, W, H}; }
+vector<int> Ghost::position() { return {x_, y_, W, H}; }
 
 vector<int> Ghost::symbol() {
     if (visible_) return {20, 0, W, H};
@@ -50,7 +50,7 @@ void Ball::move() {
 void Ball::collide(Actor* other) {
     auto ghost = dynamic_cast<Ghost*>(other);
     if (ghost == nullptr) {
-        auto op = other->rect();
+        auto op = other->position();
         if (op[0] < x_) {
             dx_ = SPEED;
         } else {
@@ -64,7 +64,7 @@ void Ball::collide(Actor* other) {
     }
 }
 
-vector<int> Ball::rect() { return {x_, y_, W, H}; }
+vector<int> Ball::position() { return {x_, y_, W, H}; }
 
 vector<int> Ball::symbol() { return {0, 0, W, H}; }
 
@@ -94,7 +94,7 @@ void Turtle::move() {
 
 void Turtle::collide(Actor* other) { }
 
-vector<int> Turtle::rect() { return {x_, y_, W, H}; }
+vector<int> Turtle::position() { return {x_, y_, W, H}; }
 
 vector<int> Turtle::symbol() { return {0, 20, W, H}; }
 

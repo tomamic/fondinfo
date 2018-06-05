@@ -18,7 +18,7 @@ class Actor():
         '''
         raise NotImplementedError('Abstract method')
 
-    def rect(self) -> (int, int, int, int):
+    def position(self) -> (int, int, int, int):
         '''Return the rectangle containing the actor, as a 4-tuple of ints:
         (left, top, width, height)
         '''
@@ -60,9 +60,9 @@ class Arena():
         '''
         actors = list(reversed(self._actors))
         for a in actors:
-            previous_pos = a.rect()
+            previous_pos = a.position()
             a.move()
-            if a.rect() != previous_pos:  # optimization for stationary actors
+            if a.position() != previous_pos:  # optimization for stationary actors
                 for other in actors:
                     # reversed order, so actors drawn on top of others
                     # (towards the end of the cycle) are checked first
@@ -74,8 +74,8 @@ class Arena():
         '''Check the two actors (args) for mutual collision (bounding-box
         collision detection). Return True if colliding, False otherwise
         '''
-        x1, y1, w1, h1 = a1.rect()
-        x2, y2, w2, h2 = a2.rect()
+        x1, y1, w1, h1 = a1.position()
+        x2, y2, w2, h2 = a2.position()
         return (y2 < y1 + h1 and y1 < y2 + h2
             and x2 < x1 + w1 and x1 < x2 + w2
             and a1 in self._actors and a2 in self._actors)

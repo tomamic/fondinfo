@@ -19,7 +19,7 @@ class Cat(Animal):
     def __init__(self, name):
         self._name = name
 
-    def sey(self):
+    def say(self):
         print("I'm " + self._name + " Cat. I say: MEOW!")
 
 class Pig(Animal):

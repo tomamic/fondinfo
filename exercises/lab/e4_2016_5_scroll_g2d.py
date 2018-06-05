@@ -31,7 +31,7 @@ class FallingBall(Actor):
         self._x += self._dx
         self._y += self._dy
 
-    def rect(self) -> (int, int, int, int):
+    def position(self) -> (int, int, int, int):
         return self._x, self._y, self.W, self.H
 
     def collide(self, other: Actor):
@@ -58,7 +58,7 @@ class Plane(Actor):
         if self._after_collision > 0:
             self._after_collision -= 1
 
-    def rect(self) -> (int, int, int, int):
+    def position(self) -> (int, int, int, int):
         return self._x, self._y, self.W, self.H
 
     def collide(self, other: Actor):
@@ -76,7 +76,7 @@ def update():
                         (view_x, view_y, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
-        x, y, w, h = a.rect()
+        x, y, w, h = a.position()
         g2d.draw_rect((127, 127, 127),
                          (x - view_x, y - view_y, w, h))  # FG
 

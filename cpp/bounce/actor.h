@@ -11,7 +11,7 @@ class Actor
 public:
     virtual void move() = 0;
     virtual void collide(Actor* other) = 0;
-    virtual vector<int> rect() = 0;
+    virtual vector<int> position() = 0;
     virtual vector<int> symbol() = 0;
 };
 

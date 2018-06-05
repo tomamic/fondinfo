@@ -24,7 +24,7 @@ class Ball:
         self._x += self._dx
         self._y += self._dy
 
-    def rect(self) -> (int, int, int, int):
+    def position(self) -> (int, int, int, int):
         return self._x, self._y, self._w, self._h
 
 
@@ -32,14 +32,12 @@ def main():
     # Create two objects, instances of the Ball class
     b1 = Ball(40, 80)
     b2 = Ball(80, 40)
-    print("Ball 1 @", b1.rect())
-    print("Ball 2 @", b2.rect())
 
-    while input() != "x":
+    for i in range(25):
+        print("Ball 1 @", b1.position())
+        print("Ball 2 @", b2.position())
         b1.move()
         b2.move()
-        print("Ball 1 @", b1.rect())
-        print("Ball 2 @", b2.rect())
         
 if __name__ == "__main__":
     main()
