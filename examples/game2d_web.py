@@ -170,6 +170,9 @@ def handle_mouse(mousedown, mouseup, mousemove) -> None:
 
 def main_loop(update=None, millis=100) -> None:
     global _timer
+    if _timer:
+        clear_interval(_timer)
+        _timer = None
     if update and not _timer:
         _timer = set_interval(update, millis)
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brython</title>
+    <script src="~brython_dist.js"></script>
+</head>
+<body onload="brython(1)">
+<textarea id="code" rows="30" cols="80">
+print("Hello, World!")
+</textarea>
+    <input type="button" id="run_button" value="RUN" />
+    <script type="text/python"  id="script10">
+        from browser import document, alert
+        def callScript(event):
+          exec(document["code"].value)
+        document["run_button"].bind("click", callScript)
+    </script>
+</body>
+</html>
