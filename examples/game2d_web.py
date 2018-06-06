@@ -17,6 +17,7 @@ html = '''<!DOCTYPE html>
     <body onload="brython(1)">
         <script type="text/python" src="__script__"></script>
         <canvas id="g2d-canvas" style="border: 1px solid silver"></canvas>
+        <br><textarea id="console" rows="5" cols="50" readonly></textarea>
     </body>
 </html>'''
 
@@ -24,6 +25,7 @@ try:
     from browser import doc, alert, DOMEvent
     from browser.html import CANVAS, IMG, AUDIO
     from browser.timer import set_interval, clear_interval
+    import sys
 except:
     # if not in browser...
     import os, sys, urllib.request, webbrowser, http.server, socketserver
@@ -58,6 +60,16 @@ _usr_keydown, _usr_keyup = None, None
 _usr_mousedown, _usr_mouseup, _usr_mousemove = None, None, None
 _key_pressed = {}
 _timer = None
+
+try:
+    con = doc["console"]
+    def write(data):
+        con.value += str(data)
+        con.scrollTop = con.scrollHeight
+    sys.stdout.write = write
+    sys.stderr.write = write
+except:
+    pass
 
 def init_canvas(size: (int, int)) -> None:
     '''Set size of first CANVAS and return it'''
@@ -176,15 +188,19 @@ def main_loop(update=None, millis=100) -> None:
         _timer = set_interval(update, millis)
 
 def exit() -> None:
+    global _timer
     handle_keyboard(None, None)
     handle_mouse(None, None, None)
     if _timer:
         clear_interval(_timer)
+        _timer = None
 
 def _g2d_keydown(e: DOMEvent) -> None:
     if e.code in _key_pressed:
         return
     _key_pressed[e.code] = True
+    if e.code == "Pause":
+        exit()
     if _usr_keydown:
         _usr_keydown(e.code)
 

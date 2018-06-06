@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d_web as g2d
+import game2d as g2d
 from p3_ball import Ball, ARENA_W, ARENA_H
 
 def update():
