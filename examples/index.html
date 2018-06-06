@@ -6,15 +6,28 @@
     <script src="http://www.ce.unipr.it/brython/~brython_dist.js"></script>
 </head>
 <body onload="brython(1)">
-<textarea id="code" rows="30" cols="80">
+<textarea id="code" rows="24" cols="80">
 print("Hello, World!")
 </textarea>
-    <input type="button" id="run_button" value="RUN" />
+<input type="button" id="run_button" value="RUN" /><br>
+<textarea id="console" rows="8" cols="80" readonly></textarea>
     <script type="text/python"  id="script10">
-        from browser import document, alert
-        def callScript(event):
-          exec(document["code"].value)
-        document["run_button"].bind("click", callScript)
+        from browser import document
+        import sys
+        
+        con = document["console"]
+        
+        def write(data):
+            con.value += str(data)
+            con.scrollTop = con.scrollHeight
+          
+        def call_script(event):
+            con.value = ""
+            exec(document["code"].value)
+          
+        sys.stdout.write = write
+        sys.stderr.write = write
+        document["run_button"].bind("click", call_script)
     </script>
 </body>
 </html>
