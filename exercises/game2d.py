@@ -47,12 +47,12 @@ def draw_rect(color: (int, int, int), rectangle: (int, int, int, int)) -> None:
     pygame.draw.rect(_canvas, color, rectangle)
 
 def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('sans-serif', size)
+    font = pygame.font.SysFont('freesansbold', size)
     surface = font.render(txt, True, color, (255, 255, 255))
     _canvas.blit(surface, pos)
 
 def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('sans-serif', size)
+    font = pygame.font.SysFont('freesansbold', size)
     surface = font.render(txt, True, color, (255, 255, 255))
     w, h = surface.get_size()
     _canvas.blit(surface, (pos[0] - w // 2, pos[1] - h // 2))

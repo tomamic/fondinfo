@@ -29,8 +29,8 @@ except:
     import os, sys, urllib.request, webbrowser, http.server, socketserver
 
     if not os.path.isfile("~brython_dist.js"):
-        url = "http://brython.info/src/brython_dist.js"
-        #url = "https://raw.githubusercontent.com/brython-dev/brython/3dd0b0e648e75100d0c4806c39fd18edbea927b6/www/src/brython_dist.js"
+        url = "https://raw.githubusercontent.com/brython-dev/brython/3.4.0/www/src/brython_dist.js"
+        #url = "http://brython.info/src/brython_dist.js"
         with urllib.request.urlopen(url) as response:
             content = response.read()
             with open("~brython_dist.js", "wb") as brython_file:
@@ -62,11 +62,9 @@ _timer = None
 def init_canvas(size: (int, int)) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas
-    elems = doc.select("#g2d-canvas")
-    print(elems)
-    if elems:
-        _canvas = elems[0]
-    else:
+    try:
+        _canvas = doc["g2d-canvas"]
+    except:
         _canvas = CANVAS(id="g2d-canvas")
         _canvas.style = {"background": "white", "border": "1px solid silver",
                          "position": "absolute", "z-index": "100",
@@ -174,6 +172,7 @@ def main_loop(update=None, millis=100) -> None:
         clear_interval(_timer)
         _timer = None
     if update and not _timer:
+        update()
         _timer = set_interval(update, millis)
 
 def exit() -> None:

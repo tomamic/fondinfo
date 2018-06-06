@@ -8,6 +8,12 @@ import game2d as g2d
 
 from p3_bounce import Arena, Ball, Ghost, Turtle
 
+arena = Arena(320, 240)
+b1 = Ball(arena, 40, 80)
+b2 = Ball(arena, 80, 40)
+g = Ghost(arena, 120, 80)
+turtle = Turtle(arena, 80, 80)
+sprites = g2d.load_image("sprites.png")
 
 def update():
     arena.move_all()  # Game logic
@@ -32,17 +38,7 @@ def keyup(code):
     turtle.stay()
 
 def main():
-    global arena, turtle, sprites
-
-    arena = Arena(320, 240)
-    b1 = Ball(arena, 40, 80)
-    b2 = Ball(arena, 80, 40)
-    g = Ghost(arena, 120, 80)
-    turtle = Turtle(arena, 80, 80)
-
     g2d.init_canvas(arena.size())
-    sprites = g2d.load_image("sprites.png")
-
     g2d.handle_keyboard(keydown, keyup)
     g2d.main_loop(update, 1000 // 30)
     

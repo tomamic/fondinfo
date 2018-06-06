@@ -6,26 +6,21 @@
 
 import game2d_web as g2d
 
-x, dx = 50, 5
+x, y, dx = 50, 50, 5
 image = g2d.load_image("ball.png")
 
 def update():
-    global x
-    g2d.fill_canvas((255, 255, 255))  # Draw background
-    g2d.draw_image(image, (x, 50))    # Draw foreground
-    x = (x + dx) % 320                # Update ball's position
-
-def keydown(code):
-    global dx
-    if code == "Space":
+    global x, y, dx
+    g2d.fill_canvas((255, 255, 255))
+    g2d.draw_image(image, (x, y))
+    if x + dx < 0 or x + dx + 20 > 320:
+        y += 5
         dx = -dx
-
-def keyup(code):
-    pass
+    else:
+        x = x + dx
 
 def main():
     g2d.init_canvas((320, 240))
-    g2d.handle_keyboard(keydown, keyup)
     g2d.main_loop(update, 1000 // 30)    # Call update 30 times/second
 
 main()
