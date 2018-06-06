@@ -110,9 +110,9 @@ def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> N
     ctx.font = str(size) + "px sans-serif";
 
     # draw background rect assuming height of font
-    ctx.fillStyle = "rgb(255, 255, 255)"
-    width = ctx.measureText(txt).width;
-    ctx.fillRect(x, y, width, size);
+##    ctx.fillStyle = "rgb(255, 255, 255)"
+##    width = ctx.measureText(txt).width;
+##    ctx.fillRect(x, y, width, size);
 
     ctx.fillStyle = "rgb" + str(color)
     ctx.textBaseline = "top";
@@ -125,9 +125,9 @@ def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: 
     ctx.font = str(size) + "px sans-serif";
 
     # draw background rect assuming height of font
-    ctx.fillStyle = "rgb(255, 255, 255)"
-    width = ctx.measureText(txt).width;
-    ctx.fillRect(x - width//2, y - size//2, width, size);
+##    ctx.fillStyle = "rgb(255, 255, 255)"
+##    width = ctx.measureText(txt).width;
+##    ctx.fillRect(x - width//2, y - size//2, width, size);
 
     ctx.fillStyle = "rgb" + str(color)
     ctx.textBaseline = "middle";
