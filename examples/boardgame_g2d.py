@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import game2d as g2d
+import g2d
 from boardgame import BoardGame
 
 W, H = 40, 40

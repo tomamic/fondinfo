@@ -2,16 +2,9 @@
 '''
 @author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-
-Quadrati casuali
-- Chiedere all'utente un numero n
-- Disegnare n quadrati
--- Tutti con lato di 100 pixel
--- Ciascuno in posizione casuale
--- Ciascuno con un colore casuale
 '''
 
-import game2d as g2d
+import g2d
 from random import randrange
 
 W, H = 240, 320

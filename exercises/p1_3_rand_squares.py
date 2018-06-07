@@ -11,7 +11,7 @@ Quadrati casuali
 -- Ciascuno con un colore casuale
 '''
 
-import game2d as g2d
+import g2d
 from random import randrange
 
 W, H = 640, 480

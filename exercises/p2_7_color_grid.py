@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d as g2d
+import g2d
 
 cols = int(input('Cols? '))
 rows = int(input('Rows? '))

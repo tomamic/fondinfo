@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d as g2d
+import g2d
 
 # Create canvas, width=600, height=400
 g2d.init_canvas((600, 400))

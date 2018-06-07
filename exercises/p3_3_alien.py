@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d as g2d
+import g2d
 
 class Alien:
     def __init__(self, x0: int, y0: int):

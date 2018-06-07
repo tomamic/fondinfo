@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import game2d as g2d
+import g2d
 
 def sierpinski(x0, y0, w0, h0, level):
     w1 = w0 // 3

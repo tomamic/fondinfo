@@ -69,9 +69,9 @@ class Fifteen(BoardGame):
 
 def main():
     game = Fifteen(3, 2)
+    ##return console_play(game)
     gui = BoardGameGui(game)
     gui.main_loop()
-    ##console_play(game)
 
 if __name__ == '__main__':
     main()

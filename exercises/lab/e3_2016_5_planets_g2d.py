@@ -1,4 +1,4 @@
-import game2d as g2d
+import g2d
 import math
 import random
 
