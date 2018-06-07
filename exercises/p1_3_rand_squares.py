@@ -17,7 +17,7 @@ from random import randrange
 W, H = 640, 480
 SIDE = 100
 
-n = int(g2d.prompt("n? "))
+n = int(input("n? "))
 
 g2d.init_canvas((W, H))
 

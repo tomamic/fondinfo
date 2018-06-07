@@ -14,7 +14,6 @@ def update():
     g2d.fill_canvas((255, 255, 255))  # Draw background
     g2d.draw_image(image, (x, 50))    # Draw foreground
     x = (x + dx) % 320                # Update ball's position
-    print(x)
 
 def keydown(code):
     global dx

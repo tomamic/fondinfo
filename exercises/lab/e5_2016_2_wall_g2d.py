@@ -84,5 +84,5 @@ Wall(arena, 115, 80, 100, 20)
 g2d.init_canvas(arena.size())
 sprites = g2d.load_image("sprites.png")
 
-g2d.main_loop(update, 1000//30)  # millis
+g2d.main_loop(update, 1000 // 30)  # millis
 

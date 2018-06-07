@@ -11,23 +11,32 @@ print("Hello, World!")
 </textarea>
 <input type="button" id="run_button" value="RUN" /><br>
 <textarea id="console" rows="8" cols="80" readonly></textarea>
-    <script type="text/python"  id="script10">
-        from browser import document
-        import sys
-        
-        con = document["console"]
-        
-        def write(data):
-            con.value += str(data)
-            con.scrollTop = con.scrollHeight
-          
-        def call_script(event):
-            con.value = ""
-            exec(document["code"].value)
-          
-        sys.stdout.write = write
-        sys.stderr.write = write
-        document["run_button"].bind("click", call_script)
-    </script>
+<script>
+    if (location.search) {
+        fetch(location.search.substr(1)).then(response => {
+            response.text().then(text => {
+                document.getElementById("code").value  = text;
+            })
+        })
+    }
+</script>
+<script type="text/python"  id="script10">
+    from browser import document
+    import sys
+    
+    con = document["console"]
+    
+    def write(data):
+        con.value += str(data)
+        con.scrollTop = con.scrollHeight
+      
+    def call_script(event):
+        con.value = ""
+        exec(document["code"].value)
+      
+    sys.stdout.write = write
+    sys.stderr.write = write
+    document["run_button"].bind("click", call_script)
+</script>
 </body>
 </html>
