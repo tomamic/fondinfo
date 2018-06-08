@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Brython Playground</title>
     <script src="http://www.ce.unipr.it/brython/~brython_dist.js"></script>
+    <!-- Create a simple CodeMirror instance -->
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <script src="codemirror/lib/codemirror.js"></script>
+    <script src="codemirror/mode/python/python.js"></script>
 </head>
 <body onload="brython(1)">
 <textarea id="code" rows="24" cols="80">
@@ -11,20 +15,22 @@ print("Hello, World!")
 </textarea>
 <input type="button" id="run_button" value="RUN" /><br>
 <textarea id="console" rows="8" cols="80" readonly></textarea>
-<script>
-    if (location.search) {
-        fetch(location.search.substr(1)).then(response => {
-            response.text().then(text => {
-                document.getElementById("code").value  = text;
-            })
-        })
-    }
-</script>
 <script type="text/python"  id="script10">
-    from browser import document
+    from browser import document, window
     import sys
     
     con = document["console"]
+
+    editor = None
+    try:
+        editor = window.CodeMirror.fromTextArea(document["code"], {
+            "lineNumbers": True,
+            "mode":  "python",
+            "indentUnit": 4
+        })
+    except:
+        pass
+    
     
     def write(data):
         con.value += str(data)
@@ -32,7 +38,17 @@ print("Hello, World!")
       
     def call_script(event):
         con.value = ""
-        exec(document["code"].value)
+        if editor:
+            exec(editor.getValue())
+        else:
+            exec(document["code"].value)
+
+    if window.location.search:
+        text = open(window.location.search[1:]).read()
+        if editor:
+            editor.setValue(text)
+        else:
+            document["code"].value = text
       
     sys.stdout.write = write
     sys.stderr.write = write

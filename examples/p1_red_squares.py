@@ -6,14 +6,14 @@
 
 import g2d
 
-g2d.init_canvas((300, 300))
+g2d.init_canvas((400, 400))
 
 i = 0
-while i < 5:
-    x = i * 40
-    y = i * 40
-    red = i * 60
-    g2d.draw_rect((red, 0, 0), (x, y, 140, 140))
+while i < 10:
+    x = i * 25
+    y = i * 25
+    red = i * 25
+    g2d.draw_rect((red, 0, 0), (x, y, 100, 100))
     i += 1
 
 g2d.main_loop()
