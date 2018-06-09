@@ -17,6 +17,5 @@ def main():
     c = hypotenuse(a, b)
     print(c)
 
-if __name__ == '__main__':
-    main()
+main()  ## remove if importing the module elsewhere
 

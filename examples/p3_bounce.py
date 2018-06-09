@@ -137,6 +137,6 @@ def main():
         print_arena(arena)
         arena.move_all()
 
-if __name__ == '__main__':
-    main()
+## main()  # call main to start the program
+
     

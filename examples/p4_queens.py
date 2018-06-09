@@ -40,5 +40,4 @@ def main():
     place_queens(board)
     print_board(board)
 
-if __name__ == '__main__':
-    main()
+main()

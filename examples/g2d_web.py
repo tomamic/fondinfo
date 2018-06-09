@@ -80,7 +80,7 @@ def init_canvas(size: (int, int)) -> None:
         _canvas = CANVAS(id="g2d-canvas")
         _canvas.style = {"background": "white", "border": "1px solid silver",
                          "position": "absolute", "z-index": "100",
-                         "right": "25px", "top": "25px"}
+                         "right": "40px", "top": "40px"}
         doc.select("body")[0] <= _canvas
     _canvas.width, _canvas.height = size
     _canvas.style.width, _canvas.style.height = size

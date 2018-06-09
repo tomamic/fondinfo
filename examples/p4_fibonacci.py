@@ -57,5 +57,4 @@ def main():
         fib = fibonacci3(n)
         print('fib3:', fib, time.clock() - start)
 
-if __name__ == '__main__':
-    main()
+main()

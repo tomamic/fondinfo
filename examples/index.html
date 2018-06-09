@@ -5,16 +5,17 @@
     <title>Brython Playground</title>
     <script src="http://www.ce.unipr.it/brython/~brython_dist.js"></script>
     <!-- Create a simple CodeMirror instance -->
-    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
-    <script src="codemirror/lib/codemirror.js"></script>
-    <script src="codemirror/mode/python/python.js"></script>
+    <link rel="stylesheet" href="http://www.ce.unipr.it/brython/~codemirror/lib/codemirror.css">
+    <script src="http://www.ce.unipr.it/brython/~codemirror/lib/codemirror.js"></script>
+    <script src="http://www.ce.unipr.it/brython/~codemirror/mode/python/python.js"></script>
 </head>
 <body onload="brython(1)">
+<h1>Brython Playground</h1>
+<input type="button" id="run_button" value="RUN" /><br>
 <textarea id="code" rows="24" cols="80">
 print("Hello, World!")
 </textarea>
-<input type="button" id="run_button" value="RUN" /><br>
-<textarea id="console" rows="8" cols="80" readonly></textarea>
+<textarea id="console" rows="8" cols="80" readonly style="width:100%"></textarea>
 <script type="text/python"  id="script10">
     from browser import document, window
     import sys
@@ -43,16 +44,15 @@ print("Hello, World!")
         else:
             exec(document["code"].value)
 
+    sys.stdout.write = write
+    sys.stderr.write = write
+    document["run_button"].bind("click", call_script)
     if window.location.search:
         text = open(window.location.search[1:]).read()
         if editor:
             editor.setValue(text)
         else:
             document["code"].value = text
-      
-    sys.stdout.write = write
-    sys.stderr.write = write
-    document["run_button"].bind("click", call_script)
 </script>
 </body>
 </html>

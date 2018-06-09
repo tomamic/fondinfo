@@ -55,5 +55,4 @@ def main():
     gui.main_loop()
     ##console_play(game)
 
-if __name__ == '__main__':
-    main()
+main()

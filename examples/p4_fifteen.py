@@ -73,5 +73,4 @@ def main():
     gui = BoardGameGui(game)
     gui.main_loop()
 
-if __name__ == '__main__':
-    main()
+main()

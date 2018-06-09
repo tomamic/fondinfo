@@ -38,6 +38,5 @@ def main():
         print("Ball 2 @", b2.position())
         b1.move()
         b2.move()
-        
-if __name__ == "__main__":
-    main()
+
+## main()  # call main to start the program
