@@ -5,16 +5,33 @@
     <title>Brython Playground</title>
     <script src="http://www.ce.unipr.it/brython/~brython_dist.js"></script>
     <!-- Create a simple CodeMirror instance -->
+    <link rel="stylesheet" href="playground.css">
     <link rel="stylesheet" href="~codemirror/lib/codemirror.css">
     <script src="~codemirror/lib/codemirror.js"></script>
     <script src="~codemirror/mode/python/python.js"></script>
+    <script>
+        function showLine(textarea) {
+            var lines = textarea.value.substr(0,
+                textarea.selectionStart).split("\n");
+            var row = lines.length;
+            var col = lines[lines.length-1].length;
+            document.getElementById("coords").innerHTML = "Line: " + row;
+        }
+    </script>
+
 </head>
 <body onload="brython(1)">
-<h1>Brython Playground</h1>
-<input type="button" id="run_button" value="RUN" /><br>
-<textarea id="code" rows="24" cols="80">
+<h1 style="font-family: Arial, sans; font-size: 32px; font-variant: small-caps; font-weight:normal;">
+Brython Playground
+<input type="button" id="run_button" value="RUN" style="vertical-align: middle;"/>
+<input type="button" id="clear_button" value="CLEAR" style="vertical-align: middle;"/>
+</h1>
+<div style="background: #ebdac7; margin: 0px; padding: 10px; position: relative;">
+<textarea id="code" rows="24" cols="80" onkeyup="showLine(this);" onmouseup="this.onkeyup();" style="margin-bottom: 15px">
 print("Hello, World!")
 </textarea>
+<div id="coords" style="position: absolute; left: 0; bottom: 0; border: 1px solid silver;"></div>
+</div>
 <textarea id="console" rows="8" cols="80" readonly style="width:100%"></textarea>
 <script type="text/python"  id="script10">
     from browser import document, window
@@ -44,11 +61,21 @@ print("Hello, World!")
         else:
             exec(document["code"].value)
 
+    def clear_canvas(event):
+        try:
+            canvas = document["g2d-canvas"]
+            canvas.parentElement.removeChild(canvas)
+            g2d.exit()
+        except:
+            pass
+            
     sys.stdout.write = write
     sys.stderr.write = write
     document["run_button"].bind("click", call_script)
+    document["clear_button"].bind("click", clear_canvas)
     if window.location.search:
-        text = open(window.location.search[1:]).read()
+        base = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
+        text = open(base + window.location.search[1:]).read()
         if editor:
             editor.setValue(text)
         else:

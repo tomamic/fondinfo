@@ -29,7 +29,7 @@ func (b *Alien) Position() Rect {
 
 func update() {
 	FillCanvas(Color{255, 255, 255}) // BG
-	for _, i := range invs {
+	for _, i := range aliens {
 		i.Move()
 		DrawRect(Color{100, 100, 100}, i.Position()) // FG
 	}

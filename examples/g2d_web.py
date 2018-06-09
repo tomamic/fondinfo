@@ -22,7 +22,7 @@ html = '''<!DOCTYPE html>
 </html>'''
 
 try:
-    from browser import doc, alert, DOMEvent
+    from browser import doc, alert, prompt, confirm, DOMEvent
     from browser.html import CANVAS, IMG, AUDIO
     from browser.timer import set_interval, clear_interval
     import sys
