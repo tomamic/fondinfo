@@ -31,7 +31,7 @@ func NewPig(name string) *Pig {
 }
 
 func (d *Dog) Say() {
-	fmt.Println("I'm " + d.name + " Dog. I say: BAU!")
+	fmt.Println("I'm " + d.name + " Dog. I say: WOOF!")
 }
 
 func (c *Cat) Say() {
