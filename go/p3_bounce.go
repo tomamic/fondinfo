@@ -1,4 +1,4 @@
-package bounce
+package main
 
 import (
 	. "g2d"
@@ -201,7 +201,7 @@ func keyup(code string) {
 	game.Hero().Stay()
 }
 
-func Main() {
+func main() {
 	InitCanvas(game.Arena().Size())
 	MainLoop(update, 1000/60)
 	HandleKeyboard(keydown, keyup)
