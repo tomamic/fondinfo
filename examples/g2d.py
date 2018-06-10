@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 '''
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
@@ -7,136 +7,233 @@
 @link    https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
 '''
 
+html = '''<!DOCTYPE html>
+<html>
+    <head>
+        <title>__script__</title>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="~brython_dist.js"></script>
+    </head>
+    <body onload="brython(1)">
+        <script type="text/python" src="__script__"></script>
+        <canvas id="g2d-canvas" style="border: 1px solid silver"></canvas>
+        <br><textarea id="console" rows="5" cols="50" readonly></textarea>
+    </body>
+</html>'''
+
 try:
-    import pygame
+    from browser import doc, alert, prompt, confirm, DOMEvent
+    from browser.html import CANVAS, IMG, AUDIO
+    from browser.timer import set_interval, clear_interval
+    import sys
 except:
-    import os
-    os.system("py -3 -m pip install pygame")
-    import pygame
+    # if not in browser...
+    import os, sys, urllib.request, webbrowser, http.server, socketserver
 
-import sys
-from tkinter import Tk, messagebox, simpledialog
+    if not os.path.isfile("~brython_dist.js"):
+        url = "https://raw.githubusercontent.com/brython-dev/brython/3.4.0/www/src/brython_dist.js"
+        #url = "http://brython.info/src/brython_dist.js"
+        with urllib.request.urlopen(url) as response:
+            content = response.read()
+            with open("~brython_dist.js", "wb") as brython_file:
+                brython_file.write(content)
 
-_tkmain = Tk()
-_tkmain.wm_withdraw() #to hide the main window
+    # prepare a custom html file
+    script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
+    with open("~tmp.html", "w") as f:
+        print(html.replace("__script__", script_name), file=f)
+
+    # open html file in default browser
+    webbrowser.open("http://127.0.0.1:8000/~tmp.html")    
+
+    # minimal web server, for files in current dir
+    socketserver.TCPServer.allow_reuse_address = True
+    httpd = socketserver.TCPServer(("", 8000), http.server.SimpleHTTPRequestHandler)
+    print("Serving at port", 8000)
+    httpd.serve_forever()
+
+
+K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
 
 _canvas = None
-_keydown, _keyup = None, None
-_mousedown, _mouseup, _mousemove = None, None, None
+_usr_keydown, _usr_keyup = None, None
+_usr_mousedown, _usr_mouseup, _usr_mousemove = None, None, None
+_key_pressed = {}
+_timer = None
 
-def init_canvas(size: (int, int)):
+try:
+    con = doc["console"]
+    def write(data):
+        con.value += str(data)
+        con.scrollTop = con.scrollHeight
+    sys.stdout.write = write
+    sys.stderr.write = write
+except:
+    pass
+
+def init_canvas(size: (int, int)) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas
-    pygame.init()
-    _canvas = pygame.display.set_mode(size)
-    _canvas.fill((255, 255, 255))
+    try:
+        _canvas = doc["g2d-canvas"]
+    except:
+        _canvas = CANVAS(id="g2d-canvas")
+        _canvas.style = {"background": "white", "border": "1px solid silver",
+                         "position": "absolute", "z-index": "100",
+                         "right": "40px", "top": "40px"}
+        doc.select("body")[0] <= _canvas
+    _canvas.width, _canvas.height = size
+    _canvas.style.width, _canvas.style.height = size
 
 def fill_canvas(color: (int, int, int)) -> None:
-    _canvas.fill(color)
+    draw_rect(color, (0, 0, _canvas.width, _canvas.height))
 
 def update_canvas() -> None:
-    pygame.display.update()
+    pass
 
 def draw_line(color: (int, int, int), pt1: (int, int), pt2: (int, int)) -> None:
-    pygame.draw.line(_canvas, color, pt1, pt2)
+    ctx = _canvas.getContext("2d")
+    x1, y1 = pt1
+    x2, y2 = pt2
+    ctx.strokeStyle = "rgb" + str(color)
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    ctx.stroke()
 
 def draw_circle(color: (int, int, int), center: (int, int), radius: int) -> None:
-    pygame.draw.circle(_canvas, color, center, radius)
+    from math import pi
+    ctx = _canvas.getContext("2d")
+    x, y = center
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.beginPath()
+    ctx.arc(x, y, radius, 0, 2 * pi)
+    ctx.closePath()
+    ctx.fill()
 
 def draw_rect(color: (int, int, int), rectangle: (int, int, int, int)) -> None:
-    pygame.draw.rect(_canvas, color, rectangle)
+    ctx = _canvas.getContext("2d")
+    x, y, w, h = rectangle
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.fillRect(x, y, w, h)
 
 def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', size)
-    surface = font.render(txt, True, color) ##, (255, 255, 255))
-    _canvas.blit(surface, pos)
+    ctx = _canvas.getContext("2d")
+    x, y = pos
+    ctx.font = str(size) + "px sans-serif";
+
+    # draw background rect assuming height of font
+##    ctx.fillStyle = "rgb(255, 255, 255)"
+##    width = ctx.measureText(txt).width;
+##    ctx.fillRect(x, y, width, size);
+
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.textBaseline = "top";
+    ctx.textAlign="left";
+    ctx.fillText(txt, x, y)
 
 def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', size)
-    surface = font.render(txt, True, color) ##, (255, 255, 255))
-    w, h = surface.get_size()
-    _canvas.blit(surface, (pos[0] - w // 2, pos[1] - h // 2))
+    ctx = _canvas.getContext("2d")
+    x, y = pos
+    ctx.font = str(size) + "px sans-serif";
 
-def load_image(url: str) -> pygame.Surface:
-    return pygame.image.load(url)
+    # draw background rect assuming height of font
+##    ctx.fillStyle = "rgb(255, 255, 255)"
+##    width = ctx.measureText(txt).width;
+##    ctx.fillRect(x - width//2, y - size//2, width, size);
 
-def draw_image(image: pygame.Surface, pos: (int, int)) -> None:
-    _canvas.blit(image, pos)
+    ctx.fillStyle = "rgb" + str(color)
+    ctx.textBaseline = "middle";
+    ctx.textAlign="center";
+    ctx.fillText(txt, x, y)
 
-def draw_image_clip(image: pygame.Surface, rect: (int, int, int, int), area: (int, int, int, int)) -> None:
-    x0, y0, w0, h0 = area
-    x1, y1, w1, h1 = rect
-    scaled = pygame.transform.smoothscale(image, (int(image.get_width() * w1 / w0), int(image.get_height() * h1 / h0)))
-    _canvas.blit(scaled, rect, area=(x0 * w1 / w0, y0 * h1 / h0, w1, h1))
+def load_image(url: str) -> IMG:
+    return IMG(src=url)
 
-def load_audio(url: str) -> pygame.mixer.Sound:
-    return pygame.mixer.Sound(url)
+def draw_image(image: IMG, pos: (int, int)) -> None:
+    ctx = _canvas.getContext("2d")
+    x, y = pos
+    ctx.drawImage(image, x, y)
+
+def draw_image_clip(image: IMG, rect: (int, int, int, int), clip: (int, int, int, int)) -> None:
+    ctx = _canvas.getContext("2d")
+    x, y, w, h = rect
+    ax, ay, aw, ah = clip
+    ctx.drawImage(image, ax, ay, aw, ah, x, y, w, h)
+
+def load_audio(url: str) -> AUDIO:
+    return AUDIO(src=url)
     
-def play_audio(audio: pygame.mixer.Sound, loop=False) -> None:
-    audio.play(-1 if loop else 0)
+def play_audio(audio: AUDIO, loop=False) -> None:
+    audio.loop = loop
+    audio.play()
     
-def pause_audio(audio: pygame.mixer.Sound) -> None:
-    audio.stop()
+def pause_audio(audio: AUDIO) -> None:
+    audio.pause()
 
-def alert(message: str) -> None:
-    messagebox.showinfo(" ", message)
+def handle_keyboard(keydown, keyup) -> None:
+    global _usr_keydown, _usr_keyup
+    _usr_keydown, _usr_keyup = keydown, keyup
 
-def confirm(message: str) -> bool:
-    return messagebox.askokcancel(" ", message)
-
-def prompt(message: str) -> str:
-    return simpledialog.askstring(" ", message, parent=_tkmain)
-
-def handle_keyboard(keydown, keyup):
-    global _keydown, _keyup
-    _keydown, _keyup = keydown, keyup
-
-def handle_mouse(mousedown, mouseup, mousemove):
-    global _mousedown, _mouseup, _mousemove
-    _mousedown, _mouseup, _mousemove = mousedown, mouseup, mousemove
-
-def web_key(key: int) -> str:
-    word = pygame.key.name(key)
-    word = word[0].upper() + word[1:]
-    if len(word) == 1 and word.isalpha():
-        word = "Key" + word
-    elif len(word) == 1 and word.isdigit():
-        word = "Digit" + word
-    elif word in ("Up", "Down", "Right", "Left"):
-        word = "Arrow" + word
-    return word
-
-def web_button() -> int:
-    button = 0
-    pressed = pygame.mouse.get_pressed()
-    if pressed[0]: button += 1
-    if pressed[1]: button += 2
-    if pressed[2]: button += 4
-    return button
+def handle_mouse(mousedown, mouseup, mousemove) -> None:
+    global _usr_mousedown, _usr_mouseup, _usr_mousemove
+    _usr_mousedown, _usr_mouseup, _usr_mousemove = mousedown, mouseup, mousemove
 
 def main_loop(update=None, millis=100) -> None:
-    clock = pygame.time.Clock()
-    while True:
-        for e in pygame.event.get():
-            # print(e)
-            if e.type == pygame.QUIT:
-                exit()
-            elif e.type == pygame.KEYDOWN and _keydown:
-                _keydown(web_key(e.key))
-            elif e.type == pygame.KEYUP and _keyup:
-                _keyup(web_key(e.key))
-            elif e.type == pygame.MOUSEBUTTONDOWN and _mousedown:
-                _mousedown(pygame.mouse.get_pos(), web_button())
-            elif e.type == pygame.MOUSEBUTTONUP and _mouseup:
-                _mouseup(pygame.mouse.get_pos(), web_button())
-            elif e.type == pygame.MOUSEMOTION and _mousemove:
-                _mousemove(pygame.mouse.get_pos(), web_button())
-        if update:
-            update()
-        pygame.display.flip()
-        clock.tick(1000/millis)
-    exit()
+    global _timer
+    if _timer:
+        clear_interval(_timer)
+        _timer = None
+    if update and not _timer:
+        update()
+        _timer = set_interval(update, millis)
 
 def exit() -> None:
-    pygame.quit()
-    sys.exit()
+    global _timer
+    handle_keyboard(None, None)
+    handle_mouse(None, None, None)
+    if _timer:
+        clear_interval(_timer)
+        _timer = None
+
+def _g2d_keydown(e: DOMEvent) -> None:
+    if e.code in _key_pressed:
+        return
+    _key_pressed[e.code] = True
+    if e.code == "Pause":
+        exit()
+    if _usr_keydown:
+        _usr_keydown(e.code)
+
+def _g2d_keyup(e: DOMEvent) -> None:
+    if e.code in _key_pressed:
+        del _key_pressed[e.code]
+    if _usr_keyup:
+        _usr_keyup(e.code)
+
+def _g2d_focus(e: DOMEvent) -> None:
+    global _key_pressed
+    _key_pressed = {}
+
+def mouse_pos(e: DOMEvent) -> (int, int):
+    rect = _canvas.getBoundingClientRect()
+    return e.clientX - rect.left, e.clientY - rect.top
+
+def _g2d_mousedown(e: DOMEvent) -> None:
+    if _usr_mousedown:
+        _usr_mousedown(mouse_pos(e), e.buttons)
+
+def _g2d_mouseup(e: DOMEvent) -> None:
+    if _usr_mouseup:
+        _usr_mouseup(mouse_pos(e), e.buttons)
+
+def _g2d_mousemove(e: DOMEvent) -> None:
+    if _usr_mousemove:
+        _usr_mousemove(mouse_pos(e), e.buttons)
+
+doc.onkeydown = _g2d_keydown
+doc.onkeyup = _g2d_keyup
+doc.onfocus = _g2d_focus
+
+doc.onmousedown = _g2d_mousedown
+doc.onmouseup = _g2d_mouseup
+doc.onmouseover = _g2d_mousemove
