@@ -151,7 +151,7 @@ def load_image(url: str) -> IMG:
 
 def draw_image(image: IMG, pos: (int, int)) -> None:
     ctx = _canvas.getContext("2d")
-    x, y = pos
+    x, y = pos[0], pos[1]
     ctx.drawImage(image, x, y)
 
 def draw_image_clip(image: IMG, rect: (int, int, int, int), clip: (int, int, int, int)) -> None:
