@@ -36,8 +36,7 @@ print("Hello, World!")
     import sys
     
     con = document["console"]
-    base = ""
-    #base = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
+    base = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
     editor = None
     try:
         editor = window.CodeMirror.fromTextArea(document["code"], {
@@ -81,12 +80,17 @@ print("Hello, World!")
     document["code"].bind("keyup", show_line)
     document["run_button"].bind("click", call_script)
     document["clear_button"].bind("click", clear_canvas)
+    code_file = "main.py"
     if window.location.search:
-        text = open(base + window.location.search[1:]).read()
+        code_file = base + window.location.search[1:]
+    try:
+        text = open(code_file).read()
         if editor:
             editor.setValue(text)
         else:
             document["code"].value = text
+    except:
+        pass
 </script>
 </body>
 </html>
