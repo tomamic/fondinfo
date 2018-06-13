@@ -5,7 +5,6 @@
 '''
 
 import g2d
-
 from p3_bounce import Arena, Ball, Ghost, Turtle
 
 arena = Arena(320, 240)
