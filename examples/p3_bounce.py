@@ -5,7 +5,7 @@
 '''
 
 from random import choice, randrange
-from actor import *
+from actor import Actor, Arena
 
 class Ball(Actor):
     def __init__(self, arena, x, y):
