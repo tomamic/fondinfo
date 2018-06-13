@@ -122,6 +122,21 @@ class Turtle(Actor):
         return 0, 20, self._w, self._h
 
 
+##class BounceGame:
+##    def __init__(self):
+##        self._arena = Arena(320, 240)
+##        Ball(self._arena, 40, 80)
+##        Ball(self._arena, 80, 40)
+##        Ghost(self._arena, 120, 80)
+##        self._hero = Turtle(self._arena, 80, 80)
+##	
+##    def arena(self) -> Arena:
+##        return self._arena
+##    
+##    def hero(self) -> Turtle:
+##        return self._hero
+
+
 def print_arena(arena):
     for a in arena.actors():
         print(type(a).__name__, '@', a.position())
@@ -137,6 +152,6 @@ def main():
         print_arena(arena)
         arena.move_all()
 
-## main()  # call main to start the program
+##main()  # call main to start the program
 
     

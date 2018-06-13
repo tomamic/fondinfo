@@ -152,6 +152,7 @@ func (t *Turtle) Symbol() Rect {
 	return Rect{0, 20, t.w, t.h}
 }
 
+/*
 type BounceGame struct {
 	arena *Arena
 	hero  *Turtle
@@ -174,35 +175,42 @@ func (g *BounceGame) Arena() *Arena {
 	return g.arena
 }
 
-var img = LoadImage("https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/sprites.png")
 var game = NewBounceGame()
+*/
+
+var img = LoadImage("sprites.png")
+var arena = NewArena(Size{320, 240})
+var hero = NewTurtle(arena, Point{80, 80})
 
 func update() {
-	game.Arena().MoveAll()
+	arena.MoveAll()
 	FillCanvas(Color{255, 255, 255})
-	for _, b := range game.Arena().Actors() {
+	for _, b := range arena.Actors() {
 		DrawImageClip(img, b.Position(), b.Symbol())
 	}
 }
 
 func keydown(code string) {
 	if code == "ArrowUp" {
-		game.Hero().GoUp()
+		hero.GoUp()
 	} else if code == "ArrowDown" {
-		game.Hero().GoDown()
+		hero.GoDown()
 	} else if code == "ArrowLeft" {
-		game.Hero().GoLeft()
+		hero.GoLeft()
 	} else if code == "ArrowRight" {
-		game.Hero().GoRight()
+		hero.GoRight()
 	}
 }
 
 func keyup(code string) {
-	game.Hero().Stay()
+	hero.Stay()
 }
 
 func main() {
-	InitCanvas(game.Arena().Size())
+	NewBall(arena, Point{40, 80})
+	NewBall(arena, Point{80, 40})
+	NewGhost(arena, Point{120, 80})
+	InitCanvas(arena.Size())
 	MainLoop(update, 1000/60)
 	HandleKeyboard(keydown, keyup)
 }
