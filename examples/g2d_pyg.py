@@ -66,9 +66,13 @@ def draw_image(image: pygame.Surface, pos: (int, int)) -> None:
 def draw_image_clip(image: pygame.Surface, rect: (int, int, int, int), area: (int, int, int, int)) -> None:
     x0, y0, w0, h0 = area
     x1, y1, w1, h1 = rect
-    if w0 != w1 or h0 != h1:
-        image = pygame.transform.smoothscale(image, (int(image.get_width() * w1 / w0), int(image.get_height() * h1 / h0)))
-    _canvas.blit(image, rect, area=(x0 * w1 / w0, y0 * h1 / h0, w1, h1))
+    if w0 == w1 and h0 == h1:
+        _canvas.blit(image, rect, area=area)
+    else:
+        cropped = pygame.Surface((w0, h0), pygame.SRCALPHA)
+        cropped.blit(image, (0, 0), area=area)
+        scaled = pygame.transform.smoothscale(cropped, (w1, h1))
+        _canvas.blit(scaled, (x1, y1))
 
 def load_audio(url: str) -> pygame.mixer.Sound:
     return pygame.mixer.Sound(url)
