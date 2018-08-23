@@ -57,6 +57,9 @@ class Fifteen(BoardGame):
             self._board[moved] = 0
             self._blx, self._bly = x, y
 
+    def flag_at(self, x: int, y: int):
+        pass
+
     def get_val(self, x: int, y: int) -> str:
         if (0 <= y < self._rows and 0 <= x < self._cols and
             self._board[y * self._cols + x] > 0):

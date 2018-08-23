@@ -15,9 +15,9 @@ private:
     static const int W = 20, H = 20, SPEED = 5;
 public:
     Ghost(Arena* arena, int x, int y);
-    void position();
+    void move();
     void collide(Actor* other);
-    vector<int> rect();
+    vector<int> position();
     vector<int> symbol();
 };
 
@@ -30,9 +30,9 @@ private:
     static const int W = 20, H = 20, SPEED = 5;
 public:
     Ball(Arena* arena, int x, int y);
-    void position();
+    void move();
     void collide(Actor* other);
-    vector<int> rect();
+    vector<int> position();
     vector<int> symbol();
 };
 
@@ -45,9 +45,9 @@ private:
     static const int W = 20, H = 20, SPEED = 2;
 public:
     Turtle(Arena* arena, int x, int y);
-    void position();
+    void move();
     void collide(Actor* other);
-    vector<int> rect();
+    vector<int> position();
     vector<int> symbol();
     void go_left();
     void go_right();

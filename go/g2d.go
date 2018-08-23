@@ -17,6 +17,7 @@ var ctx *js.Object
 var usrKeyDown func(string) = nil
 var usrKeyUp func(string) = nil
 var keyPressed = make(map[string]interface{})
+var timer = 0
 
 func init() {
     out := doc.Call("getElementById", "output")
@@ -72,6 +73,9 @@ func InitCanvas(size Size) {
     ctx = canvas.Call("getContext", "2d")
     canvas.Set("width", size.W)
     canvas.Set("height", size.H)
+}
+
+func UpdateCanvas() {
 }
 
 func FillCanvas(c Color) {
@@ -161,11 +165,20 @@ func PauseAudio(audio *js.Object) {
     audio.Call("pause")
 }
 
-func MainLoop(f func(), millis int) {
-    i := js.Global.Call("setInterval", f, millis)
-    for j := 1; j < i.Int(); j++ {
-        js.Global.Call("clearInterval", j)
-    }
+func MainLoop(update func(), millis int) {
+	if timer != 0 {
+		js.Global.Call("clearInterval", timer)
+		timer = 0
+	}
+	if update != nil {
+		timer = js.Global.Call("setInterval", update, millis).Int()
+	}
+}
+
+func Exit() {
+	HandleKeyboard(nil, nil)
+	HandleMouse(nil, nil, nil)
+	MainLoop(nil, 0)
 }
 
 func HandleKeyboard(keydown func(string), keyup func(string)) {

@@ -1,23 +1,31 @@
 #!/usr/bin/env python3
 
-import g2d
+import g2d_pyg as g2d
 from boardgame import BoardGame
+from time import time
 
 W, H = 40, 40
 
 class BoardGameGui:
     def __init__(self, g: BoardGame):
         self._game = g
+        self._downtime = 0
         g2d.init_canvas((g.cols() * W, g.rows() * H))
         self.update_buttons()
-        g2d.handle_mouse(None, self.mouseup, None)
+        g2d.handle_mouse(self.mousedown, self.mouseup)
 
     def main_loop(self):
         g2d.main_loop()
 
+    def mousedown(self, pos, button):
+        self._downtime = time()
+
     def mouseup(self, pos, button):
         x, y = pos[0] // 40, pos[1] // 40
-        self._game.play_at(x, y)
+        if time() - self._downtime > 0.5:
+            self._game.flag_at(x, y)
+        else:
+            self._game.play_at(x, y)
         self.update_buttons()
 
     def update_buttons(self):
@@ -33,7 +41,7 @@ class BoardGameGui:
                                        (x * W + W//2, y * H + H//2), H//2)
         g2d.update_canvas()
         if self._game.finished():
-            g2d.alert("Game finished")
+            g2d.alert(self._game.message())
             g2d.exit()
-##            g2d.draw_text_centered("Finished", (0, 0, 255),
+##            g2d.draw_text_centered(self._game.message(), (0, 0, 255),
 ##                                   (cols * W//2, rows * H//2), H//2)

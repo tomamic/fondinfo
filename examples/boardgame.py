@@ -9,6 +9,9 @@ class BoardGame:
     def play_at(self, x: int, y: int):
         raise NotImplementedError("Abstract method")
     
+    def flag_at(self, x: int, y: int):
+        raise NotImplementedError("Abstract method")
+    
     def get_val(self, x: int, y: int) -> str:
         raise NotImplementedError("Abstract method")
     

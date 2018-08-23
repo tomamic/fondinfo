@@ -22,7 +22,7 @@ _tkmain.wm_withdraw() #to hide the main window
 
 _canvas = None
 _keydown, _keyup = None, None
-_mousedown, _mouseup, _mousemove = None, None, None
+_mousedown, _mouseup = None, None
 
 def init_canvas(size: (int, int)):
     '''Set size of first CANVAS and return it'''
@@ -96,9 +96,9 @@ def handle_keyboard(keydown, keyup):
     global _keydown, _keyup
     _keydown, _keyup = keydown, keyup
 
-def handle_mouse(mousedown, mouseup, mousemove):
-    global _mousedown, _mouseup, _mousemove
-    _mousedown, _mouseup, _mousemove = mousedown, mouseup, mousemove
+def handle_mouse(mousedown, mouseup):
+    global _mousedown, _mouseup
+    _mousedown, _mouseup = mousedown, mouseup
 
 def web_key(key: int) -> str:
     word = pygame.key.name(key)
@@ -110,14 +110,6 @@ def web_key(key: int) -> str:
     elif word in ("Up", "Down", "Right", "Left"):
         word = "Arrow" + word
     return word
-
-def web_button() -> int:
-    button = 0
-    pressed = pygame.mouse.get_pressed()
-    if pressed[0]: button += 1
-    if pressed[1]: button += 2
-    if pressed[2]: button += 4
-    return button
 
 def main_loop(update=None, millis=100) -> None:
     clock = pygame.time.Clock()
@@ -131,11 +123,9 @@ def main_loop(update=None, millis=100) -> None:
             elif e.type == pygame.KEYUP and _keyup:
                 _keyup(web_key(e.key))
             elif e.type == pygame.MOUSEBUTTONDOWN and _mousedown:
-                _mousedown(pygame.mouse.get_pos(), web_button())
+                _mousedown(e.pos, e.button - 1)
             elif e.type == pygame.MOUSEBUTTONUP and _mouseup:
-                _mouseup(pygame.mouse.get_pos(), web_button())
-            elif e.type == pygame.MOUSEMOTION and _mousemove:
-                _mousemove(pygame.mouse.get_pos(), web_button())
+                _mouseup(e.pos, e.button - 1)
         if update:
             update()
         pygame.display.flip()

@@ -9,6 +9,7 @@ class LightsOut : public BoardGame
 public:
     LightsOut(int level, int cols, int rows);
     void play_at(int x, int y);
+    void flag_at(int x, int y) { }
     std::string get_val(int x, int y);
     bool finished();
     int cols() { return rows_; }

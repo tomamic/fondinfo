@@ -211,7 +211,7 @@ func main() {
 	NewBall(arena, Point{80, 40})
 	NewGhost(arena, Point{120, 80})
 	InitCanvas(arena.Size())
-	MainLoop(update, 1000/60)
 	HandleKeyboard(keydown, keyup)
+	MainLoop(update, 1000/60)
 }
 

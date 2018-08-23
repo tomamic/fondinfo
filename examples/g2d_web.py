@@ -57,7 +57,7 @@ K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
 
 _canvas = None
 _usr_keydown, _usr_keyup = None, None
-_usr_mousedown, _usr_mouseup, _usr_mousemove = None, None, None
+_usr_mousedown, _usr_mouseup = None, None
 _key_pressed = {}
 _timer = None
 
@@ -174,26 +174,23 @@ def handle_keyboard(keydown, keyup) -> None:
     global _usr_keydown, _usr_keyup
     _usr_keydown, _usr_keyup = keydown, keyup
 
-def handle_mouse(mousedown, mouseup, mousemove) -> None:
-    global _usr_mousedown, _usr_mouseup, _usr_mousemove
-    _usr_mousedown, _usr_mouseup, _usr_mousemove = mousedown, mouseup, mousemove
+def handle_mouse(mousedown, mouseup) -> None:
+    global _usr_mousedown, _usr_mouseup
+    _usr_mousedown, _usr_mouseup = mousedown, mouseup
 
 def main_loop(update=None, millis=100) -> None:
     global _timer
     if _timer:
         clear_interval(_timer)
         _timer = None
-    if update and not _timer:
-        update()
+    if update:
+        update()  # to solve a Brython issue 
         _timer = set_interval(update, millis)
 
 def exit() -> None:
-    global _timer
     handle_keyboard(None, None)
-    handle_mouse(None, None, None)
-    if _timer:
-        clear_interval(_timer)
-        _timer = None
+    handle_mouse(None, None)
+    main_loop(None, 0)
 
 def _g2d_keydown(e: DOMEvent) -> None:
     if e.code in _key_pressed:
@@ -220,15 +217,15 @@ def mouse_pos(e: DOMEvent) -> (int, int):
 
 def _g2d_mousedown(e: DOMEvent) -> None:
     if _usr_mousedown:
-        _usr_mousedown(mouse_pos(e), e.buttons)
+        _usr_mousedown(mouse_pos(e), e.button)
+        e.preventDefault()
+        e.stopPropagation()
 
 def _g2d_mouseup(e: DOMEvent) -> None:
     if _usr_mouseup:
-        _usr_mouseup(mouse_pos(e), e.buttons)
-
-def _g2d_mousemove(e: DOMEvent) -> None:
-    if _usr_mousemove:
-        _usr_mousemove(mouse_pos(e), e.buttons)
+        _usr_mouseup(mouse_pos(e), e.button)
+        e.preventDefault()
+        e.stopPropagation()
 
 doc.onkeydown = _g2d_keydown
 doc.onkeyup = _g2d_keyup
@@ -236,4 +233,3 @@ doc.onfocus = _g2d_focus
 
 doc.onmousedown = _g2d_mousedown
 doc.onmouseup = _g2d_mouseup
-doc.onmouseover = _g2d_mousemove

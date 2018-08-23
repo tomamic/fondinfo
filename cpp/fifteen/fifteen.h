@@ -16,6 +16,7 @@ class Fifteen
 public:
     Fifteen(int cols, int rows);
     void play_at(int x, int y);
+    void flag_at(int x, int y) { }
     string get_val(int x, int y);
     bool finished() { return board_ == solution_; }
     string message() { return "Puzzle solved!"; }

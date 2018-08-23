@@ -39,6 +39,9 @@ class LightsOut(BoardGame):
                 if 0 <= x1 < self._cols and 0 <= y1 < self._rows:
                     self._board[y1][x1] = not self._board[y1][x1]
 
+    def flag_at(self, x: int, y: int):
+        pass
+
     def get_val(self, x: int, y: int) -> str:
         if (0 <= x < self._cols and 0 <= y < self._rows and
             self._board[y][x]):
