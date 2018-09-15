@@ -5,6 +5,7 @@ from boardgame import BoardGame
 from time import time
 
 W, H = 40, 40
+LONG_PRESS = 0.5
 
 class BoardGameGui:
     def __init__(self, g: BoardGame):
@@ -21,8 +22,8 @@ class BoardGameGui:
         self._downtime = time()
 
     def mouseup(self, pos, button):
-        x, y = pos[0] // 40, pos[1] // 40
-        if time() - self._downtime > 0.5:
+        x, y = pos[0] // W, pos[1] // H
+        if time() - self._downtime > LONG_PRESS:
             self._game.flag_at(x, y)
         else:
             self._game.play_at(x, y)
