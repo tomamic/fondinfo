@@ -7,5 +7,6 @@
 for y in range(1, 13):
     for x in range(1, 13):
         val = x * y
-        print(f"{val:3}", end=" ")
+        print(f"{val:3}", end=" ")  # val represented as text
+                                    # with at least 3 chars
     print()
