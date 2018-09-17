@@ -21,7 +21,7 @@ def update():
 
     g2d.fill_canvas((255, 255, 255))
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, [v * 2 for v in a.position()], a.symbol())
+        g2d.draw_image_clip(sprites, a.position(), a.symbol())
 
 def keydown(code):
     if code == "ArrowUp":
@@ -37,7 +37,7 @@ def keyup(code):
     turtle.stay()
 
 def main():
-    g2d.init_canvas([v * 2 for v in arena.size()])
+    g2d.init_canvas(arena.size())
     g2d.handle_keyboard(keydown, keyup)
     g2d.main_loop(update, 1000 // 30)
     
