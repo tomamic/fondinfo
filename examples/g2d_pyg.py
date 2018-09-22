@@ -10,8 +10,8 @@
 try:
     import pygame
 except:
-    import os
-    os.system("py -3 -m pip install pygame")
+    import subprocess, sys
+    subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
     import pygame
 
 import sys

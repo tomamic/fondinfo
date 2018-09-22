@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     vector<int> letters;
     letters.assign(26, 0);
 
-    ifstream fin{"../../exercises/cpp.txt"};
+    ifstream fin{"../../exercises/lab/cpp.txt"};
 
     string line;
     if (fin) {

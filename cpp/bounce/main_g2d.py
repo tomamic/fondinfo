@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 
-import cppyy, sys
+try:
+    import cppyy, sys
+except:
+    import subprocess, sys
+    subprocess.call([sys.executable, "-m", "pip", "install", "cppyy"])
+    import cppyy
 
 cppyy.include("actor.cpp")
 cppyy.include("bounce.cpp")
