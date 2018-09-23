@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import cppyy
-cppyy.include("lightsout.cpp")
-from cppyy.gbl import LightsOut
+##import cppyy
+##cppyy.include("lightsout.cpp")
+##from cppyy.gbl import LightsOut
 
-##from boardgames import LightsOut
+from boardgames import LightsOut
 
 import sys
 sys.path.append('../../examples/')
