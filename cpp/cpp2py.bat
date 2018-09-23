@@ -10,7 +10,7 @@ for %%f in (*.i) do (
     set MODULE=%%~nf
     swig -python -c++ !MODULE!.i
     g++ -std=c++14 -D_hypot=hypot -c *.cpp *.cxx -I"%PYTHON_HOME%\include"
-    g++ -shared *.o "%PYTHON_HOME%\libs\libpython37.a" -o _!MODULE!.pyd
+    g++ -shared *.o "%PYTHON_HOME%\libs\*.a" -o _!MODULE!.pyd
     del *.o *wrap.cxx
 )
 
