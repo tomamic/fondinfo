@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 
-try:
-    import cppyy, sys
-except:
-    import subprocess, sys
-    subprocess.call([sys.executable, "-m", "pip", "install", "cppyy"])
-    import cppyy
-
+import cppyy
 cppyy.include("actor.cpp")
 cppyy.include("bounce.cpp")
 from cppyy.gbl import Arena, Ball, Ghost, Turtle
 
+##from bounce import Arena, Ball, Ghost, Turtle
+
+import sys
 sys.path.append('../../examples/')
 import g2d_pyg as g2d
 

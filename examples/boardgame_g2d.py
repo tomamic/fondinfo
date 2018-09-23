@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import g2d_pyg as g2d
+import g2d
 from boardgame import BoardGame
 from time import time
 

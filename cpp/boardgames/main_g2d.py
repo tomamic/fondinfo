@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
-try:
-    import cppyy, sys
-except:
-    import subprocess, sys
-    subprocess.call([sys.executable, "-m", "pip", "install", "cppyy"])
-    import cppyy
-    
+import cppyy
 cppyy.include("lightsout.cpp")
 from cppyy.gbl import LightsOut
 
+##from boardgames import LightsOut
+
+import sys
 sys.path.append('../../examples/')
 from boardgame_g2d import BoardGameGui
 

@@ -4,6 +4,7 @@
 - Open the new cbp file with CodeBlocks
 - Add all other cpp and h files to the project
   (Menu: Project - Add files recursively)
+- Menu: Settings - Compiler - Follow C++14 standard
 
 ## If you use QtCreator
 

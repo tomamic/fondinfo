@@ -4,29 +4,18 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-class BoardGame:
-    
-    def play_at(self, x: int, y: int):
-        raise NotImplementedError("Abstract method")
-    
-    def flag_at(self, x: int, y: int):
-        raise NotImplementedError("Abstract method")
-    
-    def get_val(self, x: int, y: int) -> str:
-        raise NotImplementedError("Abstract method")
-    
-    def cols(self) -> int:
-        raise NotImplementedError("Abstract method")
-    
-    def rows(self) -> int:
-        raise NotImplementedError("Abstract method")
-    
-    def finished(self) -> bool:
-        raise NotImplementedError("Abstract method")
-    
-    def message(self) -> str:
-        raise NotImplementedError("Abstract method")
-    
+def abstract():
+    raise NotImplementedError("Abstract method")
+
+class BoardGame:    
+    def play_at(self, x: int, y: int): abstract()
+    def flag_at(self, x: int, y: int): abstract()
+    def get_val(self, x: int, y: int) -> str: abstract()
+    def cols(self) -> int: abstract()
+    def rows(self) -> int: abstract()
+    def finished(self) -> bool: abstract()
+    def message(self) -> str: abstract()
+
 
 def print_game(game: BoardGame):
     for y in range(game.rows()):
