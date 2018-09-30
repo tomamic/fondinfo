@@ -6,13 +6,13 @@
 
 FIRST = 32
 LAST = 126
-ROWS = 10
-COLS = 10
+ROWS = 8
+COLS = 12
 
 for y in range(ROWS):
     for x in range(COLS):
-        ##i = FIRST + x + y * COLS
         i = FIRST + y + x * ROWS
+        ##i = FIRST + x + y * COLS
         if i <= LAST:
-            print(f"{i:3} {chr(i)} ", end="")
+            print(chr(i), end="")
     print()

@@ -16,8 +16,11 @@ def factors(n: int):
         x += 1
     return result
 
-if __name__ == '__main__':
+def main():
     n = int(input('n? '))
     while n > 0:
         print(factors(n))
         n = int(input('n? '))
+
+if __name__ == '__main__':
+    main()

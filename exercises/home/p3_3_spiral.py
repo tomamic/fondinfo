@@ -21,4 +21,4 @@ def main():
     g2d.init_canvas((600, 600))
     g2d.main_loop(update, 1000 / 30)
 
-main()
+# main()
