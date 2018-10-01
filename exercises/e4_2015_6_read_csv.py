@@ -12,7 +12,7 @@ with open('matrix.csv', 'r') as file1:
         splitted = line.split(',')
         vals = [int(i) for i in splitted]
         matrix.append(vals)
-        ## matrix += vals  # for a simple list (ex. 4.5)
+        ## matrix += vals  # for a simple list
         
         if cols == 0:
             cols = len(vals)
@@ -25,7 +25,7 @@ total = 0
 x, y = cols - 1, rows - 1
 while x >= 0 and y >= 0:
     total += matrix[y][x]
-    ## total += matrix[y * cols + x]  # for a simple list (ex. 4.5)
+    ## total += matrix[y * cols + x]  # for a simple list
     x -= 1
     y -= 1
 print(total)
