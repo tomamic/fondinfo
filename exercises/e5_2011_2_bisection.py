@@ -13,7 +13,7 @@ def sqrt_bisection(x: float) -> float:
     y = (high + low) / 2
     delta = y ** 2 - x
 
-    while not (-0.001 <= delta <= 0.001):
+    while abs(delta) > 0.001:
         if delta < 0:
             low = y
         else:
@@ -22,7 +22,9 @@ def sqrt_bisection(x: float) -> float:
         delta = y ** 2 - x
     return y
 
-if __name__ == '__main__':
+def main():
     x = float(input())
     print(sqrt_bisection(x))
     print(math.sqrt(x))
+
+main()

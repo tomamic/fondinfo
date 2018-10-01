@@ -5,9 +5,9 @@
 '''
 
 def max_min(filename: str) -> (int, int):
+    min_val, max_val = 0.0, 0.0
+    first_line = True
     with open(filename, "r") as f:
-        first_line = True
-        min_val, max_val = 0.0, 0.0
         for line in f:
             val = float(line)
             if val > max_val or first_line:
@@ -22,5 +22,4 @@ def main():
     mx, mn = max_min(fn)
     print(mx, mn)
 
-if __name__ == "__main__":
-    main()
+main()

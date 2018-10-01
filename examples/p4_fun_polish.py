@@ -34,7 +34,7 @@ def evaluate(tokens: list) -> float:
         elif token == 'div': return int(a) // int(b)
         elif token == 'mod': return int(a) % int(b)
 
-if __name__ == '__main__':
+def main():
     polish = 'mod + * + 1 2 + 2 3 4 5'.split()
 
     infix = to_infix(polish[:])
@@ -42,3 +42,5 @@ if __name__ == '__main__':
     print(infix, '==', value)
 
     # (((1 + 2) * (2 + 3)) + 4) mod 5 == 4
+
+main()

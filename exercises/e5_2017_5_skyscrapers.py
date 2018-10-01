@@ -50,5 +50,4 @@ def main():
     for row in transposed(matrix):
         print(count_tops(row), count_tops(reversed(row)))
 
-if __name__ == '__main__':
-    main()
+main()
