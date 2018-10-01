@@ -13,7 +13,10 @@ def update():
         b.move()
         g2d.draw_rect((127, 127, 127), b.position())  # FG
 
-balls = [Ball(40, 80), Ball(80, 40)]
-g2d.init_canvas((ARENA_W, ARENA_H))
-g2d.main_loop(update, 1000 // 30)  # Millis
+def main():
+    global balls
+    balls = [Ball(40, 80), Ball(80, 40)]
+    g2d.init_canvas((ARENA_W, ARENA_H))
+    g2d.main_loop(update, 1000 // 30)  # Millis
 
+main()

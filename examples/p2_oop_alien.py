@@ -28,10 +28,10 @@ def update():
     a.move()
     g2d.draw_rect((127, 127, 127), a.position())
 
-a = Alien(40, 40)
-
 def main():
+    global a
+    a = Alien(40, 40)
     g2d.init_canvas((320, 240))
     g2d.main_loop(update, 1000 // 30)
 
-# main()
+main()

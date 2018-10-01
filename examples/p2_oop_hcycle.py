@@ -26,10 +26,10 @@ def update():
     b.move()
     g2d.draw_rect((127, 127, 127), b.position())
 
-b = Ball(40, 40)
-
 def main():
+    global b
+    b = Ball(40, 40)
     g2d.init_canvas((W, H))
     g2d.main_loop(update, 1000 // 30)
 
-# main()
+main()
