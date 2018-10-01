@@ -24,7 +24,7 @@ def spiral(w: int, h: int) -> list:
         x, y = x + dx, y + dy
     return m
 
-if __name__ == '__main__':
+def main():
     w = int(input('w? '))
     h = int(input('h? '))
     m = spiral(w, h)
@@ -33,3 +33,5 @@ if __name__ == '__main__':
             print('{:3}'.format(m[y][x]), end='')
         print()
     print()
+
+main()

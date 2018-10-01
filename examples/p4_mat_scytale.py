@@ -5,10 +5,10 @@
 '''
 
 text = ""
-with open("e3_2010_3_scytale.py") as infile:
+with open("p4_mat_scytale.py") as infile:
     text = infile.read()
 
-with open("out.txt", "w") as outfile:
+with open("~output.txt", "w") as outfile:
     FILLER = ' '
     ROWS = 3
     COLS = 4
