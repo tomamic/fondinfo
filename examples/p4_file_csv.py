@@ -4,21 +4,24 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+# remove these two lines if file already exists
+with open("~matrix.csv", "w") as wfile:
+    print("5,7,2,11\n1,3,12,9\n4,6,10,8", file=wfile, end="")
+
 matrix = []
 cols, rows = 0, 0
 
-with open('matrix.csv', 'r') as file1:
-    for line in file1:
-        splitted = line.split(',')
+with open("~matrix.csv", "r") as rfile:
+    for line in rfile:
+        splitted = line.split(",")
         vals = [int(i) for i in splitted]
         matrix.append(vals)
         ## matrix += vals  # for a simple list
         
-        if cols == 0:
-            cols = len(vals)
+        cols = len(vals)
         rows += 1
 
-print(cols, 'x', rows)
+print(rows, "x", cols)
 print(matrix)
 
 total = 0

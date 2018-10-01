@@ -28,10 +28,12 @@ def gcd2(a: int, b: int) -> int:
         logging.debug('gcd2 {} {}'.format(a, b))
     return a
 
-if __name__ == '__main__':
+def main():
     # logging.basicConfig(level=logging.DEBUG)
     # a, b = 1071, 1029
-    a = int(input())
-    b = int(input())
+    a = int(input("a? "))
+    b = int(input("b? "))
     print(gcd1(a, b))
     print(gcd2(a, b))
+
+main()
