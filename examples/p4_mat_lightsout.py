@@ -58,4 +58,4 @@ def main():
     gui.main_loop()
     ##console_play(game)
 
-main()
+##main()

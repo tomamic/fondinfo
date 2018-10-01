@@ -34,4 +34,4 @@ def main():
     g2d.init_canvas((320, 240))
     g2d.main_loop(update, 1000 // 30)
 
-main()
+##main()  # call main to start the program

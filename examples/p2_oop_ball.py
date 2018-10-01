@@ -39,4 +39,4 @@ def main():
         b1.move()
         b2.move()
 
-main()
+##main()  # call main to start the program

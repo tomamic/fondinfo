@@ -5,7 +5,7 @@
 '''
 
 import g2d
-from p3_3_alien import Alien
+from p2_oop_alien import Alien
 
 def update():
     g2d.fill_canvas((255, 255, 255))

@@ -64,8 +64,11 @@ def update():
     for a in arena.actors():
         g2d.draw_rect((127, 127, 127), a.position())
 
-arena = Arena(320, 240)
-Alien(arena, 40, 40)
-Alien(arena, 80, 80)
-g2d.init_canvas(arena.size())
-g2d.main_loop(update, 1000 // 30)
+def main():
+    arena = Arena(320, 240)
+    Alien(arena, 40, 40)
+    Alien(arena, 80, 80)
+    g2d.init_canvas(arena.size())
+    g2d.main_loop(update, 1000 // 30)
+    
+##main()

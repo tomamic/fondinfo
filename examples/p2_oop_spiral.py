@@ -39,4 +39,4 @@ def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(update, 1000 // 30)
 
-main()
+##main()
