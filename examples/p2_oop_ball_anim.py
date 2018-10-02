@@ -5,7 +5,7 @@
 '''
 
 import g2d
-from p3_oop_ball import Ball, ARENA_W, ARENA_H
+from p2_oop_ball import Ball, ARENA_W, ARENA_H
 
 def update():
     g2d.fill_canvas((255, 255, 255))  # BG
