@@ -13,8 +13,6 @@ class Ball:
         self._y = y
         self._dx = 5
         self._dy = 5
-        self._w = 20
-        self._h = 20
 
     def move(self):
         if not (0 <= self._x + self._dx <= ARENA_W - BALL_W):
