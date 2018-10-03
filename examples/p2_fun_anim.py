@@ -13,14 +13,14 @@ image = g2d.load_image("ball.png")
 
 def update():
     global x, dx
-    g2d.fill_canvas((255, 255, 255))  # Draw background
-    g2d.draw_image(image, (x, y))    # Draw foreground
-    if x + dx < 0 or x + dx + BALL_W > ARENA_W:
-        dx = -dx
-    x = x + dx                        # Update ball's position
+    g2d.fill_canvas((255, 255, 255))   # Draw background
+    g2d.draw_image(image, (x, y))      # Draw foreground
+##    if x + dx < 0 or x + dx + BALL_W > ARENA_W:
+##        dx = -dx
+    x = (x + dx) % ARENA_W             # Update ball's position
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(update, 1000 // 30)    # Call update 30 times/second
+    g2d.main_loop(update, 1000 // 30)  # Call update 30 times/second
 
 main()
