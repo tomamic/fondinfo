@@ -4,8 +4,8 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d_pyg as g2d
-from p3_bounce import Arena, Ball, Ghost, Turtle
+import g2d
+from p3_oop_bounce import Arena, Ball, Ghost, Turtle
 
 arena = Arena(320, 240)
 b1 = Ball(arena, 40, 80)

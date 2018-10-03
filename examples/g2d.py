@@ -109,6 +109,8 @@ def web_key(key: int) -> str:
         word = "Digit" + word
     elif word in ("Up", "Down", "Right", "Left"):
         word = "Arrow" + word
+    elif word == "Return":
+        word = "Enter"
     return word
 
 def main_loop(update=None, millis=100) -> None:

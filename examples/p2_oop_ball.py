@@ -5,6 +5,7 @@
 '''
 
 ARENA_W, ARENA_H = 320, 240
+BALL_W, BALL_H = 20, 20
 
 class Ball:
     def __init__(self, x: int, y: int):
@@ -16,26 +17,25 @@ class Ball:
         self._h = 20
 
     def move(self):
-        if not (0 <= self._x + self._dx <= ARENA_W - self._w):
+        if not (0 <= self._x + self._dx <= ARENA_W - BALL_W):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= ARENA_H - self._h):
+        if not (0 <= self._y + self._dy <= ARENA_H - BALL_H):
             self._dy = -self._dy
 
         self._x += self._dx
         self._y += self._dy
 
     def position(self) -> (int, int, int, int):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y, BALL_W, BALL_H
 
 
 def main():
     # Create two objects, instances of the Ball class
-    b1 = Ball(40, 80)
-    b2 = Ball(80, 40)
+    b1 = Ball(140, 180)
+    b2 = Ball(180, 140)
 
     for i in range(25):
-        print("Ball 1 @", b1.position())
-        print("Ball 2 @", b2.position())
+        print("b1 @", b1.position(), "b2 @", b2.position())
         b1.move()
         b2.move()
 

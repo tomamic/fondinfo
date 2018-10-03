@@ -9,7 +9,7 @@ from bounce import Arena, Ball, Ghost, Turtle
 
 import sys
 sys.path.append('../../examples/')
-import g2d_pyg as g2d
+import g2d
 
 arena = Arena(320, 240)
 b1 = Ball(arena, 40, 80)
