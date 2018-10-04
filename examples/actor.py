@@ -25,8 +25,8 @@ class Actor():
         raise NotImplementedError('Abstract method')
 
     def symbol(self) -> (int, int, int, int):
-        '''Return the (x, y) position of current sprite, if it is contained in
-        a larger image, with other sprites. Otherwise, simply return (0, 0)
+        '''Return the position (x, y, w, h) of current sprite, if it is contained in
+        a larger image, with other sprites. Otherwise, simply return (0, 0, 0, 0)
         '''
         raise NotImplementedError('Abstract method')
 
