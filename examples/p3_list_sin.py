@@ -13,15 +13,16 @@ Array, precalcolo
 
 from math import pi, sin
 
-fast_sin = []
+fast_sin = [0] * 360
 for x in range(360):
     rad = x * pi / 180
     val = sin(rad)
-    fast_sin.append(val)
+    fast_sin[x] = val
 
 # fast_sin = [sin(x * pi / 180) for x in range(360)]
 
 angle = int(input("angle? "))
 while 0 <= angle < 360:
-    print("sin({}) = {:.2f}".format(angle, fast_sin[angle]))
+    value = fast_sin[angle]
+    print(f"sin({angle}) = {value:.2f}")
     angle = int(input("angle? "))
