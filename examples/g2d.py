@@ -76,10 +76,10 @@ def draw_image_clip(image: pygame.Surface, rect: (int, int, int, int), area: (in
 
 def load_audio(url: str) -> pygame.mixer.Sound:
     return pygame.mixer.Sound(url)
-    
+
 def play_audio(audio: pygame.mixer.Sound, loop=False) -> None:
     audio.play(-1 if loop else 0)
-    
+
 def pause_audio(audio: pygame.mixer.Sound) -> None:
     audio.stop()
 

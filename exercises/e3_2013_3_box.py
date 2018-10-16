@@ -8,7 +8,7 @@ class Box:
     def __init__(self, w: int, h: int):
         self._w = w
         self._h = h
-        
+
     def area(self) -> int:
         return self._w * self._h
 
@@ -17,7 +17,7 @@ class Box:
 
     def dimensions(self) -> (int, int):
         return (self._w, self._h)
-    
+
 if __name__ == '__main__':
     width = int(input('width? '))
     height = int(input('height? '))

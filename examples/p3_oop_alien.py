@@ -28,10 +28,10 @@ class Alien(Actor):
 
     def symbol(self):
         return 0, 0
-    
+
     def collide(self, other):
         pass
-    
+
 def update():
     g2d.fill_canvas((255, 255, 255))
     arena.move_all()
@@ -45,5 +45,5 @@ def main():
     Alien(arena, 80, 80)
     g2d.init_canvas(arena.size())
     g2d.main_loop(update, 1000 // 30)
-    
+
 ##main()

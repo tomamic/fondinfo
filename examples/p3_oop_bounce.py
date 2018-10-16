@@ -36,7 +36,7 @@ class Ball(Actor):
                 self._dy = self._speed
             else:
                 self._dy = -self._speed
-        
+
     def position(self):
         return self._x, self._y, self._w, self._h
 
@@ -64,7 +64,7 @@ class Ghost(Actor):
 
     def collide(self, other):
         pass
-        
+
     def position(self):
         return self._x, self._y, self._w, self._h
 
@@ -99,13 +99,13 @@ class Turtle(Actor):
 
     def go_left(self):
         self._dx, self._dy = -self._speed, 0
-        
+
     def go_right(self):
         self._dx, self._dy = +self._speed, 0
 
     def go_up(self):
         self._dx, self._dy = 0, -self._speed
-        
+
     def go_down(self):
         self._dx, self._dy = 0, +self._speed
 
@@ -114,7 +114,7 @@ class Turtle(Actor):
 
     def collide(self, other):
         pass
-        
+
     def position(self):
         return self._x, self._y, self._w, self._h
 
@@ -132,7 +132,7 @@ class Turtle(Actor):
 ##	
 ##    def arena(self) -> Arena:
 ##        return self._arena
-##    
+##
 ##    def hero(self) -> Turtle:
 ##        return self._hero
 
@@ -141,7 +141,7 @@ def print_arena(arena):
     for a in arena.actors():
         print(type(a).__name__, '@', a.position())
 
-    
+
 def main():
     arena = Arena(320, 240)
     Ball(arena, 40, 80)
@@ -154,4 +154,4 @@ def main():
 
 ##main()  # call main to start the program
 
-    
+

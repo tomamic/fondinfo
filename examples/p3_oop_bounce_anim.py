@@ -40,5 +40,5 @@ def main():
     g2d.init_canvas(arena.size())
     g2d.handle_keyboard(keydown, keyup)
     g2d.main_loop(update, 1000 // 30)
-    
+
 main()

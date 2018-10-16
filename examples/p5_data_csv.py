@@ -17,7 +17,7 @@ with open("~matrix.csv", "r") as rfile:
         vals = [int(i) for i in splitted]
         matrix.append(vals)
         ## matrix += vals  # for a simple list
-        
+
         cols = len(vals)
         rows += 1
 

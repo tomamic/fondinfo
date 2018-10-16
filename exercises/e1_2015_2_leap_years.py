@@ -10,7 +10,7 @@ while year != 0:
         print("Leap")
     else:
         print("Common")
-        
+
 ##    if year % 400 == 0:
 ##        print("Leap")
 ##    elif year % 100 == 0:
@@ -19,6 +19,6 @@ while year != 0:
 ##        print("Leap")
 ##    else:
 ##        print("Common")
-        
+
     year = int(input("Year? "))
 

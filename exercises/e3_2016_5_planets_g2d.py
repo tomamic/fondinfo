@@ -42,7 +42,7 @@ def new_frame():
 
 def main():
     global planets, canvas_w, canvas_h
-    
+
     canvas_w, canvas_h = 600, 600
     planets = []
     for i in range(5):

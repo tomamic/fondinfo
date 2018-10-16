@@ -7,7 +7,7 @@
 def abstract():
     raise NotImplementedError("Abstract method")
 
-class BoardGame:    
+class BoardGame:
     def play_at(self, x: int, y: int): abstract()
     def flag_at(self, x: int, y: int): abstract()
     def get_val(self, x: int, y: int) -> str: abstract()
@@ -25,11 +25,11 @@ def print_game(game: BoardGame):
 
 def console_play(game: BoardGame):
     print_game(game)
-    
+
     while not game.finished():
         x, y = input().split()
         game.play_at(int(x), int(y))
         print_game(game)
-        
+
     print(game.message())
 

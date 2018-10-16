@@ -22,7 +22,7 @@ def move_ball(x: int, y: int,
     if y + dy < 0 or y + dy + BALL_H > ARENA_H:
         dy = -dy
     y += dy
-    return x, y, dx, dy    
+    return x, y, dx, dy
 
 def update():
     global x1, y1, dx1, dy1

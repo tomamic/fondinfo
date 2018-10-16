@@ -10,7 +10,7 @@ class Ellipse:
     def __init__(self, a0: float, b0: float):
         self._a = a0
         self._b = b0
-        
+
     def area(self) -> float:
         return math.pi * self._a * self._b
 

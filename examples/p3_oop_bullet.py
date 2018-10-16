@@ -28,10 +28,10 @@ class Alien(Actor):
 
     def symbol(self):
         return 0, 0
-    
+
     def collide(self, other):
         pass
-    
+
 class Bullet(Actor):
     def __init__(self, arena, x0: int):
         self._w, self._h = 5, 10
@@ -50,12 +50,12 @@ class Bullet(Actor):
 
     def symbol(self):
         return 0, 0
-    
+
     def collide(self, other):
         if isinstance(other, Alien):
             self._arena.remove(other)
             self._arena.remove(self)
-    
+
 def update():
     g2d.fill_canvas((255, 255, 255))
     if random.randrange(50) == 0:
@@ -70,5 +70,5 @@ def main():
     Alien(arena, 80, 80)
     g2d.init_canvas(arena.size())
     g2d.main_loop(update, 1000 // 30)
-    
+
 ##main()

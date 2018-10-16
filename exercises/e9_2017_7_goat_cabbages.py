@@ -23,7 +23,7 @@ def possible_moves(steps: list) -> list:
         if status[i] == status[0] and not tuple(move) in wrong + steps:
             # actor "i" is on the same side of the farmer, and
             # the new status is not illegal and
-            # the new status has not been visited, yet 
+            # the new status has not been visited, yet
             moves.append(tuple(move))
     return moves
 
@@ -43,7 +43,7 @@ def main():
     for status in steps:
         print_status(status)
         print()
-        
+
 main()
 
 ##def possible_steps(steps: list) -> list:

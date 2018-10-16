@@ -34,7 +34,7 @@ print("Hello, World!")
 <script type="text/python"  id="script10">
     from browser import document, window
     import sys
-    
+
     con = document["console"]
     base = "./"  # "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
     editor = None
@@ -46,12 +46,12 @@ print("Hello, World!")
         })
     except:
         pass
-    
-    
+
+
     def write(data):
         con.value += str(data)
         con.scrollTop = con.scrollHeight
-      
+
     def call_script(event):
         con.value = ""
         pre = "import sys\nsys.path.append(\"" + base + "\")\n\n"
@@ -73,7 +73,7 @@ print("Hello, World!")
             g2d.exit()
         except:
             pass
-            
+
     sys.stdout.write = write
     sys.stderr.write = write
     document["code"].bind("mouseup", show_line)

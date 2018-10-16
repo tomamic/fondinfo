@@ -19,7 +19,7 @@ def sqrt_recursion(x: float, low: float, high: float) -> float:
 
 def main():
     x = float(input())
-    
+
     low, high = 0, x
     if (high < 1):
         high = 1  # in this case, sqrt(x) > x

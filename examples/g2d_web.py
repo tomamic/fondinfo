@@ -44,7 +44,7 @@ except:
         print(html.replace("__script__", script_name), file=f)
 
     # open html file in default browser
-    webbrowser.open("http://127.0.0.1:8000/~tmp.html")    
+    webbrowser.open("http://127.0.0.1:8000/~tmp.html")
 
     # minimal web server, for files in current dir
     socketserver.TCPServer.allow_reuse_address = True
@@ -162,11 +162,11 @@ def draw_image_clip(image: IMG, rect: (int, int, int, int), clip: (int, int, int
 
 def load_audio(url: str) -> AUDIO:
     return AUDIO(src=url)
-    
+
 def play_audio(audio: AUDIO, loop=False) -> None:
     audio.loop = loop
     audio.play()
-    
+
 def pause_audio(audio: AUDIO) -> None:
     audio.pause()
 
@@ -184,7 +184,7 @@ def main_loop(update=None, millis=100) -> None:
         clear_interval(_timer)
         _timer = None
     if update:
-        update()  # to solve a Brython issue 
+        update()  # to solve a Brython issue
         _timer = set_interval(update, millis)
 
 def exit() -> None:

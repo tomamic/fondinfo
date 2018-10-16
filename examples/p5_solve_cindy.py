@@ -33,13 +33,13 @@ def solve(board, solution, level=0) -> bool:
         m = get_move(board, x)
         if m != 0:
             board[x], board[x + m] = board[x + m], board[x]
-            
+
             if solve(board, solution, level + 1):
                 return True
-            
+
             # no luck: backtrack
             board[x], board[x + m] = board[x + m], board[x]
-                
+
     return False
 
 def main():

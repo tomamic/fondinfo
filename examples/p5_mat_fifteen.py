@@ -9,7 +9,7 @@ from boardgame_g2d import BoardGameGui
 from random import choice
 
 class Fifteen(BoardGame):
-    
+
     def __init__(self, cols: int, rows: int):
         self._cols = cols
         self._rows = rows

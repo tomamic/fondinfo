@@ -25,7 +25,7 @@ with open(filename, 'rb') as infile:
             line.append(chr(b))
         else:
             line.append(' ')
-        
+
         # collected 16 chars: print them all
         if len(line) == LENGTH:
             print('', ''.join(line))

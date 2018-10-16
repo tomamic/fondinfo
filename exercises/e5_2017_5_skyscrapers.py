@@ -35,7 +35,7 @@ def main():
             vals = [int(i) for i in splitted]
             matrix.append(vals)
             ## matrix += vals  # for a simple list (ex. 4.5)
-            
+
             if cols == 0:
                 cols = len(vals)
             rows += 1

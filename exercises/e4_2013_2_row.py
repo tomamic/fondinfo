@@ -8,7 +8,7 @@ def advance(row: list, dx: int, dy: int):
     head_x, head_y = row[-1]
     row.append((head_x + dx, head_y + dy))
     row.pop(0)
-    
+
 def show(row: list, cols: int, rows: int):
     for y in range(rows):
         for x in range(cols):

@@ -13,7 +13,7 @@ class Shape:
 
     def area(self):
         raise NotImplementedError("Abstract method")
-    
+
 
 class Triangle(Shape):
 
@@ -75,7 +75,7 @@ class Circle(Shape):
 
 def main():
     shapes = []  # a list of Shape objects
-    
+
     action_choice = input('A/R/X (Add/Remove/Exit)? ').upper()
     while action_choice != 'X':
         if action_choice == 'A':
@@ -109,10 +109,10 @@ def main():
             print('area:', a)
             print('perimeter:', p)
             print()
-            
+
         print('total area:', total_area)
         action_choice = input('A/R/X (Add/Remove/Exit)? ').upper()
-    
+
 
 if __name__ == '__main__':
     main()

@@ -11,15 +11,15 @@ from e4_2011_4_points import Point
 class Circle:
     def __init__(self, center: Point, radius: float):
         self._center, self._radius = center, radius
-        
+
     @property
     def center(self) -> float:
         return self._center
-    
+
     @property
     def radius(self) -> float:
         return self._radius
-    
+
     @property
     def perimeter(self) -> float:
         return 2 * math.pi * self._radius
@@ -36,8 +36,8 @@ class Circle:
 
     def __str__(self) -> str:
         return '{}, {}'.format(self._center, self._radius)
-        
-            
+
+
 if __name__ == '__main__':
     NEW_POINT = 1
     MOVE_POINT = 2
@@ -52,11 +52,11 @@ if __name__ == '__main__':
         print('Points:')
         for i, p in enumerate(points):
             print(i, p)
-            
+
         print('Circles:')
         for i, c in enumerate(circles):
             print(i, c)
-            
+
         print('Enter your coice:')
         print('1. Create point (x, y)')
         print('2. Move point (point-id, x, y)')

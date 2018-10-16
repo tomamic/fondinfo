@@ -7,7 +7,7 @@
 class Node:
     def size(self):
         raise NotImplementedError("Abstract method")
-    
+
     def print(self, indent: int):
         raise NotImplementedError("Abstract method")
 
@@ -26,16 +26,16 @@ class Folder(Node):
     def __init__(self, name: str):
         self._name = name
         self._subnodes = []
-        
+
     def add_node(self, n: Node):
         self._subnodes.append(n)
-        
+
     def size(self) -> int:
         total_size = 0
         for n in self._subnodes:
             total_size += n.size()
         return total_size
-    
+
     def print(self, indent: int):
         print(' ' * indent + self._name)
         for n in self._subnodes:
