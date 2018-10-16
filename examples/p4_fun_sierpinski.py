@@ -6,25 +6,22 @@
 
 import g2d
 
-def sierpinski(x0, y0, w0, h0, level):
-    w1 = w0 // 3
-    h1 = h0 // 3
-    if level == 0 or w1 == 0 or h1 == 0:
+def sierpinski(rect: (int, int, int, int)):
+    x, y, w, h = rect
+    w3, h3 = w // 3, h // 3
+    if w3 < 1 or h3 < 1:
         return
-    for y in range(3):
-        for x in range(3):
-            x1 = x0 + x * w1
-            y1 = y0 + y * h1
-            if x == 1 and y == 1:
-                g2d.draw_rect((255, 255, 255), (x1, y1, w1, h1))
+    for row in range(3):
+        for col in range(3):
+            rect3 = x + col * w3, y + row * h3, w3, h3
+            if row == 1 and col == 1:
+                g2d.draw_rect((127, 0, 0), rect3)
             else:
-                sierpinski(x1, y1, w1, h1, level - 1)
+                sierpinski(rect3)
 
-level = int(input('level? '))  ## -1 = infinite
-side = 600
+def main():
+    g2d.init_canvas((263, 263))
+    sierpinski((10, 10, 243, 243))
+    g2d.main_loop()
 
-g2d.init_canvas((side, side))
-g2d.fill_canvas((0, 0, 0))
-sierpinski(0, 0, side, side, level)
-
-g2d.main_loop()
+main()
