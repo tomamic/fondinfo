@@ -48,6 +48,6 @@ def main():
     img = g2d.load_image("ball.png")
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.handle_keyboard(keydn, None)
-    g2d.main_loop(update, 1000 // 30)  # Millis
+    g2d.main_loop(update, 1000 // 5)  # Millis
 
 main()
