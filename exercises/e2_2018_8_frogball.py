@@ -39,7 +39,10 @@ def update():
     g2d.draw_image(img, b2.position())  # FG
 
 def keydn(code: str):
-    b1.go()
+    if code == "ArrowLeft":
+        b1.go()
+    elif code == "ArrowRight":
+        b2.go()
 
 def main():
     global b1, b2, img
