@@ -15,22 +15,21 @@
 import logging
 
 def gcd1(a: int, b: int) -> int:
-    logging.debug('gcd1 {} {}'.format(a, b))
+    logging.debug(f"gcd1 {a} {b}")
     if b == 0:
         return a
-    else:
-        return gcd1(b, a % b)
+    return gcd1(b, a % b)
 
 def gcd2(a: int, b: int) -> int:
-    logging.debug('gcd2 {} {}'.format(a, b))
+    logging.debug(f"gcd2 {a} {b}")
     while b != 0:
         a, b = b, a % b
-        logging.debug('gcd2 {} {}'.format(a, b))
+        logging.debug(f"gcd2 {a} {b}")
     return a
 
 def main():
-    # logging.basicConfig(level=logging.DEBUG)
-    # a, b = 1071, 1029
+##    logging.basicConfig(level=logging.DEBUG)
+##    a, b = 1071, 1029
     a = int(input("a? "))
     b = int(input("b? "))
     print(gcd1(a, b))
