@@ -25,8 +25,8 @@ public:
 private:
     int cols_;
     int rows_;
-    int blx_;
-    int bly_;
+    int x0_;
+    int y0_;
 
     vector<int> board_;
     vector<int> solution_;

@@ -16,11 +16,11 @@ Fifteen::Fifteen(int cols, int rows) {
     cols_ = cols, rows_ = rows;
     board_.assign(cols * rows, 0);
     // put ordered values in each cell
-    for (auto i = 0; i < board_.size() - 1; ++i) {
+    for (auto i = 0; i < cols * rows - 1; ++i) {
         board_[i] = i + 1;
     }
     solution_ = board_;
-    blx_ = cols_ - 1, bly_ = rows_ - 1;
+    x0_ = cols_ - 1, y0_ = rows_ - 1;
 
     // random walk: move the blank cell repeatedly
     auto walk_length = rows_ * rows_ * cols_ * cols_;
@@ -28,16 +28,16 @@ Fifteen::Fifteen(int cols, int rows) {
         // choose randomly one of the 4 neighbors
         const vector<vector<int>> dirs = { {0, -1}, {-1, 0}, {0, 1}, {1, 0} };
         auto dir = dirs[rand() % dirs.size()];
-        play_at(blx_ + dir[0], bly_ + dir[1]);
+        play_at(x0_ + dir[0], y0_ + dir[1]);
     }
 }
 
 void Fifteen::play_at(int x, int y) {
     if (0 <= x && x < cols_ && 0 <= y && y < rows_ &&
-            abs(blx_ - x) + abs(bly_ - y) == 1) {
-        board_[bly_ * cols_ + blx_] = board_[y * cols_ + x];
+            abs(x - x0_) + abs(y - y0_) == 1) {
+        board_[y0_ * cols_ + x0_] = board_[y * cols_ + x];
         board_[y * cols_ + x] = 0;
-        blx_ = x, bly_ = y;
+        x0_ = x, y0_ = y;
     }
 }
 
