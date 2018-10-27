@@ -11,17 +11,15 @@ from random import choice
 class Fifteen(BoardGame):
 
     def __init__(self, cols: int, rows: int):
-        self._w, self._h = cols, rows
+        self._w, self._h, self._n = cols, rows, cols * rows
         self._x0, self._y0 = cols - 1, rows - 1  # blank
         
         # Start with sorted cells, then...
-        # do a random walk of the blank cell
-        self._board = list(range(1, cols * rows)) + [0]
-        self._solution = list(self._board)
-        while self.finished():
-            for _ in range((cols * rows) ** 2):
-                dx, dy = choice(((0, -1), (+1, 0), (0, +1), (-1, 0)))
-                self.play_at(self._x0 + dx, self._y0 + dy)
+        self._board = list(range(1, self._n)) + [0]
+        # do a random walk of the blank cell, until all cells are changed
+        while True in [self._board[i] == i + 1 for i in range(self._n)]:
+            dx, dy = choice([(0, -1), (+1, 0), (0, +1), (-1, 0)])
+            self.play_at(self._x0 + dx, self._y0 + dy)
 
     def cols(self) -> int:
         return self._w
@@ -30,7 +28,7 @@ class Fifteen(BoardGame):
         return self._h
 
     def finished(self) -> bool:
-        return self._board == self._solution
+        return self._board == list(range(1, self._n)) + [0]
 
     def play_at(self, x: int, y: int):
         x0, y0, w, h = self._x0, self._y0, self._w, self._h
