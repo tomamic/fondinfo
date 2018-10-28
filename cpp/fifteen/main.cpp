@@ -24,7 +24,7 @@ void print_game(Fifteen* game) {
 int main(int argc, char* argv[])
 {
     srand(time(nullptr));
-    auto game = new Fifteen{4, 4};
+    auto game = new Fifteen{3, 3};
 
     print_game(game);
 

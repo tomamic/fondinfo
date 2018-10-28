@@ -4,50 +4,40 @@
  */
 
 #include "fifteen.h"
-
 #include <cstdlib>
 #include <ctime>
-
+#include <iostream>
 using namespace std;
 
-Fifteen::Fifteen(int cols, int rows) {
-    srand(time(nullptr));
-    // allocate the matrix
-    cols_ = cols, rows_ = rows;
-    board_.assign(cols * rows, 0);
-    // put ordered values in each cell
-    for (auto i = 0; i < cols * rows - 1; ++i) {
-        board_[i] = i + 1;
-    }
-    solution_ = board_;
-    x0_ = cols_ - 1, y0_ = rows_ - 1;
+const vector<vector<int>> dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
-    // random walk: move the blank cell repeatedly
-    auto walk_length = rows_ * rows_ * cols_ * cols_;
-    for (auto i = 0; i < walk_length || finished(); ++i) {
-        // choose randomly one of the 4 neighbors
-        const vector<vector<int>> dirs = { {0, -1}, {-1, 0}, {0, 1}, {1, 0} };
-        auto dir = dirs[rand() % dirs.size()];
-        play_at(x0_ + dir[0], y0_ + dir[1]);
+Fifteen::Fifteen(int w, int h) {
+    srand(time(nullptr));
+    w_ = w, h_ = h, x0_ = w - 1, y0_ = h - 1;
+    auto n = w * h, a1 = pos(w - 1, 0), a2 = pos(0, h - 1);  // angles
+    // start with sorted tiles, then...
+    for (auto i = 0; i < n; ++i) {
+        board_.push_back((i + 1) % n);
+    }
+    solved_ = board_;
+    // do a random walk of the blank tile, until all angle tiles change
+    while (board_[0] == 1 || board_[a1] == a1+1 || board_[a2] == a2+1) {
+        auto d = dirs[rand() % dirs.size()];
+        play_at(x0_+d[0], y0_+d[1]);
     }
 }
 
 void Fifteen::play_at(int x, int y) {
-    if (0 <= x && x < cols_ && 0 <= y && y < rows_ &&
-            abs(x - x0_) + abs(y - y0_) == 1) {
-        board_[y0_ * cols_ + x0_] = board_[y * cols_ + x];
-        board_[y * cols_ + x] = 0;
+    auto dist = abs(x-x0_) + abs(y-y0_), i0 = pos(x0_, y0_), i1 = pos(x, y);
+    if (0 <= x && x < w_ && 0 <= y && y < h_ && dist == 1) {
+        board_[i0] = board_[i1], board_[i1] = 0;
         x0_ = x, y0_ = y;
     }
 }
 
 string Fifteen::get_val(int x, int y) {
-    if (0 <= x && x < cols_ && 0 <= y && y < rows_) {
-        auto val = board_[y * cols_ + x];
-        if (val > 0) {
-            return to_string(val);
-        }
+    if (0 <= x && x < w_ && 0 <= y && y < h_ && board_[pos(x, y)] > 0) {
+        return to_string(board_[pos(x, y)]);
     }
     return "";
 }
-

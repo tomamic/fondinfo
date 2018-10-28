@@ -8,28 +8,24 @@
 
 #include <string>
 #include <vector>
-
 using namespace std;
 
 class Fifteen
 {
 public:
-    Fifteen(int cols, int rows);
+    Fifteen(int w, int h);
     void play_at(int x, int y);
     void flag_at(int x, int y) { }
     string get_val(int x, int y);
-    bool finished() { return board_ == solution_; }
+    bool finished() { return board_ == solved_; }
     string message() { return "Puzzle solved!"; }
-    int cols() { return cols_; }
-    int rows() { return rows_; }
+    int cols() { return w_; }
+    int rows() { return h_; }
+    int pos(int x, int y) { return y*w_ + x; }
 private:
-    int cols_;
-    int rows_;
-    int x0_;
-    int y0_;
-
-    vector<int> board_;
-    vector<int> solution_;
+    int w_, h_;
+    int x0_, y0_;  // blank
+    vector<int> board_, solved_;
 };
 
 #endif // FIFTEEN_H
