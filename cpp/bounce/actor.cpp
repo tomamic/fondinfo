@@ -7,14 +7,14 @@ Arena::Arena(int width, int height) {
 
 void Arena::add(Actor* a) {
     auto pos = find(begin(actors_), end(actors_), a);
-    if (pos == actors_.end()) {
+    if (pos == end(actors_)) {
         actors_.push_back(a);
     }
 }
 
 void Arena::remove(Actor* a) {
     auto pos = find(begin(actors_), end(actors_), a);
-    if (pos != actors_.end()) {
+    if (pos != end(actors_)) {
         actors_.erase(pos);
     }
 }
