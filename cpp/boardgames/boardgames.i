@@ -7,6 +7,7 @@
 
 #include "boardgame.h"
 #include "lightsout.h"
+#include "fifteen.h"
 
 %}
 
@@ -14,4 +15,5 @@
 
 %include "boardgame.h"
 %include "lightsout.h"
+%include "fifteen.h"
 

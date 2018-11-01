@@ -6,11 +6,12 @@
 #ifndef FIFTEEN_H
 #define FIFTEEN_H
 
+#include "boardgame.h"
 #include <string>
 #include <vector>
 using namespace std;
 
-class Fifteen
+class Fifteen : public BoardGame
 {
 public:
     Fifteen(int w, int h);
@@ -21,8 +22,8 @@ public:
     string message() { return "Puzzle solved!"; }
     int cols() { return w_; }
     int rows() { return h_; }
-    int pos(int x, int y) { return y*w_ + x; }
 private:
+    int pos(int x, int y) { return y * w_ + x; }
     int w_, h_;
     int x0_, y0_;  // blank
     vector<int> board_, solved_;

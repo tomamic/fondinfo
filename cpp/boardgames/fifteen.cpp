@@ -14,7 +14,7 @@ const vector<vector<int>> dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 Fifteen::Fifteen(int w, int h) {
     srand(time(nullptr));
     w_ = w, h_ = h, x0_ = w - 1, y0_ = h - 1;
-    auto n = w * h, a1 = pos(w - 1, 0), a2 = pos(0, h - 1);  // angles
+    auto n = w * h, a1 = pos(w-1, 0), a2 = pos(0, h-1);  // angles
     // start with sorted tiles, then...
     for (auto i = 0; i < n; ++i) {
         board_.push_back((i + 1) % n);
@@ -28,8 +28,9 @@ Fifteen::Fifteen(int w, int h) {
 }
 
 void Fifteen::play_at(int x, int y) {
-    auto dist = abs(x-x0_) + abs(y-y0_), i0 = pos(x0_, y0_), i1 = pos(x, y);
-    if (0 <= x && x < w_ && 0 <= y && y < h_ && dist == 1) {
+    auto distance = abs(x - x0_) + abs(y - y0_);
+    auto i0 = pos(x0_, y0_), i1 = pos(x, y);
+    if (0 <= x && x < w_ && 0 <= y && y < h_ && distance == 1) {
         board_[i0] = board_[i1], board_[i1] = 0;
         x0_ = x, y0_ = y;
     }

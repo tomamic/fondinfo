@@ -13,6 +13,11 @@
 - Add all other cpp and h files to the project
   (Right click on project - Add existing directory - Uncheck main.cpp)
 
+## If you use Geany
+
+- Manu: Set build commands - Build
+- g++ -std=c++14 -Wall -o "%e" *.cpp
+
 ## Create a Python module in Windows
 
 - Execute getswigwin.py

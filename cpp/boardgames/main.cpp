@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include "lightsout.h"
+#include "fifteen.h"
 
 using namespace std;
 
@@ -34,7 +35,8 @@ void play_game(BoardGame* game) {
 
 int main(int argc, char* argv[])
 {
-    auto game = new LightsOut{4, 5, 5};
+    //auto game = new LightsOut{4, 5, 5};
+    auto game = new Fifteen{4, 4};
     play_game(game);
     return 0;
 }
