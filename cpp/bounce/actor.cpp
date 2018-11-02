@@ -44,10 +44,6 @@ bool Arena::check_collision(Actor* a1, Actor* a2) {
         && r2[0] < r1[0] + r1[2] and r1[0] < r2[0] + r2[2]);
 }
 
-vector<Actor*> Arena::actors() { return actors_; }
-
-vector<int> Arena::size() { return {w_, h_}; }
-
 Arena::~Arena() {
     while (!actors_.empty()) {
         delete actors_.back();
