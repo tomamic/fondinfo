@@ -6,13 +6,6 @@
   (Menu: Project - Add files recursively)
 - Menu: Settings - Compiler - Follow C++14 standard
 
-## If you use QtCreator
-
-- Copy main.pro into a subfolder
-- Open the new pro file with QtCreator
-- Add all other cpp and h files to the project
-  (Right click on project - Add existing directory - Uncheck main.cpp)
-
 ## If you use Geany
 
 - Manu: Set build commands - Build

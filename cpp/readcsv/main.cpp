@@ -24,8 +24,7 @@ int main() {
     vector<int> matrix1;
 //    vector<vector<int>> matrix2;
 
-    string line;
-    while (getline(file1, line)) {
+    for (string line; getline(file1, line);) {
         auto values = split(line, ',');
         if (cols == 0) {
             cols = values.size();
