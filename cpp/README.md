@@ -8,7 +8,7 @@
 
 ## If you use Geany
 
-- Manu: Set build commands - Build
+- Menu: Set build commands - Build
 - g++ -std=c++14 -Wall -o "%e" *.cpp
 
 ## Create a Python module in Windows
