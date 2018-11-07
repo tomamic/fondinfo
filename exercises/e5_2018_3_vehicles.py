@@ -40,7 +40,7 @@ def generate_file():
     import random
     with open("vehicles.csv", "w") as csv_out:
         for i in range(10):
-            print(random.randrange(2), f"V{i:03}",
+            print(random.choice(['A', 'H']), f"V{i:03}",
                   random.uniform(0, 50), random.uniform(0, 50),
                   sep=",", file=csv_out)
 
@@ -49,7 +49,7 @@ def main():
     with open("vehicles.csv", "r") as csv:
         for line in csv:
             tp, name, x, y = line.split(",")
-            if tp == "0":
+            if tp == 'A':
                 v = Ambulance(name, float(x), float(y))
                 vehicles.append(v)
             else:
