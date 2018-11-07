@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../examples")
 import g2d
 
 def infinite_circles(x: int, y: int, w: int, h: int,
