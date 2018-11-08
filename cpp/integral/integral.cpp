@@ -14,4 +14,3 @@ double integral(double a, double b, int n) {
     }
     return total;
 }
-
