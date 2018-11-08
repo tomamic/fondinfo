@@ -6,6 +6,10 @@ def py_f(x: float) -> float:
     return x * x + x
 
 def py_integral(a: float, b: float, n: int) -> float:
+    """
+    Estimate the area beneath the curve py_f, between the
+    abscissas a and b; the region is approximated as n rectangles.
+    """
     total = 0.0
     dx = (b - a) / n
     for i in range(n):
@@ -14,13 +18,13 @@ def py_integral(a: float, b: float, n: int) -> float:
 
 def main():
     t0 = time.time()
-    i = integral(3, 4, 100_000_000)
+    i = integral(1, 10, 100_000_000)
     t = time.time() - t0
-    print(f"C++\t{i:8.4f}\t{t:8.4f}")
+    print(f"C++\t{i:10.4f}\t{t:10.4f}")
 
     t0 = time.time()
-    i = py_integral(3, 4, 100_000_000)
+    i = py_integral(1, 10, 100_000_000)
     t = time.time() - t0
-    print(f"Python\t{i:8.4f}\t{t:8.4f}")
+    print(f"Python\t{i:10.4f}\t{t:10.4f}")
 
 main()
