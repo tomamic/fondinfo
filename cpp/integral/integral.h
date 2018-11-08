@@ -10,3 +10,4 @@ double integral(double a, double b, int64_t n) {
     }
     return total;
 }
+
