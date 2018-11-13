@@ -15,10 +15,10 @@ public:
     static const int W = 20; static const int H = 20;
 
 private:
-    int x;
-    int y;
-    int dx = 5;
-    int dy = 5;
+    int x_;
+    int y_;
+    int dx_ = 5;
+    int dy_ = 5;
 };
 
 #endif // BALL_H

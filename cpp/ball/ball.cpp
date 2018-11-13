@@ -3,20 +3,20 @@
 using namespace std;
 
 Ball::Ball(int x0, int y0) {
-    x = x0;
-    y = y0;
+    x_ = x0;
+    y_ = y0;
 }
 
 void Ball::move() {
-    x += dx; y += dy;
-    if (!(0 <= x && x < ARENA_W - W)) dx = -dx;
-    if (!(0 <= y && y < ARENA_H - H)) dy = -dy;
+    if (x_ + dx_ < 0 || x_ + dx_ + W > ARENA_W) dx_ = -dx_;
+    if (y_ + dy_ < 0 || y_ + dy_ + H > ARENA_H) dy_ = -dy_;
+    x_ += dx_; y_ += dy_;
 }
 
 int Ball::get_x() {
-    return x;
+    return x_;
 }
 
 int Ball::get_y() {
-    return y;
+    return y_;
 }

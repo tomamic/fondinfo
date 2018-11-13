@@ -13,13 +13,11 @@
 
 ## Create a Python module in Windows
 
-- Execute getswigwin.py
-- Copy cpp2py.bat into a subfolder
-- Execute the copied bat file (double click)
+- Copy cpp2py_win.py into a subfolder
+- Execute the new copy of the script
 
 ## Create a Python module in Linux
 
-- Open the subfolder in Terminal
-- sudo apt install swig
-- ../cpp2py.sh
+- Copy cpp2py_lin.py into a subfolder
+- Execute the new copy of the script
 

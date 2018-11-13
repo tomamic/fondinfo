@@ -17,7 +17,11 @@ vector<int> split(string text, char sep) {
 }
 
 int main() {
-    ifstream file1{"../readcsv/matrix.csv"};
+    ofstream file0{"matrix.csv"};
+    file0 << "5,7,2,11\n1,3,12,9\n4,6,10,8";
+    file0.close();
+
+    ifstream file1{"matrix.csv"};
 
     auto cols = 0, rows = 0;
 
