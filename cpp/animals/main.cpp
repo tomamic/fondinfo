@@ -18,7 +18,7 @@ class Dog : public Animal {
 public:
     Dog(string name) { name_ = name; }
     void say() {
-        cout << "I'm " << name_ << " Dog. I say: WOOF!" << endl;
+        cout << "I am " << name_ << " Dog. I say: WOOF!" << endl;
     }
 };
 
@@ -27,7 +27,7 @@ class Cat : public Animal {
 public:
     Cat(string name) { name_ = name; }
     void say() {
-        cout << "I'm " << name_ << " Cat. I say: MEOW!" << endl;
+        cout << "I am " << name_ << " Cat. I say: MEOW!" << endl;
     }
 };
 
@@ -36,7 +36,7 @@ class Pig : public Animal {
 public:
     Pig(string name) { name_ = name; }
     void say() {
-        cout << "I'm " << name_ << " Pig. I say: OINK!" << endl;
+        cout << "I am " << name_ << " Pig. I say: OINK!" << endl;
     }
 };
 
