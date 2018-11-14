@@ -1,4 +1,4 @@
-import os, subprocess, glob, urllib.request, zipfile
+import os, sys, subprocess, glob, urllib.request, zipfile
 
 swig_ver = "swigwin-3.0.12"
 swig_zip = swig_ver + ".zip"
@@ -14,7 +14,8 @@ if not os.path.exists(swig_ver):
     os.remove(swig_zip)
 
 name = os.path.basename(os.path.dirname(os.path.realpath(__file__)))
-py_home = f"{os.environ['LOCALAPPDATA']}\\Programs\\Python\\Python37-32"
+#py_home = f"{os.environ['LOCALAPPDATA']}\\Programs\\Python\\Python37-32"
+py_home = os.path.dirname(sys.executable)
 cb_home = f"{os.environ['PROGRAMFILES(X86)']}\\CodeBlocks"
 os.environ["PATH"] = f"C:\\MinGW\\bin;{cb_home}\\MinGW\\bin;{swig_ver};{os.environ['PATH']}"
 
