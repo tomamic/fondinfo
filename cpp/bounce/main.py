@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# import cppyy
-# cppyy.include("actor.cpp")
-# cppyy.include("bounce.cpp")
-# from cppyy.gbl import Arena, Ball, Ghost, Turtle
+##import cppyy
+##cppyy.include("actor.cpp")
+##cppyy.include("bounce.cpp")
+##from cppyy.gbl import Arena, Ball, Ghost, Turtle
 
 from bounce import Arena, Ball, Ghost, Turtle
 
