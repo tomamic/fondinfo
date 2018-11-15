@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-N = ord('Z') - ord('A')  # 26
+N = 26  # ord('Z') - ord('A') + 1
 counters = [0] * N
 
 text = input('text? ')
