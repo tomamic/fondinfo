@@ -41,13 +41,13 @@ public:
 };
 
 int main() {
-    // a list of Animal objects
-    auto d = new Dog("Danny");
-    auto c = new Cat("Candy");
-    auto p1 = new Pig("Peppa");
-    auto p2 = new Pig("George");
+    auto d = Dog("Danny");
+    auto c = Cat("Candy");
+    auto p1 = Pig("Peppa");
+    auto p2 = Pig("George");
 
-    vector<Animal*> animals = {d, c, p1, p2};
+    // a list of (ptrs to) Animal objects
+    vector<Animal*> animals = {&d, &c, &p1, &p2};
 
     for (auto a : animals) {
         a->say();
