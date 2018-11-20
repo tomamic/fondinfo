@@ -41,6 +41,6 @@ def main():
     value = evaluate(polish[:])
     print(infix, '==', value)
 
-    # (((1 + 2) * (2 + 3)) + 4) mod 5 == 4
+    # ((1 + 2) * (2 + 3) + 4) mod 5 == 4
 
 main()
