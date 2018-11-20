@@ -7,7 +7,7 @@
 def print_board(board: list):
     for y in range(len(board)):
         for x in range(len(board)):
-            if x == board[y]: print('|Q', end='')
+            if x == board[y]: print('|♛', end='')
             else: print('| ', end='')
         print('|')
 
