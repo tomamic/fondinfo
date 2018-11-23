@@ -14,8 +14,9 @@ int main() {
         {0, -1}, {1, -1}, {1, 0}, {1, 1},
         {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
 
-    // 2. ... and these in the method definitions
     auto w = 6, h = 4, n = 10;  // todo: ask the user, check
+
+    // 2. ... and these in the method definitions
     // create and fill the matrix
     matrix.assign(w * h, 0);
     for (auto i = 0; i < n; ++i) {
