@@ -7,14 +7,14 @@ using namespace std;
 int main() {
     srand(time(nullptr));
 
+    auto w = 6, h = 4, n = 10;  // todo: ask the user, check
+
     // 1. these would go in a class definition...
     vector<int> matrix;
     int MINE = 9;
     vector<vector<int>> dirs = {  // list of pairs (dx, dy)
         {0, -1}, {1, -1}, {1, 0}, {1, 1},
         {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
-
-    auto w = 6, h = 4, n = 10;  // todo: ask the user, check
 
     // 2. ... and these in the method definitions
     // create and fill the matrix
