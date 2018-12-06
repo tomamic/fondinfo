@@ -6,9 +6,8 @@ def print_matrix(m: list, w: int, h: int):
             print(f"{m[y * w + x]:3}", end="")
         print()
 
-
 def find_moves(m: list, w, h, x, y) -> list:
-    moves = []
+    moves = [z]
     for dx, dy in dirs:
         x1, y1 = x + dx, y + dy
         if 0 <= x1 < w and 0 <= y1 < h and m[y1 * w + x1] == 0:
