@@ -1,10 +1,10 @@
 import os, sys, subprocess, glob, urllib.request, tempfile, zipfile
 
-swig_ver = "swigwin-3.0.12"
-swig_home = tempfile.gettempdir() + "\\" + swig_ver
+swig_home = swig_ver = "swigwin-3.0.12"
+#swig_home = tempfile.gettempdir() + "\\" + swig_ver
 if not os.path.exists(swig_home):
     cwd = os.getcwd()
-    os.chdir(tempfile.gettempdir())
+    #os.chdir(tempfile.gettempdir())
     swig_zip = swig_ver + ".zip"
     url = "https://kent.dl.sourceforge.net/project/swig/swigwin/"
     url += swig_ver + "/" + swig_zip

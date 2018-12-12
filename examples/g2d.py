@@ -7,15 +7,13 @@
 @link    https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
 '''
 
+from tkinter import Tk, messagebox, simpledialog
+import subprocess, sys
 try:
     import pygame
 except:
-    import subprocess, sys
     subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
     import pygame
-
-import sys
-from tkinter import Tk, messagebox, simpledialog
 
 _tkmain = Tk()
 _tkmain.wm_withdraw() #to hide the main window
