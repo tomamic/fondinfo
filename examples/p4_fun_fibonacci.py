@@ -9,12 +9,10 @@ import logging, sys, time, functools
 
 @functools.lru_cache()
 def fibonacci1(n: int) -> int:
-    result = 1
-    if n > 1:
-        logging.debug('fib {}'.format(n))
-        result = fibonacci1(n-1) + fibonacci1(n-2)
-    return result
-
+    if n <= 1:
+        return n
+    logging.debug('fib {}'.format(n))
+    return fibonacci1(n-1) + fibonacci1(n-2)
 
 def fibonacci2(n: int) -> int:
     if n < len(fibonacci2._lookup):
@@ -24,20 +22,19 @@ def fibonacci2(n: int) -> int:
     fibonacci2._lookup.append(result)
     return result
 
-fibonacci2._lookup = [1, 1]
+fibonacci2._lookup = [0, 1]
 # lookup is a variable associated with the
 # function itself, not a particular activation
 
 
 def fibonacci3(n: int) -> int:
-    value = 1
-    previous = 0
+    val, nxt = 0, 1
 
     for i in range(n):
         logging.debug('fib {}'.format(i+1))
-        value, previous = value + previous, value
+        val, nxt = nxt, val + nxt
 
-    return value
+    return val
 
 
 def main():
