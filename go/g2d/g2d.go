@@ -1,9 +1,9 @@
 package g2d
 
 import (
-	"fmt"
-	"github.com/gopherjs/gopherjs/js"
-	"math"
+    "fmt"
+    "github.com/gopherjs/gopherjs/js"
+    "math"
 )
 
 type Point struct{ X, Y int }
@@ -17,7 +17,6 @@ var ctx *js.Object
 var usrKeyDown func(string) = nil
 var usrKeyUp func(string) = nil
 var keyPressed = make(map[string]interface{})
-var timer = 0
 
 func init() {
     out := doc.Call("getElementById", "output")
@@ -73,9 +72,6 @@ func InitCanvas(size Size) {
     ctx = canvas.Call("getContext", "2d")
     canvas.Set("width", size.W)
     canvas.Set("height", size.H)
-}
-
-func UpdateCanvas() {
 }
 
 func FillCanvas(c Color) {
@@ -155,30 +151,21 @@ func LoadAudio(src string) *js.Object {
     audio.Set("src", src)
     return audio
 }
-    
+
 func PlayAudio(audio *js.Object, loop bool) {
     audio.Set("loop", loop)
     audio.Call("play")
 }
-    
+
 func PauseAudio(audio *js.Object) {
     audio.Call("pause")
 }
 
-func MainLoop(update func(), millis int) {
-	if timer != 0 {
-		js.Global.Call("clearInterval", timer)
-		timer = 0
-	}
-	if update != nil {
-		timer = js.Global.Call("setInterval", update, millis).Int()
-	}
-}
-
-func Exit() {
-	HandleKeyboard(nil, nil)
-	HandleMouse(nil, nil, nil)
-	MainLoop(nil, 0)
+func MainLoop(f func(), millis int) {
+    i := js.Global.Call("setInterval", f, millis)
+    for j := 1; j < i.Int(); j++ {
+        js.Global.Call("clearInterval", j)
+    }
 }
 
 func HandleKeyboard(keydown func(string), keyup func(string)) {
@@ -261,14 +248,11 @@ func (a *Arena) Contains(actor Actor) bool {
 func (a *Arena) MoveAll() {
     actors := a.ReversedActors()
     for _, actor := range actors {
-        previousPos := actor.Position()
         actor.Move()
-        if actor.Position() != previousPos {
-            for _, other := range actors {
-                if actor != other && a.CheckCollision(actor, other) {
-                    actor.Collide(other)
-                    other.Collide(actor)
-                }
+        for _, other := range actors {
+            if actor != other && a.CheckCollision(actor, other) {
+                actor.Collide(other)
+                other.Collide(actor)
             }
         }
     }
