@@ -193,7 +193,6 @@ func drawText(txt string, c Color, pos Point, size int, centered bool) {
     if centered {
         pos = Point{pos.X - int(surface.W)/2, pos.Y - int(surface.H)/2}
     }
-    fmt.Println(pos.X, pos.Y, surface.W, surface.H)
     DrawImage(surface, pos)
 }
 
