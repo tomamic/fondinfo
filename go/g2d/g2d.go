@@ -183,6 +183,7 @@ func Exit() {
 }
 
 func HandleKeys(keydown func(string, Point), keyup func(string, Point)) {
+    Println("HEI!")
     doc.Set("onkeydown", g2dKeyDown)
     doc.Set("onkeyup", g2dKeyUp)
     doc.Set("onfocus", g2dFocus)
