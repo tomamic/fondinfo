@@ -183,12 +183,11 @@ func Exit() {
 }
 
 func HandleKeys(keydown func(string, Point), keyup func(string, Point)) {
-    Println("HEI!")
     doc.Set("onkeydown", g2dKeyDown)
     doc.Set("onkeyup", g2dKeyUp)
     doc.Set("onfocus", g2dFocus)
-    doc.Set("onmousedown", g2dKeyDown)
-    doc.Set("onmouseup", g2dKeyUp)
+    doc.Set("onmousedown", g2dMouseDown)
+    doc.Set("onmouseup", g2dMouseUp)
     doc.Set("onmousemove", g2dMouseMove)
 
     usrKeyDown = keydown
@@ -203,7 +202,6 @@ func g2dMouseMove(e *js.Object) {
 
 func g2dMouseDown(e *js.Object) {
     b := e.Get("button").Int()
-    Println(b)
     if 0 <= b && b < 2 {
         e.Set("code", mouseCodes[b])
         g2dKeyDown(e)
@@ -219,11 +217,6 @@ func g2dMouseUp(e *js.Object) {
 }
 
 func g2dKeyDown(e *js.Object) {
-    if button := e.Get("button"); button != js.Undefined {
-        if b := button.Int(); 0 <= b && b < 2 {
-            e.Set("code", mouseCodes[b])
-        }
-    }
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
@@ -236,11 +229,6 @@ func g2dKeyDown(e *js.Object) {
 }
 
 func g2dKeyUp(e *js.Object) {
-    if button := e.Get("button"); button != js.Undefined {
-        if b := button.Int(); 0 <= b && b < 2 {
-            e.Set("code", mouseCodes[b])
-        }
-    }
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
