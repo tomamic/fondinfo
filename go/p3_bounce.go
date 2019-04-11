@@ -190,7 +190,7 @@ func update() {
     }
 }
 
-func keydown(code string, pos Point) {
+func keydown(code string) {
     if code == "ArrowUp" {
         hero.GoUp()
     } else if code == "ArrowDown" {
@@ -202,7 +202,7 @@ func keydown(code string, pos Point) {
     }
 }
 
-func keyup(code string, pos Point) {
+func keyup(code string) {
     hero.Stay()
 }
 

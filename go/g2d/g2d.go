@@ -14,8 +14,8 @@ type Color struct{ R, G, B int }
 var doc = js.Global.Get("document")
 var canvas *js.Object
 var ctx *js.Object
-var usrKeyDown func(string, Point) = nil
-var usrKeyUp func(string, Point) = nil
+var usrKeyDown func(string) = nil
+var usrKeyUp func(string) = nil
 var keyPressed = make(map[string]interface{})
 var mousePos = Point{0, 0}
 var mouseCodes = []string{"LeftButton", "MiddleButton", "RightButton"}
@@ -182,7 +182,7 @@ func Exit() {
     MainLoop(nil, 0)
 }
 
-func HandleKeys(keydown func(string, Point), keyup func(string, Point)) {
+func HandleKeys(keydown func(string), keyup func(string)) {
     doc.Set("onkeydown", g2dKeyDown)
     doc.Set("onkeyup", g2dKeyUp)
     doc.Set("onfocus", g2dFocus)
@@ -194,6 +194,10 @@ func HandleKeys(keydown func(string, Point), keyup func(string, Point)) {
     usrKeyUp = keyup
 }
 
+func GetMousePos() Point {
+    return mousePos
+}
+
 func g2dMouseMove(e *js.Object) {
     rect := canvas.Call("getBoundingClientRect")
     mousePos.X = e.Get("clientX").Int() - rect.Get("left").Int()
@@ -202,7 +206,7 @@ func g2dMouseMove(e *js.Object) {
 
 func g2dMouseDown(e *js.Object) {
     b := e.Get("button").Int()
-    if 0 <= b && b < 2 {
+    if 0 <= b && b < 3 {
         e.Set("code", mouseCodes[b])
         g2dKeyDown(e)
     }
@@ -210,7 +214,7 @@ func g2dMouseDown(e *js.Object) {
 
 func g2dMouseUp(e *js.Object) {
     b := e.Get("button").Int()
-    if 0 <= b && b < 2 {
+    if 0 <= b && b < 3 {
         e.Set("code", mouseCodes[b])
         g2dKeyUp(e)
     }
@@ -224,7 +228,7 @@ func g2dKeyDown(e *js.Object) {
     }
     keyPressed[code] = true
     if usrKeyDown != nil {
-        usrKeyDown(code, mousePos)
+        usrKeyDown(code)
     }
 }
 
@@ -235,7 +239,7 @@ func g2dKeyUp(e *js.Object) {
         delete(keyPressed, code)
     }
     if usrKeyUp != nil {
-        usrKeyUp(code, mousePos)
+        usrKeyUp(code)
     }
 }
 
