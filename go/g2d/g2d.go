@@ -14,9 +14,12 @@ type Color struct{ R, G, B int }
 var doc = js.Global.Get("document")
 var canvas *js.Object
 var ctx *js.Object
-var usrKeyDown func(string) = nil
-var usrKeyUp func(string) = nil
+var usrKeyDown func(string, Point) = nil
+var usrKeyUp func(string, Point) = nil
 var keyPressed = make(map[string]interface{})
+var mousePos = Point{0, 0}
+var mouseCodes = []string{"LeftButton", "MiddleButton", "RightButton"}
+var timer = -1
 
 func init() {
     out := doc.Call("getElementById", "output")
@@ -162,22 +165,64 @@ func PauseAudio(audio *js.Object) {
 }
 
 func MainLoop(f func(), millis int) {
-    i := js.Global.Call("setInterval", f, millis)
-    for j := 1; j < i.Int(); j++ {
-        js.Global.Call("clearInterval", j)
+    if timer >= 0 {
+        js.Global.Call("clearInterval", timer)
+        timer = -1
+    }
+    if f != nil {
+        timer = js.Global.Call("setInterval", f, millis).Int()
     }
 }
 
-func HandleKeyboard(keydown func(string), keyup func(string)) {
+func UpdateCanvas() {
+}
+
+func Exit() {
+    HandleKeys(nil, nil)
+    MainLoop(nil, 0)
+}
+
+func HandleKeys(keydown func(string, Point), keyup func(string, Point)) {
     doc.Set("onkeydown", g2dKeyDown)
     doc.Set("onkeyup", g2dKeyUp)
     doc.Set("onfocus", g2dFocus)
+    doc.Set("onmousedown", g2dKeyDown)
+    doc.Set("onmouseup", g2dKeyUp)
+    doc.Set("onmousemove", g2dMouseMove)
 
     usrKeyDown = keydown
     usrKeyUp = keyup
 }
 
+func g2dMouseMove(e *js.Object) {
+    rect := canvas.Call("getBoundingClientRect")
+    mousePos.X = e.Get("clientX").Int() - rect.Get("left").Int()
+    mousePos.Y = e.Get("clientY").Int() - rect.Get("top").Int()
+}
+
+func g2dMouseDown(e *js.Object) {
+    b := e.Get("button").Int()
+    Println(b)
+    if 0 <= b && b < 2 {
+        e.Set("code", mouseCodes[b])
+        g2dKeyDown(e)
+    }
+}
+
+func g2dMouseUp(e *js.Object) {
+    b := e.Get("button").Int()
+    if 0 <= b && b < 2 {
+        e.Set("code", mouseCodes[b])
+        g2dKeyUp(e)
+    }
+}
+
 func g2dKeyDown(e *js.Object) {
+    if button := e.Get("button"); button != js.Undefined {
+        if b := button.Int(); 0 <= b && b < 2 {
+            e.Set("code", mouseCodes[b])
+        }
+    }
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
@@ -185,18 +230,23 @@ func g2dKeyDown(e *js.Object) {
     }
     keyPressed[code] = true
     if usrKeyDown != nil {
-        usrKeyDown(code)
+        usrKeyDown(code, mousePos)
     }
 }
 
 func g2dKeyUp(e *js.Object) {
+    if button := e.Get("button"); button != js.Undefined {
+        if b := button.Int(); 0 <= b && b < 2 {
+            e.Set("code", mouseCodes[b])
+        }
+    }
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
         delete(keyPressed, code)
     }
     if usrKeyUp != nil {
-        usrKeyUp(code)
+        usrKeyUp(code, mousePos)
     }
 }
 
