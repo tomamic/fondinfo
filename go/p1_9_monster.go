@@ -3,43 +3,38 @@ package main
 import . "g2d"
 
 func main() {
-	w, h := 5, 5
+    w, h := 5, 5
 
-	playerX := 0
-	playerY := 0
-	monsterX := playerX
-	monsterY := playerY
-	for monsterX == playerX && monsterY == playerY {
-		monsterX = RandInt(0, w-1)
-		monsterY = RandInt(0, h-1)
-	}
-	goldX := playerX
-	goldY := playerY
-	for (goldX == playerX && goldY == playerY) || (goldX == monsterX && goldY == monsterY) {
-		goldX = RandInt(0, w-1)
-		goldY = RandInt(0, h-1)
-	}
+    player := Point{0, 0}
+    monster := player
+    for monster == player {
+        monster = Point{RandInt(0, w-1), RandInt(0, h-1)}
+    }
+    gold := player
+    for (gold == player) || (gold == monster) {
+        gold = Point{RandInt(0, w-1), RandInt(0, h-1)}
+    }
 
-	//Println("Monster:", monsterX, monsterY)
-	//Println("Gold:", goldX, goldY)
-	//Println("Player:", playerX, playerY)
+    //Println("Monster: ", monster)
+    //Println("Gold: ", gold)
+    //Println("Player: ", player)
 
-	for (playerX != monsterX || playerY != monsterY) && (playerX != goldX || playerY != goldY) {
-		direction := Prompt(playerX, playerY, " WASD? ")
-		if direction == "w" && playerY > 0 {
-			playerY -= 1
-		} else if direction == "a" && playerX > 0 {
-			playerX -= 1
-		} else if direction == "s" && playerY < h-1 {
-			playerY += 1
-		} else if direction == "d" && playerX < w-1 {
-			playerX += 1
-		}
-	}
-	if playerX == goldX && playerY == goldY {
-		Println("Gold!")
-	} else {
-		Println("Monster!")
-	}
+    for (player != monster) && (player != gold) {
+        direction := Prompt(player.X, player.Y, " WASD? ")
+        if direction == "w" && player.Y > 0 {
+            player.Y -= 1
+        } else if direction == "a" && player.X > 0 {
+            player.X -= 1
+        } else if direction == "s" && player.Y < h-1 {
+            player.Y += 1
+        } else if direction == "d" && player.X < w-1 {
+            player.X += 1
+        }
+    }
+    if player == gold {
+        Println("Gold!")
+    } else {
+        Println("Monster!")
+    }
 }
 

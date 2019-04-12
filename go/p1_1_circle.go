@@ -6,12 +6,11 @@ import (
 )
 
 func main() {
-	r := ParseFloat(Prompt("Radius? "))
-	if r >= 0 {
-		Println("Area: ", math.Pi*r*r)
-		Println("Perimeter: ", 2*math.Pi*r)
-	} else {
-		Println("Error: negative radius")
-	}
+    r := ToFloat(Prompt("Radius? "))
+    if r >= 0 {
+        Alert("Area: ", math.Pi*r*r)
+        Alert("Perimeter: ", 2*math.Pi*r)
+    } else {
+        Alert("Error: negative radius")
+    }
 }
-

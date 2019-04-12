@@ -2,33 +2,33 @@ package boardgame
 
 import "fmt"
 
-type BoardGame interface {
+type Game interface {
     PlayAt(x, y int)
     FlagAt(x, y int)
-    GetVal(x, y int) string
+    ValueAt(x, y int) string
     Cols() int
     Rows() int
     Finished() bool
     Message() string
 }
 
-func PrintGame(game BoardGame) {
+func ConsolePrint(game Game) {
     for y := 0; y < game.Rows(); y++ {
         for x := 0; x < game.Cols(); x++ {
-            fmt.Printf("%3d", game.GetVal(x, y))
+            fmt.Printf("%3s", game.ValueAt(x, y))
         }
         fmt.Println()
     }
 }
 
-func ConsolePlay(game BoardGame) {
-    PrintGame(game)
+func ConsolePlay(game Game) {
+    ConsolePrint(game)
 
     for ! game.Finished() {
         var x, y int
         fmt.Scan(&x, &y)
         game.PlayAt(x, y)
-        PrintGame(game)
+        ConsolePrint(game)
     }
 
     fmt.Println(game.Message())

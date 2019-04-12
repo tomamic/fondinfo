@@ -3,7 +3,7 @@ package main
 import . "g2d"
 
 func main() {
-    n := ParseInt(Prompt("n? "))
+    n := ToInt(Prompt("n? "))
     result := 0
 
     i := 1
@@ -15,8 +15,8 @@ func main() {
     }
 
     if result == 0 {
-        Println("no")
+        Alert("No")
     } else {
-        Println(result)
+        Alert(result)
     }
 }
