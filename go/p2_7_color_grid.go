@@ -14,6 +14,6 @@ func main() {
             FillRect(Rect{x * w, y * h, w - 1, h - 1})
         }
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 

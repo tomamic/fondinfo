@@ -29,14 +29,16 @@ class Spiral:
         return (255 - self._i, 0, self._i)
 
 def update():
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     a.move()
-    g2d.draw_circle(a.color(), a.center(), a.radius())
+    g2d.set_color(a.color())
+    g2d.fill_circle(a.center(), a.radius())
 
 def main():
     global a
     a = Spiral()
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update)
+    g2d.main_loop()
 
-##main()
+main()

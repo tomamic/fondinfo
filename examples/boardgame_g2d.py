@@ -11,38 +11,42 @@ class BoardGameGui:
     def __init__(self, g: BoardGame):
         self._game = g
         self._downtime = 0
-        g2d.init_canvas((g.cols() * W, g.rows() * H))
         self.update_buttons()
-        g2d.handle_mouse(self.mousedown, self.mouseup)
 
-    def main_loop(self):
-        g2d.main_loop()
+    def mousedown(self, code):
+        if code == "LeftButton":
+            self._downtime = time()
 
-    def mousedown(self, pos, button):
-        self._downtime = time()
-
-    def mouseup(self, pos, button):
-        x, y = pos[0] // W, pos[1] // H
-        if time() - self._downtime > LONG_PRESS:
-            self._game.flag_at(x, y)
-        else:
-            self._game.play_at(x, y)
-        self.update_buttons()
+    def mouseup(self, code):
+        if code == "LeftButton":
+            pos = g2d.mouse_position()
+            x, y = pos[0] // W, pos[1] // H
+            if time() - self._downtime > LONG_PRESS:
+                self._game.flag_at(x, y)
+            else:
+                self._game.play_at(x, y)
+            self.update_buttons()
 
     def update_buttons(self):
-        g2d.fill_canvas((255, 255, 255))
+        g2d.clear_canvas()
+        g2d.set_color((0, 0, 0))
         rows, cols = self._game.rows(), self._game.cols()
         for y in range(1, rows):
-            g2d.draw_line((0, 0, 0), (0, y * H), (cols * W, y * H))
+            g2d.draw_line((0, y * H), (cols * W, y * H))
         for x in range(1, cols):
-            g2d.draw_line((0, 0, 0), (x * W, 0), (x * W, rows * H))
+            g2d.draw_line((x * W, 0), (x * W, rows * H))
         for y in range(rows):
             for x in range(cols):
-                g2d.draw_text_centered(self._game.get_val(x, y), (0, 0, 0),
-                                       (x * W + W//2, y * H + H//2), H//2)
+                value = self._game.value_at(x, y)
+                center = x * W + W//2, y * H + H//2
+                g2d.draw_text_centered(value, center, H//2)
         g2d.update_canvas()
         if self._game.finished():
             g2d.alert(self._game.message())
-            g2d.exit()
-##            g2d.draw_text_centered(self._game.message(), (0, 0, 255),
-##                                   (cols * W//2, rows * H//2), H//2)
+            g2d.close_canvas()
+
+def gui_play(game: BoardGame):
+    g2d.init_canvas((game.cols() * W, game.rows() * H))
+    ui = BoardGameGui(game)
+    g2d.handle_events(None, ui.mousedown, ui.mouseup)
+    g2d.main_loop()

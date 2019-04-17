@@ -16,28 +16,30 @@ import (
 
 var window *sdl.Window
 var renderer *sdl.Renderer
+var texture *sdl.Texture
 var textures = make(map[*sdl.Surface]*sdl.Texture)
-var update func()
-var usrKeyDown, usrKeyUp func(string)
+var usrUpdate func()
+var usrKeydown, usrKeyup func(string)
 var mousePos = Point{0, 0}
 var mouseCodes = []string{"LeftButton", "MiddleButton", "RightButton"}
+var delay = uint32(1000/30)
 
-func rgba(c Color) (uint8, uint8, uint8, uint8) {
-    return uint8(c.R), uint8(c.G), uint8(c.B), 255
-}
-
-func xywh(r Rect) (int32, int32, int32, int32) {
-    return int32(r.X), int32(r.Y), int32(r.W), int32(r.H)
+func sdlrect(r Rect) *sdl.Rect {
+    return &sdl.Rect{int32(r.X), int32(r.Y), int32(r.W), int32(r.H)}
 }
 
 func InitCanvas(size Size) {
-    if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+    err := sdl.Init(sdl.INIT_EVERYTHING)
+    if err != nil {
         panic(err)
     }
-    ttf.Init()
+    err = ttf.Init()
+    if err != nil {
+        panic(err)
+    }
     w, h := int32(size.W), int32(size.H)
     //win, ren, err := sdl.CreateWindowAndRenderer(w, h, 0)
-    window, err := sdl.CreateWindow("", sdl.WINDOWPOS_UNDEFINED,
+    window, err = sdl.CreateWindow("", sdl.WINDOWPOS_UNDEFINED,
         sdl.WINDOWPOS_UNDEFINED, w, h, sdl.WINDOW_OPENGL)
     if err != nil {
         panic(err)
@@ -47,46 +49,74 @@ func InitCanvas(size Size) {
     if err != nil {
         panic(err)
     }
-    SetColor(Color{255, 255, 255})
+    if renderer.RenderTargetSupported() {
+        texture, err = renderer.CreateTexture(sdl.PIXELFORMAT_RGBA8888,
+            sdl.TEXTUREACCESS_TARGET, w, h)
+        renderer.SetRenderTarget(texture)
+    }
+    SetColor(Color{127, 127, 127})
     ClearCanvas()
+    UpdateCanvas()
 }
 
 func Prompt(a ...interface{}) string {
+    if renderer != nil {
+        UpdateCanvas()
+    }
     val, _, _ := dlgs.Entry("", fmt.Sprint(a...), "")
     return val
 }
 
 func Confirm(a ...interface{}) bool {
+    if renderer != nil {
+        UpdateCanvas()
+    }
     val, _ := dlgs.Question("", fmt.Sprint(a...), true)
     return val
 }
 
 func Alert(a ...interface{}) {
+    if renderer != nil {
+        UpdateCanvas()
+    }
     dlgs.Info("", fmt.Sprint(a...))
     //fmt.Println(a...)
 }
 
+func Println(a ...interface{}) {
+    fmt.Println(a...)
+}
+
 func UpdateCanvas() {
+    if texture != nil {
+        renderer.SetRenderTarget(nil)
+        renderer.Copy(texture, nil, nil)
+        renderer.Present()
+        renderer.SetRenderTarget(texture)
+        return
+    }
     renderer.Present()
 }
 
 func SetColor(c Color) {
-    renderer.SetDrawColor(rgba(c))
+    renderer.SetDrawColor(uint8(c.R), uint8(c.G), uint8(c.B), 255)
 }
 
 func ClearCanvas() {
+    r, g, b, a, _ :=  renderer.GetDrawColor()
+    renderer.SetDrawColor(255, 255, 255, 255)
     renderer.Clear()
+    renderer.SetDrawColor(r, g, b, a)
 }
 
 func DrawLine(pt1, pt2 Point) {
-    renderer.DrawLine(int32(pt1.X), int32(pt1.Y), int32(pt2.X), int32(pt2.Y))
+    renderer.DrawLine(int32(pt1.X), int32(pt1.Y),
+        int32(pt2.X), int32(pt2.Y))
 }
 
 func FillCircle(center Point, radius int) {
-    diameter := int32(radius * 2)
     x0, y0 := int32(center.X), int32(center.Y)
-    var x, y, tx, ty int32 = int32(radius - 1), 0, 1, 1
-    err := tx - diameter
+    x, y, err := int32(radius), int32(0), int32(0)
     for x >= y {
         // Each of the following renders an octant of the circle
         renderer.DrawLine(x0+x, y0-y, x0-x, y0-y)
@@ -95,21 +125,18 @@ func FillCircle(center Point, radius int) {
         renderer.DrawLine(x0-y, y0+x, x0+y, y0+x)
 
         if err <= 0 {
-            y++
-            ty += 2
-            err += ty
+            y += 1
+            err += 2*y + 1
         }
         if err > 0 {
-            x--
-            tx += 2
-            err += tx - diameter
+            x -= 1
+            err -= 2*x + 1
         }
     }
 }
 
 func FillRect(r Rect) {
-    x, y, w, h := xywh(r)
-    renderer.FillRect(&sdl.Rect{x, y, w, h})
+    renderer.FillRect(sdlrect(r))
 }
 
 func LoadImage(url string) *sdl.Surface {
@@ -125,7 +152,7 @@ func DrawImage(img *sdl.Surface, pos Point) {
         Rect{pos.X, pos.Y, int(img.W), int(img.H)})
 }
 
-func DrawImageClip(img *sdl.Surface, area Rect, pos Rect) {
+func DrawImageClip(img *sdl.Surface, src Rect, dst Rect) {
     t, found := textures[img]
     if !found {
         t, err := renderer.CreateTextureFromSurface(img)
@@ -134,9 +161,7 @@ func DrawImageClip(img *sdl.Surface, area Rect, pos Rect) {
         }
         textures[img] = t
     }
-    px, py, pw, ph := xywh(pos)
-    ax, ay, aw, ah := xywh(area)
-    renderer.Copy(t, &sdl.Rect{ax, ay, aw, ah}, &sdl.Rect{px, py, pw, ph})
+    renderer.Copy(t, sdlrect(src), sdlrect(dst))
 }
 
 func DrawText(txt string, pos Point, size int) {
@@ -177,6 +202,7 @@ func drawText(txt string, pos Point, size int, centered bool) {
         panic(err)
     }
     renderer.Copy(t, &sdl.Rect{0, 0, w, h}, &sdl.Rect{x, y, w, h})
+    t.Destroy()
 }
 
 func LoadAudio(url string) *mix.Music {
@@ -214,21 +240,25 @@ func webkey(e *sdl.KeyboardEvent) string {
     return n
 }
 
-func HandleKeys(keydown, keyup func(string)) {
-    usrKeyDown, usrKeyUp = keydown, keyup
+func HandleEvents(update func(), keyFuncs ...func(string)) {
+    usrUpdate, usrKeydown, usrKeyup = update, nil, nil
+    if len(keyFuncs) >= 2 {
+        usrKeydown, usrKeyup = keyFuncs[0], keyFuncs[1]
+    } else if len(keyFuncs) == 1 {
+        usrKeydown = keyFuncs[0]
+    }
 }
 
 func MousePosition() Point {
     return mousePos
 }
 
-func MainLoop(update func(), delay int) {
-    if delay < 1000/60 {
-        delay = 1000 / 60
+func MainLoop(fps ...int) {
+    if len(fps) > 0 {
+        delay = uint32(1000/fps[0])
     }
-    defer sdl.Quit()
-    defer window.Destroy()
-    renderer.Present()
+    defer CloseCanvas()
+    UpdateCanvas()
     for running := true; running; {
         for e := sdl.PollEvent(); e != nil; e = sdl.PollEvent() {
             switch v := e.(type) {
@@ -237,32 +267,37 @@ func MainLoop(update func(), delay int) {
                 break
             case *sdl.KeyboardEvent:
                 if v.Repeat != 0 {
-                } else if v.Type == sdl.KEYDOWN && usrKeyDown != nil {
-                    usrKeyDown(webkey(v))
-                } else if v.Type == sdl.KEYUP && usrKeyUp != nil {
-                    usrKeyUp(webkey(v))
+                } else if v.Type == sdl.KEYDOWN && usrKeydown != nil {
+                    usrKeydown(webkey(v))
+                    UpdateCanvas()
+                } else if v.Type == sdl.KEYUP && usrKeyup != nil {
+                    usrKeyup(webkey(v))
+                    UpdateCanvas()
                 }
             case *sdl.MouseMotionEvent:
                 mousePos.X, mousePos.Y = int(v.X), int(v.Y)
             case *sdl.MouseButtonEvent:
                 if v.Button < 1 || 3 < v.Button {
-                } else if v.State == sdl.PRESSED && usrKeyDown != nil {
-                    usrKeyDown(mouseCodes[v.Button-1])
-                } else if v.State == sdl.RELEASED && usrKeyUp != nil {
-                    usrKeyUp(mouseCodes[v.Button-1])
+                } else if v.State == sdl.PRESSED && usrKeydown != nil {
+                    usrKeydown(mouseCodes[v.Button-1])
+                    UpdateCanvas()
+                } else if v.State == sdl.RELEASED && usrKeyup != nil {
+                    usrKeyup(mouseCodes[v.Button-1])
+                    UpdateCanvas()
                 }
             }
         }
-        if update != nil {
-            update()
-            renderer.Present()
+        if usrUpdate != nil {
+            usrUpdate()
+            UpdateCanvas()
         }
-        sdl.Delay(uint32(delay))
+        sdl.Delay(delay)
     }
-    Exit()
 }
 
-func Exit() {
-    sdl.Quit()
-    os.Exit(0)
+func CloseCanvas() {
+    defer os.Exit(0)
+    defer sdl.Quit()
+    defer ttf.Quit()
+    defer window.Destroy()
 }

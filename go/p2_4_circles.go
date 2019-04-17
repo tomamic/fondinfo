@@ -11,6 +11,6 @@ func main() {
         SetColor(Color{255 - i*dc, 0, 0})
         FillCircle(Point{200, 200}, 200-i*dr)
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 

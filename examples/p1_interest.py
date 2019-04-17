@@ -8,9 +8,9 @@ Interesse composto
 - Calcolare il capitale dopo ogni anno
 '''
 
-capital = float(input("capital? "))
-rate = float(input("rate? "))
-years = int(input("years? "))
+capital = float(input("Capital? "))
+rate = float(input("Rate? "))
+years = int(input("Years? "))
 
 y = 0
 while y <= years:

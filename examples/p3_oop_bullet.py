@@ -57,18 +57,20 @@ class Bullet(Actor):
             self._arena.remove(self)
 
 def update():
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     if random.randrange(50) == 0:
         Bullet(arena, random.randrange(arena.size()[0]))
     arena.move_all()
     for a in arena.actors():
-        g2d.draw_rect((127, 127, 127), a.position())
+        g2d.fill_rect(a.position())
 
 def main():
+    global arena
     arena = Arena(320, 240)
     Alien(arena, 40, 40)
     Alien(arena, 80, 80)
     g2d.init_canvas(arena.size())
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update)
+    g2d.main_loop()
 
-##main()
+main()

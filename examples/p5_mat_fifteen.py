@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-from boardgame_g2d import BoardGameGui
+from boardgame_g2d import gui_play
 from random import choice
 
 class Fifteen(BoardGame):
@@ -15,7 +15,7 @@ class Fifteen(BoardGame):
         b = list(range(1, w * h)) + [0]  # [1 2 3 ... 14 15 0]
         self._board, self._solved = b, b[:]
         self._w, self._h = w, h
-        self._x0, self._y0 = w - 1, h - 1  # blank        
+        self._x0, self._y0 = w - 1, h - 1  # blank
         a1, a2 = w - 1, (h - 1) * w
         # do a random walk of the blank tile, until all angle tiles change
         while (b[0] == 1 or b[a1] == a1 + 1 or b[a2] == a2 + 1):
@@ -32,7 +32,7 @@ class Fifteen(BoardGame):
     def message(self) -> str:
         return "Puzzle solved!"
 
-    def get_val(self, x: int, y: int) -> str:
+    def value_at(self, x: int, y: int) -> str:
         b, w, h = self._board, self._w, self._h
         if 0 <= y < h and 0 <= x < w and b[y * w + x] > 0:
             return str(b[y * w + x])
@@ -53,8 +53,7 @@ class Fifteen(BoardGame):
 
 def main():
     game = Fifteen(3, 3)
-    ##return console_play(game)
-    gui = BoardGameGui(game)
-    gui.main_loop()
+    gui_play(game)
+    ##console_play(game)
 
 main()

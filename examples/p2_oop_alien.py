@@ -24,14 +24,15 @@ class Alien:
         return self._x, self._y, self._w, self._h
 
 def update():
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     a.move()
-    g2d.draw_rect((127, 127, 127), a.position())
+    g2d.fill_rect(a.position())
 
 def main():
     global a
     a = Alien(40, 40)
     g2d.init_canvas((320, 240))
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update)
+    g2d.main_loop()
 
-##main()  # call main to start the program
+main()  # call main to start the program

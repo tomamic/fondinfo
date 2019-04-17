@@ -24,8 +24,9 @@ g2d.init_canvas((W, H))
 i = 0
 while i < n:
     color = randrange(255), randrange(255), randrange(255)
-    x, y = randrange(W - SIDE), randrange(H - SIDE)
-    g2d.draw_rect(color, (x, y, SIDE, SIDE))
+    rect = randrange(W - SIDE), randrange(H - SIDE), SIDE, SIDE
+    g2d.set_color(color)
+    g2d.fill_rect(rect)
     i += 1
 
 g2d.main_loop()

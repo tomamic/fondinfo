@@ -11,7 +11,7 @@ image = g2d.load_image("ball.png")
 
 def update():
     global x, y, dx
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     g2d.draw_image(image, (x, y))
     if x + dx < 0 or x + dx + 20 > 320:
         y += 5
@@ -21,6 +21,7 @@ def update():
 
 def main():
     g2d.init_canvas((320, 240))
-    g2d.main_loop(update, 1000 // 30)    # Call update 30 times/second
+    g2d.handle_events(update)
+    g2d.main_loop()
 
 main()

@@ -7,7 +7,8 @@ def infinite_circles(x: int, y: int, w: int, h: int,
     w2, h2 = w // 2, h // 2
     if h2 < 1:
         return
-    g2d.draw_circle(c1, (x + w2, y + h2), h2)
+    g2d.set_color(c1)
+    g2d.fill_circle((x + w2, y + h2), h2)
 
     infinite_circles(x, y, w, h2, c2, c1)
     infinite_circles(x, y + h2, w, h2, c2, c1)

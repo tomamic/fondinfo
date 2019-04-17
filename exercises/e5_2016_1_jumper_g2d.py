@@ -54,19 +54,19 @@ class Turtle(Actor):
     def collide(self, other):
         pass
 
-    def rect(self):
+    def position(self):
         return self._x, self._y, self._w, self._h
 
-    def position(self):
+    def symbol(self):
         return 0, 20, self._w, self._h
 
 
 def update():
     arena.move_all()  # Game logic
 
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, a.rect(), a.symbol())
+        g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
 def keydown(code):
     if code == "Space":
@@ -89,7 +89,7 @@ def main():
     g2d.init_canvas(arena.size())
     sprites = g2d.load_image("sprites.png")
 
-    g2d.handle_keyboard(keydown, keyup)
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update, keydown, keyup)
+    g2d.main_loop()
 
 main()

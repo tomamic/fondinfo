@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-from boardgame_g2d import BoardGameGui
+from boardgame_g2d import gui_play
 from random import randrange
 
 class LightsOut(BoardGame):
@@ -42,7 +42,7 @@ class LightsOut(BoardGame):
     def flag_at(self, x: int, y: int):
         pass
 
-    def get_val(self, x: int, y: int) -> str:
+    def value_at(self, x: int, y: int) -> str:
         if (0 <= x < self._cols and 0 <= y < self._rows and
             self._board[y][x]):
             return '@'
@@ -54,8 +54,7 @@ class LightsOut(BoardGame):
 
 def main():
     game = LightsOut()
-    gui = BoardGameGui(game)
-    gui.main_loop()
+    gui_play(game)
     ##console_play(game)
 
-##main()
+main()

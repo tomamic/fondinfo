@@ -15,7 +15,7 @@ with palette_file:
             color = (int(vals[0]), int(vals[1]), int(vals[2]))
             palette.append(color)
 
-n = int(input('squares? '))
+n = int(g2d.prompt('squares? '))
 
 side = 400.0
 delta = side / n
@@ -23,8 +23,8 @@ delta = side / n
 g2d.init_canvas((int(side), int(side)))
 
 for i in range(n):
-    color = palette[i % len(palette)]
-    g2d.draw_rect(color, (0, 0, int(side), int(side)))
+    g2d.set_color(palette[i % len(palette)])
+    g2d.fill_rect((0, 0, int(side), int(side)))
     side -= delta
 
 g2d.main_loop()

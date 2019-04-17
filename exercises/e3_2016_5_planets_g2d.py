@@ -28,17 +28,17 @@ class Planet:
         return self._color
 
 
-def new_frame():
+def draw_frame():
     center_x, center_y = canvas_w // 2, canvas_h // 2
-    g2d.fill_canvas((255, 255, 255))
-    g2d.draw_circle((255, 255, 0), (center_x, center_y), 30)
+    g2d.clear_canvas()
+    g2d.set_color((255, 255, 0))
+    g2d.fill_circle((center_x, center_y), 30)
     for p in planets:
         p.move()
         x, y = p.pos()
         radius = p.diameter() // 2
-        g2d.draw_circle(p.color(),
-                        (center_x + x, center_y + y),
-                        p.diameter() // 2)
+        g2d.set_color(p.color())
+        g2d.fill_circle((center_x + x, center_y + y), radius)
 
 def main():
     global planets, canvas_w, canvas_h
@@ -49,7 +49,7 @@ def main():
         p = Planet(100 + i * 40)
         planets.append(p)
     g2d.init_canvas((canvas_w, canvas_h))
-
-    g2d.main_loop(new_frame, 1000 // 30)
+    g2d.handle_events(draw_frame)
+    g2d.main_loop()
 
 main()

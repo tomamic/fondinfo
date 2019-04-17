@@ -20,6 +20,7 @@ func update() {
 
 func main() {
     InitCanvas(Size{600, 600})
-    MainLoop(update, 1000/30)
+    HandleEvents(update)
+    MainLoop()
 }
 

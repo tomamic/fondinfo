@@ -32,6 +32,7 @@ func update() {
 
 func main() {
     InitCanvas(as)
-    MainLoop(update, 1000/30)
+    HandleEvents(update)
+    MainLoop()  // 30 fps
 }
 

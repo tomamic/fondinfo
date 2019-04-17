@@ -17,6 +17,6 @@ func main() {
         FillRect(Rect{x, y, side, side})
         i += 1
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 

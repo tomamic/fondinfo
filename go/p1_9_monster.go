@@ -20,7 +20,7 @@ func main() {
     //Println("Player: ", player)
 
     for (player != monster) && (player != gold) {
-        direction := Prompt(player.X, player.Y, " WASD? ")
+        direction := Prompt(player, " wasd? ")
         if direction == "w" && player.Y > 0 {
             player.Y -= 1
         } else if direction == "a" && player.X > 0 {
@@ -32,9 +32,9 @@ func main() {
         }
     }
     if player == gold {
-        Println("Gold!")
+        Alert("Gold!")
     } else {
-        Println("Monster!")
+        Alert("Monster!")
     }
 }
 

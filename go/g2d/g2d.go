@@ -30,7 +30,3 @@ func ToFloat(text string) float64 {
 func RandInt(min, max int) int {
     return rand.Intn(max-min+1) + min
 }
-
-func Println(a ...interface{}) {
-    fmt.Println(a...)
-}

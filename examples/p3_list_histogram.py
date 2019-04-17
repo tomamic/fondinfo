@@ -9,12 +9,12 @@ import g2d
 def main():
     values = []
     max_val = 0
-    val = float(input("Val? "))
+    val = float(g2d.prompt("Val? "))
     while val > 0:
         values.append(val)
         if val > max_val:
             max_val = val
-        val = float(input("Val? "))
+        val = float(g2d.prompt("Val? "))
 
     W, H = 600, 400
     g2d.init_canvas((W, H))
@@ -22,7 +22,7 @@ def main():
         for i, v in enumerate(values):
             rect = (0, i * H / len(values),
                     v * W / max_val, (H / len(values))-1)
-            g2d.draw_rect((100, 100, 100), rect)
+            g2d.fill_rect(rect)
 
     g2d.main_loop()
 

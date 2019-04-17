@@ -64,5 +64,4 @@ def main():
         memory.uncover(a - 1, b - 1)
         print(memory)
 
-if __name__ == '__main__':
-    main()
+main()

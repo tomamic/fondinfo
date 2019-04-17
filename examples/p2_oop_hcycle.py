@@ -22,14 +22,15 @@ class Ball:
 
 
 def update():
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     b.move()
-    g2d.draw_rect((127, 127, 127), b.position())
+    g2d.fill_rect(b.position())
 
 def main():
     global b
     b = Ball(40, 40)
     g2d.init_canvas((W, H))
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update)
+    g2d.main_loop()
 
-##main()
+main()

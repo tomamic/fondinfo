@@ -11,12 +11,12 @@ import (
 var doc = js.Global.Get("document")
 var canvas *js.Object
 var ctx *js.Object
-var usrKeyDown func(string) = nil
-var usrKeyUp func(string) = nil
+var usrKeydown, usrKeyup func(string)
+var usrUpdate func()
 var keyPressed = make(map[string]interface{})
 var mousePos = Point{0, 0}
 var mouseCodes = []string{"LeftButton", "MiddleButton", "RightButton"}
-var timer = -1
+var delay, timer = 1000/30, -1
 
 func init() {
     out := doc.Call("getElementById", "output")
@@ -35,19 +35,19 @@ func Alert(a ...interface{}) {
     js.Global.Call("alert", fmt.Sprint(a...))
 }
 
-/*func Println(a ...interface{}) {
+func Println(a ...interface{}) {
     //fmt.Println(a...)
     out := doc.Call("getElementById", "output")
     txt := out.Get("innerHTML").String()
     txt += "<pre>" + fmt.Sprint(a...) + "</pre>"
     out.Set("innerHTML", txt)
     out.Set("scrollTop", out.Get("scrollHeight"))
-}*/
+}
 
 func InitCanvas(size Size) {
     canvas = doc.Call("getElementById", "g2d-canvas")
     if canvas == nil {
-        canvas = doc.Call("createElement", "canvas");
+        canvas = doc.Call("createElement", "canvas")
         canvas.Set("id", "g2d-canvas")
         canvas.Get("style").Set("background", "white")
         canvas.Get("style").Set("border", "1px solid silver")
@@ -60,7 +60,7 @@ func InitCanvas(size Size) {
     ctx = canvas.Call("getContext", "2d")
     canvas.Set("width", size.W)
     canvas.Set("height", size.H)
-    SetColor(Color{255, 255, 255})
+    SetColor(Color{127, 127, 127})
     ClearCanvas()
 }
 
@@ -73,7 +73,7 @@ func SetColor(c Color) {
 func ClearCanvas() {
     w := canvas.Get("width").Int()
     h := canvas.Get("height").Int()
-    FillRect(Rect{0, 0, w, h})
+    ctx.Call("clearRect", 0, 0, w, h)
 }
 
 func DrawLine(pt1, pt2 Point) {
@@ -84,7 +84,7 @@ func DrawLine(pt1, pt2 Point) {
 
 func FillCircle(p Point, r int) {
     ctx.Call("beginPath")
-    ctx.Call("arc", p.X, p.Y, r, 0, 2 * math.Pi)
+    ctx.Call("arc", p.X, p.Y, r, 0, 2*math.Pi)
     ctx.Call("closePath")
     ctx.Call("fill")
 }
@@ -112,9 +112,8 @@ func DrawText(txt string, p Point, size int) {
 
     // draw background rect assuming height of font
     /*
-    ctx.Set("fillStyle", "rgb(255, 255, 255)")
-    width := ctx.Call("measureText", txt).Get("width").Int()
-    ctx.Call("fillRect", p.X, p.Y, width, size)
+       width := ctx.Call("measureText", txt).Get("width").Int()
+       ctx.Call("clearRect", p.X, p.Y, width, size)
     */
 
     ctx.Set("textBaseline", "top")
@@ -127,9 +126,8 @@ func DrawTextCentered(txt string, p Point, size int) {
 
     // draw background rect assuming height of font
     /*
-    ctx.Set("fillStyle", "rgb(255, 255, 255)")
-    width := ctx.Call("measureText", txt).Get("width").Int()
-    ctx.Call("fillRect", p.X-width/2, p.Y-size/2, width, size)
+       width := ctx.Call("measureText", txt).Get("width").Int()
+       ctx.Call("clearRect", p.X-width/2, p.Y-size/2, width, size)
     */
 
     ctx.Set("textBaseline", "middle")
@@ -152,82 +150,89 @@ func PauseAudio(audio *js.Object) {
     audio.Call("pause")
 }
 
-func MainLoop(f func(), millis int) {
-    if timer >= 0 {
-        js.Global.Call("clearInterval", timer)
-        timer = -1
+func HandleEvents(update func(), keyFuncs ...func(string)) {
+    usrUpdate, usrKeydown, usrKeyup = update, nil, nil
+    if len(keyFuncs) >= 2 {
+        usrKeydown, usrKeyup = keyFuncs[0], keyFuncs[1]
+    } else if len(keyFuncs) == 1 {
+        usrKeydown = keyFuncs[0]
     }
-    if f != nil {
-        timer = js.Global.Call("setInterval", f, millis).Int()
-    }
-}
-
-func UpdateCanvas() {
-}
-
-func Exit() {
-    HandleKeys(nil, nil)
-    MainLoop(nil, 0)
-}
-
-func HandleKeys(keydown func(string), keyup func(string)) {
-    doc.Set("onkeydown", g2dKeyDown)
-    doc.Set("onkeyup", g2dKeyUp)
-    doc.Set("onfocus", g2dFocus)
-    doc.Set("onmousedown", g2dMouseDown)
-    doc.Set("onmouseup", g2dMouseUp)
-    doc.Set("onmousemove", g2dMouseMove)
-
-    usrKeyDown = keydown
-    usrKeyUp = keyup
 }
 
 func MousePosition() Point {
     return mousePos
 }
 
-func g2dMouseMove(e *js.Object) {
+func UpdateCanvas() {
+}
+
+func MainLoop(fps ...int) {
+    doc.Set("onkeydown", g2dKeydown)
+    doc.Set("onkeyup", g2dKeyup)
+    doc.Set("onfocus", g2dFocus)
+    doc.Set("onmousedown", g2dMousedown)
+    doc.Set("onmouseup", g2dMouseup)
+    doc.Set("onmousemove", g2dMousemove)
+
+    if len(fps) > 0 {
+        delay = 1000/fps[0]
+    }
+    if timer >= 0 {
+        js.Global.Call("clearInterval", timer)
+        timer = -1
+    }
+    if usrUpdate != nil {
+        timer = js.Global.Call("setInterval", usrUpdate, delay).Int()
+    }
+}
+
+func CloseCanvas() {
+    HandleEvents(nil, nil, nil)
+    MainLoop()
+}
+
+func g2dMousemove(e *js.Object) {
     rect := canvas.Call("getBoundingClientRect")
     mousePos.X = e.Get("clientX").Int() - rect.Get("left").Int()
     mousePos.Y = e.Get("clientY").Int() - rect.Get("top").Int()
 }
 
-func g2dMouseDown(e *js.Object) {
+func g2dMousedown(e *js.Object) {
     b := e.Get("button").Int()
     if 0 <= b && b < 3 {
         e.Set("code", mouseCodes[b])
-        g2dKeyDown(e)
+        g2dKeydown(e)
     }
 }
 
-func g2dMouseUp(e *js.Object) {
+func g2dMouseup(e *js.Object) {
     b := e.Get("button").Int()
     if 0 <= b && b < 3 {
         e.Set("code", mouseCodes[b])
-        g2dKeyUp(e)
+        g2dKeyup(e)
     }
 }
 
-func g2dKeyDown(e *js.Object) {
+func g2dKeydown(e *js.Object) {
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
         return
     }
     keyPressed[code] = true
-    if usrKeyDown != nil {
-        usrKeyDown(code)
+    if usrKeydown != nil {
+        usrKeydown(code)
     }
 }
 
-func g2dKeyUp(e *js.Object) {
+func g2dKeyup(e *js.Object) {
     code := e.Get("code").String()
     _, pressed := keyPressed[code]
     if pressed {
         delete(keyPressed, code)
     }
-    if usrKeyUp != nil {
-        usrKeyUp(code)
+    if usrKeyup != nil {
+        usrKeyup(code)
     }
 }
 

@@ -13,7 +13,8 @@ while i < 10:
     x = i * 25
     y = i * 25
     red = i * 25
-    g2d.draw_rect((red, 0, 0), (x, y, 100, 100))
+    g2d.set_color((red, 0, 0))
+    g2d.fill_rect((x, y, 100, 100))
     i += 1
 
 g2d.main_loop()

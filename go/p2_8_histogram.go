@@ -20,6 +20,6 @@ func main() {
     for i, v := range values {
         FillRect(Rect{0, i*h/n, v*w/max, h/n - 1})
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 

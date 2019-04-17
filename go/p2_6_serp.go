@@ -18,6 +18,6 @@ func update() {
 
 func main() {
     InitCanvas(Size{320, 240})
-    SetColor(Color{255, 255, 255})
-    MainLoop(update, 1000/10)}
-
+    HandleEvents(update)
+    MainLoop(10)  // 10 fps
+}

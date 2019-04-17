@@ -3,9 +3,9 @@ package main
 import . "g2d"
 
 func main() {
-    InitCanvas(Size{600, 400})
+    InitCanvas(Size{600, 400})  // width, height
 
-    SetColor(Color{255, 255, 0})        // yellow = red + green
+    SetColor(Color{255, 255, 0})  // red + green = yellow
     FillRect(Rect{150, 100, 250, 200})  // left, top, width, height
 
     SetColor(Color{0, 255, 0})
@@ -15,7 +15,8 @@ func main() {
     FillCircle(Point{400, 300}, 20)  // center, radius
 
     SetColor(Color{255, 0, 0})
-    DrawText("Hello", Point{150, 100}, 40)  // position, font-size
+    DrawText("Hello", Point{150, 100}, 40)
+    // text, left-top-position, font-size
 
-    MainLoop(nil, 0)
+    MainLoop()  // manage the window/canvas
 }

@@ -8,8 +8,8 @@ import (
 func main() {
     r := ToFloat(Prompt("Radius? "))
     if r >= 0 {
-        Alert("Area: ", math.Pi*r*r)
-        Alert("Perimeter: ", 2*math.Pi*r)
+        Println("Area: ", math.Pi*r*r)
+        Println("Perimeter: ", 2*math.Pi*r)
     } else {
         Alert("Error: negative radius")
     }

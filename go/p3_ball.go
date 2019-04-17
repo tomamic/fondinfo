@@ -55,5 +55,6 @@ func update() {
 
 func main() {
     InitCanvas(Size{ArenaW, ArenaH})
-    MainLoop(update, 1000/30) // Millis
+    HandleEvents(update)
+    MainLoop()  // 30 fps
 }

@@ -72,13 +72,13 @@ class Plane(Actor):
 
 
 def update():
-    g2d.draw_image_clip(background, (0, 0, view_w, view_h),
-                        (view_x, view_y, view_w, view_h))  # BG
+    g2d.draw_image_clip(background,
+                        (view_x, view_y, view_w, view_h),
+                        (0, 0, view_w, view_h))  # BG
     arena.move_all()
     for a in arena.actors():
         x, y, w, h = a.position()
-        g2d.draw_rect((127, 127, 127),
-                         (x - view_x, y - view_y, w, h))  # FG
+        g2d.fill_rect((x - view_x, y - view_y, w, h))  # FG
 
 def keydown(code):
     global view_x, view_y
@@ -105,7 +105,7 @@ def main():
 
     background = g2d.load_image("viewport.png")
 
-    g2d.handle_keyboard(keydown, None)
-    g2d.main_loop(update, 1000 // 30)  # Millis
+    g2d.handle_events(update, keydown, None)
+    g2d.main_loop()
 
 main()

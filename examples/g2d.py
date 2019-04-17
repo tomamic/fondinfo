@@ -17,41 +17,49 @@ except:
 
 _tkmain = Tk()
 _tkmain.wm_withdraw() #to hide the main window
+_ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
+_tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
 _canvas = None
-_keydown, _keyup = None, None
-_mousedown, _mouseup = None, None
+_update, _keydown, _keyup = None, None, None
+_color = (127, 127, 127)
+_mouse_pos = (0, 0)
+_mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 
 def init_canvas(size: (int, int)):
     '''Set size of first CANVAS and return it'''
     global _canvas
     pygame.init()
     _canvas = pygame.display.set_mode(size)
-    _canvas.fill((255, 255, 255))
+    clear_canvas()
 
-def fill_canvas(color: (int, int, int)) -> None:
-    _canvas.fill(color)
+def set_color(color: (int, int, int)) -> None:
+    global _color
+    _color = color
+
+def clear_canvas() -> None:
+    _canvas.fill((255, 255, 255))
 
 def update_canvas() -> None:
     pygame.display.update()
 
-def draw_line(color: (int, int, int), pt1: (int, int), pt2: (int, int)) -> None:
-    pygame.draw.line(_canvas, color, pt1, pt2)
+def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
+    pygame.draw.line(_canvas, _color, pt1, pt2)
 
-def draw_circle(color: (int, int, int), center: (int, int), radius: int) -> None:
-    pygame.draw.circle(_canvas, color, center, radius)
+def fill_circle(center: (int, int), radius: int) -> None:
+    pygame.draw.circle(_canvas, _color, center, radius)
 
-def draw_rect(color: (int, int, int), rectangle: (int, int, int, int)) -> None:
-    pygame.draw.rect(_canvas, color, rectangle)
+def fill_rect(rectangle: (int, int, int, int)) -> None:
+    pygame.draw.rect(_canvas, _color, rectangle)
 
-def draw_text(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
+def draw_text(txt: str, pos: (int, int), size: int) -> None:
     font = pygame.font.SysFont('freesansbold', size)
-    surface = font.render(txt, True, color) ##, (255, 255, 255))
+    surface = font.render(txt, True, _color)
     _canvas.blit(surface, pos)
 
-def draw_text_centered(txt: str, color: (int, int, int), pos: (int, int), size: int) -> None:
+def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
     font = pygame.font.SysFont('freesansbold', size)
-    surface = font.render(txt, True, color) ##, (255, 255, 255))
+    surface = font.render(txt, True, _color)
     w, h = surface.get_size()
     _canvas.blit(surface, (pos[0] - w // 2, pos[1] - h // 2))
 
@@ -61,14 +69,14 @@ def load_image(url: str) -> pygame.Surface:
 def draw_image(image: pygame.Surface, pos: (int, int)) -> None:
     _canvas.blit(image, pos)
 
-def draw_image_clip(image: pygame.Surface, rect: (int, int, int, int), area: (int, int, int, int)) -> None:
-    x0, y0, w0, h0 = area
-    x1, y1, w1, h1 = rect
+def draw_image_clip(image: pygame.Surface, src: (int, int, int, int), dst: (int, int, int, int)) -> None:
+    x0, y0, w0, h0 = src
+    x1, y1, w1, h1 = dst
     if w0 == w1 and h0 == h1:
-        _canvas.blit(image, rect, area=area)
+        _canvas.blit(image, dst, area=src)
     else:
         cropped = pygame.Surface((w0, h0), pygame.SRCALPHA)
-        cropped.blit(image, (0, 0), area=area)
+        cropped.blit(image, (0, 0), area=src)
         scaled = pygame.transform.smoothscale(cropped, (w1, h1))
         _canvas.blit(scaled, (x1, y1))
 
@@ -82,21 +90,23 @@ def pause_audio(audio: pygame.mixer.Sound) -> None:
     audio.stop()
 
 def alert(message: str) -> None:
-    messagebox.showinfo(" ", message)
+    if _canvas: update_canvas()
+    messagebox.showinfo("", message)
 
 def confirm(message: str) -> bool:
-    return messagebox.askokcancel(" ", message)
+    if _canvas: update_canvas()
+    return messagebox.askokcancel("", message)
 
 def prompt(message: str) -> str:
-    return simpledialog.askstring(" ", message, parent=_tkmain)
+    if _canvas: update_canvas()
+    return simpledialog.askstring("", message, parent=_tkmain)
 
-def handle_keyboard(keydown, keyup):
-    global _keydown, _keyup
-    _keydown, _keyup = keydown, keyup
+def handle_events(update=None, keydown=None, keyup=None):
+    global _update, _keydown, _keyup
+    _update, _keydown, _keyup = update, keydown, keyup
 
-def handle_mouse(mousedown, mouseup):
-    global _mousedown, _mouseup
-    _mousedown, _mouseup = mousedown, mouseup
+def mouse_position() -> (int, int):
+    return _mouse_pos
 
 def web_key(key: int) -> str:
     word = pygame.key.name(key)
@@ -111,27 +121,35 @@ def web_key(key: int) -> str:
         word = "Enter"
     return word
 
-def main_loop(update=None, millis=100) -> None:
+def main_loop(fps=30) -> None:
+    global _mouse_pos
     clock = pygame.time.Clock()
-    while True:
+    update_canvas()
+    running = True
+    while running:
         for e in pygame.event.get():
             # print(e)
             if e.type == pygame.QUIT:
-                exit()
+                running = False
+                break
             elif e.type == pygame.KEYDOWN and _keydown:
                 _keydown(web_key(e.key))
             elif e.type == pygame.KEYUP and _keyup:
                 _keyup(web_key(e.key))
-            elif e.type == pygame.MOUSEBUTTONDOWN and _mousedown:
-                _mousedown(e.pos, e.button - 1)
-            elif e.type == pygame.MOUSEBUTTONUP and _mouseup:
-                _mouseup(e.pos, e.button - 1)
-        if update:
-            update()
-        pygame.display.flip()
-        clock.tick(1000/millis)
-    exit()
+            elif e.type == pygame.MOUSEMOTION:
+                _mouse_pos = pygame.mouse.get_pos()
+            elif (e.type == pygame.MOUSEBUTTONDOWN and
+                  1 <= e.button <= 3 and _keydown):
+                _keydown(_mouse_codes[e.button - 1])
+            elif (e.type == pygame.MOUSEBUTTONUP and
+                  1 <= e.button <= 3 and _keyup):
+                _keyup(_mouse_codes[e.button - 1])
+        if _update:
+            _update()
+        update_canvas()
+        clock.tick(fps)
+    close_canvas()
 
-def exit() -> None:
+def close_canvas() -> None:
     pygame.quit()
     sys.exit()

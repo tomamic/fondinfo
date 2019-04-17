@@ -12,9 +12,9 @@ image = g2d.load_image("ball.png")
 
 def update():
     global x
-    g2d.fill_canvas((255, 255, 255))  # Draw background
-    g2d.draw_image(image, (x, y))     # Draw foreground
-    x = (x + dx) % ARENA_W            # Update ball's position
+    g2d.clear_canvas()             # Draw background
+    g2d.draw_image(image, (x, y))  # Draw foreground
+    x = (x + dx) % ARENA_W         # Update ball's position
 
 def keydown(code):
     global dx
@@ -26,7 +26,7 @@ def keyup(code):
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_keyboard(keydown, keyup)
-    g2d.main_loop(update, 1000 // 30)    # Call update 30 times/second
+    g2d.handle_events(update, keydown, keyup)
+    g2d.main_loop()
 
 main()

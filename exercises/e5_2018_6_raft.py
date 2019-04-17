@@ -114,9 +114,9 @@ sprites = g2d.load_image("../examples/sprites.png")
 def update():
     arena.move_all()  # Game logic
 
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, a.position(), a.symbol())
+        g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
 def keydown(code):
     #print(code + " dn")
@@ -135,7 +135,7 @@ def keyup(code):
 
 def main():
     g2d.init_canvas(arena.size())
-    g2d.handle_keyboard(keydown, keyup)
-    g2d.main_loop(update, 1000 // 30)
+    g2d.handle_events(update, keydown, keyup)
+    g2d.main_loop()
 
 main()

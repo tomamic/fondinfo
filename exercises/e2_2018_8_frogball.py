@@ -32,7 +32,7 @@ class FrogBall:
 
 
 def update():
-    g2d.fill_canvas((255, 255, 255))  # BG
+    g2d.clear_canvas()  # BG
     b1.move()
     b2.move()
     g2d.draw_image(img, b1.position())  # FG
@@ -50,7 +50,7 @@ def main():
     b2 = FrogBall(80, 40)
     img = g2d.load_image("ball.png")
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_keyboard(keydn, None)
-    g2d.main_loop(update, 1000 // 5)  # Millis
+    g2d.handle_events(update, keydn, None)
+    g2d.main_loop(5)
 
 main()

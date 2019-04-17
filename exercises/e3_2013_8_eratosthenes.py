@@ -20,8 +20,7 @@ def main():
     print(result)
     print(len(result), 'primes found')
 
-if __name__ == '__main__':
-    main()
+main()
 
 '''
 import time

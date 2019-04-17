@@ -69,12 +69,12 @@ class Wall(Actor):
 def update():
     arena.move_all()  # Game logic
 
-    g2d.fill_canvas((255, 255, 255))
+    g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Wall):
-            g2d.draw_rect((127, 127, 127), a.position())
+            g2d.fill_rect(a.position())
         else:
-            g2d.draw_image_clip(sprites, a.position(), a.symbol())
+            g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
 def main():
     global arena, sprites
@@ -85,7 +85,7 @@ def main():
 
     g2d.init_canvas(arena.size())
     sprites = g2d.load_image("sprites.png")
-
-    g2d.main_loop(update, 1000 // 30)  # millis
+    g2d.handle_events(update)
+    g2d.main_loop()
 
 main()

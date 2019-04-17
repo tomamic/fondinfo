@@ -13,6 +13,6 @@ func main() {
         FillRect(Rect{p, p, 100, 100})
         i += 1
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-n = int(input('n? '))
+n = int(input("n? "))
 result = 0
 
 i = 1
@@ -14,6 +14,6 @@ while i * i <= n:
     i += 1
 
 if result == 0:
-    print('no')
+    print("No")
 else:
     print(result)

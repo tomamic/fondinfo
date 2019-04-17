@@ -7,7 +7,7 @@
 import g2d
 from random import randrange
 
-W, H = 240, 320
+W, H = 320, 240
 SIDE = 100
 
 n = int(g2d.prompt("n? "))  # like input
@@ -21,9 +21,8 @@ g2d.init_canvas((W, H))
 
 i = 0
 while i < n:
-    color = (i * dc, 0, 0)
-    rect = (i * dx, i * dy, SIDE, SIDE)
-    g2d.draw_rect(color, rect)
+    g2d.set_color((i * dc, 0, 0))
+    g2d.fill_rect((i * dx, i * dy, SIDE, SIDE))
     i += 1
 
 g2d.main_loop()

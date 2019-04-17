@@ -18,7 +18,7 @@ class Box:
     def dimensions(self) -> (int, int):
         return (self._w, self._h)
 
-if __name__ == '__main__':
+def main():
     width = int(input('width? '))
     height = int(input('height? '))
     while width > 0 and height > 0:
@@ -29,3 +29,5 @@ if __name__ == '__main__':
         print('perimeter =', p)
         width = int(input('width? '))
         height = int(input('height? '))
+
+main()

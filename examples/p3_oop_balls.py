@@ -8,15 +8,16 @@ import g2d
 from p2_oop_ball import Ball, ARENA_W, ARENA_H
 
 def update():
-    g2d.fill_canvas((255, 255, 255))  # BG
+    g2d.clear_canvas()  # BG
     for b in balls:
         b.move()
-        g2d.draw_rect((127, 127, 127), b.position())  # FG
+        g2d.fill_rect(b.position())  # FG
 
 def main():
     global balls
     balls = [Ball(40, 80), Ball(80, 40), Ball(120, 120)]
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(update, 1000 // 30)  # Millis
+    g2d.handle_events(update)
+    g2d.main_loop()
 
 main()

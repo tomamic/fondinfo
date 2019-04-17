@@ -15,12 +15,13 @@ def sierpinski(rect: (int, int, int, int)):
         for col in range(3):
             rect3 = x + col * w3, y + row * h3, w3, h3
             if row == 1 and col == 1:
-                g2d.draw_rect((127, 0, 0), rect3)
+                g2d.fill_rect(rect3)
             else:
                 sierpinski(rect3)
 
 def main():
     g2d.init_canvas((263, 263))
+    g2d.set_color((127, 0, 0))
     sierpinski((10, 10, 243, 243))
     g2d.main_loop()
 

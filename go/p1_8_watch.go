@@ -24,6 +24,6 @@ func main() {
         i += 1
         angle += 2 * math.Pi / 60
     }
-    MainLoop(nil, 0)
+    MainLoop()
 }
 
