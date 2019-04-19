@@ -50,7 +50,7 @@ func (ui *Gui) Update() {
     UpdateCanvas()
     if ui.game.Finished() {
         Alert(ui.game.Message())
-        Exit()
+        CloseCanvas()
     }
 }
 
