@@ -15,8 +15,7 @@ func main() {
     FillCircle(Point{400, 300}, 20)  // center, radius
 
     SetColor(Color{255, 0, 0})
-    DrawText("Hello", Point{150, 100}, 40)
-    // text, left-top-position, font-size
+    DrawText("Hello", Point{150, 100}, 40)  // text, left-top, font-size
 
     MainLoop()  // manage the window/canvas
 }
