@@ -34,7 +34,7 @@ void print_game(BoardGame* game) {
     }
 }
 
-void play_game(BoardGame* game) {
+void console_play(BoardGame* game) {
     print_game(game);
 
     while (! game->finished()) {

@@ -56,7 +56,11 @@ static string html_ = R"html(
 <!doctype html>
 <html>
 <title>G2D Canvas</title>
-<style>* { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }</style>
+<style>
+    body { margin: 0; padding: 0; }
+    canvas { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+             margin: 0; padding: 0; border: 1px solid silver; }
+</style>
 <body>
 <script>
 function invokeExternal(data) {

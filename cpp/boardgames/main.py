@@ -9,9 +9,8 @@ from cppyy.gbl import LightsOut, Fifteen
 
 import sys
 sys.path.append('../../examples/')
-from boardgame_g2d import BoardGameGui
+from boardgame_g2d import gui_play
 
 ##game = LightsOut(4, 5, 5)
 game = Fifteen(3, 3)
-gui = BoardGameGui(game)
-gui.main_loop()
+gui_play(game)
