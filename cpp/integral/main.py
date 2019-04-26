@@ -1,5 +1,5 @@
 import cppyy, time
-cppyy.include("integral.cpp")
+cppyy.include("integral.hpp")
 from cppyy.gbl import integral
 
 def py_f(x: float) -> float:

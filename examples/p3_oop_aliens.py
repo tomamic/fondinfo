@@ -8,7 +8,7 @@ import g2d
 from p2_oop_alien import Alien
 
 def update():
-    g2d.fill_canvas()
+    g2d.clear_canvas()
     for a in aliens:
         a.move()
         g2d.fill_rect(a.position())

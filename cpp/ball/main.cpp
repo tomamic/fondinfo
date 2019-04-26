@@ -1,10 +1,10 @@
+#include "ball.hpp"
 #include <iostream>
-#include "ball.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
 
-int main()
-{
+int main() {
     Ball ball1{40, 80};
     auto ball2 = new Ball{80, 40};
 

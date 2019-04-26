@@ -21,19 +21,19 @@ def update():
     for a in arena.actors():
         g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
-def keydown(code):
-    #print(code + " dn")
-    if code == "ArrowUp":
+def keydown(key):
+    #print(key + " dn")
+    if key == "ArrowUp":
         turtle.go_up()
-    elif code == "ArrowDown":
+    elif key == "ArrowDown":
         turtle.go_down()
-    elif code == "ArrowLeft":
+    elif key == "ArrowLeft":
         turtle.go_left()
-    elif code == "ArrowRight":
+    elif key == "ArrowRight":
         turtle.go_right()
 
-def keyup(code):
-    #print(code + " up")
+def keyup(key):
+    #print(key + " up")
     turtle.stay()
 
 def main():

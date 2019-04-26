@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import cppyy
-cppyy.include("lightsout.cpp")
-cppyy.include("fifteen.cpp")
+cppyy.include("lightsout.hpp")
+cppyy.include("fifteen.hpp")
 from cppyy.gbl import LightsOut, Fifteen
 
 ##from boardgames import LightsOut, Fifteen

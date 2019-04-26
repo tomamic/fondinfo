@@ -52,7 +52,7 @@ class Fifteen(BoardGame):
         return self._board == self._solved
 
 def main():
-    game = Fifteen(3, 3)
+    game = Fifteen(2, 2)
     gui_play(game)
     ##console_play(game)
 

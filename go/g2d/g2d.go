@@ -167,8 +167,8 @@ func DrawLine(pt1, pt2 Point) {
     doJs("drawLine(%d, %d, %d, %d)", pt1.X, pt1.Y, pt2.X, pt2.Y)
 }
 
-func FillCircle(p Point, r int) {
-    doJs("fillCircle(%d, %d, %d)", p.X, p.Y, r)
+func FillCircle(center Point, r int) {
+    doJs("fillCircle(%d, %d, %d)", center.X, center.Y, r)
 }
 
 func FillRect(r Rect) {
@@ -201,7 +201,7 @@ func DrawTextCentered(txt string, p Point, size int) {
 }
 
 func LoadAudio(src string) string {
-    doJs("loadAudio('%s', %d, %d, %d)", src)
+    doJs("loadAudio('%s')", src)
     return src
 }
 

@@ -1,8 +1,31 @@
-#include "lightsout.h"
+#ifndef LIGHTSOUT_H
+#define LIGHTSOUT_H
+
+#include "boardgame.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
-using namespace std;
+using std::string;
+using std::vector;
+
+class LightsOut : public BoardGame
+{
+public:
+    LightsOut(int level, int cols, int rows);
+    void play_at(int x, int y);
+    void flag_at(int x, int y) { }
+    string value_at(int x, int y);
+    bool finished();
+    int cols() { return rows_; }
+    int rows() { return cols_; }
+    string message() { return "Solved!"; }
+private:
+    vector<vector<bool>> board_;
+    int cols_;
+    int rows_;
+};
+
 
 LightsOut::LightsOut(int level, int cols, int rows)
 {
@@ -28,7 +51,7 @@ void LightsOut::play_at(int x, int y)
     }
 }
 
-string LightsOut::get_val(int x, int y)
+string LightsOut::value_at(int x, int y)
 {
     if (0 <= x && x < cols_ && 0 <= y && y < rows_ && board_[y][x]) {
         return "@";
@@ -45,3 +68,5 @@ bool LightsOut::finished()
     }
     return true;
 }
+
+#endif // LIGHTSOUT_H

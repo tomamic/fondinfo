@@ -12,7 +12,7 @@ html = '''<!DOCTYPE html>
     <head>
         <title>__script__</title>
         <meta charset="UTF-8">
-        <script type="text/javascript" src="~brython_dist.js"></script>
+        <script type="text/javascript" src="_brython_dist.js"></script>
     </head>
     <body onload="brython(1)">
         <script type="text/python" src="__script__"></script>
@@ -30,21 +30,21 @@ except:
     # if not in browser...
     import os, sys, urllib.request, webbrowser, http.server, socketserver
 
-    if not os.path.isfile("~brython_dist.js"):
+    if not os.path.isfile("_brython_dist.js"):
         url = "https://raw.githubusercontent.com/brython-dev/brython/3.4.0/www/src/brython_dist.js"
         #url = "http://brython.info/src/brython_dist.js"
         with urllib.request.urlopen(url) as response:
             content = response.read()
-            with open("~brython_dist.js", "wb") as brython_file:
+            with open("_brython_dist.js", "wb") as brython_file:
                 brython_file.write(content)
 
     # prepare a custom html file
     script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
-    with open("~tmp.html", "w") as f:
+    with open("_tmp.html", "w") as f:
         print(html.replace("__script__", script_name), file=f)
 
     # open html file in default browser
-    webbrowser.open("http://127.0.0.1:8000/~tmp.html")
+    webbrowser.open("http://127.0.0.1:8000/_tmp.html")
 
     # minimal web server, for files in current dir
     socketserver.TCPServer.allow_reuse_address = True

@@ -1,3 +1,6 @@
+#ifndef INTEGRAL_H
+#define INTEGRAL_H
+
 double f(double x) {
     return x * x + x;
 }
@@ -14,3 +17,5 @@ double integral(double a, double b, int n) {
     }
     return total;
 }
+
+#endif
