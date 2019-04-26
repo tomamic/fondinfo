@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 dirs = [(+1, -2), (+2, -1), (+2, +1), (+1, +2), (-1, +2), (-2, +1), (-2, -1), (-1, -2)]
 
 def print_matrix(m: list, w: int, h: int):

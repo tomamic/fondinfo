@@ -48,8 +48,8 @@ def main():
     global b1, b2, img
     b1 = FrogBall(40, 80)
     b2 = FrogBall(80, 40)
-    img = g2d.load_image("ball.png")
     g2d.init_canvas((ARENA_W, ARENA_H))
+    img = g2d.load_image("ball.png")
     g2d.handle_events(update, keydn, None)
     g2d.main_loop(5)
 

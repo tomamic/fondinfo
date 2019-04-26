@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
@@ -38,7 +38,7 @@ class Circle:
         return '{}, {}'.format(self._center, self._radius)
 
 
-if __name__ == '__main__':
+def main():
     NEW_POINT = 1
     MOVE_POINT = 2
     NEW_CIRCLE = 3
@@ -81,3 +81,5 @@ if __name__ == '__main__':
                 p = points[i]
                 c = Circle(p, r)
                 circles.append(c)
+
+main()

@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
+import sys; sys.path.append('../examples/')
 import g2d
 import math
 import random
@@ -43,11 +50,12 @@ def draw_frame():
 def main():
     global planets, canvas_w, canvas_h
 
-    canvas_w, canvas_h = 600, 600
-    planets = []
+    planets = []  # ex.: try to use a list comprehension
     for i in range(5):
         p = Planet(100 + i * 40)
         planets.append(p)
+
+    canvas_w, canvas_h = 600, 600
     g2d.init_canvas((canvas_w, canvas_h))
     g2d.handle_events(draw_frame)
     g2d.main_loop()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-@author Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
@@ -113,6 +113,4 @@ def main():
         print('total area:', total_area)
         action_choice = input('A/R/X (Add/Remove/Exit)? ').upper()
 
-
-if __name__ == '__main__':
-    main()
+main()

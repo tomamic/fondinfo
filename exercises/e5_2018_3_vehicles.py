@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 class Vehicle:
     def estimate_time(self, x: float, y: float) -> float:
         raise NotImplementedError("Abstract Method")
@@ -16,7 +22,7 @@ class Ambulance(Vehicle):
 
     def estimate_time(self, x: float, y: float) -> float:
         return self._latency + self.estimate_distance(x, y) / self._speed
-        
+
     def name(self) -> str:
         return self._name
 
@@ -32,7 +38,7 @@ class Helicopter(Vehicle):
 
     def estimate_time(self, x: float, y: float) -> float:
         return self._latency + self.estimate_distance(x, y) / self._speed
-        
+
     def name(self) -> str:
         return self._name
 
