@@ -6,11 +6,11 @@
 
 import g2d
 
-cols = int(g2d.prompt("Cols? "))
-rows = int(g2d.prompt("Rows? "))
-
 WIDTH, HEIGHT = 600, 400
 g2d.init_canvas((WIDTH, HEIGHT))
+
+cols = int(g2d.prompt("Cols? "))
+rows = int(g2d.prompt("Rows? "))
 
 w, h = WIDTH / cols, HEIGHT / rows
 delta_blue, delta_green = 0, 0
