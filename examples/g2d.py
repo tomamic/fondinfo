@@ -141,11 +141,11 @@ def _dialog(js: str) -> str:
         time.sleep(0.1)
     return _dialog_ans
 
-def alert(message: str) -> str:
-    return _dialog(f"doAlert('{message}')")
+def alert(message: str) -> None:
+    _dialog(f"doAlert('{message}')")
 
-def confirm(message: str) -> str:
-    return _dialog(f"doConfirm('{message}')")
+def confirm(message: str) -> bool:
+    return _dialog(f"doConfirm('{message}')") == "true"
 
 def prompt(message: str) -> str:
     return _dialog(f"doPrompt('{message}')")
