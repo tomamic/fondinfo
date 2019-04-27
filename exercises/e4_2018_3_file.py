@@ -6,14 +6,14 @@
 
 def generate_file():
     from random import uniform
-    with open("values.csv", "w") as csv_out:
+    with open("_values.csv", "w") as csv_out:
         for y in range(20):
             print(uniform(0, 50), uniform(0, 50), sep=",", file=csv_out)
 
 def main():
     max_val, min_val = 0, 0
     total, count = 0, 0
-    with open("values.csv", "r") as csv:
+    with open("_values.csv", "r") as csv:
         for line in csv:
             for word in line.split(","):
                 val = float(word)

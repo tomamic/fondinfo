@@ -5,7 +5,7 @@
 '''
 
 def troll(text: str) -> str:
-    output = ''
+    output = ""
     trolling = False
     for c in text:
         if c == '*':
@@ -16,7 +16,11 @@ def troll(text: str) -> str:
             output += c
     return output
 
-with open('troll.txt', 'r') as f, open('troll.out.txt', 'w') as out:
+##with open("_troll.txt", "w") as new_file:
+##    print("This may be a *very important* file...", file=new_file)
+##    print("or it may contain *nothing* significant *at all*", file=new_file)
+
+with open("_troll.txt", "r") as f, open("_troll.out.txt", "w") as out:
     for line in f:
         res = troll(line)
-        print(res, file=out, end='')
+        print(res, file=out, end="")

@@ -5,7 +5,9 @@
 '''
 
 import sys; sys.path.append("../examples")
+import g2d
 from actor import Actor, Arena
+
 
 class Ball(Actor):
     def __init__(self, arena, x, y, dx):
@@ -102,13 +104,11 @@ class Turtle(Actor):
 
 ###
 
-import g2d
 
 arena = Arena(320, 240)
 b1 = Ball(arena, 40, 60, 5)
 b2 = Ball(arena, 80, 40, -5)
 turtle = Turtle(arena, 80, 80)
-sprites = g2d.load_image("../examples/sprites.png")
 
 def update():
     arena.move_all()  # Game logic
@@ -117,23 +117,25 @@ def update():
     for a in arena.actors():
         g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
-def keydown(code):
-    #print(code + " dn")
-    if code == "ArrowUp":
+def keydown(key):
+    #print(key + " dn")
+    if key == "ArrowUp":
         turtle.go_up()
-    elif code == "ArrowDown":
+    elif key == "ArrowDown":
         turtle.go_down()
-    elif code == "ArrowLeft":
+    elif key == "ArrowLeft":
         turtle.go_left()
-    elif code == "ArrowRight":
+    elif key == "ArrowRight":
         turtle.go_right()
 
-def keyup(code):
-    #print(code + " up")
+def keyup(key):
+    #print(key + " up")
     turtle.stay()
 
 def main():
+    global sprites
     g2d.init_canvas(arena.size())
+    sprites = g2d.load_image("sprites.png")
     g2d.handle_events(update, keydown, keyup)
     g2d.main_loop()
 

@@ -8,7 +8,7 @@ text = ""
 with open("p5_mat_scytale.py") as infile:
     text = infile.read()
 
-with open("~output.txt", "w") as outfile:
+with open("_output.txt", "w") as outfile:
     FILLER = ' '
     ROWS = 3
     COLS = 4

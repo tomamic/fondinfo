@@ -420,37 +420,42 @@ string dialog_(string js) {
 
 void alert(string message) {
     dialog_("doAlert('"s + message + "')"s);
-    return;
+    /*
     update_canvas();
     #if defined(WEBVIEW_WINAPI)
     system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::MsgBox('"s + message + "', [microsoft.visualbasic.msgboxstyle]::Information -bor [microsoft.visualbasic.msgboxstyle]::OkOnly -bor [microsoft.visualbasic.msgboxstyle]::DefaultButton1, '');Write-Output $answer;\""s).c_str());
     #else
     system(("zenity --info --text=\""s + message + "\""s).c_str());
     #endif
+    */
 }
 
 bool confirm(string message) {
     return dialog_("doConfirm('"s + message + "')"s) == "true";
+    /*
     update_canvas();
     #if defined(WEBVIEW_WINAPI)
-    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::MsgBox('"s + message + "', [microsoft.visualbasic.msgboxstyle]::Question -bor [microsoft.visualbasic.msgboxstyle]::OkCancel -bor [microsoft.visualbasic.msgboxstyle]::DefaultButton1, '');Write-Output $answer;\" >dialog.txt"s).c_str());
+    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::MsgBox('"s + message + "', [microsoft.visualbasic.msgboxstyle]::Question -bor [microsoft.visualbasic.msgboxstyle]::OkCancel -bor [microsoft.visualbasic.msgboxstyle]::DefaultButton1, '');Write-Output $answer;\" >_dialog.txt"s).c_str());
     #else
-    system(("if zenity --question --text=\""s + message + "\"; then echo Ok >dialog.txt; else echo Cancel >dialog.txt; fi"s).c_str());
+    system(("if zenity --question --text=\""s + message + "\"; then echo Ok >_dialog.txt; else echo Cancel >_dialog.txt; fi"s).c_str());
     #endif
-    std::ifstream file{"dialog.txt"}; string answer; std::getline(file, answer);
+    std::ifstream file{"_dialog.txt"}; string answer; std::getline(file, answer);
     return answer.size() >= 2 && tolower(answer[0]) == 'o' && tolower(answer[1]) == 'k';
+    */
 }
 
 string prompt(string message) {
     return dialog_("doPrompt('"s + message + "')"s);
+    /*
     update_canvas();
     #if defined(WEBVIEW_WINAPI)
-    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::InputBox('"s + message + "', '', '');Write-Output $answer;\" >dialog.txt"s).c_str());
+    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::InputBox('"s + message + "', '', '');Write-Output $answer;\" >_dialog.txt"s).c_str());
     #else
-    system(("zenity --entry --title \"\" --text \""s + message + "\" --entry-text \"\" >dialog.txt"s).c_str());
+    system(("zenity --entry --title \"\" --text \""s + message + "\" --entry-text \"\" >_dialog.txt"s).c_str());
     #endif
-    std::ifstream file{"dialog.txt"}; string answer; std::getline(file, answer);
+    std::ifstream file{"_dialog.txt"}; string answer; std::getline(file, answer);
     return answer;
+    */
 }
 
 Point mouse_position() {

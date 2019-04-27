@@ -5,13 +5,13 @@
 '''
 
 # remove these two lines if file already exists
-with open("~matrix.csv", "w") as wfile:
-    print("5,7,2,11\n1,3,12,9\n4,6,10,8", file=wfile, end="")
+##with open("_matrix.csv", "w") as wfile:
+##    print("5,7,2,11\n1,3,12,9\n4,6,10,8", file=wfile, end="")
 
 matrix = []
 cols, rows = 0, 0
 
-with open("~matrix.csv", "r") as rfile:
+with open("_matrix.csv", "r") as rfile:
     for line in rfile:
         splitted = line.split(",")
         vals = [int(i) for i in splitted]

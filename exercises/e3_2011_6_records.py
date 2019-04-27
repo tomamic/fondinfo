@@ -6,10 +6,15 @@
 
 import sys
 
+##with open("_list.txt", "w") as new_file:
+##    print("always second: 35", file=new_file)
+##    print("bombastic champion: 40", file=new_file)
+##    print("hopeless dud: 10", file=new_file)
+
 records = {}
-with open('list.txt') as infile:
+with open("_list.txt") as infile:
     for line in infile:
-        name, points = line.strip().split(': ', 2)
+        name, points = line.strip().split(": ", 2)
         records[name] = points
 
 for name, points in records.items():
@@ -20,4 +25,4 @@ for name in sys.stdin:
     if name in records.keys():
         print(records[name])
     else:
-        print('Unknown user')
+        print("Unknown user")

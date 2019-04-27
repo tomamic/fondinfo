@@ -7,11 +7,11 @@
 import sys; sys.path.append('../examples/')
 import g2d
 
-with open("palette.txt", "w") as new_file:
-    print('''180 120 60\n120 180 60\n120 60 180''', file=new_file);
+##with open("_palette.txt", "w") as new_file:
+##    print('''180 120 60\n120 180 60\n120 60 180''', file=new_file);
 
 palette = []
-with open('palette.txt', 'r') as palette_file:
+with open("_palette.txt", "r") as palette_file:
     for line in palette_file:
         if len(line) > 0:
             vals = line.split()
@@ -21,7 +21,7 @@ with open('palette.txt', 'r') as palette_file:
 side = 400.0
 g2d.init_canvas((int(side), int(side)))
 
-n = int(g2d.prompt('squares? '))
+n = int(g2d.prompt("squares? "))
 delta = side / n
 
 for i in range(n):

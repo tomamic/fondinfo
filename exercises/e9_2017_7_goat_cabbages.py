@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 actors = ("farmer", "cabbage", "goat", "wolf")
 L, R = False, True
 wrong = [(L, R, R, L), (L, L, R, R), (L, R, R, R),

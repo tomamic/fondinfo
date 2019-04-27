@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+import sys; sys.path.append("../examples")
 import g2d
 from random import choice, randrange
 from actor import Actor, Arena
@@ -147,6 +148,5 @@ Wall(arena, 0, 220, 320, 20)
 
 g2d.init_canvas(arena.size())
 sprites = g2d.load_image("sprites.png")
-
 g2d.handle_events(update, keydown, keyup)
 g2d.main_loop()

@@ -13,7 +13,11 @@
 
 import math, sys
 
-with open('sin.txt') as infile:
+##with open("_sin.txt", "w") as new_file:
+##    for angle in range(360):
+##        print(math.sin(math.pi * angle / 180), file=new_file)
+
+with open("_sin.txt") as infile:
     function = [float(line) for line in infile]
 period = len(function)
 

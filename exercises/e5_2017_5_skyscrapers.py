@@ -29,9 +29,12 @@ def main():
     matrix = []
     cols, rows = 0, 0
 
-    with open('matrix.csv', 'r') as file1:
+##    with open("_matrix.csv", "w") as new_file:
+##        print("5,7,2,11\n1,3,12,9\n4,6,10,8", file=new_file);
+
+    with open("_matrix.csv", "r") as file1:
         for line in file1:
-            splitted = line.split(',')
+            splitted = line.split(",")
             vals = [int(i) for i in splitted]
             matrix.append(vals)
             ## matrix += vals  # for a simple list (ex. 4.5)
@@ -40,7 +43,7 @@ def main():
                 cols = len(vals)
             rows += 1
 
-    print(cols, 'x', rows)
+    print(cols, "x", rows)
     print(matrix)
     print()
 

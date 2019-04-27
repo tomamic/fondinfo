@@ -173,7 +173,7 @@ func DrawTextCentered(txt string, pos Point, size int) {
 }
 
 func drawText(txt string, pos Point, size int, centered bool) {
-    fname := "~Roboto-Regular.ttf"
+    fname := "_Roboto-Regular.ttf"
     if _, err := os.Stat(fname); os.IsNotExist(err) {
         out, _ := os.Create(fname)
         defer out.Close()
