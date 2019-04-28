@@ -53,4 +53,3 @@ func main() {
 		a.Say()
 	}
 }
-

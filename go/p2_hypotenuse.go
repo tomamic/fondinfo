@@ -1,22 +1,21 @@
 package main
 
 import (
-    . "g2d"
-    "math"
+	. "g2d"
+	"math"
 )
 
 func hypotenuse(cathetus1, cathetus2 float64) float64 {
-    /*
-       Return the hypotenuse of a right triangle,
-       given both its legs (catheti).
-    */
-    return math.Sqrt(cathetus1*cathetus1 + cathetus2*cathetus2)
+	/*
+	   Return the hypotenuse of a right triangle,
+	   given both its legs (catheti).
+	*/
+	return math.Sqrt(cathetus1*cathetus1 + cathetus2*cathetus2)
 }
 
 func main() {
-    a := ToFloat(Prompt("a? "))
-    b := ToFloat(Prompt("b? "))
-    c := hypotenuse(a, b)
-    Alert(c)
+	a := ToFloat(Prompt("a? "))
+	b := ToFloat(Prompt("b? "))
+	c := hypotenuse(a, b)
+	Alert(c)
 }
-

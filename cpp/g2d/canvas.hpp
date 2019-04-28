@@ -40,35 +40,27 @@ static std::function<void(string)> usr_keydown_;
 static std::function<void(string)> usr_keyup_;
 static vector<string> dialogs_;
 static bool inited_ = false;
-static int max_w_ = 320, max_h_ = 240;
-
-static string html0_ = R"html(
-<!doctype html>
-<html>
-<title>G2D Canvas</title>
-<style>* { margin: 0; box-sizing: border-box; padding: 0; overflow: hidden; }</style>
-<body>
-</body>
-</html>
-)html";
+static int max_w_ = 480, max_h_ = 360;
 
 static string html_ = R"html(
 <!doctype html>
 <html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>G2D Canvas</title>
 <style>
     body { margin: 0; padding: 0; }
     canvas { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
              margin: 0; padding: 0; border: 1px solid silver; }
 </style>
+</head>
 <body>
+</body>
 <script>
 function invokeExternal(data) {
     window.external.invoke(data);
 }
 
-canvas = null;
-ctx = null;
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -211,7 +203,6 @@ function closeCanvas() {
     }
 }
 </script>
-</body>
 </html>
 )html";
 
@@ -321,13 +312,18 @@ void update_canvas() {
 }
 
 void close_canvas() {
-    handle_events(nullptr, nullptr, nullptr);
-    do_js_("closeCanvas()");
-    update_canvas();
-    webview_terminate(&wv_);
+    if (inited_) {
+        handle_events(nullptr, nullptr, nullptr);
+        do_js_("closeCanvas()");
+        update_canvas();
+        webview_terminate(&wv_);
+    }
 }
 
 void main_loop(int fps=30) {
+    if (!inited_) {
+        init_canvas({0, 0});
+    }
     do_js_("mainLoop(%);", {fps});
     update_canvas();
     while (webview_loop(&wv_, 1) == 0) { }
@@ -408,6 +404,9 @@ void pause_audio(string audio) {
 void init_canvas(Size size);
 
 string dialog_(string js) {
+    if (!inited_) {
+        init_canvas({0, 0});
+    }
     do_js_(js);
     update_canvas();
     while (dialogs_.size() == 0) {
@@ -495,32 +494,33 @@ void external_cb_(struct webview *wv, const char *arg) {
 }
 
 void init_canvas(Size size) {
-    inited_ = true;
-    srand(time(nullptr));
+    if (!inited_) {
+        inited_ = true;
+        srand(time(nullptr));
 
-    string html_data = "data:text/html,"s + url_encode(html_);
+        string html_data = "data:text/html,"s + url_encode(html_);
 
-    wv_.title = "G2D WebView";
-    #if defined(WEBVIEW_WINAPI)
-    wv_.url = html_data.c_str();
-    #else
-    wv_.url = "about:blank";
-    #endif
-    wv_.width = size.w > max_w_ ? size.w : max_w_;
-    wv_.height = size.h > max_h_ ? size.h : max_h_;
-    wv_.resizable = 0;
-    wv_.external_invoke_cb = external_cb_;
-    webview_init(&wv_);
+        wv_.title = "G2D WebView";
+        #if defined(WEBVIEW_WINAPI)
+        wv_.url = html_data.c_str();
+        #else
+        wv_.url = "about:blank";
+        #endif
+        wv_.width = size.w > max_w_ ? size.w : max_w_;
+        wv_.height = size.h > max_h_ ? size.h : max_h_;
+        wv_.resizable = 0;
+        wv_.external_invoke_cb = external_cb_;
+        webview_init(&wv_);
 
-    #if defined(WEBVIEW_WINAPI)
-    #else
-    auto js = jscode_.str();
-    jscode_.str("");
-    do_js_("document.open('text/html', 'replace')");
-    do_js_("document.write(`"+html_+"`);");
-    do_js_("document.close();");
-    jscode_ << js;
-    #endif
+        #if !defined(WEBVIEW_WINAPI)
+        auto js = jscode_.str();
+        jscode_.str("");
+        do_js_("document.open('text/html', 'replace')");
+        do_js_("document.write(`"+html_+"`);");
+        do_js_("document.close();");
+        jscode_ << js;
+        #endif
+    }
     do_js_("initCanvas(%, %)", {size.w, size.h});
     update_canvas();
 }

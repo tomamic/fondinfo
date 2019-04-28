@@ -17,6 +17,8 @@ var usrKeydown, usrKeyup func(string)
 var usrUpdate func()
 var mousePos = Point{0, 0}
 var jss = make([]string, 0)
+var dialogs = make([]string, 0)
+var inited = false
 var script = `
 loaded = {};
 keyPressed = {};
@@ -96,6 +98,18 @@ function pauseAudio(src) {
     audio = loaded[src];
     audio.pause();
 }
+function doAlert(message) {
+    alert(message);
+    invokeExternal("dialog true");
+}
+function doConfirm(message) {
+    ans = confirm(message);
+    invokeExternal("dialog " + ans);
+}
+function doPrompt(message) {
+    ans = prompt(message);
+    invokeExternal("dialog " + ans);
+}
 function mainLoop(fps) {
     document.onkeydown = function(e) {
         if (keyPressed[e.key]) return;
@@ -117,7 +131,10 @@ function mainLoop(fps) {
         }
     };
     document.onmousemove = function(e) {
-        invokeExternal("mousemove " + e.clientX + " " + e.clientY);
+        var rect = canvas.getBoundingClientRect();
+        var x = Math.round(e.clientX - rect.left);
+        var y = Math.round(e.clientY - rect.top);
+        invokeExternal("mousemove " + x + " " + y);
     };
     document.onfocus = function(e) {
         keyPressed = {};
@@ -131,6 +148,17 @@ function mainLoop(fps) {
         timerId = setInterval(function(e) {
             invokeExternal("update");
         }, 1000/fps);
+    }
+}
+function closeCanvas() {
+    if (typeof timerId !== "undefined") {
+        clearInterval(timerId);
+        delete timerId;
+    }
+    if (typeof canvas !== "undefined") {
+        clearCanvas();
+        /*canvas.parentNode.removeChild(canvas);
+        delete canvas;*/
     }
 }
 `
@@ -178,6 +206,7 @@ func FillRect(r Rect) {
 func LoadImage(src string) string {
     if _, err := os.Stat(src); err != nil {
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
+        //fmt.Println(src)
     }
     doJs("loadImage('%s')", src)
     return src
@@ -201,6 +230,9 @@ func DrawTextCentered(txt string, p Point, size int) {
 }
 
 func LoadAudio(src string) string {
+    if _, err := os.Stat(src); err != nil {
+        src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
+    }
     doJs("loadAudio('%s')", src)
     return src
 }
@@ -227,25 +259,29 @@ func MousePosition() Point {
 }
 
 func UpdateCanvas() {
-    code := strings.Join(jss, "")
-    //fmt.Println(code)
-    evalJs(code)
-    jss = make([]string, 0)
+    if inited {
+        code := strings.Join(jss, "")
+        //fmt.Println(code)
+        evalJs(code)
+        jss = make([]string, 0)
+    }
 }
 
 func MainLoop(fps ...int) {
-    UpdateCanvas()
     fps_ := 60
     if len(fps) > 0 {
         fps_ = fps[0]
     }
-    evalJs(fmt.Sprintf(`mainLoop(%d);`, fps_))
+    doJs("mainLoop(%d)", fps_)
+    UpdateCanvas()
     waitDone()
 }
 
 func CloseCanvas() {
     HandleEvents(nil, nil, nil)
-    MainLoop()
+    doJs("closeCanvas()")
+    UpdateCanvas()
+    terminate()
 }
 
 func doJs(cmd string, a ...interface{}) {
@@ -253,6 +289,7 @@ func doJs(cmd string, a ...interface{}) {
 }
 
 func handleData(data string) {
+    //fmt.Println(data)
     args := strings.Split(data, " ")
     if args[0] == "mousemove" {
         mousePos.X, mousePos.Y = ToInt(args[1]), ToInt(args[2])
@@ -265,6 +302,8 @@ func handleData(data string) {
     } else if args[0] == "update" && usrUpdate != nil {
         usrUpdate()
         UpdateCanvas()
+    } else if args[0] == "dialog" {
+        ans := strings.SplitN(data, " ", 2)[1]
+        dialogs = append(dialogs, ans)
     }
 }
-

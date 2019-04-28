@@ -177,7 +177,7 @@ var game = NewBounceGame()
 */
 
 var img = LoadImage("sprites.png")
-var arena = NewArena(Size{320, 240})
+var arena = NewArena(Size{480, 360})
 var hero = NewTurtle(arena, Point{80, 80})
 
 func update() {

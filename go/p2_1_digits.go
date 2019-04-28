@@ -13,4 +13,3 @@ func main() {
 	}
 	Println(count, sum)
 }
-
