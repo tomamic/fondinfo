@@ -30,7 +30,9 @@ var indexHTML = `
 <body>
 </body>
 <script>
-invokeExternal = window.external.invoke;
+function invokeExternal(data) {
+    window.external.invoke(data);
+}
 ` + script + `
 </script>
 </html>
@@ -129,9 +131,8 @@ func max(a, b int) int {
 
 func InitCanvas(size Size) {
     if !inited {
-        inited = true
         index := startServer(size)
-        //fmt.Println(index)
+        fmt.Println(index)
         w = webview.New(webview.Settings{
             Width:                  max(size.W, 480),
             Height:                 max(size.H, 360),
@@ -139,6 +140,9 @@ func InitCanvas(size Size) {
             URL:                    index,
             ExternalInvokeCallback: handleRPC,
         })
+        for !inited {
+            w.Loop(true)
+        }
     }
     //doJs("initCanvas(%d, %d)", size.W, size.H)
     js := fmt.Sprintf("initCanvas(%d, %d);\n", size.W, size.H)

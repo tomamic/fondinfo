@@ -151,15 +151,24 @@ function doPrompt(message) {
     ans = prompt(message);
     invokeExternal("dialog " + ans);
 }
+function fixKey(k) {
+    if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
+    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k=="Esc") k = "Escape";
+    else if (k=="Del") k = "Delete";
+    return k;
+}
 function mainLoop(fps) {
     document.onkeydown = function(e) {
-        if (keyPressed[e.key]) return;
-        keyPressed[e.key] = true;
-        invokeExternal("keydown " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) return;
+        keyPressed[k] = true;
+        invokeExternal("keydown " + k);
     };
     document.onkeyup = function(e) {
-        if (keyPressed[e.key]) keyPressed[e.key] = false;
-        invokeExternal("keyup " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) keyPressed[k] = false;
+        invokeExternal("keyup " + k);
     };
     document.onmousedown = function(e) {
         if (0 <= e.button && e.button < 3) {
@@ -469,9 +478,6 @@ void handle_data_(string data) {
         line >> mouse_pos_.x >> mouse_pos_.y;
     } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
         string key; line >> key;
-        if (key=="Up" || key=="Right" || key=="Down" || key=="Left") {
-            key = "Arrow"s + key;
-        }
         usr_keydown_(key);
         update_canvas();
     } else if (cmd == "keyup" && usr_keyup_ != nullptr) {

@@ -20,6 +20,7 @@ var jss = make([]string, 0)
 var dialogs = make([]string, 0)
 var inited = false
 var script = `
+window.onload = function(e) { setTimeout("invokeExternal('load')", 100); }
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -107,18 +108,27 @@ function doConfirm(message) {
     invokeExternal("dialog " + ans);
 }
 function doPrompt(message) {
-    ans = prompt(message);
+    ans = prompt(message, "");
     invokeExternal("dialog " + ans);
+}
+function fixKey(k) {
+    if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
+    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k=="Esc") k = "Escape";
+    else if (k=="Del") k = "Delete";
+    return k;
 }
 function mainLoop(fps) {
     document.onkeydown = function(e) {
-        if (keyPressed[e.key]) return;
-        keyPressed[e.key] = true;
-        invokeExternal("keydown " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) return;
+        keyPressed[k] = true;
+        invokeExternal("keydown " + k);
     };
     document.onkeyup = function(e) {
-        if (keyPressed[e.key]) keyPressed[e.key] = false;
-        invokeExternal("keyup " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) keyPressed[k] = false;
+        invokeExternal("keyup " + k);
     };
     document.onmousedown = function(e) {
         if (0 <= e.button && e.button < 3) {
@@ -305,5 +315,7 @@ func handleData(data string) {
     } else if args[0] == "dialog" {
         ans := strings.SplitN(data, " ", 2)[1]
         dialogs = append(dialogs, ans)
+    } else if args[0] == "load" {
+        inited = true
     }
 }
