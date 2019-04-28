@@ -1,6 +1,7 @@
 package g2d
 
 import (
+    "crypto/sha1"
     "fmt"
     "math/rand"
     "os"
@@ -60,17 +61,17 @@ function fillCircle(x, y, r) {
 function fillRect(x, y, w, h) {
     ctx.fillRect(x, y, w, h);
 }
-function loadImage(src) {
+function loadImage(key, src) {
     img = document.createElement("IMG");
     img.src = src;
-    loaded[src] = img;
+    loaded[key] = img;
 }
-function drawImage(src, x, y) {
-    img = loaded[src];
+function drawImage(key, x, y) {
+    img = loaded[key];
     ctx.drawImage(img, x, y);
 }
-function drawImageClip(src, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[src];
+function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
+    img = loaded[key];
     ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
 }
 function drawText(txt, x, y, size) {
@@ -85,18 +86,18 @@ function drawTextCentered(txt, x, y, size) {
     ctx.textAlign = "center";
     ctx.fillText(txt, x, y);
 }
-function loadAudio(src) {
+function loadAudio(key, src) {
     audio = document.createElement("AUDIO");
     audio.src = src;
-    loaded[src] = audio;
+    loaded[key] = audio;
 }
-function playAudio(src, loop) {
-    audio = loaded[src];
+function playAudio(key, loop) {
+    audio = loaded[key];
     audio.loop = loop;
     audio.play();
 }
-function pauseAudio(src) {
-    audio = loaded[src];
+function pauseAudio(key) {
+    audio = loaded[key];
     audio.pause();
 }
 function doAlert(message) {
@@ -218,17 +219,18 @@ func LoadImage(src string) string {
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
         //fmt.Println(src)
     }
-    doJs("loadImage('%s')", src)
-    return src
+    key := fmt.Sprintf("%x", sha1.Sum([]byte(src)))
+    doJs("loadImage('%s', '%s')", key, src)
+    return key
 }
 
-func DrawImage(src string, p Point) {
-    doJs("drawImage('%s', %d, %d)", src, p.X, p.Y)
+func DrawImage(image string, p Point) {
+    doJs("drawImage('%s', %d, %d)", image, p.X, p.Y)
 }
 
-func DrawImageClip(src string, clip Rect, r Rect) {
+func DrawImageClip(image string, clip Rect, r Rect) {
     doJs("drawImageClip('%s', %d, %d, %d, %d, %d, %d, %d, %d)",
-        src, clip.X, clip.Y, clip.W, clip.H, r.X, r.Y, r.W, r.H)
+        image, clip.X, clip.Y, clip.W, clip.H, r.X, r.Y, r.W, r.H)
 }
 
 func DrawText(txt string, p Point, size int) {
@@ -243,8 +245,9 @@ func LoadAudio(src string) string {
     if _, err := os.Stat(src); err != nil {
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
     }
-    doJs("loadAudio('%s')", src)
-    return src
+    key := fmt.Sprintf("%x", sha1.Sum([]byte(src)))
+    doJs("loadAudio('%s')", key, src)
+    return key
 }
 
 func PlayAudio(audio string, loop bool) {
