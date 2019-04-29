@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+import sys; sys.path.append('../examples/')
 import g2d
 
 x, y, dx, dy = 50, 50, 5, 5
@@ -28,9 +29,9 @@ def keydn(code: str):
 
 def main():
     global dx, dy
+    g2d.init_canvas((ARENA_W, ARENA_H))
     dx = int(g2d.prompt("dx?"))
     dy = int(g2d.prompt("dy?"))
-    g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.handle_events(update, keydn, None)
     g2d.main_loop(5)  # Call update 5 times/second
 

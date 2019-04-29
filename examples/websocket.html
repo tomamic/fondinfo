@@ -78,17 +78,17 @@ function fillCircle(x, y, r) {
 function fillRect(x, y, w, h) {
     ctx.fillRect(x, y, w, h);
 }
-function loadImage(src) {
+function loadImage(key, src) {
     img = document.createElement("IMG");
     img.src = src;
-    loaded[src] = img;
+    loaded[key] = img;
 }
-function drawImage(src, x, y) {
-    img = loaded[src];
+function drawImage(key, x, y) {
+    img = loaded[key];
     ctx.drawImage(img, x, y);
 }
-function drawImageClip(src, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[src];
+function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
+    img = loaded[key];
     ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
 }
 function drawText(txt, x, y, size) {
@@ -103,18 +103,18 @@ function drawTextCentered(txt, x, y, size) {
     ctx.textAlign = "center";
     ctx.fillText(txt, x, y);
 }
-function loadAudio(src) {
+function loadAudio(key, src) {
     audio = document.createElement("AUDIO");
     audio.src = src;
-    loaded[src] = audio;
+    loaded[key] = audio;
 }
-function playAudio(src, loop) {
-    audio = loaded[src];
+function playAudio(key, loop) {
+    audio = loaded[key];
     audio.loop = loop;
     audio.play();
 }
-function pauseAudio(src) {
-    audio = loaded[src];
+function pauseAudio(key) {
+    audio = loaded[key];
     audio.pause();
 }
 function doAlert(message) {
@@ -129,15 +129,24 @@ function doPrompt(message) {
     ans = prompt(message);
     invokeExternal("dialog " + ans);
 }
+function fixKey(k) {
+    if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
+    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k=="Esc") k = "Escape";
+    else if (k=="Del") k = "Delete";
+    return k;
+}
 function mainLoop(fps) {
     document.onkeydown = function(e) {
-        if (keyPressed[e.key]) return;
-        keyPressed[e.key] = true;
-        invokeExternal("keydown " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) return;
+        keyPressed[k] = true;
+        invokeExternal("keydown " + k);
     };
     document.onkeyup = function(e) {
-        if (keyPressed[e.key]) keyPressed[e.key] = false;
-        invokeExternal("keyup " + e.key);
+        var k = fixKey(e.key);
+        if (keyPressed[k]) keyPressed[k] = false;
+        invokeExternal("keyup " + k);
     };
     document.onmousedown = function(e) {
         if (0 <= e.button && e.button < 3) {

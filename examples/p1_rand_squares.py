@@ -16,11 +16,9 @@ from random import randrange
 
 W, H = 640, 480
 SIDE = 100
-
 g2d.init_canvas((W, H))
 
 n = int(g2d.prompt("n? "))
-
 i = 0
 while i < n:
     color = randrange(255), randrange(255), randrange(255)

@@ -9,6 +9,7 @@ from random import randrange
 
 W, H = 320, 240
 SIDE = 100
+g2d.init_canvas((W, H))
 
 n = int(g2d.prompt("n? "))  # like input
 dx, dc = 0, 0
@@ -16,8 +17,6 @@ if n > 1:
     dx = (W - SIDE) / (n - 1)
     dy = (H - SIDE) / (n - 1)
     dc = 255.0 / (n - 1)
-
-g2d.init_canvas((W, H))
 
 i = 0
 while i < n:

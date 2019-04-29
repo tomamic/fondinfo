@@ -26,6 +26,7 @@ int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
 using std::function;
 using std::ptr_fun;
 using std::string;
+using std::to_string;
 using namespace std::string_literals;
 using std::vector;
 using std::cout;
@@ -57,10 +58,12 @@ static string html_ = R"html(
 <body>
 </body>
 <script>
-function invokeExternal(data) {
+window.invokeExternal = function(data) {
     window.external.invoke(data);
 }
-
+window.onload = function(e) {
+    setTimeout("invokeExternal('load')", 100);
+}
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -100,17 +103,17 @@ function fillCircle(x, y, r) {
 function fillRect(x, y, w, h) {
     ctx.fillRect(x, y, w, h);
 }
-function loadImage(src) {
+function loadImage(key, src) {
     img = document.createElement("IMG");
     img.src = src;
-    loaded[src] = img;
+    loaded[key] = img;
 }
-function drawImage(src, x, y) {
-    img = loaded[src];
+function drawImage(key, x, y) {
+    img = loaded[key];
     ctx.drawImage(img, x, y);
 }
-function drawImageClip(src, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[src];
+function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
+    img = loaded[key];
     ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
 }
 function drawText(txt, x, y, size) {
@@ -125,18 +128,18 @@ function drawTextCentered(txt, x, y, size) {
     ctx.textAlign = "center";
     ctx.fillText(txt, x, y);
 }
-function loadAudio(src) {
+function loadAudio(key, src) {
     audio = document.createElement("AUDIO");
     audio.src = src;
-    loaded[src] = audio;
+    loaded[key] = audio;
 }
-function playAudio(src, loop) {
-    audio = loaded[src];
+function playAudio(key, loop) {
+    audio = loaded[key];
     audio.loop = loop;
     audio.play();
 }
-function pauseAudio(src) {
-    audio = loaded[src];
+function pauseAudio(key) {
+    audio = loaded[key];
     audio.pause();
 }
 function doAlert(message) {
@@ -277,6 +280,8 @@ string base64_encode(unsigned char* bytes_to_encode, unsigned int in_len) {
   return ret;
 }
 
+void init_canvas(Size size);
+
 void handle_events(void (*update)(), void (*keydown)(string), void (*keyup)(string)) {
     usr_update_ = std::function<void()>(update);
     usr_keydown_ = std::function<void(string)>(keydown);
@@ -289,31 +294,32 @@ void handle_events(std::function<void()> update, std::function<void(string)> key
     usr_keyup_ = keyup;
 }
 
-void do_js_(string js) {
-    jscode_ << js << ";" << endl;
-}
-
-void do_js_(string cmd, string src, vector<int> args) {
+void do_js_(string cmd, vector<string> strs, vector<int> ints) {
     std::istringstream fmt{cmd};
     string part;
-    if (src != "§§§") {
+    for (auto s : strs) {
         std::getline(fmt, part, '%');
-        jscode_ << part << src;
+        jscode_ << part << s;
     }
-    for (auto a : args) {
+    for (auto a : ints) {
         std::getline(fmt, part, '%');
         jscode_ << part << a;
     }
-    std::getline(fmt, part, '%');
+    std::getline(fmt, part, '\0');
     jscode_ << part << ";" << endl;
 }
 
 void do_js_(string cmd, vector<int> args) {
-    do_js_(cmd, "§§§", args);
+    do_js_(cmd, {}, args);
+}
+
+void do_js_(string js) {
+    jscode_ << js << ";" << endl;
 }
 
 void update_canvas() {
     if (inited_) {
+        //cout << jscode_.str() << endl;
         webview_eval(&wv_, jscode_.str().c_str());
         jscode_.str("");
         jscode_.clear();
@@ -333,7 +339,7 @@ void main_loop(int fps=30) {
     if (!inited_) {
         init_canvas({0, 0});
     }
-    do_js_("mainLoop(%);", {fps});
+    do_js_("mainLoop(%)", {fps});
     update_canvas();
     while (webview_loop(&wv_, 1) == 0) { }
     webview_exit(&wv_);
@@ -344,7 +350,7 @@ void set_color(Color c) {
 }
 
 void clear_canvas() {
-    do_js_("clearCanvas()", {});
+    do_js_("clearCanvas()");
 }
 
 void draw_line(Point pt1, Point pt2) {
@@ -360,6 +366,7 @@ void fill_rect(Rect r) {
 }
 
 string load_image(string src) {
+    auto key = to_string(std::hash<string>{}(src));
     std::ifstream file{src, ios::in|ios::binary|ios::ate};
     if (file.is_open()) {
         file.seekg(0, ios::end);
@@ -375,42 +382,41 @@ string load_image(string src) {
     } else {
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"s + src;
     }
-    do_js_("loadImage('%')", src, {});
-    return src;
+    do_js_("loadImage('%', '%')", {key, src}, {});
+    return key;
 }
 
-void draw_image(string src, Point p) {
-    do_js_("drawImage('%', %, %)", src, {p.x, p.y});
+void draw_image(string image, Point p) {
+    do_js_("drawImage('%', %, %)", {image}, {p.x, p.y});
 }
 
-void draw_image_clip(string src, Rect clip, Rect r) {
+void draw_image_clip(string image, Rect clip, Rect r) {
     do_js_("drawImageClip('%', %, %, %, %, %, %, %, %)",
-        src, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
+        {image}, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
 }
 
 void draw_text(string txt, Point p, int size) {
-    do_js_("drawText('%', %, %, %)", txt, {p.x, p.y, size});
+    do_js_("drawText('%', %, %, %)", {txt}, {p.x, p.y, size});
 }
 
 void draw_text_centered(string txt, Point p, int size) {
-    do_js_("drawTextCentered('%', %, %, %)", txt, {p.x, p.y, size});
+    do_js_("drawTextCentered('%', %, %, %)", {txt}, {p.x, p.y, size});
 }
 
 string load_audio(string src) {
-    do_js_("loadAudio('%')", src, {});
-    return src;
+    auto key = to_string(std::hash<string>{}(src));
+    do_js_("loadAudio('%', '%')", {key, src}, {});
+    return key;
 }
 
 void play_audio(string audio, bool loop) {
-    if (loop) do_js_("pauseAudio('%', true)", audio, {});
-    else do_js_("pauseAudio('%', false)", audio, {});
+    if (loop) do_js_("pauseAudio('%', true)", {audio}, {});
+    else do_js_("pauseAudio('%', false)", {audio}, {});
 }
 
 void pause_audio(string audio) {
-    do_js_("pauseAudio('%')", audio, {});
+    do_js_("pauseAudio('%')", {audio}, {});
 }
-
-void init_canvas(Size size);
 
 string dialog_(string js) {
     if (!inited_) {
@@ -471,7 +477,7 @@ Point mouse_position() {
 }
 
 void handle_data_(string data) {
-    //std::cout << data << std::endl;
+    //cout << data << endl;
     std::istringstream line{data};
     string cmd; line >> cmd;
     if (cmd == "mousemove") {
@@ -491,6 +497,8 @@ void handle_data_(string data) {
         line.ignore();
         string ans; getline(line, ans);
         dialogs_.push_back(ans);
+    } else if (cmd == "load") {
+        inited_ = true;
     }
 }
 
@@ -501,7 +509,6 @@ void external_cb_(struct webview *wv, const char *arg) {
 
 void init_canvas(Size size) {
     if (!inited_) {
-        inited_ = true;
         srand(time(nullptr));
 
         string html_data = "data:text/html,"s + url_encode(html_);
@@ -519,13 +526,14 @@ void init_canvas(Size size) {
         webview_init(&wv_);
 
         #if !defined(WEBVIEW_WINAPI)
-        auto js = jscode_.str();
-        jscode_.str("");
-        do_js_("document.open('text/html', 'replace')");
-        do_js_("document.write(`"+html_+"`);");
-        do_js_("document.close();");
-        jscode_ << js;
+        auto js = "document.open('text/html', 'replace');\n"s
+            + "document.write(`"s+html_+"`);\n"s
+            + "document.close();\n"s;
+        webview_eval(&wv_, js.c_str());
         #endif
+        while (!inited_) {
+            webview_loop(&wv_, true);
+        }
     }
     do_js_("initCanvas(%, %)", {size.w, size.h});
     update_canvas();

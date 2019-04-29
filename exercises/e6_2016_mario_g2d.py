@@ -127,6 +127,7 @@ def update():
             g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
 def keydown(code):
+    print("#"+code+"#")
     if code == "Space":
         mario.jump()
     elif code == "ArrowLeft":

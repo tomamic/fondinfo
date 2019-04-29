@@ -41,6 +41,7 @@ class SocketHandler(WebSocket):
 
 def _handle_data(data: str):
     global _mouse_pos
+    print("#"+data+"#")
     args = data.split(" ")
     if args[0] == "mousemove":
         _mouse_pos = int(args[1]), int(args[2])
@@ -102,16 +103,17 @@ def fill_rect(r: (int, int, int, int)) -> None:
     _do_js(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def load_image(src: str) -> str:
+    key = hash(src)
     if not os.path.isfile(src):
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
-    _do_js(f"loadImage('{src}')")
-    return src
+    _do_js(f"loadImage('{key}', '{src}')")
+    return key
 
-def draw_image(src: str, pt: (int, int)) -> None:
-    _do_js(f"drawImage('{src}', {pt[0]}, {pt[1]})")
+def draw_image(img: str, pt: (int, int)) -> None:
+    _do_js(f"drawImage('{img}', {pt[0]}, {pt[1]})")
 
-def draw_image_clip(src: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
-    _do_js(f"drawImageClip('{src}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
+def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
+    _do_js(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def draw_text(txt: str, pt: (int, int), size: int) -> None:
     _do_js(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
@@ -120,10 +122,11 @@ def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
     _do_js(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
 
 def load_audio(src: str) -> str:
+    key = hash(src)
     if not os.path.isfile(src):
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
-    _do_js(f"loadAudio('{src}')")
-    return src
+    _do_js(f"loadAudio('{key}', '{src}')")
+    return key
 
 def play_audio(audio: str, loop=False) -> None:
     l = str(loop).lower()
@@ -138,7 +141,7 @@ def _dialog(js: str) -> str:
     _do_js(js)
     update_canvas()
     while _dialog_ans == None:
-        time.sleep(0.1)
+        time.sleep(0.2)
     return _dialog_ans
 
 def alert(message: str) -> None:
@@ -182,6 +185,6 @@ def _eval_js(code: str) -> None:
 
 def wait_done():
     while _server != None:
-        time.sleep(1)
+        time.sleep(0.2)
 
 init_canvas((0, 0))
