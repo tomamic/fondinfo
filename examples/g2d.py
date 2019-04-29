@@ -10,7 +10,7 @@ ensure_file("_websocket.html", "https://raw.githubusercontent.com/tomamic/fondin
 import os, signal, sys, time, webbrowser
 import http.server, socketserver
 from concurrent.futures import ThreadPoolExecutor
-from _websocket import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
+from _websocket import WebSocket, SimpleWebSocketServer
 
 _server, _socket, _httpd = None, None, None
 _jss = []
