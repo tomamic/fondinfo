@@ -41,7 +41,7 @@ class SocketHandler(WebSocket):
 
 def _handle_data(data: str):
     global _mouse_pos
-    print("#"+data+"#")
+    #print(data)
     args = data.split(" ")
     if args[0] == "mousemove":
         _mouse_pos = int(args[1]), int(args[2])
