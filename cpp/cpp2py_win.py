@@ -23,19 +23,21 @@ name = os.path.basename(os.path.dirname(os.path.realpath(__file__)))
 #py_home = f"{os.environ['LOCALAPPDATA']}\\Programs\\Python\\Python37-32"
 py_home = os.path.dirname(sys.executable)
 cb_home = f"{os.environ['PROGRAMFILES(X86)']}\\CodeBlocks"
-os.environ["PATH"] = f"C:\\MinGW\\bin;{cb_home}\\MinGW\\bin;{swig_home};{os.environ['PATH']}"
+os.environ["PATH"] = f"C:\\MinGW\\mingw64\\bin;{cb_home}\\MinGW\\bin;{swig_home};{os.environ['PATH']}"
 
 includes1 = includes2 = ""
-for fn in glob.glob("*.h"):
+templates = "%template() std::vector<int>;\n"
+for fn in glob.glob("*.hpp"):
     includes1 += f"#include \"{fn}\"\n"
     includes2 += f"%include \"{fn}\"\n"
+    if "actor.hpp" in fn:
+		templates += "%template() std::vector<Actor*>;\n"
 
 content = f"""%module {name}
 
 %include <std_string.i>
 %include <std_vector.i>
-%template() std::vector<int>;
-/*%template() std::vector<Actor*>;*/
+{templates.strip()}
 
 %{{
 /* Include headers in the wrapper code */
