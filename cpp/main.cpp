@@ -2,7 +2,7 @@
 
 void keydown(string key) {
     auto pos = mouse_position();
-    if (pos.x < 25 && pos.y < 25 and confirm("Exit?")) {
+    if (pos.x < 25 && pos.y < 25 && confirm("Exit?")) {
         close_canvas();
     } else {
         set_color({randint(0, 255), randint(0, 255), randint(0, 255)});

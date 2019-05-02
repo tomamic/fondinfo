@@ -8,7 +8,7 @@ auto b1 = new Ball{arena, {40, 80}};
 auto b2 = new Ball{arena, {80, 40}};
 auto g = new Ghost{arena, {120, 80}};
 auto turtle = new Turtle{arena, {80, 80}};
-auto sprites = ""s;//load_image("sprites.png");
+auto sprites = load_image("sprites.png");
 
 void update() {
     arena->move_all();
@@ -38,7 +38,6 @@ void keyup(string key) {
 
 int main() {
     init_canvas(arena->size());
-    sprites = load_image("sprites.png");
     handle_events(update, keydown, keyup);
     main_loop();
 }

@@ -25,19 +25,20 @@ py_home = os.path.dirname(sys.executable)
 cb_home = f"{os.environ['PROGRAMFILES(X86)']}\\CodeBlocks"
 os.environ["PATH"] = f"C:\\MinGW\\mingw64\\bin;{cb_home}\\MinGW\\bin;{swig_home};{os.environ['PATH']}"
 
-includes1 = includes2 = ""
-templates = "%template() std::vector<int>;\n"
-for fn in glob.glob("*.hpp"):
-    includes1 += f"#include \"{fn}\"\n"
-    includes2 += f"%include \"{fn}\"\n"
-    if "actor.hpp" in fn:
-		templates += "%template() std::vector<Actor*>;\n"
+includes1 = includes2 = actor_template = ""
+for hpp_file in ["g2d/actor.hpp", "../g2d/actor.hpp"] + list(glob.glob("*.hpp")):
+    if os.path.exists(hpp_file):
+        includes1 += f"#include \"{hpp_file}\"\n"
+        includes2 += f"%include \"{hpp_file}\"\n"
+        if "actor.hpp" in hpp_file:
+            actor_template = "%template() std::vector<Actor*>;\n"
 
 content = f"""%module {name}
 
 %include <std_string.i>
 %include <std_vector.i>
-{templates.strip()}
+%template() std::vector<int>;
+{actor_template}
 
 %{{
 /* Include headers in the wrapper code */
