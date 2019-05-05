@@ -1,3 +1,12 @@
+if __name__ == "__main__":
+    import sys, webview
+    wv = webview.WebView(url="http://localhost:8008/_websocket.html",
+        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
+        title="G2D Canvas", resizable=False, debug=False)
+    while wv.loop(True):
+        pass
+    sys.exit()
+
 def ensure_file(name, url):
     import os, urllib.request
     if not os.path.isfile(name):
@@ -7,11 +16,15 @@ def ensure_file(name, url):
 ensure_file("_websocket.py", "https://raw.githubusercontent.com/dpallot/simple-websocket-server/master/SimpleWebSocketServer/SimpleWebSocketServer.py")
 ensure_file("_websocket.html", "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/websocket.html")
 
-import os, signal, sys, time, webbrowser
+import os, signal, subprocess, sys, time, webbrowser
 import http.server, socketserver
 from concurrent.futures import ThreadPoolExecutor
 from _websocket import WebSocket, SimpleWebSocketServer
-
+try:
+    import webview
+except:
+    subprocess.call([sys.executable, "-m", "pip", "install", "webview"])
+    
 _server, _socket, _httpd = None, None, None
 _jss = []
 _usr_update, _usr_keydown, _usr_keyup = None, None, None
@@ -72,11 +85,18 @@ def start_server():
     while _server != None:
         _server.serveonce()
 
+def start_webview(w, h):
+    try:
+        import subprocess, webview
+        subprocess.call([sys.executable, __file__, str(w), str(h)])
+    except:
+        webbrowser.open("http://localhost:8008/_websocket.html", new=0)
+
 def init_canvas(size: (int, int)) -> None:
     if _server == None:
         _executor.submit(serve_files)
         _executor.submit(start_server)
-        webbrowser.open("http://localhost:8008/_websocket.html", new=0)
+        _executor.submit(start_webview, *size)
         while _socket == None:
             time.sleep(0.1)
     '''
@@ -186,5 +206,3 @@ def _eval_js(code: str) -> None:
 def wait_done():
     while _server != None:
         time.sleep(0.2)
-
-init_canvas((0, 0))
