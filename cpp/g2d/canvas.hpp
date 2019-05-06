@@ -106,6 +106,11 @@ function fillRect(x, y, w, h) {
 function loadImage(key, src) {
     img = document.createElement("IMG");
     img.src = src;
+    image.onerror = function() {
+        if (img.src.indexOf("githubusercontent") == -1) {
+            img.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
+        }
+    }
     loaded[key] = img;
 }
 function drawImage(key, x, y) {
@@ -131,6 +136,11 @@ function drawTextCentered(txt, x, y, size) {
 function loadAudio(key, src) {
     audio = document.createElement("AUDIO");
     audio.src = src;
+    audio.onerror = function() {
+        if (audio.src.indexOf("githubusercontent") == -1) {
+            audio.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
+        }
+    }
     loaded[key] = audio;
 }
 function playAudio(key, loop) {

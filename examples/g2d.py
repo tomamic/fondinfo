@@ -1,10 +1,8 @@
 if __name__ == "__main__":
     import sys, webview
-    wv = webview.WebView(url="http://localhost:8008/_websocket.html",
+    webview.create_window(url="http://localhost:8008/_websocket.html",
         width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
         title="G2D Canvas", resizable=False, debug=False)
-    while wv.loop(True):
-        pass
     sys.exit()
 
 def ensure_file(name, url):
@@ -23,8 +21,8 @@ from _websocket import WebSocket, SimpleWebSocketServer
 try:
     import webview
 except:
-    subprocess.call([sys.executable, "-m", "pip", "install", "webview"])
-    
+    subprocess.call([sys.executable, "-m", "pip", "install", "pywebview"])
+
 _server, _socket, _httpd = None, None, None
 _jss = []
 _usr_update, _usr_keydown, _usr_keyup = None, None, None
@@ -87,9 +85,13 @@ def start_server():
 
 def start_webview(w, h):
     try:
-        import subprocess, webview
+        print("importing")
+        import webview
+        print("imported")
         subprocess.call([sys.executable, __file__, str(w), str(h)])
+        print("called")
     except:
+        print("skipped")
         webbrowser.open("http://localhost:8008/_websocket.html", new=0)
 
 def init_canvas(size: (int, int)) -> None:
@@ -124,8 +126,6 @@ def fill_rect(r: (int, int, int, int)) -> None:
 
 def load_image(src: str) -> str:
     key = hash(src)
-    if not os.path.isfile(src):
-        src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
     _do_js(f"loadImage('{key}', '{src}')")
     return key
 
@@ -143,8 +143,6 @@ def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
 
 def load_audio(src: str) -> str:
     key = hash(src)
-    if not os.path.isfile(src):
-        src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src
     _do_js(f"loadAudio('{key}', '{src}')")
     return key
 

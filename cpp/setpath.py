@@ -1,10 +1,13 @@
-import os
-folders = ["C:\\MinGW\\bin", "C:\\MinGW\\mingw64\\bin"]
-for elem in os.environ["PATH"].split(";"):
-	if elem and elem not in folders:
-		folders.append(elem)
-newpath = ";".join(folders)
-os.environ["PATH"] = newpath
-os.system(f'setx PATH "{newpath}"')
-os.system(f'setx CPATH "C:\\MinGW\\include"')
-os.system(f'setx LD_LIBRARY_PATH "C:\\MinGW\\lib"')
+import os, subprocess
+
+def add_to_env(key, new_values):
+	vals = list(new_values)
+	for elem in os.environ[key].split(";"):
+		if elem and elem not in vals:
+			vals.append(elem)
+	os.environ[key] = ";".join(vals)
+	subprocess.call(["setx", key, os.environ[key]])
+
+add_to_env("PATH", ["C:\\MinGW\\bin", "C:\\MinGW\\mingw64\\bin"])
+add_to_env("CPATH", ["C:\\MinGW\\include"])
+add_to_env("LD_LIBRARY_PATH", ["C:\\MinGW\\lib"])
