@@ -14,21 +14,17 @@ def ensure_file(name, url):
 ensure_file("_websocket.py", "https://raw.githubusercontent.com/dpallot/simple-websocket-server/master/SimpleWebSocketServer/SimpleWebSocketServer.py")
 ensure_file("_websocket.html", "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/websocket.html")
 
-import os, signal, subprocess, sys, time, webbrowser
-import http.server, socketserver
-from concurrent.futures import ThreadPoolExecutor
+import os, signal, subprocess, sys, threading, time, webbrowser
+import http.server, socketserver, concurrent.futures
 from _websocket import WebSocket, SimpleWebSocketServer
-try:
-    import webview
-except:
-    subprocess.call([sys.executable, "-m", "pip", "install", "pywebview"])
 
-_server, _socket, _httpd = None, None, None
+_server, _socket, _httpd, _wv = None, None, None, None
 _jss = []
 _usr_update, _usr_keydown, _usr_keyup = None, None, None
 _mouse_pos = (0, 0)
 _dialog_ans = None
-_executor = ThreadPoolExecutor(max_workers=20)
+_executor = concurrent.futures.ThreadPoolExecutor(max_workers=20)
+_socket_c, _dialog_c = threading.Condition(), threading.Condition()
 
 class SocketHandler(WebSocket):
 
@@ -39,16 +35,16 @@ class SocketHandler(WebSocket):
     def handleConnected(self):
         #print("connected")
         global _socket
-        _socket = self
+        with _socket_c:
+            _socket = self
+            _socket_c.notify_all()
 
     def handleClose(self):
         #print("close")
-        global _server, _socket, _httpd
-        _server.close()
-        _httpd.socket.close()
-        _httpd.shutdown()
-        _server, _socket, _httpd = None, None, None
-        #sys.exit()
+        global _socket
+        with _socket_c:
+            _socket = None
+            _socket_c.notify_all()
 
 def _handle_data(data: str):
     global _mouse_pos
@@ -67,7 +63,9 @@ def _handle_data(data: str):
         update_canvas()
     elif args[0] == "dialog":
         global _dialog_ans
-        _dialog_ans = data.split(" ", 1)[1]
+        with _dialog_c:
+            _dialog_ans = data.split(" ", 1)[1]
+            _dialog_c.notify_all()
 
 def serve_files() -> None:
     global _httpd
@@ -80,18 +78,15 @@ def serve_files() -> None:
 def start_server():
     global _server
     _server = SimpleWebSocketServer("localhost", 7574, SocketHandler)
-    while _server != None:
+    while _server:
         _server.serveonce()
 
 def start_webview(w, h):
     try:
-        print("importing")
         import webview
-        print("imported")
-        subprocess.call([sys.executable, __file__, str(w), str(h)])
-        print("called")
+        global _wv
+        _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
     except:
-        print("skipped")
         webbrowser.open("http://localhost:8008/_websocket.html", new=0)
 
 def init_canvas(size: (int, int)) -> None:
@@ -99,8 +94,9 @@ def init_canvas(size: (int, int)) -> None:
         _executor.submit(serve_files)
         _executor.submit(start_server)
         _executor.submit(start_webview, *size)
-        while _socket == None:
-            time.sleep(0.1)
+        with _socket_c:
+            while _socket == None:
+                _socket_c.wait()
     '''
     def close_sig_handler(signal, frame):
         _server.close()
@@ -155,12 +151,13 @@ def pause_audio(audio: str) -> None:
 
 def _dialog(js: str) -> str:
     global _dialog_ans
-    _dialog_ans = None
-    _do_js(js)
-    update_canvas()
-    while _dialog_ans == None:
-        time.sleep(0.2)
-    return _dialog_ans
+    with _dialog_c:
+        _dialog_ans = None
+        _do_js(js)
+        update_canvas()
+        while _dialog_ans == None:
+            _dialog_c.wait()
+        return _dialog_ans
 
 def alert(message: str) -> None:
     _dialog(f"doAlert('{message}')")
@@ -202,5 +199,11 @@ def _eval_js(code: str) -> None:
     _socket.sendMessage(code)
 
 def wait_done():
-    while _server != None:
-        time.sleep(0.2)
+    with _socket_c:
+        while _socket:
+            _socket_c.wait()
+        _server.close()
+        #_httpd.socket.close()
+        _httpd.shutdown()
+        if _wv:
+            _wv.terminate()
