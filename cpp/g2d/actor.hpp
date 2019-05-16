@@ -1,5 +1,5 @@
-#ifndef ACTOR_H
-#define ACTOR_H
+#ifndef ACTOR_HPP
+#define ACTOR_HPP
 
 #include <vector>
 #include <algorithm>
@@ -9,8 +9,7 @@ struct Size{ int w, h; };
 struct Rect{ int x, y, w, h; };
 struct Color{ int r, g, b; };
 
-class Actor
-{
+class Actor {
 public:
     virtual void move() = 0;
     virtual void collide(Actor* other) = 0;
@@ -19,66 +18,52 @@ public:
     virtual ~Actor() {}
 };
 
-class Arena
-{
+class Arena {
 private:
     Size size_;
     std::vector<Actor*> actors_;
 public:
-    Arena(Size size);
-    void add(Actor* a);
-    void remove(Actor* a);
-    void move_all();
-    bool check_collision(Actor* a1, Actor* a2);
-    std::vector<Actor*> actors() { return actors_; }
-    Size size() { return size_; }
-    ~Arena();
-};
-
-Arena::Arena(Size size) {
-    size_ = size;
-}
-
-void Arena::add(Actor* a) {
-    auto pos = find(begin(actors_), end(actors_), a);
-    if (pos == end(actors_)) {
-        actors_.push_back(a);
+    Arena(Size size) { size_ = size; }
+    void add(Actor* a) {
+        auto pos = find(begin(actors_), end(actors_), a);
+        if (pos == end(actors_)) {
+            actors_.push_back(a);
+        }
     }
-}
-
-void Arena::remove(Actor* a) {
-    auto pos = find(begin(actors_), end(actors_), a);
-    if (pos != end(actors_)) {
-        actors_.erase(pos);
+    void remove(Actor* a) {
+        auto pos = find(begin(actors_), end(actors_), a);
+        if (pos != end(actors_)) {
+            actors_.erase(pos);
+        }
     }
-}
-
-void Arena::move_all() {
-    auto acts = actors();
-    reverse(begin(acts), end(acts));
-    for (auto a : acts) {
-        a->move();
-        for (auto other : acts) {
-            if (other != a && check_collision(a, other)) {
-                a->collide(other);
-                other->collide(a);
+    void move_all() {
+        auto acts = actors();
+        reverse(begin(acts), end(acts));
+        for (auto a : acts) {
+            a->move();
+            for (auto other : acts) {
+                if (other != a && check_collision(a, other)) {
+                    a->collide(other);
+                    other->collide(a);
+                }
             }
         }
     }
-}
-
-bool Arena::check_collision(Actor* a1, Actor* a2) {
-    auto r1 = a1->position();
-    auto r2 = a2->position();
-    return (r2.y < r1.y + r1.h && r1.y < r2.y + r2.h
-        && r2.x < r1.x + r1.w && r1.x < r2.x + r2.w);
-}
-
-Arena::~Arena() {
-    while (!actors_.empty()) {
-        delete actors_.back();
-        actors_.pop_back();
+    bool check_collision(Actor* a1, Actor* a2) {
+        auto r1 = a1->position();
+        auto r2 = a2->position();
+        return (r2.y < r1.y + r1.h && r1.y < r2.y + r2.h
+            && r2.x < r1.x + r1.w && r1.x < r2.x + r2.w);
     }
-}
+    std::vector<Actor*> actors() { return actors_; }
+    Size size() { return size_; }
+    ~Arena() {
+        while (!actors_.empty()) {
+            delete actors_.back();
+            actors_.pop_back();
+        }
+    }
+};
 
-#endif // ACTOR_H
+
+#endif // ACTOR_HPP

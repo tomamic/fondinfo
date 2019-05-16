@@ -1,5 +1,5 @@
-#ifndef CANVAS_H
-#define CANVAS_H
+#ifndef CANVAS_HPP
+#define CANVAS_HPP
 #define WEBVIEW_IMPLEMENTATION
 
 #include "webview.hpp"
@@ -106,7 +106,7 @@ function fillRect(x, y, w, h) {
 function loadImage(key, src) {
     img = document.createElement("IMG");
     img.src = src;
-    image.onerror = function() {
+    img.onerror = function() {
         if (img.src.indexOf("githubusercontent") == -1) {
             img.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
         }
@@ -549,4 +549,4 @@ void init_canvas(Size size) {
     update_canvas();
 }
 
-#endif /* CANVAS_H */
+#endif // CANVAS_HPP
