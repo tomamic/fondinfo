@@ -5,8 +5,9 @@ void keydown(string key) {
     if (pos.x < 25 && pos.y < 25 && confirm("Exit?")) {
         close_canvas();
     } else {
+        auto radius = 25; //std::stoi(prompt("Radius?"));
         set_color({randint(0, 255), randint(0, 255), randint(0, 255)});
-        fill_circle({pos.x, pos.y}, 25);
+        fill_circle({pos.x, pos.y}, radius);
     }
 }
 

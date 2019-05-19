@@ -1,7 +1,8 @@
 #ifndef CANVAS_HPP
 #define CANVAS_HPP
+#define WEBVIEW_IMPLEMENTATION
 
-#include "websocket.hpp"
+#include "webview.hpp"
 #include "actor.hpp"
 #include <cstdlib>
 #include <ctime>
@@ -12,6 +13,14 @@
 #include <sstream>
 #include <thread>
 #include <vector>
+
+#if defined(WEBVIEW_WINAPI)
+int main();
+int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
+                   int nCmdShow) {
+    return main();
+}
+#endif
 
 //using namespace std;
 using std::function;
@@ -24,63 +33,37 @@ using std::cout;
 using std::endl;
 using std::ios;
 
+static struct webview wv_;
 static Point mouse_pos_;
 static std::ostringstream jscode_;
 static std::function<void()> usr_update_;
 static std::function<void(string)> usr_keydown_;
 static std::function<void(string)> usr_keyup_;
 static vector<string> dialogs_;
-static vector<string> messages_;
 static bool inited_ = false;
 static int max_w_ = 480, max_h_ = 360;
-std::mutex mut_;
-std::condition_variable cond_;
 
 static string html_ = R"html(
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<meta charset="utf-8" />
-
-<title>WebSocket Test</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>G2D Canvas</title>
 <style>
     body { margin: 0; padding: 0; }
     canvas { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
              margin: 0; padding: 0; border: 1px solid silver; }
 </style>
-<script language="javascript" type="text/javascript">
-
-function doConnect() {
-    websocket = new WebSocket("ws://localhost:7574/");
-    websocket.onopen = function(evt) {
-        console.log("open");
-        /*doSend("connect");*/
-    };
-    websocket.onclose = function(evt) {
-        console.log("close");
-        closeCanvas();
-    };
-    websocket.onmessage = function(evt) {
-        console.log("message: " + evt.data);
-        eval(evt.data);
-    };
-    websocket.onerror = function(evt) {
-        console.log("error");
-        websocket.close();
-    };
+</head>
+<body>
+</body>
+<script>
+window.invokeExternal = function(data) {
+    window.external.invoke(data);
 }
-function doSend(message) {
-    console.log("sending: " + message);
-    websocket.send(message);
+window.onload = function(e) {
+    setTimeout("invokeExternal('load')", 100);
 }
-function doDisconnect() {
-    /*doSend("disconnect");*/
-    console.log("disconnecting");
-    websocket.close();
-}
-window.addEventListener("load", doConnect, false);
-
-invokeExternal = doSend
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -211,9 +194,9 @@ function mainLoop(fps) {
         }
     };
     document.onmousemove = function(e) {
-        var rect = canvas.getBoundingClientRect()
-        var x = Math.round(e.clientX - rect.left)
-        var y = Math.round(e.clientY - rect.top)
+        var rect = canvas.getBoundingClientRect();
+        var x = Math.round(e.clientX - rect.left);
+        var y = Math.round(e.clientY - rect.top);
         invokeExternal("mousemove " + x + " " + y);
     };
     document.onfocus = function(e) {
@@ -236,16 +219,12 @@ function closeCanvas() {
         delete timerId;
     }
     if (typeof canvas !== "undefined") {
-        canvas.parentNode.removeChild(canvas);
-        delete canvas;
+        clearCanvas();
+        /*canvas.parentNode.removeChild(canvas);
+        delete canvas;*/
     }
-    doDisconnect();
-    /*alert("You can close this window, now.");*/
-    open("about:blank", "_self").close();
 }
 </script>
-</head>
-<body></body>
 </html>
 )html";
 
@@ -350,8 +329,8 @@ void do_js_(string js) {
 
 void update_canvas() {
     if (inited_) {
-        cout << "js: " << jscode_.str() << endl;
-        ws_send(jscode_.str());
+        //cout << jscode_.str() << endl;
+        webview_eval(&wv_, jscode_.str().c_str());
         jscode_.str("");
         jscode_.clear();
     }
@@ -362,77 +341,18 @@ void close_canvas() {
         handle_events(nullptr, nullptr, nullptr);
         do_js_("closeCanvas()");
         update_canvas();
-        /*webview_terminate(&wv_);*/
-    }
-}
-
-void receive_data_(string data) {
-    std::istringstream line{data};
-    string cmd; line >> cmd;
-    if (cmd == "dialog") {
-        line.ignore();
-        string ans; getline(line, ans);
-        std::cout << ans << "\n";
-        std::lock_guard<std::mutex> guard(mut_);
-        dialogs_.push_back(ans);
-        cond_.notify_all();
-        std::cout << ans << "2\n";
-    } else if (cmd == "connect") {
-        std::lock_guard<std::mutex> guard(mut_);
-        inited_ = true;
-        cond_.notify_all();
-    } else if (cmd == "disconnect") {
-        std::lock_guard<std::mutex> guard(mut_);
-        inited_ = false;
-        cond_.notify_all();
-    } else {
-        std::lock_guard<std::mutex> guard(mut_);
-        messages_.push_back(data);
-        cond_.notify_all();
-    }
-}
-
-void handle_data_(string data) {
-    cout << "canvas: " << data << endl;
-    std::istringstream line{data};
-    string cmd; line >> cmd;
-    if (cmd == "mousemove") {
-        line >> mouse_pos_.x >> mouse_pos_.y;
-    } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
-        string key; line >> key;
-        usr_keydown_(key);
-        update_canvas();
-    } else if (cmd == "keyup" && usr_keyup_ != nullptr) {
-        string key; line >> key;
-        usr_keyup_(key);
-        update_canvas();
-    } else if (cmd == "update" && usr_update_ != nullptr) {
-        usr_update_();
-        update_canvas();
+        webview_terminate(&wv_);
     }
 }
 
 void main_loop(int fps=30) {
     if (!inited_) {
-        init_canvas({480, 360});
+        init_canvas({0, 0});
     }
     do_js_("mainLoop(%)", {fps});
     update_canvas();
-
-    std::cout << "looping\n";
-    auto looping = true;
-    while (inited_) {
-        while (messages_.size() > 0) {
-            string msg;
-            {
-                std::unique_lock<std::mutex> mlock(mut_);
-                cond_.wait(mlock, [=]() { return messages_.size() > 0; } );
-                msg = messages_[0];
-                messages_.erase(messages_.begin());
-            }
-            handle_data_(msg);
-        }
-    }
+    while (webview_loop(&wv_, 1) == 0) { }
+    webview_exit(&wv_);
 }
 
 void set_color(Color c) {
@@ -459,7 +379,6 @@ string load_image(string src) {
     auto key = to_string(std::hash<string>{}(src));
     std::ifstream file{src, ios::in|ios::binary|ios::ate};
     if (file.is_open()) {
-        /*
         file.seekg(0, ios::end);
         auto size = file.tellg();
         file.seekg(0, ios::beg);
@@ -470,8 +389,6 @@ string load_image(string src) {
         auto pre = "data:image/"s + ext + ";base64,"s;
         src = pre + base64_encode((unsigned char *)data, size);
         delete data;
-        */
-        file.close();
     } else {
         src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"s + src;
     }
@@ -513,14 +430,13 @@ void pause_audio(string audio) {
 
 string dialog_(string js) {
     if (!inited_) {
-        init_canvas({480, 360});
+        init_canvas({0, 0});
     }
     do_js_(js);
     update_canvas();
-
-    std::unique_lock<std::mutex> mlock(mut_);
-    cond_.wait(mlock, [=]() { return dialogs_.size() > 0; } );
-    
+    while (dialogs_.size() == 0) {
+        webview_loop(&wv_, false);
+    }
     auto ans = dialogs_[0];
     dialogs_.erase(dialogs_.begin());
     return ans;
@@ -570,18 +486,64 @@ Point mouse_position() {
     return mouse_pos_;
 }
 
+void handle_data_(string data) {
+    //cout << data << endl;
+    std::istringstream line{data};
+    string cmd; line >> cmd;
+    if (cmd == "mousemove") {
+        line >> mouse_pos_.x >> mouse_pos_.y;
+    } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
+        string key; line >> key;
+        usr_keydown_(key);
+        update_canvas();
+    } else if (cmd == "keyup" && usr_keyup_ != nullptr) {
+        string key; line >> key;
+        usr_keyup_(key);
+        update_canvas();
+    } else if (cmd == "update" && usr_update_ != nullptr) {
+        usr_update_();
+        update_canvas();
+    } else if (cmd == "dialog") {
+        line.ignore();
+        string ans; getline(line, ans);
+        dialogs_.push_back(ans);
+    } else if (cmd == "load") {
+        inited_ = true;
+    }
+}
+
+
+void external_cb_(struct webview *wv, const char *arg) {
+    handle_data_(string{arg});
+}
+
 void init_canvas(Size size) {
     if (!inited_) {
         srand(time(nullptr));
 
-        std::ofstream out{"_websocket.html"};
-        out << html_;
-        out.close();
+        string html_data = "data:text/html,"s + url_encode(html_);
 
-        ws_data_cb = receive_data_;
-        ws_init();    
-        std::unique_lock<std::mutex> mlock(mut_);
-        cond_.wait(mlock, [=]() { return inited_; } );
+        wv_.title = "G2D WebView";
+        #if defined(WEBVIEW_WINAPI)
+        wv_.url = html_data.c_str();
+        #else
+        wv_.url = "about:blank";
+        #endif
+        wv_.width = size.w > max_w_ ? size.w : max_w_;
+        wv_.height = size.h > max_h_ ? size.h : max_h_;
+        wv_.resizable = 0;
+        wv_.external_invoke_cb = external_cb_;
+        webview_init(&wv_);
+
+        #if !defined(WEBVIEW_WINAPI)
+        auto js = "document.open('text/html', 'replace');\n"s
+            + "document.write(`"s+html_+"`);\n"s
+            + "document.close();\n"s;
+        webview_eval(&wv_, js.c_str());
+        #endif
+        while (!inited_) {
+            webview_loop(&wv_, true);
+        }
     }
     do_js_("initCanvas(%, %)", {size.w, size.h});
     update_canvas();
