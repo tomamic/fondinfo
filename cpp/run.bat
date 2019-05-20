@@ -1,5 +1,5 @@
-if not "x%PATH:MinGW=%"=="x%PATH%" setx PATH "%PATH%;C:\MinGW\mingw64\bin"
+if not "x%PATH:MinGW=%"=="x%PATH%" setx PATH "%PATH%;C:\MinGW\bin"
 
 del _main.exe
-g++ *.cpp -std=c++14 -DWEBVIEW_WINAPI=1 -lole32 -lcomctl32 -loleaut32 -luuid -mwindows -o _main.exe
+g++ *.cpp -o _main.exe -lws2_32 -lwsock32
 _main.exe
