@@ -20,8 +20,6 @@ using std::string;
 using std::to_string;
 using namespace std::string_literals;
 using std::vector;
-using std::cout;
-using std::endl;
 using std::ios;
 
 static Point mouse_pos_;
@@ -29,8 +27,7 @@ static std::ostringstream jscode_;
 static std::function<void()> usr_update_;
 static std::function<void(string)> usr_keydown_;
 static std::function<void(string)> usr_keyup_;
-static vector<string> dialogs_;
-static vector<string> messages_;
+static vector<string> answers_, events_;
 static bool inited_ = false;
 static int max_w_ = 480, max_h_ = 360;
 std::mutex mut_;
@@ -171,15 +168,15 @@ function pauseAudio(key) {
 }
 function doAlert(message) {
     alert(message);
-    invokeExternal("dialog true");
+    invokeExternal("answer true");
 }
 function doConfirm(message) {
     ans = confirm(message);
-    invokeExternal("dialog " + ans);
+    invokeExternal("answer " + ans);
 }
 function doPrompt(message) {
     ans = prompt(message);
-    invokeExternal("dialog " + ans);
+    invokeExternal("answer " + ans);
 }
 function fixKey(k) {
     if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
@@ -313,6 +310,38 @@ string base64_encode(unsigned char* bytes_to_encode, unsigned int in_len) {
 
 void init_canvas(Size size);
 
+bool inited() {
+    std::unique_lock<std::mutex> mlock(mut_);
+    return inited_;
+}
+
+void wait_inited(bool val) {
+    std::unique_lock<std::mutex> mlock(mut_);
+    cond_.wait(mlock, [=]() { return inited_ == val; } );
+}
+
+void set_inited(bool val) {
+    std::lock_guard<std::mutex> guard(mut_);
+    inited_ = val;
+    cond_.notify_all();
+}
+
+void produce_msg(std::string msg, std::vector<string>& msgs) {
+    std::lock_guard<std::mutex> guard(mut_);
+    msgs.push_back(msg);
+    cond_.notify_all();
+}
+
+std::string consume_msg(std::vector<string>& msgs) {
+    std::unique_lock<std::mutex> mlock(mut_);
+    if (msgs.size() == 0) {
+        cond_.wait(mlock, [&]() { return msgs.size() > 0; } );
+    }
+    auto msg = msgs[0];
+    msgs.erase(msgs.begin());
+    return msg;
+}
+
 void handle_events(void (*update)(), void (*keydown)(string), void (*keyup)(string)) {
     usr_update_ = std::function<void()>(update);
     usr_keydown_ = std::function<void(string)>(keydown);
@@ -337,7 +366,7 @@ void do_js_(string cmd, vector<string> strs, vector<int> ints) {
         jscode_ << part << a;
     }
     std::getline(fmt, part, '\0');
-    jscode_ << part << ";" << endl;
+    jscode_ << part << ";\n";
 }
 
 void do_js_(string cmd, vector<int> args) {
@@ -345,12 +374,12 @@ void do_js_(string cmd, vector<int> args) {
 }
 
 void do_js_(string js) {
-    jscode_ << js << ";" << endl;
+    jscode_ << js << ";\n";
 }
 
 void update_canvas() {
-    if (inited_) {
-        cout << "js: " << jscode_.str() << endl;
+    if (inited()) {
+        std::cout << "js: " << jscode_.str() << std::endl;
         ws_send(jscode_.str());
         jscode_.str("");
         jscode_.clear();
@@ -358,7 +387,7 @@ void update_canvas() {
 }
 
 void close_canvas() {
-    if (inited_) {
+    if (inited()) {
         handle_events(nullptr, nullptr, nullptr);
         do_js_("closeCanvas()");
         update_canvas();
@@ -366,71 +395,43 @@ void close_canvas() {
     }
 }
 
-void receive_data_(string data) {
-    std::istringstream line{data};
-    string cmd; line >> cmd;
-    if (cmd == "dialog") {
-        line.ignore();
-        string ans; getline(line, ans);
-        std::cout << ans << "\n";
-        std::lock_guard<std::mutex> guard(mut_);
-        dialogs_.push_back(ans);
-        cond_.notify_all();
-        std::cout << ans << "2\n";
+void handle_event_(string evt) {
+    std::cout << "event: " << evt << std::endl;
+    auto cmd = evt.substr(0, evt.find(' '));
+    if (cmd == "answer") {
+        produce_msg(evt.substr(7, evt.npos), answers_);
     } else if (cmd == "connect") {
-        std::lock_guard<std::mutex> guard(mut_);
-        inited_ = true;
-        cond_.notify_all();
+        set_inited(true);
     } else if (cmd == "disconnect") {
-        std::lock_guard<std::mutex> guard(mut_);
-        inited_ = false;
-        cond_.notify_all();
-    } else {
-        std::lock_guard<std::mutex> guard(mut_);
-        messages_.push_back(data);
-        cond_.notify_all();
+        set_inited(false);
     }
-}
-
-void handle_data_(string data) {
-    cout << "canvas: " << data << endl;
-    std::istringstream line{data};
-    string cmd; line >> cmd;
-    if (cmd == "mousemove") {
-        line >> mouse_pos_.x >> mouse_pos_.y;
-    } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
-        string key; line >> key;
-        usr_keydown_(key);
-        update_canvas();
-    } else if (cmd == "keyup" && usr_keyup_ != nullptr) {
-        string key; line >> key;
-        usr_keyup_(key);
-        update_canvas();
-    } else if (cmd == "update" && usr_update_ != nullptr) {
-        usr_update_();
-        update_canvas();
-    }
+    produce_msg(evt, events_);
 }
 
 void main_loop(int fps=30) {
-    if (!inited_) {
+    if (!inited()) {
         init_canvas({480, 360});
     }
     do_js_("mainLoop(%)", {fps});
     update_canvas();
 
-    std::cout << "looping\n";
-    auto looping = true;
-    while (inited_) {
-        while (messages_.size() > 0) {
-            string msg;
-            {
-                std::unique_lock<std::mutex> mlock(mut_);
-                cond_.wait(mlock, [=]() { return messages_.size() > 0; } );
-                msg = messages_[0];
-                messages_.erase(messages_.begin());
-            }
-            handle_data_(msg);
+    while (inited()) {
+        auto msg = consume_msg(events_);
+        std::istringstream line{msg};
+        string cmd; line >> cmd;
+        if (cmd == "mousemove") {
+            line >> mouse_pos_.x >> mouse_pos_.y;
+        } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
+            string key; line >> key;
+            usr_keydown_(key);
+            update_canvas();
+        } else if (cmd == "keyup" && usr_keyup_ != nullptr) {
+            string key; line >> key;
+            usr_keyup_(key);
+            update_canvas();
+        } else if (cmd == "update" && usr_update_ != nullptr) {
+            usr_update_();
+            update_canvas();
         }
     }
 }
@@ -457,24 +458,6 @@ void fill_rect(Rect r) {
 
 string load_image(string src) {
     auto key = to_string(std::hash<string>{}(src));
-    std::ifstream file{src, ios::in|ios::binary|ios::ate};
-    if (file.is_open()) {
-        /*
-        file.seekg(0, ios::end);
-        auto size = file.tellg();
-        file.seekg(0, ios::beg);
-        auto data = new char[size];
-        file.read(data, size);
-
-        auto ext = src.substr(1 + src.find_last_of('.'));
-        auto pre = "data:image/"s + ext + ";base64,"s;
-        src = pre + base64_encode((unsigned char *)data, size);
-        delete data;
-        */
-        file.close();
-    } else {
-        src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"s + src;
-    }
     do_js_("loadImage('%', '%')", {key, src}, {});
     return key;
 }
@@ -512,58 +495,24 @@ void pause_audio(string audio) {
 }
 
 string dialog_(string js) {
-    if (!inited_) {
+    if (!inited()) {
         init_canvas({480, 360});
     }
     do_js_(js);
     update_canvas();
-
-    std::unique_lock<std::mutex> mlock(mut_);
-    cond_.wait(mlock, [=]() { return dialogs_.size() > 0; } );
-    
-    auto ans = dialogs_[0];
-    dialogs_.erase(dialogs_.begin());
-    return ans;
+    return consume_msg(answers_);
 }
 
 void alert(string message) {
     dialog_("doAlert('"s + message + "')"s);
-    /*
-    update_canvas();
-    #if defined(WEBVIEW_WINAPI)
-    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::MsgBox('"s + message + "', [microsoft.visualbasic.msgboxstyle]::Information -bor [microsoft.visualbasic.msgboxstyle]::OkOnly -bor [microsoft.visualbasic.msgboxstyle]::DefaultButton1, '');Write-Output $answer;\""s).c_str());
-    #else
-    system(("zenity --info --text=\""s + message + "\""s).c_str());
-    #endif
-    */
 }
 
 bool confirm(string message) {
     return dialog_("doConfirm('"s + message + "')"s) == "true";
-    /*
-    update_canvas();
-    #if defined(WEBVIEW_WINAPI)
-    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::MsgBox('"s + message + "', [microsoft.visualbasic.msgboxstyle]::Question -bor [microsoft.visualbasic.msgboxstyle]::OkCancel -bor [microsoft.visualbasic.msgboxstyle]::DefaultButton1, '');Write-Output $answer;\" >_dialog.txt"s).c_str());
-    #else
-    system(("if zenity --question --text=\""s + message + "\"; then echo Ok >_dialog.txt; else echo Cancel >_dialog.txt; fi"s).c_str());
-    #endif
-    std::ifstream file{"_dialog.txt"}; string answer; std::getline(file, answer);
-    return answer.size() >= 2 && tolower(answer[0]) == 'o' && tolower(answer[1]) == 'k';
-    */
 }
 
 string prompt(string message) {
     return dialog_("doPrompt('"s + message + "')"s);
-    /*
-    update_canvas();
-    #if defined(WEBVIEW_WINAPI)
-    system(("powershell -WindowStyle Hidden -Command \"[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic');$answer = [Microsoft.VisualBasic.Interaction]::InputBox('"s + message + "', '', '');Write-Output $answer;\" >_dialog.txt"s).c_str());
-    #else
-    system(("zenity --entry --title \"\" --text \""s + message + "\" --entry-text \"\" >_dialog.txt"s).c_str());
-    #endif
-    std::ifstream file{"_dialog.txt"}; string answer; std::getline(file, answer);
-    return answer;
-    */
 }
 
 Point mouse_position() {
@@ -571,17 +520,11 @@ Point mouse_position() {
 }
 
 void init_canvas(Size size) {
-    if (!inited_) {
+    if (!inited()) {
         srand(time(nullptr));
-
-        std::ofstream out{"_websocket.html"};
-        out << html_;
-        out.close();
-
-        ws_data_cb = receive_data_;
-        ws_init();    
-        std::unique_lock<std::mutex> mlock(mut_);
-        cond_.wait(mlock, [=]() { return inited_; } );
+        { std::ofstream{"_websocket.html"} << html_; }
+        ws_init(handle_event_);
+        wait_inited(true);
     }
     do_js_("initCanvas(%, %)", {size.w, size.h});
     update_canvas();

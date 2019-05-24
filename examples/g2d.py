@@ -15,57 +15,56 @@ ensure_file("_websocket.py", "https://raw.githubusercontent.com/dpallot/simple-w
 ensure_file("_websocket.html", "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/websocket.html")
 
 import os, signal, subprocess, sys, threading, time, webbrowser
-import http.server, socketserver, concurrent.futures
+import http.server, socketserver
 from _websocket import WebSocket, SimpleWebSocketServer
 
 _server, _socket, _httpd, _wv = None, None, None, None
-_jss = []
 _usr_update, _usr_keydown, _usr_keyup = None, None, None
 _mouse_pos = (0, 0)
-_dialog_ans = None
-_executor = concurrent.futures.ThreadPoolExecutor(max_workers=20)
-_socket_c, _dialog_c = threading.Condition(), threading.Condition()
+_jss, _answers, _events = [], [], []
+_cond = threading.Condition()
+
+def inited() -> bool:
+    with _cond:
+        return _socket != None
+
+def wait_inited() -> None:
+    with _cond:
+        while _socket == None:
+            _cond.wait()
+
+def set_inited(socket) -> None:
+    global _socket
+    with _cond:
+        _socket = socket
+        _cond.notify_all()
+
+def produce_msg(msg: str, msgs: list) -> None:
+    with _cond:
+        msgs.append(msg)
+        _cond.notify_all()
+
+def consume_msg(msgs: list) -> str:
+    with _cond:
+        while len(msgs) == 0:
+            _cond.wait()
+        return msgs.pop(0)
 
 class SocketHandler(WebSocket):
-
     def handleMessage(self):
-        #print("message:", self.data)
-        _executor.submit(lambda d=self.data: _handle_data(d))
+        print(self.data)
+        args = self.data.split(" ", 1)
+        if args[0] == "answer":
+            produce_msg(args[1], _answers)
+        produce_msg(self.data, _events);
 
     def handleConnected(self):
-        #print("connected")
-        global _socket
-        with _socket_c:
-            _socket = self
-            _socket_c.notify_all()
+        set_inited(self)
+        produce_msg("connect", _events);
 
     def handleClose(self):
-        #print("close")
-        global _socket
-        with _socket_c:
-            _socket = None
-            _socket_c.notify_all()
-
-def _handle_data(data: str):
-    global _mouse_pos
-    #print(data)
-    args = data.split(" ")
-    if args[0] == "mousemove":
-        _mouse_pos = int(args[1]), int(args[2])
-    elif args[0] == "keydown" and _usr_keydown != None:
-        _usr_keydown(args[1])
-        update_canvas()
-    elif args[0] == "keyup" and _usr_keyup != None:
-        _usr_keyup(args[1])
-        update_canvas()
-    elif args[0] == "update" and _usr_update != None:
-        _usr_update()
-        update_canvas()
-    elif args[0] == "dialog":
-        global _dialog_ans
-        with _dialog_c:
-            _dialog_ans = data.split(" ", 1)[1]
-            _dialog_c.notify_all()
+        set_inited(None)
+        produce_msg("disconnect", _events);
 
 def serve_files() -> None:
     global _httpd
@@ -82,28 +81,21 @@ def start_server():
         _server.serveonce()
 
 def start_webview(w, h):
+    global _wv
     try:
         import webview
-        global _wv
         _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
     except:
         webbrowser.open("http://localhost:8008/_websocket.html", new=0)
 
 def init_canvas(size: (int, int)) -> None:
-    if _server == None:
-        _executor.submit(serve_files)
-        _executor.submit(start_server)
-        _executor.submit(start_webview, *size)
-        with _socket_c:
-            while _socket == None:
-                _socket_c.wait()
-    '''
-    def close_sig_handler(signal, frame):
-        _server.close()
-        sys.exit()
-    signal.signal(signal.SIGINT, close_sig_handler)
-    '''
-    _eval_js(f"initCanvas({size[0]}, {size[1]});")
+    if not inited():
+        threading.Thread(target=serve_files).start()
+        threading.Thread(target=start_server).start()
+        threading.Thread(target=start_webview, args=size).start()
+        wait_inited()
+    _do_js(f"initCanvas({size[0]}, {size[1]})")
+    update_canvas()
 
 def set_color(c: (int, int, int)) -> None:
     _do_js(f"setColor({c[0]}, {c[1]}, {c[2]})")
@@ -150,14 +142,9 @@ def pause_audio(audio: str) -> None:
     _do_js(f"pauseAudio('{audio}')")
 
 def _dialog(js: str) -> str:
-    global _dialog_ans
-    with _dialog_c:
-        _dialog_ans = None
-        _do_js(js)
-        update_canvas()
-        while _dialog_ans == None:
-            _dialog_c.wait()
-        return _dialog_ans
+    _do_js(js)
+    update_canvas()
+    return consume_msg(_answers)
 
 def alert(message: str) -> None:
     _dialog(f"doAlert('{message}')")
@@ -182,13 +169,32 @@ def update_canvas() -> None:
     _jss = []
 
 def main_loop(fps=30) -> None:
+    global _mouse_pos, _server
+    _do_js(f"mainLoop({fps})")
     update_canvas()
-    _eval_js(f"mainLoop({fps});")
-    wait_done()
+    while inited():
+        msg = consume_msg(_events)
+        args = msg.split(" ")
+        if args[0] == "mousemove":
+            _mouse_pos = int(args[1]), int(args[2])
+        elif args[0] == "keydown" and _usr_keydown != None:
+            _usr_keydown(args[1])
+            update_canvas()
+        elif args[0] == "keyup" and _usr_keyup != None:
+            _usr_keyup(args[1])
+            update_canvas()
+        elif args[0] == "update" and _usr_update != None:
+            _usr_update()
+            update_canvas()
+    _server.close()
+    _server = None
+    _httpd.shutdown()
+    if _wv:
+        _wv.terminate()
 
 def close_canvas():
     handle_events(None, None, None)
-    _do_js(f"closeCanvas();")
+    _do_js(f"closeCanvas()")
     update_canvas()
 
 def _do_js(cmd: str, *args) -> None:
@@ -197,13 +203,3 @@ def _do_js(cmd: str, *args) -> None:
 def _eval_js(code: str) -> None:
     #print("sending:", code)
     _socket.sendMessage(code)
-
-def wait_done():
-    with _socket_c:
-        while _socket:
-            _socket_c.wait()
-        _server.close()
-        #_httpd.socket.close()
-        _httpd.shutdown()
-        if _wv:
-            _wv.terminate()

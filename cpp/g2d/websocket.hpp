@@ -448,9 +448,8 @@ public:
 //------------------------------------------------------------------------------
 
 websocket::stream<tcp::socket>* socket_;
-void (*ws_data_cb)(std::string) = nullptr;
+void (*ws_event_cb_)(std::string) = nullptr;
 
-// Echoes back all received WebSocket messages
 class ws_session : public std::enable_shared_from_this<ws_session>
 {
     websocket::stream<tcp::socket> ws_;
@@ -489,7 +488,7 @@ public:
             return fail(ec, "accept");
 
         socket_ = &ws_;
-        if (ws_data_cb != nullptr) ws_data_cb("connect");
+        if (ws_event_cb_ != nullptr) ws_event_cb_("connect");
 
         // Read a message
         do_read();
@@ -519,7 +518,7 @@ public:
 
         // This indicates that the session was closed
         if(ec == websocket::error::closed) {
-            if (ws_data_cb != nullptr) ws_data_cb("disconnect");
+            if (ws_event_cb_ != nullptr) ws_event_cb_("disconnect");
             return;
         }
 
@@ -528,9 +527,9 @@ public:
 
         ws_.text(ws_.got_text());
         auto msg = boost::beast::buffers_to_string(rbuff_.data());
-        std::cout << "ws: " << msg << std::endl;
+        //std::cout << "ws: " << msg << std::endl;
         rbuff_.consume(rbuff_.size());
-        if (ws_data_cb != nullptr) ws_data_cb(msg);
+        if (ws_event_cb_ != nullptr) ws_event_cb_(msg);
         do_read();
     }
     
@@ -659,8 +658,9 @@ void ws_send(std::string msg) {
         socket_->write(boost::asio::buffer(msg));
 }
 
-void ws_init()
+void ws_init(void (*handler)(std::string))
 {
+    ws_event_cb_ = handler;
     auto const address = boost::asio::ip::make_address("0.0.0.0");
     auto const threads = 15;
 
@@ -678,10 +678,8 @@ void ws_init()
     system("xdg-open http://localhost:8008/_websocket.html");
 
     // Run the I/O service on the requested number of threads
-    auto v = new std::vector<std::thread>{};
-    v->reserve(threads);
     for (auto i = threads; i > 0; --i) {
-        v->emplace_back( [ioc] { ioc->run(); } );
+        std::thread([ioc] { ioc->run(); }).detach();
     }
 }
 
