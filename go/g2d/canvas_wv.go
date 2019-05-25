@@ -59,9 +59,6 @@ func handleRPC(w webview.WebView, data string) {
 }
 
 func dialog(cmd string, a ...interface{}) string {
-    if !inited {
-        InitCanvas(Size{0, 0})
-    }
     doJs(cmd+"('%s')", fmt.Sprint(a...))
     UpdateCanvas()
     for len(dialogs) == 0 {
@@ -105,15 +102,17 @@ func Alert(a ...interface{}) {
 }
 
 func evalJs(code string) {
+    if !inited {
+        InitCanvas(Size{800, 600})
+    }
     w.Eval(code)
 }
 
 func waitDone() {
-    if !inited {
-        InitCanvas(Size{0, 0})
+    if inited {
+        defer w.Exit()
+        w.Run()
     }
-    defer w.Exit()
-    w.Run()
 }
 
 func terminate() {

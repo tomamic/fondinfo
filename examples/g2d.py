@@ -15,29 +15,13 @@ ensure_file("_websocket.py", "https://raw.githubusercontent.com/dpallot/simple-w
 ensure_file("_websocket.html", "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/websocket.html")
 
 import os, signal, subprocess, sys, threading, time, webbrowser
-import http.server, socketserver
-from _websocket import WebSocket, SimpleWebSocketServer
+import http.server, socketserver, _websocket
 
-_server, _socket, _httpd, _wv = None, None, None, None
+_ws, _httpd, _wv = None, None, None
 _usr_update, _usr_keydown, _usr_keyup = None, None, None
 _mouse_pos = (0, 0)
 _jss, _answers, _events = [], [], []
 _cond = threading.Condition()
-
-def inited() -> bool:
-    with _cond:
-        return _socket != None
-
-def wait_inited() -> None:
-    with _cond:
-        while _socket == None:
-            _cond.wait()
-
-def set_inited(socket) -> None:
-    global _socket
-    with _cond:
-        _socket = socket
-        _cond.notify_all()
 
 def produce_msg(msg: str, msgs: list) -> None:
     with _cond:
@@ -50,21 +34,23 @@ def consume_msg(msgs: list) -> str:
             _cond.wait()
         return msgs.pop(0)
 
-class SocketHandler(WebSocket):
+class SocketHandler(_websocket.WebSocket):
     def handleMessage(self):
-        print(self.data)
+        #print(self.data)
         args = self.data.split(" ", 1)
         if args[0] == "answer":
             produce_msg(args[1], _answers)
-        produce_msg(self.data, _events);
+        produce_msg(self.data, _events)
 
     def handleConnected(self):
-        set_inited(self)
-        produce_msg("connect", _events);
+        global _ws
+        _ws = self
+        produce_msg("connect", _events)
 
     def handleClose(self):
-        set_inited(None)
-        produce_msg("disconnect", _events);
+        produce_msg("disconnect", _events)
+        self.server.closing = True
+        self.server.close()
 
 def serve_files() -> None:
     global _httpd
@@ -74,11 +60,11 @@ def serve_files() -> None:
         http.server.SimpleHTTPRequestHandler)
     _httpd.serve_forever()
 
-def start_server():
-    global _server
-    _server = SimpleWebSocketServer("localhost", 7574, SocketHandler)
-    while _server:
-        _server.serveonce()
+def start_websocket():
+    server = _websocket.SimpleWebSocketServer("localhost", 7574, SocketHandler)
+    server.closing = False
+    while not server.closing:
+        server.serveonce()
 
 def start_webview(w, h):
     global _wv
@@ -89,60 +75,60 @@ def start_webview(w, h):
         webbrowser.open("http://localhost:8008/_websocket.html", new=0)
 
 def init_canvas(size: (int, int)) -> None:
-    if not inited():
+    if not _ws:
         threading.Thread(target=serve_files).start()
-        threading.Thread(target=start_server).start()
+        threading.Thread(target=start_websocket).start()
         threading.Thread(target=start_webview, args=size).start()
-        wait_inited()
-    _do_js(f"initCanvas({size[0]}, {size[1]})")
+        consume_msg(_events)
+    _jss.append(f"initCanvas({size[0]}, {size[1]})")
     update_canvas()
 
 def set_color(c: (int, int, int)) -> None:
-    _do_js(f"setColor({c[0]}, {c[1]}, {c[2]})")
+    _jss.append(f"setColor({c[0]}, {c[1]}, {c[2]})")
 
 def clear_canvas() -> None:
-    _do_js(f"clearCanvas()")
+    _jss.append(f"clearCanvas()")
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    _do_js(f"drawLine({pt1[0]}, {pt1[1]}, {pt2[0]}, {pt2[1]})")
+    _jss.append(f"drawLine({pt1[0]}, {pt1[1]}, {pt2[0]}, {pt2[1]})")
 
 def fill_circle(pt: (int, int), r: int) -> None:
-    _do_js(f"fillCircle({pt[0]}, {pt[1]}, {r})")
+    _jss.append(f"fillCircle({pt[0]}, {pt[1]}, {r})")
 
 def fill_rect(r: (int, int, int, int)) -> None:
-    _do_js(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
+    _jss.append(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def load_image(src: str) -> str:
     key = hash(src)
-    _do_js(f"loadImage('{key}', '{src}')")
+    _jss.append(f"loadImage('{key}', '{src}')")
     return key
 
 def draw_image(img: str, pt: (int, int)) -> None:
-    _do_js(f"drawImage('{img}', {pt[0]}, {pt[1]})")
+    _jss.append(f"drawImage('{img}', {pt[0]}, {pt[1]})")
 
 def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
-    _do_js(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
+    _jss.append(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def draw_text(txt: str, pt: (int, int), size: int) -> None:
-    _do_js(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
+    _jss.append(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
 
 def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
-    _do_js(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
+    _jss.append(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
 
 def load_audio(src: str) -> str:
     key = hash(src)
-    _do_js(f"loadAudio('{key}', '{src}')")
+    _jss.append(f"loadAudio('{key}', '{src}')")
     return key
 
 def play_audio(audio: str, loop=False) -> None:
     l = str(loop).lower()
-    _do_js(f"playAudio('{audio}', {l})")
+    _jss.append(f"playAudio('{audio}', {l})")
 
 def pause_audio(audio: str) -> None:
-    _do_js(f"pauseAudio('{audio}')")
+    _jss.append(f"pauseAudio('{audio}')")
 
 def _dialog(js: str) -> str:
-    _do_js(js)
+    _jss.append(js)
     update_canvas()
     return consume_msg(_answers)
 
@@ -163,16 +149,16 @@ def mouse_position() -> (int, int):
     return _mouse_pos
 
 def update_canvas() -> None:
-    global _jss
-    code = "".join(_jss)
-    _eval_js(code)
-    _jss = []
+    if _ws:
+        _ws.sendMessage(";\n".join(_jss + [""]))
+        _jss.clear()
 
 def main_loop(fps=30) -> None:
-    global _mouse_pos, _server
-    _do_js(f"mainLoop({fps})")
+    global _mouse_pos
+    _jss.append(f"mainLoop({fps})")
     update_canvas()
-    while inited():
+    looping = True
+    while looping:
         msg = consume_msg(_events)
         args = msg.split(" ")
         if args[0] == "mousemove":
@@ -186,20 +172,13 @@ def main_loop(fps=30) -> None:
         elif args[0] == "update" and _usr_update != None:
             _usr_update()
             update_canvas()
-    _server.close()
-    _server = None
+        elif args[0] == "disconnect":
+            looping = False
     _httpd.shutdown()
     if _wv:
         _wv.terminate()
 
 def close_canvas():
     handle_events(None, None, None)
-    _do_js(f"closeCanvas()")
+    _jss.append(f"closeCanvas()")
     update_canvas()
-
-def _do_js(cmd: str, *args) -> None:
-    _jss.append(cmd + ";\n" % args)
-
-def _eval_js(code: str) -> None:
-    #print("sending:", code)
-    _socket.sendMessage(code)
