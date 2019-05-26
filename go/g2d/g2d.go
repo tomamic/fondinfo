@@ -233,6 +233,8 @@ func DrawImage(image string, p Point) {
     doJs("drawImage('%s', %d, %d)", image, p.X, p.Y)
 }
 
+// Clip a rectangular area from an image
+// and draw it at the specified position
 func DrawImageClip(image string, clip Rect, r Rect) {
     doJs("drawImageClip('%s', %d, %d, %d, %d, %d, %d, %d, %d)",
         image, clip.X, clip.Y, clip.W, clip.H, r.X, r.Y, r.W, r.H)
