@@ -62,7 +62,7 @@ func dialog(cmd string, a ...interface{}) string {
     doJs(cmd+"('%s')", fmt.Sprint(a...))
     UpdateCanvas()
     for len(dialogs) == 0 {
-        w.Loop(false)
+        w.Loop(true)
     }
     ans := dialogs[0]
     dialogs = dialogs[1:]

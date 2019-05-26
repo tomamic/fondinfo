@@ -3,16 +3,16 @@ package main
 import . "g2d"
 
 func main() {
-	InitCanvas(Size{400, 400})
+    InitCanvas(Size{300, 300})
 
-	i := 0
-	for i < 10 {
-		x := i * 25
-		y := i * 25
-		red := i * 25
-		SetColor(Color{red, 0, 0})
-		FillRect(Rect{x, y, 100, 100})
-		i += 1
-	}
-	MainLoop()
+    for i := 0; i < 5; i++ {
+        x := i * 40
+        y := x
+        red := i * 60
+        SetColor(Color{red, 0, 0})
+        DrawRect(Rect{x, y, 140, 140})
+    }
+    i := 0
+
+    MainLoop()
 }
