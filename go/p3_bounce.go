@@ -157,7 +157,7 @@ type BounceGame struct {
 }
 
 func NewBounceGame() *BounceGame {
-    a := NewArena(Size{320, 240})
+    a := NewArena(Size{480, 360})
     t := NewTurtle(a, Point{80, 80})
     NewBall(a, Point{40, 80})
     NewBall(a, Point{80, 40})
@@ -176,9 +176,13 @@ func (g *BounceGame) Arena() *Arena {
 var game = NewBounceGame()
 */
 
-var img = LoadImage("sprites.png")
 var arena = NewArena(Size{480, 360})
 var hero = NewTurtle(arena, Point{80, 80})
+var ball1 = NewBall(arena, Point{40, 80})
+var ball2 = NewBall(arena, Point{80, 40})
+var ghost = NewGhost(arena, Point{120, 80})
+
+var img = LoadImage("sprites.png")
 
 func update() {
     arena.MoveAll()
@@ -205,10 +209,6 @@ func keyup(code string) {
 }
 
 func main() {
-    NewBall(arena, Point{40, 80})
-    NewBall(arena, Point{80, 40})
-    NewGhost(arena, Point{120, 80})
     InitCanvas(arena.Size())
-    HandleEvents(update, keydown, keyup)
-    MainLoop(60)
+    HandleEvents(30, update, keydown, keyup)
 }

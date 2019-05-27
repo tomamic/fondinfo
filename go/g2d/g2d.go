@@ -17,10 +17,10 @@ var usrKeydown, usrKeyup func(string)
 var usrUpdate func()
 var mousePos = Point{0, 0}
 var jss = make([]string, 0)
-var dialogs = make([]string, 0)
-var inited = false
+var answers = make([]string, 0)
+var inited, done = false, false
 var script = `
-window.onload = function(e) { setTimeout("invokeExternal('load')", 100); }
+window.onload = function(e) { setTimeout("invokeExternal('connect')", 100); }
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -111,15 +111,15 @@ function pauseAudio(key) {
 }
 function doAlert(message) {
     alert(message);
-    invokeExternal("dialog true");
+    invokeExternal("answer true");
 }
 function doConfirm(message) {
     ans = confirm(message);
-    invokeExternal("dialog " + ans);
+    invokeExternal("answer " + ans);
 }
 function doPrompt(message) {
     ans = prompt(message, "");
-    invokeExternal("dialog " + ans);
+    invokeExternal("answer " + ans);
 }
 function fixKey(k) {
     if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
@@ -262,13 +262,14 @@ func PauseAudio(audio string) {
     doJs("pauseAudio('%s')", audio)
 }
 
-func HandleEvents(update func(), keyFuncs ...func(string)) {
+func HandleEvents(fps int, update func(), keyFuncs ...func(string)) {
     usrUpdate, usrKeydown, usrKeyup = update, nil, nil
     if len(keyFuncs) >= 2 {
         usrKeydown, usrKeyup = keyFuncs[0], keyFuncs[1]
     } else if len(keyFuncs) == 1 {
         usrKeydown = keyFuncs[0]
     }
+    MainLoop(fps)
 }
 
 func MousePosition() Point {
@@ -276,26 +277,30 @@ func MousePosition() Point {
 }
 
 func UpdateCanvas() {
-    if inited {
-        code := strings.Join(jss, "")
-        //fmt.Println(code)
-        evalJs(code)
-        jss = make([]string, 0)
+    if !inited {
+        InitCanvas(Size{800, 600})
     }
+    code := strings.Join(jss, "")
+    //fmt.Println(code)
+    evalJs(code)
+    jss = make([]string, 0)
 }
 
 func MainLoop(fps ...int) {
-    fps_ := 60
-    if len(fps) > 0 {
-        fps_ = fps[0]
+    if !done {
+        fps_ := 30
+        if len(fps) > 0 {
+            fps_ = fps[0]
+        }
+        doJs("mainLoop(%d)", fps_)
+        UpdateCanvas()
+        waitDone()
+        done = true
     }
-    doJs("mainLoop(%d)", fps_)
-    UpdateCanvas()
-    waitDone()
 }
 
 func CloseCanvas() {
-    HandleEvents(nil, nil, nil)
+    usrUpdate, usrKeydown, usrKeyup = nil, nil, nil
     doJs("closeCanvas()")
     UpdateCanvas()
     terminate()
@@ -319,10 +324,10 @@ func handleData(data string) {
     } else if args[0] == "update" && usrUpdate != nil {
         usrUpdate()
         UpdateCanvas()
-    } else if args[0] == "dialog" {
+    } else if args[0] == "answer" {
         ans := strings.SplitN(data, " ", 2)[1]
-        dialogs = append(dialogs, ans)
-    } else if args[0] == "load" {
+        answers = append(answers, ans)
+    } else if args[0] == "connect" {
         inited = true
     }
 }

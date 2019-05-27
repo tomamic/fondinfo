@@ -10,9 +10,7 @@ func main() {
         y := x
         red := i * 60
         SetColor(Color{red, 0, 0})
-        DrawRect(Rect{x, y, 140, 140})
+        FillRect(Rect{x, y, 140, 140})
     }
-    i := 0
-
     MainLoop()
 }

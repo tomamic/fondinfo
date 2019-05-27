@@ -11,10 +11,7 @@ import (
     "net/http"
 )
 
-var (
-    w    webview.WebView = nil
-    done                 = make(chan bool, 1)
-)
+var w webview.WebView = nil
 
 var indexHTML = `
 <!doctype html>
@@ -58,14 +55,18 @@ func handleRPC(w webview.WebView, data string) {
     handleData(data)
 }
 
+func Println(a ...interface{}) {
+    fmt.Println(a...)
+}
+
 func dialog(cmd string, a ...interface{}) string {
     doJs(cmd+"('%s')", fmt.Sprint(a...))
     UpdateCanvas()
-    for len(dialogs) == 0 {
+    for len(answers) == 0 {
         w.Loop(true)
     }
-    ans := dialogs[0]
-    dialogs = dialogs[1:]
+    ans := answers[0]
+    answers = answers[1:]
     return ans
 }
 
@@ -102,9 +103,6 @@ func Alert(a ...interface{}) {
 }
 
 func evalJs(code string) {
-    if !inited {
-        InitCanvas(Size{800, 600})
-    }
     w.Eval(code)
 }
 
