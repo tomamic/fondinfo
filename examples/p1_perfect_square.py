@@ -5,15 +5,12 @@
 '''
 
 n = int(input("n? "))
-result = 0
 
 i = 1
-while i * i <= n:
-    if i * i == n:
-        result = i
+while i * i < n:
     i += 1
 
-if result == 0:
-    print("No")
+if i * i == n:
+    print(i)
 else:
-    print(result)
+    print("No")
