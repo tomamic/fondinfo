@@ -7,10 +7,11 @@
 import g2d
 
 class Alien:
-    def __init__(self, x0: int, y0: int):
-        self._x, self._y = x0, y0
+    def __init__(self, pos: (int, int)):
+        self._x = pos[0]
+        self._y = pos[1]
         self._w, self._h = 20, 20
-        self._xmin, self._xmax = x0, x0 + 150
+        self._xmin, self._xmax = self._x, self._x + 150
         self._dx, self._dy = 5, 5
 
     def move(self):
@@ -30,7 +31,7 @@ def tick():
 
 def main():
     global a
-    a = Alien(40, 40)
+    a = Alien((40, 40))
     g2d.init_canvas((480, 360))
     g2d.main_loop(tick, 10)
 

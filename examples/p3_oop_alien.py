@@ -8,8 +8,8 @@ import g2d
 from actor import Actor, Arena
 
 class Alien(Actor):
-    def __init__(self, arena, x0: int, y0: int):
-        self._x, self._y = x0, y0
+    def __init__(self, arena, pos: (int, int)):
+        self._x, self._y = pos
         self._w, self._h = 20, 20
         self._xmin, self._xmax = x0, x0 + 150
         self._dx, self._dy = 5, 5
@@ -40,9 +40,9 @@ def tick():
 
 def main():
     global arena
-    arena = Arena(320, 240)
-    Alien(arena, 40, 40)
-    Alien(arena, 80, 80)
+    arena = Arena((320, 240))
+    Alien(arena, (40, 40))
+    Alien(arena, (80, 80))
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 

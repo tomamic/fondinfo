@@ -34,10 +34,10 @@ class Actor():
 class Arena():
     '''A generic 2D game, with a given size in pixels and a list of actors
     '''
-    def __init__(self, width: int, height: int):
+    def __init__(self, size: (int, int)):
         '''Create an arena, with given dimensions in pixels
         '''
-        self._w, self._h = width, height
+        self._w, self._h = size
         self._actors = []
 
     def add(self, a: Actor):

@@ -9,9 +9,9 @@ import g2d
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 class Ball:
-    def __init__(self, x: int, y: int):
-        self._x = x
-        self._y = y
+    def __init__(self, pos: (int, int)):
+        self._x = pos[0]
+        self._y = pos[1]
         self._dx = 5
         self._dy = 5
         self._count = 0
@@ -46,8 +46,8 @@ def tick():
 
 def main():
     global b1, b2
-    b1 = Ball(40, 80)
-    b2 = Ball(80, 40)
+    b1 = Ball((40, 80))
+    b2 = Ball((80, 40))
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 

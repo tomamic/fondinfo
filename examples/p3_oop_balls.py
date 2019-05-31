@@ -15,7 +15,7 @@ def tick():
 
 def main():
     global balls
-    balls = [Ball(40, 80), Ball(80, 40), Ball(120, 120)]
+    balls = [Ball((40, 80)), Ball((80, 40)), Ball((120, 120))]
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 

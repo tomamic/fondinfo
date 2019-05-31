@@ -13,6 +13,6 @@ def tick():
         a.move()
         g2d.fill_rect(a.position())
 
-aliens = [Alien(40, 40), Alien(80, 80), Alien(120, 40)]
+aliens = [Alien((40, 40)), Alien((80, 80)), Alien((120, 40))]
 g2d.init_canvas((480, 360))
 g2d.main_loop(tick)

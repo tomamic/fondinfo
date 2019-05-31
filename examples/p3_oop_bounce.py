@@ -8,8 +8,8 @@ from random import choice, randrange
 from actor import Actor, Arena
 
 class Ball(Actor):
-    def __init__(self, arena, x, y):
-        self._x, self._y = x, y
+    def __init__(self, arena, pos):
+        self._x, self._y = pos
         self._w, self._h = 20, 20
         self._speed = 5
         self._dx, self._dy = self._speed, self._speed
@@ -45,8 +45,8 @@ class Ball(Actor):
 
 
 class Ghost(Actor):
-    def __init__(self, arena, x, y):
-        self._x, self._y = x, y
+    def __init__(self, arena, pos):
+        self._x, self._y = pos
         self._w, self._h = 20, 20
         self._arena = arena
         arena.add(self)
@@ -75,8 +75,8 @@ class Ghost(Actor):
 
 
 class Turtle(Actor):
-    def __init__(self, arena, x, y):
-        self._x, self._y = x, y
+    def __init__(self, arena, pos):
+        self._x, self._y = pos
         self._w, self._h = 20, 20
         self._speed = 2
         self._dx, self._dy = 0, 0
@@ -129,7 +129,7 @@ class Turtle(Actor):
 ##        Ball(self._arena, 80, 40)
 ##        Ghost(self._arena, 120, 80)
 ##        self._hero = Turtle(self._arena, 80, 80)
-##	
+##
 ##    def arena(self) -> Arena:
 ##        return self._arena
 ##
@@ -143,10 +143,10 @@ def print_arena(arena):
 
 
 def main():
-    arena = Arena(320, 240)
-    Ball(arena, 40, 80)
-    Ball(arena, 80, 40)
-    Ghost(arena, 120, 80)
+    arena = Arena((480, 360))
+    Ball(arena, (40, 80))
+    Ball(arena, (80, 40))
+    Ghost(arena, (120, 80))
 
     for i in range(25):
         print_arena(arena)

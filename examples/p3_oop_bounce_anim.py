@@ -7,11 +7,11 @@
 import g2d
 from p3_oop_bounce import Arena, Ball, Ghost, Turtle
 
-arena = Arena(480, 360)
-b1 = Ball(arena, 40, 80)
-b2 = Ball(arena, 80, 40)
-g = Ghost(arena, 120, 80)
-turtle = Turtle(arena, 80, 80)
+arena = Arena((480, 360))
+b1 = Ball(arena, (40, 80))
+b2 = Ball(arena, (80, 40))
+g = Ghost(arena, (120, 80))
+turtle = Turtle(arena, (80, 80))
 sprites = g2d.load_image("sprites.png")
 
 def tick():

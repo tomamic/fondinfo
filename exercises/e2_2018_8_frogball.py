@@ -12,9 +12,8 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 img = g2d.load_image("ball.png")
 
 class FrogBall:
-    def __init__(self, x: int, y: int):
-        self._x = x
-        self._y = y
+    def __init__(self, pos):
+        self._x, self._y = pos
         self._dx = 5
         self._dy = 5
         self._count = 0
@@ -32,8 +31,8 @@ class FrogBall:
         if self._count == 0:
             self._count = 5
 
-b1 = FrogBall(40, 80)
-b2 = FrogBall(80, 40)
+b1 = FrogBall((40, 80))
+b2 = FrogBall((80, 40))
 
 def tick():
     if g2d.key_pressed("ArrowLeft"):
