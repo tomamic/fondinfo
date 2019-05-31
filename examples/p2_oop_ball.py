@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-ARENA_W, ARENA_H = 320, 240
+ARENA_W, ARENA_H = 480, 360
 BALL_W, BALL_H = 20, 20
 
 class Ball:

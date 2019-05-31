@@ -72,7 +72,18 @@ class Plane(Actor):
         return 0, 0, self.W, self.H
 
 
-def update():
+def tick():
+    global view_x, view_y
+    arena_w, arena_h = arena.size()
+    if g2d.key_pressed("ArrowUp"):
+        view_y = max(view_y - 10, 0)
+    elif g2d.key_pressed("ArrowRight"):
+        view_x = min(view_x + 10, arena_w - view_w)
+    elif g2d.key_pressed("ArrowDown"):
+        view_y = min(view_y + 10, arena_h - view_h)
+    elif g2d.key_pressed("ArrowLeft"):
+        view_x = max(view_x - 10, 0)
+
     g2d.draw_image_clip(background,
                         (view_x, view_y, view_w, view_h),
                         (0, 0, view_w, view_h))  # BG
@@ -80,18 +91,6 @@ def update():
     for a in arena.actors():
         x, y, w, h = a.position()
         g2d.fill_rect((x - view_x, y - view_y, w, h))  # FG
-
-def keydown(code):
-    global view_x, view_y
-    arena_w, arena_h = arena.size()
-    if code == "ArrowRight":
-        view_x = min(view_x + 10, arena_w - view_w)
-    elif code == "ArrowLeft":
-        view_x = max(view_x - 10, 0)
-    elif code == "ArrowDown":
-        view_y = min(view_y + 10, arena_h - view_h)
-    elif code == "ArrowUp":
-        view_y = max(view_y - 10, 0)
 
 def main():
     global arena, view_x, view_y, view_w, view_h, background
@@ -104,9 +103,8 @@ def main():
     view_x, view_y, view_w, view_h = 0, 0, 300, 200
     g2d.init_canvas((view_w, view_h))
 
-    background = g2d.load_image("viewport.png")
+    background = g2d.load_image("https://raw.githubusercontent.com/tomamic/fondinfo/gh-pages/images/oop/viewport.png")
 
-    g2d.handle_events(update, keydown, None)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

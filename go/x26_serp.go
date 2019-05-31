@@ -5,7 +5,7 @@ import . "g2d"
 var image = LoadImage("ball.png")
 var x, y, dx = 50, 0, 5
 
-func update() {
+func tick() {
     ClearCanvas()                 // Draw background
     DrawImage(image, Point{x, y}) // Draw foreground
     if x+dx < 0 || x+dx+20 > 320 {
@@ -18,5 +18,6 @@ func update() {
 
 func main() {
     InitCanvas(Size{320, 240})
-    HandleEvents(10, update)  // 10 fps
+    SetFrameRate(10)
+    MainLoop(tick)  // 10 fps
 }

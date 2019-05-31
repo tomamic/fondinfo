@@ -32,7 +32,7 @@ class Alien(Actor):
     def collide(self, other):
         pass
 
-def update():
+def tick():
     g2d.clear_canvas()
     arena.move_all()
     for a in arena.actors():
@@ -44,7 +44,6 @@ def main():
     Alien(arena, 40, 40)
     Alien(arena, 80, 80)
     g2d.init_canvas(arena.size())
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

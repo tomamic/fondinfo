@@ -7,7 +7,7 @@
 import g2d
 from p2_oop_ball import Ball, ARENA_W, ARENA_H
 
-def update():
+def tick():
     g2d.clear_canvas()  # BG
     for b in balls:
         b.move()
@@ -17,7 +17,6 @@ def main():
     global balls
     balls = [Ball(40, 80), Ball(80, 40), Ball(120, 120)]
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

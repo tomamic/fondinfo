@@ -9,6 +9,7 @@ func main() {
     for i*i < n {
         i++
     }
+
     if i*i == n {
         Alert(i)
     } else {

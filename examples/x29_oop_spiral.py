@@ -28,7 +28,7 @@ class Spiral:
     def color(self):
         return (255 - self._i, 0, self._i)
 
-def update():
+def tick():
     g2d.clear_canvas()
     a.move()
     g2d.set_color(a.color())
@@ -38,7 +38,6 @@ def main():
     global a
     a = Spiral()
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

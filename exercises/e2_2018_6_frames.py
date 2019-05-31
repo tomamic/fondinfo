@@ -13,8 +13,10 @@ ARENA_W, ARENA_H = 320, 240
 BALL_W, BALL_H = 20, 20
 image = g2d.load_image("ball.png")
 
-def update():
+def tick():
     global x, y, count
+    if g2d.key_pressed("Enter") and count == 5:
+        count = 0
     g2d.clear_canvas()             # Draw background
     g2d.draw_image(image, (x, y))  # Draw foreground
     if count < 5:
@@ -22,17 +24,11 @@ def update():
         y = (y + dy) % ARENA_H     # Update ball's position
         count += 1
 
-def keydn(code: str):
-    global count
-    if count == 5:
-        count = 0
-
 def main():
     global dx, dy
     g2d.init_canvas((ARENA_W, ARENA_H))
     dx = int(g2d.prompt("dx?"))
     dy = int(g2d.prompt("dy?"))
-    g2d.handle_events(update, keydn, None)
-    g2d.main_loop(5)  # Call update 5 times/second
+    g2d.main_loop(tick, 5)  # Call tick 5 times/second
 
 main()

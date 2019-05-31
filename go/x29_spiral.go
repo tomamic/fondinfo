@@ -7,7 +7,7 @@ import (
 
 var i, n = 0, 256
 
-func update() {
+func tick() {
     a := float64(i)
     x := 300 + int(a*math.Cos(a*math.Pi/32))
     y := 300 + int(a*math.Sin(a*math.Pi/32))
@@ -19,5 +19,5 @@ func update() {
 
 func main() {
     InitCanvas(Size{600, 600})
-    HandleEvents(30, update)
+    MainLoop(tick)
 }

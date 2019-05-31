@@ -22,7 +22,7 @@ func (b *Ball) Position() Rect {
     return Rect{b.x, b.y, b.w, b.h}
 }
 
-func update() {
+func tick() {
     SetColor(Color{255, 255, 255})
     ClearCanvas()  // BG
     b.Move()
@@ -32,5 +32,5 @@ func update() {
 
 func main() {
     InitCanvas(as)
-    HandleEvents(30, update)  // 30 fps
+    MainLoop(tick)
 }

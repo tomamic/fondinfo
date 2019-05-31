@@ -142,7 +142,7 @@ function doPrompt(message) {
 }
 function fixKey(k) {
     if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
-    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k==" " || k=="Space") k = "Spacebar";
     else if (k=="Esc") k = "Escape";
     else if (k=="Del") k = "Delete";
     return k;

@@ -59,6 +59,10 @@ func Println(a ...interface{}) {
     fmt.Println(a...)
 }
 
+func Printf(format string, a ...interface{}) {
+    fmt.Sprintf(format, a...)
+}
+
 func dialog(cmd string, a ...interface{}) string {
     doJs(cmd+"('%s')", fmt.Sprint(a...))
     UpdateCanvas()
@@ -72,34 +76,28 @@ func dialog(cmd string, a ...interface{}) string {
 
 func Prompt(a ...interface{}) string {
     return dialog("doPrompt", a...)
-    /*
-       if w != nil {
-           UpdateCanvas()
-       }
-       val, _, _ := dlgs.Entry("", fmt.Sprint(a...), "")
-       return val
-    */
+    //if w != nil {
+    //    UpdateCanvas()
+    //}
+    //val, _, _ := dlgs.Entry("", fmt.Sprint(a...), "")
+    //return val
 }
 
 func Confirm(a ...interface{}) bool {
     return dialog("doConfirm", a...) == "true"
-    /*
-       if w != nil {
-           UpdateCanvas()
-       }
-       val, _ := dlgs.Question("", fmt.Sprint(a...), true)
-       return val
-    */
+    //if w != nil {
+    //    UpdateCanvas()
+    //}
+    //val, _ := dlgs.Question("", fmt.Sprint(a...), true)
+    //return val
 }
 
 func Alert(a ...interface{}) {
     dialog("doAlert", a...)
-    /*
-       if w != nil {
-           UpdateCanvas()
-       }
-       dlgs.Info("", fmt.Sprint(a...))
-    */
+    //if w != nil {
+    //    UpdateCanvas()
+    //}
+    //dlgs.Info("", fmt.Sprint(a...))
 }
 
 func evalJs(code string) {
@@ -141,7 +139,6 @@ func InitCanvas(size Size) {
             w.Loop(true)
         }
     }
-    //doJs("initCanvas(%d, %d)", size.W, size.H)
     js := fmt.Sprintf("initCanvas(%d, %d);\n", size.W, size.H)
     jss = append([]string{js}, jss...)
     UpdateCanvas()

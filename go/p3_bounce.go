@@ -184,7 +184,20 @@ var ghost = NewGhost(arena, Point{120, 80})
 
 var img = LoadImage("sprites.png")
 
-func update() {
+func tick() {
+    if KeyPressed("ArrowUp") {
+        hero.GoUp()
+    } else if KeyPressed("ArrowRight") {
+        hero.GoRight()
+    } else if KeyPressed("ArrowDown") {
+        hero.GoDown()
+    } else if KeyPressed("ArrowLeft") {
+        hero.GoLeft()
+    } else if KeyReleased("ArrowUp") || KeyReleased("ArrowRight") ||
+            KeyReleased("ArrowDown") || KeyReleased("ArrowLeft") {
+        hero.Stay()
+    }
+
     arena.MoveAll()
     ClearCanvas()
     for _, b := range arena.Actors() {
@@ -192,23 +205,7 @@ func update() {
     }
 }
 
-func keydown(code string) {
-    if code == "ArrowUp" {
-        hero.GoUp()
-    } else if code == "ArrowDown" {
-        hero.GoDown()
-    } else if code == "ArrowLeft" {
-        hero.GoLeft()
-    } else if code == "ArrowRight" {
-        hero.GoRight()
-    }
-}
-
-func keyup(code string) {
-    hero.Stay()
-}
-
 func main() {
     InitCanvas(arena.Size())
-    HandleEvents(30, update, keydown, keyup)
+    MainLoop(tick)
 }

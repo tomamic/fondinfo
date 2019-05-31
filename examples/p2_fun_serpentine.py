@@ -9,7 +9,7 @@ import g2d
 x, y, dx = 50, 50, 5
 image = g2d.load_image("ball.png")
 
-def update():
+def tick():
     global x, y, dx
     g2d.clear_canvas()
     g2d.draw_image(image, (x, y))
@@ -21,7 +21,6 @@ def update():
 
 def main():
     g2d.init_canvas((320, 240))
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

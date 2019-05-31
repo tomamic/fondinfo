@@ -62,24 +62,21 @@ class Turtle(Actor):
         return 0, 20, self._w, self._h
 
 
-def update():
+def tick():
+    if g2d.key_pressed("Spacebar"):
+        turtle.jump()
+    elif g2d.key_pressed("ArrowLeft"):
+        turtle.go_left()
+    elif g2d.key_pressed("ArrowRight"):
+        turtle.go_right()
+    elif g2d.key_released("ArrowLeft") or g2d.key_released("ArrowRight"):
+        turtle.stay()
+
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
         g2d.draw_image_clip(sprites, a.symbol(), a.position())
-
-def keydown(code):
-    if code == "Space":
-        turtle.jump()
-    elif code == "ArrowLeft":
-        turtle.go_left()
-    elif code == "ArrowRight":
-        turtle.go_right()
-
-def keyup(code):
-    if code in ("ArrowLeft", "ArrowRight"):
-        turtle.stay()
 
 def main():
     global arena, turtle, sprites
@@ -90,7 +87,6 @@ def main():
     g2d.init_canvas(arena.size())
     sprites = g2d.load_image("sprites.png")
 
-    g2d.handle_events(update, keydown, keyup)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

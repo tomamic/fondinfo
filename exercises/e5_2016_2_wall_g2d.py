@@ -67,7 +67,7 @@ class Wall(Actor):
         return 0, 0, self._w, self._h
 
 
-def update():
+def tick():
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()
@@ -86,7 +86,6 @@ def main():
 
     g2d.init_canvas(arena.size())
     sprites = g2d.load_image("sprites.png")
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

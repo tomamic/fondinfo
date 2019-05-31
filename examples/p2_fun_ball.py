@@ -9,8 +9,7 @@ import g2d
 # way too much global stuff!
 x1, y1, dx1, dy1 = 40, 80, 5, 5
 x2, y2, dx2, dy2 = 80, 40, 5, 5
-ARENA_W, ARENA_H = 320, 240
-BALL_W, BALL_H = 20, 20
+ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 image = g2d.load_image("ball.png")
 
 # encapsulates behaviour, but exposes data
@@ -24,7 +23,7 @@ def move_ball(x: int, y: int,
     y += dy
     return x, y, dx, dy
 
-def update():
+def tick():
     global x1, y1, dx1, dy1
     global x2, y2, dx2, dy2
     g2d.clear_canvas()               # Draw background
@@ -35,7 +34,6 @@ def update():
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_events(update)  # Set update to be called...
-    g2d.main_loop()            # ... at 30 fps
+    g2d.main_loop(tick)  # call tick 30 times/second
 
 main()

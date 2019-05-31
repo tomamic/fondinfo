@@ -110,33 +110,31 @@ b1 = Ball(arena, 40, 60, 5)
 b2 = Ball(arena, 80, 40, -5)
 turtle = Turtle(arena, 80, 80)
 
-def update():
+def tick():
+    if g2d.key_pressed("ArrowUp"):
+        turtle.go_up()
+    elif g2d.key_pressed("ArrowRight"):
+        turtle.go_right()
+    elif g2d.key_pressed("ArrowDown"):
+        turtle.go_down()
+    elif g2d.key_pressed("ArrowLeft"):
+        turtle.go_left()
+    elif (g2d.key_released("ArrowUp") or
+          g2d.key_released("ArrowRight") or
+          g2d.key_released("ArrowDown") or
+          g2d.key_released("ArrowLeft")):
+        turtle.stay()
+
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
         g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
-def keydown(key):
-    #print(key + " dn")
-    if key == "ArrowUp":
-        turtle.go_up()
-    elif key == "ArrowDown":
-        turtle.go_down()
-    elif key == "ArrowLeft":
-        turtle.go_left()
-    elif key == "ArrowRight":
-        turtle.go_right()
-
-def keyup(key):
-    #print(key + " up")
-    turtle.stay()
-
 def main():
     global sprites
     g2d.init_canvas(arena.size())
     sprites = g2d.load_image("sprites.png")
-    g2d.handle_events(update, keydown, keyup)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

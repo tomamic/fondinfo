@@ -18,8 +18,9 @@ import os, signal, subprocess, sys, threading, time, webbrowser
 import http.server, socketserver, _websocket
 
 _ws, _httpd, _wv = None, None, None
-_usr_update, _usr_keydown, _usr_keyup = None, None, None
+_usr_tick = None
 _mouse_pos = (0, 0)
+_keys, _prev_keys = set(), set()
 _jss, _answers, _events = [], [], []
 _cond = threading.Condition()
 
@@ -141,20 +142,23 @@ def confirm(message: str) -> bool:
 def prompt(message: str) -> str:
     return _dialog(f"doPrompt('{message}')")
 
-def handle_events(update=None, keydown=None, keyup=None) -> None:
-    global _usr_update, _usr_keydown, _usr_keyup
-    _usr_update, _usr_keydown, _usr_keyup = update, keydown, keyup
-
 def mouse_position() -> (int, int):
     return _mouse_pos
+
+def key_pressed(key: str) -> bool:
+    return key in _keys and key not in _prev_keys
+
+def key_released(key: str) -> bool:
+    return key not in _keys and key in _prev_keys
 
 def update_canvas() -> None:
     if _ws:
         _ws.sendMessage(";\n".join(_jss + [""]))
         _jss.clear()
 
-def main_loop(fps=30) -> None:
-    global _mouse_pos
+def main_loop(tick=None, fps=30) -> None:
+    global _mouse_pos, _usr_tick, _prev_keys
+    _usr_tick = tick
     _jss.append(f"mainLoop({fps})")
     update_canvas()
     looping = True
@@ -163,15 +167,14 @@ def main_loop(fps=30) -> None:
         args = msg.split(" ")
         if args[0] == "mousemove":
             _mouse_pos = int(args[1]), int(args[2])
-        elif args[0] == "keydown" and _usr_keydown != None:
-            _usr_keydown(args[1])
+        elif args[0] == "keydown":
+            _keys.add(args[1])
+        elif args[0] == "keyup":
+            _keys.discard(args[1])
+        elif args[0] == "update" and _usr_tick != None:
+            _usr_tick()
             update_canvas()
-        elif args[0] == "keyup" and _usr_keyup != None:
-            _usr_keyup(args[1])
-            update_canvas()
-        elif args[0] == "update" and _usr_update != None:
-            _usr_update()
-            update_canvas()
+            _prev_keys = _keys.copy()
         elif args[0] == "disconnect":
             looping = False
     _httpd.shutdown()
@@ -179,6 +182,7 @@ def main_loop(fps=30) -> None:
         _wv.terminate()
 
 def close_canvas():
-    handle_events(None, None, None)
+    global _usr_tick
+    _usr_tick = None
     _jss.append(f"closeCanvas()")
     update_canvas()

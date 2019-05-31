@@ -8,10 +8,12 @@ import (
 )
 
 var doc = js.Global.Get("document")
+var txt = ""
 
 func init() {
+    inited = true
     js.Global.Set("invokeExternal", handleData)
-    out := doc.Call("getElementById", "output")
+    out := doc.Call("getElementById", "g2d-output")
     out.Set("innerHTML", "")
     elem := doc.Call("createElement", "SCRIPT")
     elem.Set("innerHTML", script)
@@ -34,16 +36,20 @@ func Alert(a ...interface{}) {
 }
 
 func Println(a ...interface{}) {
-    //fmt.Println(a...)
-    out := doc.Call("getElementById", "output")
-    txt := out.Get("innerHTML").String()
-    txt += "<pre>" + fmt.Sprint(a...) + "</pre>"
+    txt += fmt.Sprint(a...) + "\n"
+    out := doc.Call("getElementById", "g2d-output")
+    out.Set("innerHTML", txt)
+    out.Set("scrollTop", out.Get("scrollHeight"))
+}
+
+func Printf(format string, a ...interface{}) {
+    txt += fmt.Sprintf(format, a...)
+    out := doc.Call("getElementById", "g2d-output")
     out.Set("innerHTML", txt)
     out.Set("scrollTop", out.Get("scrollHeight"))
 }
 
 func InitCanvas(size Size) {
-    handleData("load")
     doJs("initCanvas(%d, %d)", size.W, size.H)
     UpdateCanvas()
 }

@@ -27,7 +27,7 @@ func (b *Alien) Position() Rect {
     return Rect{b.x, b.y, b.w, b.h}
 }
 
-func update() {
+func tick() {
     b.Move()
     SetColor(Color{255, 255, 255})
     ClearCanvas()  // BG
@@ -37,5 +37,6 @@ func update() {
 
 func main() {
     InitCanvas(as)
-    HandleEvents(10, update)  // fps
+    SetFrameRate(10)
+    MainLoop(tick)  // 10 fps
 }

@@ -12,14 +12,10 @@ type Gui struct {
     longPress float64
 }
 
-func (ui *Gui) Keydown(code string) {
-    if code == "LeftButton" {
+func (ui *Gui) Tick() {
+    if KeyPressed("LeftButton") {
         ui.pressed = time.Now()
-    }
-}
-
-func (ui *Gui) Keyup(code string) {
-    if code == "LeftButton" {
+    } else if KeyReleased("LeftButton") {
         pos := MousePosition()
         if time.Now().Sub(ui.pressed).Seconds() > ui.longPress {
             ui.game.FlagAt(pos.X/ui.bw, pos.Y/ui.bh)
@@ -58,6 +54,6 @@ func GuiPlay(game Game) {
     InitCanvas(Size{game.Cols()*40, game.Rows()*40})
     ui := &Gui{game, 40, 40, time.Time{}, 0.5}
     ui.Update()
-    HandleEvents(nil, ui.Keydown, ui.Keyup)
-    MainLoop()
+    SetFrameRate(60)
+    MainLoop(ui.Tick)
 }

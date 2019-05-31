@@ -9,7 +9,7 @@ import math
 
 i, n = 0, 256
 
-def update():
+def tick():
     global i
     x = int(300 + i * math.cos(i * math.pi / 32))
     y = int(300 + i * math.sin(i * math.pi / 32))
@@ -20,7 +20,6 @@ def update():
 
 def main():
     g2d.init_canvas((600, 600))
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

@@ -23,7 +23,7 @@ class Alien:
     def position(self):
         return self._x, self._y, self._w, self._h
 
-def update():
+def tick():
     g2d.clear_canvas()
     a.move()
     g2d.fill_rect(a.position())
@@ -31,8 +31,7 @@ def update():
 def main():
     global a
     a = Alien(40, 40)
-    g2d.init_canvas((320, 240))
-    g2d.handle_events(update)
-    g2d.main_loop()
+    g2d.init_canvas((480, 360))
+    g2d.main_loop(tick, 10)
 
 main()  # call main to start the program

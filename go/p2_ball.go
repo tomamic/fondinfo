@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var ArenaW, ArenaH = 160, 120
+var ArenaW, ArenaH = 480, 360
 
 type Ball struct {
     x, y, w, h int
@@ -43,7 +43,7 @@ func mainConsole() {
 
 var balls = []*Ball{NewBall(40, 80), NewBall(80, 40)}
 
-func update() {
+func tick() {
     SetColor(Color{255, 255, 255})
     ClearCanvas()  // BG
     SetColor(Color{100, 100, 100})
@@ -56,5 +56,5 @@ func update() {
 func main() {
     //mainConsole()
     InitCanvas(Size{ArenaW, ArenaH})
-    HandleEvents(30, update)  // 30 fps
+    MainLoop(tick)  // 30 fps
 }

@@ -13,12 +13,10 @@ class BoardGameGui:
         self._downtime = 0
         self.update_buttons()
 
-    def mousedown(self, code):
-        if code == "LeftButton":
+    def tick(self):
+        if g2d.key_pressed("LeftButton"):
             self._downtime = time()
-
-    def mouseup(self, code):
-        if code == "LeftButton":
+        elif g2d.key_released("LeftButton"):
             pos = g2d.mouse_position()
             x, y = pos[0] // W, pos[1] // H
             if time() - self._downtime > LONG_PRESS:
@@ -48,5 +46,4 @@ class BoardGameGui:
 def gui_play(game: BoardGame):
     g2d.init_canvas((game.cols() * W, game.rows() * H))
     ui = BoardGameGui(game)
-    g2d.handle_events(None, ui.mousedown, ui.mouseup)
-    g2d.main_loop()
+    g2d.main_loop(ui.tick)

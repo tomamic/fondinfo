@@ -7,21 +7,19 @@
 import g2d
 
 x, y, dx = 50, 50, 5
-ARENA_W, ARENA_H = 320, 240
-BALL_W, BALL_H = 20, 20
+ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 image = g2d.load_image("ball.png")
 
-def update():
+def tick():
     global x, dx
-    g2d.clear_canvas()                 # Draw background
-    g2d.draw_image(image, (x, y))      # Draw foreground
-##    if x + dx < 0 or x + dx + BALL_W > ARENA_W:
-##        dx = -dx
-    x = (x + dx) % ARENA_W             # Update ball's position
+    ##if g2d.key_pressed("Enter"): ...
+    ##if x + dx < 0 or x + dx + BALL_W > ARENA_W: ...
+    g2d.clear_canvas()             # Draw background
+    g2d.draw_image(image, (x, y))  # Draw foreground
+    x += dx                        # Update ball's position
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.handle_events(update)          # Set update to be called...
-    g2d.main_loop()                    # ... at 30 fps
+    g2d.main_loop(tick)  # call tick 30 times/second
 
 main()

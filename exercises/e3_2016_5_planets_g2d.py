@@ -35,7 +35,7 @@ class Planet:
         return self._color
 
 
-def draw_frame():
+def tick():
     center_x, center_y = canvas_w // 2, canvas_h // 2
     g2d.clear_canvas()
     g2d.set_color((255, 255, 0))
@@ -57,7 +57,6 @@ def main():
 
     canvas_w, canvas_h = 600, 600
     g2d.init_canvas((canvas_w, canvas_h))
-    g2d.handle_events(draw_frame)
-    g2d.main_loop()
+    g2d.main_loop(tick)
 
 main()

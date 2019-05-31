@@ -21,9 +21,10 @@ _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
 _tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
 _canvas = None
-_update, _keydown, _keyup = None, None, None
+_tick = None
 _color = (127, 127, 127)
 _mouse_pos = (0, 0)
+_keys, _prev_keys = set(), set()
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 
 def init_canvas(size: (int, int)):
@@ -90,20 +91,19 @@ def pause_audio(audio: pygame.mixer.Sound) -> None:
     audio.stop()
 
 def alert(message: str) -> None:
-    if _canvas: update_canvas()
+    if _canvas:
+        update_canvas()
     messagebox.showinfo("", message)
 
 def confirm(message: str) -> bool:
-    if _canvas: update_canvas()
+    if _canvas:
+        update_canvas()
     return messagebox.askokcancel("", message)
 
 def prompt(message: str) -> str:
-    if _canvas: update_canvas()
+    if _canvas:
+        update_canvas()
     return simpledialog.askstring("", message, parent=_tkmain)
-
-def handle_events(update=None, keydown=None, keyup=None):
-    global _update, _keydown, _keyup
-    _update, _keydown, _keyup = update, keydown, keyup
 
 def mouse_position() -> (int, int):
     return _mouse_pos
@@ -117,12 +117,21 @@ def web_key(key: int) -> str:
         word = "Digit" + word
     elif word in ("Up", "Down", "Right", "Left"):
         word = "Arrow" + word
+    elif word == "Space":
+        word = "Spacebar"
     elif word == "Return":
         word = "Enter"
     return word
 
-def main_loop(fps=30) -> None:
-    global _mouse_pos
+def key_pressed(key: str) -> bool:
+    return key in _keys and key not in _prev_keys
+
+def key_released(key: str) -> bool:
+    return key in _prev_keys and key not in _keys
+
+def main_loop(tick=None, fps=30) -> None:
+    global _mouse_pos, _tick, _prev_keys
+    _tick = tick
     clock = pygame.time.Clock()
     update_canvas()
     running = True
@@ -132,21 +141,21 @@ def main_loop(fps=30) -> None:
             if e.type == pygame.QUIT:
                 running = False
                 break
-            elif e.type == pygame.KEYDOWN and _keydown:
-                _keydown(web_key(e.key))
-            elif e.type == pygame.KEYUP and _keyup:
-                _keyup(web_key(e.key))
-            elif e.type == pygame.MOUSEMOTION:
-                _mouse_pos = pygame.mouse.get_pos()
+            elif e.type == pygame.KEYDOWN:
+                _keys.add(web_key(e.key))
+            elif e.type == pygame.KEYUP:
+                _keys.discard(web_key(e.key))
             elif (e.type == pygame.MOUSEBUTTONDOWN and
-                  1 <= e.button <= 3 and _keydown):
-                _keydown(_mouse_codes[e.button - 1])
+                  1 <= e.button <= 3):
+                _keys.add(_mouse_codes[e.button - 1])
             elif (e.type == pygame.MOUSEBUTTONUP and
-                  1 <= e.button <= 3 and _keyup):
-                _keyup(_mouse_codes[e.button - 1])
-        if _update:
-            _update()
-        update_canvas()
+                  1 <= e.button <= 3):
+                _keys.discard(_mouse_codes[e.button - 1])
+        if _tick:
+            _mouse_pos = pygame.mouse.get_pos()
+            _tick()
+            _prev_keys = _keys.copy()
+            update_canvas()
         clock.tick(fps)
     close_canvas()
 

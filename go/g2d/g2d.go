@@ -13,9 +13,11 @@ type Size struct{ W, H int }
 type Rect struct{ X, Y, W, H int }
 type Color struct{ R, G, B int }
 
-var usrKeydown, usrKeyup func(string)
-var usrUpdate func()
+var frameRate = 30.0
+var usrTick func()
 var mousePos = Point{0, 0}
+var keys = make(map[string]bool)
+var prevKeys = make(map[string]bool)
 var jss = make([]string, 0)
 var answers = make([]string, 0)
 var inited, done = false, false
@@ -123,7 +125,7 @@ function doPrompt(message) {
 }
 function fixKey(k) {
     if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
-    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k==" " || k=="Space") k = "Spacebar";
     else if (k=="Esc") k = "Escape";
     else if (k=="Del") k = "Delete";
     return k;
@@ -166,7 +168,7 @@ function mainLoop(fps) {
     }
     if (fps >= 0) {
         timerId = setInterval(function(e) {
-            invokeExternal("update");
+            invokeExternal("tick");
         }, 1000/fps);
     }
 }
@@ -262,18 +264,20 @@ func PauseAudio(audio string) {
     doJs("pauseAudio('%s')", audio)
 }
 
-func HandleEvents(fps int, update func(), keyFuncs ...func(string)) {
-    usrUpdate, usrKeydown, usrKeyup = update, nil, nil
-    if len(keyFuncs) >= 2 {
-        usrKeydown, usrKeyup = keyFuncs[0], keyFuncs[1]
-    } else if len(keyFuncs) == 1 {
-        usrKeydown = keyFuncs[0]
-    }
-    MainLoop(fps)
-}
-
 func MousePosition() Point {
     return mousePos
+}
+
+func KeyPressed(key string) bool {
+    return keys[key] && !prevKeys[key];
+}
+
+func KeyReleased(key string) bool {
+    return !keys[key] && prevKeys[key];
+}
+
+func SetFrameRate(fps float64) {
+    frameRate = fps
 }
 
 func UpdateCanvas() {
@@ -281,18 +285,17 @@ func UpdateCanvas() {
         InitCanvas(Size{800, 600})
     }
     code := strings.Join(jss, "")
-    //fmt.Println(code)
+    //Println(code)
     evalJs(code)
     jss = make([]string, 0)
 }
 
-func MainLoop(fps ...int) {
+func MainLoop(tick ...func()) {
+    if len(tick) == 1 {
+        usrTick = tick[0]
+    }
     if !done {
-        fps_ := 30
-        if len(fps) > 0 {
-            fps_ = fps[0]
-        }
-        doJs("mainLoop(%d)", fps_)
+        doJs("mainLoop(%f)", frameRate)
         UpdateCanvas()
         waitDone()
         done = true
@@ -300,7 +303,7 @@ func MainLoop(fps ...int) {
 }
 
 func CloseCanvas() {
-    usrUpdate, usrKeydown, usrKeyup = nil, nil, nil
+    usrTick = nil
     doJs("closeCanvas()")
     UpdateCanvas()
     terminate()
@@ -311,19 +314,21 @@ func doJs(cmd string, a ...interface{}) {
 }
 
 func handleData(data string) {
-    //fmt.Println(data)
+    //Println(data)
     args := strings.Split(data, " ")
     if args[0] == "mousemove" {
         mousePos.X, mousePos.Y = ToInt(args[1]), ToInt(args[2])
-    } else if args[0] == "keydown" && usrKeydown != nil {
-        usrKeydown(args[1])
+    } else if args[0] == "keydown" {
+        keys[args[1]] = true
+    } else if args[0] == "keyup" {
+        delete(keys, args[1])
+    } else if args[0] == "tick" && usrTick != nil {
+        usrTick()
         UpdateCanvas()
-    } else if args[0] == "keyup" && usrKeyup != nil {
-        usrKeyup(args[1])
-        UpdateCanvas()
-    } else if args[0] == "update" && usrUpdate != nil {
-        usrUpdate()
-        UpdateCanvas()
+        prevKeys = make(map[string]bool)
+        for k, v := range keys {
+            prevKeys[k] = v
+        }
     } else if args[0] == "answer" {
         ans := strings.SplitN(data, " ", 2)[1]
         answers = append(answers, ans)

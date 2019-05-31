@@ -7,6 +7,9 @@
 import g2d
 
 def main():
+    W, H = 600, 400
+    g2d.init_canvas((W, H))
+
     values = []
     max_val = 0
     val = float(g2d.prompt("Val? "))
@@ -16,8 +19,6 @@ def main():
             max_val = val
         val = float(g2d.prompt("Val? "))
 
-    W, H = 600, 400
-    g2d.init_canvas((W, H))
     if len(values) > 0:
         for i, v in enumerate(values):
             rect = (0, i * H / len(values),
