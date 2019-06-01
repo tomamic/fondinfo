@@ -8,14 +8,140 @@
 '''
 
 
-#### webview
+#### g2d
 
-if __name__ == "__main__":
-    import sys, webview
-    webview.create_window(url="http://localhost:8008/",
-        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
-        title="G2D Canvas", resizable=False, debug=False)
-    sys.exit()
+import os, signal, subprocess, sys, threading, time
+import http.server, socketserver, webbrowser
+
+_ws, _httpd, _wv = None, None, None
+_usr_tick = None
+_mouse_pos = (0, 0)
+_keys, _prev_keys = set(), set()
+_jss, _answers, _events = [], [], []
+_cond = threading.Condition()
+
+def produce_msg(msg: str, msgs: list) -> None:
+    with _cond:
+        msgs.append(msg)
+        _cond.notify_all()
+
+def consume_msg(msgs: list) -> str:
+    with _cond:
+        while len(msgs) == 0:
+            _cond.wait()
+        return msgs.pop(0)
+
+def init_canvas(size: (int, int)) -> None:
+    if not _ws:
+        threading.Thread(target=serve_files).start()
+        threading.Thread(target=start_websocket).start()
+        threading.Thread(target=start_webview, args=size).start()
+        consume_msg(_events)
+    _jss.append(f"initCanvas({size[0]}, {size[1]})")
+    update_canvas()
+
+def set_color(c: (int, int, int)) -> None:
+    _jss.append(f"setColor({c[0]}, {c[1]}, {c[2]})")
+
+def clear_canvas() -> None:
+    _jss.append(f"clearCanvas()")
+
+def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
+    _jss.append(f"drawLine({pt1[0]}, {pt1[1]}, {pt2[0]}, {pt2[1]})")
+
+def fill_circle(pt: (int, int), r: int) -> None:
+    _jss.append(f"fillCircle({pt[0]}, {pt[1]}, {r})")
+
+def fill_rect(r: (int, int, int, int)) -> None:
+    _jss.append(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
+
+def load_image(src: str) -> str:
+    key = hash(src)
+    _jss.append(f"loadImage('{key}', '{src}')")
+    return key
+
+def draw_image(img: str, pt: (int, int)) -> None:
+    _jss.append(f"drawImage('{img}', {pt[0]}, {pt[1]})")
+
+def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
+    _jss.append(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
+
+def draw_text(txt: str, pt: (int, int), size: int) -> None:
+    _jss.append(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
+
+def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
+    _jss.append(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
+
+def load_audio(src: str) -> str:
+    key = hash(src)
+    _jss.append(f"loadAudio('{key}', '{src}')")
+    return key
+
+def play_audio(audio: str, loop=False) -> None:
+    l = str(loop).lower()
+    _jss.append(f"playAudio('{audio}', {l})")
+
+def pause_audio(audio: str) -> None:
+    _jss.append(f"pauseAudio('{audio}')")
+
+def _dialog(js: str) -> str:
+    _jss.append(js)
+    update_canvas()
+    return consume_msg(_answers)
+
+def alert(message: str) -> None:
+    _dialog(f"doAlert('{message}')")
+
+def confirm(message: str) -> bool:
+    return _dialog(f"doConfirm('{message}')") == "true"
+
+def prompt(message: str) -> str:
+    return _dialog(f"doPrompt('{message}')")
+
+def mouse_position() -> (int, int):
+    return _mouse_pos
+
+def key_pressed(key: str) -> bool:
+    return key in _keys and key not in _prev_keys
+
+def key_released(key: str) -> bool:
+    return key not in _keys and key in _prev_keys
+
+def update_canvas() -> None:
+    if _ws:
+        _ws.sendMessage(";\n".join(_jss + [""]))
+        _jss.clear()
+
+def main_loop(tick=None, fps=30) -> None:
+    global _mouse_pos, _usr_tick, _prev_keys
+    _usr_tick = tick
+    _jss.append(f"mainLoop({fps})")
+    update_canvas()
+    looping = True
+    while looping:
+        msg = consume_msg(_events)
+        args = msg.split(" ")
+        if args[0] == "mousemove":
+            _mouse_pos = int(args[1]), int(args[2])
+        elif args[0] == "keydown":
+            _keys.add(args[1])
+        elif args[0] == "keyup":
+            _keys.discard(args[1])
+        elif args[0] == "update" and _usr_tick != None:
+            _usr_tick()
+            update_canvas()
+            _prev_keys = _keys.copy()
+        elif args[0] == "disconnect":
+            looping = False
+    _httpd.shutdown()
+    if _wv:
+        _wv.terminate()
+
+def close_canvas():
+    global _usr_tick
+    _usr_tick = None
+    _jss.append(f"closeCanvas()")
+    update_canvas()
 
 
 #### index.html
@@ -229,6 +355,42 @@ function closeCanvas() {
 <body>
 </body>
 </html>"""
+
+class FileHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(html.encode("utf-8"))
+        else:
+            super().do_GET()
+
+def serve_files() -> None:
+    global _httpd
+    # minimal web server, for files in current dir
+    socketserver.TCPServer.allow_reuse_address = True
+    _httpd = socketserver.TCPServer(("", 8008), FileHandler)
+    _httpd.serve_forever()
+
+
+#### webview
+
+if __name__ == "__main__":
+    import sys, webview
+    webview.create_window(url="http://localhost:8008/",
+        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
+        title="G2D Canvas", resizable=False, debug=False)
+    sys.exit()
+
+
+def start_webview(w, h):
+    global _wv
+    try:
+        import webview
+        _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
+    except:
+        webbrowser.open("http://localhost:8008/", new=0)
 
 
 #### websockets
@@ -961,28 +1123,7 @@ class SimpleSSLWebSocketServer(SimpleWebSocketServer):
       super(SimpleSSLWebSocketServer, self).serveforever()
 
 
-#### g2d
-
-import os, signal, subprocess, sys, threading, time
-import http.server, socketserver, webbrowser
-
-_ws, _httpd, _wv = None, None, None
-_usr_tick = None
-_mouse_pos = (0, 0)
-_keys, _prev_keys = set(), set()
-_jss, _answers, _events = [], [], []
-_cond = threading.Condition()
-
-def produce_msg(msg: str, msgs: list) -> None:
-    with _cond:
-        msgs.append(msg)
-        _cond.notify_all()
-
-def consume_msg(msgs: list) -> str:
-    with _cond:
-        while len(msgs) == 0:
-            _cond.wait()
-        return msgs.pop(0)
+#### g2d-ws
 
 class SocketHandler(WebSocket):
     def handleMessage(self):
@@ -1002,145 +1143,8 @@ class SocketHandler(WebSocket):
         self.server.closing = True
         self.server.close()
 
-class FileHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == "/":
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            self.wfile.write(html.encode("utf-8"))
-        else:
-            super().do_GET()
-
-def serve_files() -> None:
-    global _httpd
-    # minimal web server, for files in current dir
-    socketserver.TCPServer.allow_reuse_address = True
-    _httpd = socketserver.TCPServer(("", 8008), FileHandler)
-    _httpd.serve_forever()
-
 def start_websocket():
     server = SimpleWebSocketServer("localhost", 7574, SocketHandler)
     server.closing = False
     while not server.closing:
         server.serveonce()
-
-def start_webview(w, h):
-    global _wv
-    try:
-        import webview
-        _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
-    except:
-        webbrowser.open("http://localhost:8008/", new=0)
-
-def init_canvas(size: (int, int)) -> None:
-    if not _ws:
-        threading.Thread(target=serve_files).start()
-        threading.Thread(target=start_websocket).start()
-        threading.Thread(target=start_webview, args=size).start()
-        consume_msg(_events)
-    _jss.append(f"initCanvas({size[0]}, {size[1]})")
-    update_canvas()
-
-def set_color(c: (int, int, int)) -> None:
-    _jss.append(f"setColor({c[0]}, {c[1]}, {c[2]})")
-
-def clear_canvas() -> None:
-    _jss.append(f"clearCanvas()")
-
-def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    _jss.append(f"drawLine({pt1[0]}, {pt1[1]}, {pt2[0]}, {pt2[1]})")
-
-def fill_circle(pt: (int, int), r: int) -> None:
-    _jss.append(f"fillCircle({pt[0]}, {pt[1]}, {r})")
-
-def fill_rect(r: (int, int, int, int)) -> None:
-    _jss.append(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
-
-def load_image(src: str) -> str:
-    key = hash(src)
-    _jss.append(f"loadImage('{key}', '{src}')")
-    return key
-
-def draw_image(img: str, pt: (int, int)) -> None:
-    _jss.append(f"drawImage('{img}', {pt[0]}, {pt[1]})")
-
-def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
-    _jss.append(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
-
-def draw_text(txt: str, pt: (int, int), size: int) -> None:
-    _jss.append(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
-
-def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
-    _jss.append(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
-
-def load_audio(src: str) -> str:
-    key = hash(src)
-    _jss.append(f"loadAudio('{key}', '{src}')")
-    return key
-
-def play_audio(audio: str, loop=False) -> None:
-    l = str(loop).lower()
-    _jss.append(f"playAudio('{audio}', {l})")
-
-def pause_audio(audio: str) -> None:
-    _jss.append(f"pauseAudio('{audio}')")
-
-def _dialog(js: str) -> str:
-    _jss.append(js)
-    update_canvas()
-    return consume_msg(_answers)
-
-def alert(message: str) -> None:
-    _dialog(f"doAlert('{message}')")
-
-def confirm(message: str) -> bool:
-    return _dialog(f"doConfirm('{message}')") == "true"
-
-def prompt(message: str) -> str:
-    return _dialog(f"doPrompt('{message}')")
-
-def mouse_position() -> (int, int):
-    return _mouse_pos
-
-def key_pressed(key: str) -> bool:
-    return key in _keys and key not in _prev_keys
-
-def key_released(key: str) -> bool:
-    return key not in _keys and key in _prev_keys
-
-def update_canvas() -> None:
-    if _ws:
-        _ws.sendMessage(";\n".join(_jss + [""]))
-        _jss.clear()
-
-def main_loop(tick=None, fps=30) -> None:
-    global _mouse_pos, _usr_tick, _prev_keys
-    _usr_tick = tick
-    _jss.append(f"mainLoop({fps})")
-    update_canvas()
-    looping = True
-    while looping:
-        msg = consume_msg(_events)
-        args = msg.split(" ")
-        if args[0] == "mousemove":
-            _mouse_pos = int(args[1]), int(args[2])
-        elif args[0] == "keydown":
-            _keys.add(args[1])
-        elif args[0] == "keyup":
-            _keys.discard(args[1])
-        elif args[0] == "update" and _usr_tick != None:
-            _usr_tick()
-            update_canvas()
-            _prev_keys = _keys.copy()
-        elif args[0] == "disconnect":
-            looping = False
-    _httpd.shutdown()
-    if _wv:
-        _wv.terminate()
-
-def close_canvas():
-    global _usr_tick
-    _usr_tick = None
-    _jss.append(f"closeCanvas()")
-    update_canvas()

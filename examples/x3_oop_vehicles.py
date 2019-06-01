@@ -5,14 +5,16 @@
 '''
 
 import g2d
-from p2_oop_alien import Alien
+from x2_oop_vehicle import Vehicle
 
 def tick():
     g2d.clear_canvas()
-    for a in aliens:
+    for a in actors:
         a.move()
         g2d.fill_rect(a.position())
 
-aliens = [Alien((40, 40)), Alien((80, 80)), Alien((120, 40))]
+actors = [Vehicle((40, 40), 5),
+          Vehicle((120, 40), 5),
+          Vehicle((80, 80), -5)]
 g2d.init_canvas((480, 360))
 g2d.main_loop(tick)

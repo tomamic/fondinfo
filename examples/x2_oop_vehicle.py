@@ -8,12 +8,12 @@ import g2d
 
 W, H, MARGIN = 480, 360, 100
 
-class Ball:
-    def __init__(self, pos: (int, int)):
+class Vehicle:
+    def __init__(self, pos: (int, int), dx: int):
         self._x = pos[0]
         self._y = pos[1]
         self._w, self._h = 20, 20
-        self._dx = 5
+        self._dx = dx
 
     def move(self):
         if self._x + self._dx < -MARGIN:
@@ -38,8 +38,8 @@ def tick():
 
 def main():
     global b
-    b = Ball((40, 40))
+    b = Vehicle((40, 40), 5)
     g2d.init_canvas((W, H))
     g2d.main_loop(tick)
 
-main()
+##main()
