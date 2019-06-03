@@ -201,7 +201,11 @@ func tick() {
     arena.MoveAll()
     ClearCanvas()
     for _, a := range arena.Actors() {
-        DrawImageClip(img, a.Symbol(), a.Position())
+        if a.Symbol().H != 0 {
+            DrawImageClip(img, a.Symbol(), a.Position())
+        } else {
+            FillRect(a.Position())
+        }
     }
 }
 
