@@ -17,12 +17,12 @@ def tick():
     if g2d.key_pressed("Enter"):
         count = 5
     if count > 0:
+        count -= 1
         if x + dx < -MARGIN:
             x = ARENA_W + MARGIN
         if x + dx > ARENA_W + MARGIN:
             x = -MARGIN
         x += dx  # Update ball's position
-        count -= 1
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))

@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var ArenaW, ArenaH = 480, 360
+var screen = Size{480, 360}
 
 type Ball struct {
     x, y, w, h int
@@ -14,10 +14,10 @@ func NewBall(x, y int) *Ball {
 }
 
 func (b *Ball) Move() {
-    if !(0 <= b.x+b.dx && b.x+b.dx <= ArenaW-b.w) {
+    if !(0 <= b.x+b.dx && b.x+b.dx <= screen.W-b.w) {
         b.dx = -b.dx
     }
-    if !(0 <= b.y+b.dy && b.y+b.dy <= ArenaH-b.h) {
+    if !(0 <= b.y+b.dy && b.y+b.dy <= screen.H-b.h) {
         b.dy = -b.dy
     }
     b.x += b.dx
@@ -28,11 +28,11 @@ func (b *Ball) Position() Rect {
     return Rect{b.x, b.y, b.w, b.h}
 }
 
-func mainConsole() {
-    // Create two objects, instances of the Ball class
-    b1 := NewBall(40, 80)
-    b2 := NewBall(80, 40)
+// Create two objects, instances of the Ball class
+var b1 = NewBall(40, 80)
+var b2 = NewBall(80, 40)
 
+func mainConsole() {
     for i := 0; i < 25; i++ {
         Println("Ball 1 @", b1.Position())
         Println("Ball 2 @", b2.Position())
@@ -41,20 +41,16 @@ func mainConsole() {
     }
 }
 
-var balls = []*Ball{NewBall(40, 80), NewBall(80, 40)}
-
 func tick() {
-    SetColor(Color{255, 255, 255})
     ClearCanvas()  // BG
-    SetColor(Color{100, 100, 100})
-    for _, b := range balls {
-        b.Move()
-        FillRect(b.Position())  // FG
-    }
+    b1.Move()
+    b2.Move()
+    FillRect(b1.Position())  // FG
+    FillRect(b2.Position())  // FG
 }
 
 func main() {
     //mainConsole()
-    InitCanvas(Size{ArenaW, ArenaH})
-    MainLoop(tick)  // 30 fps
+    InitCanvas(screen)
+    MainLoop(tick)
 }

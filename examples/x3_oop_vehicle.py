@@ -11,17 +11,16 @@ class Vehicle(Actor):
     def __init__(self, arena, pos: (int, int), dx: int):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._margin = 100
+        self._left, self._right = -100, arena.size()[0] + 100
         self._dx = dx
         self._arena = arena
         arena.add(self)
 
     def move(self):
-        aw, ah = self._arena.size()
-        if self._x + self._dx < -self._margin:
-            self._x = aw + self._margin
-        if self._x + self._dx > aw + self._margin:
-            self._x = -self._margin
+        if self._x + self._dx < self._left:
+            self._x = self._right
+        if self._x + self._dx > self._right:
+            self._x = self._left
         self._x += self._dx
 
     def position(self):
@@ -47,4 +46,4 @@ def main():
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 
-main()
+##main()

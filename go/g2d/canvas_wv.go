@@ -60,7 +60,7 @@ func Println(a ...interface{}) {
 }
 
 func Printf(format string, a ...interface{}) {
-    fmt.Sprintf(format, a...)
+    fmt.Printf(format, a...)
 }
 
 func dialog(cmd string, a ...interface{}) string {
@@ -75,6 +75,12 @@ func dialog(cmd string, a ...interface{}) string {
 }
 
 func Prompt(a ...interface{}) string {
+    if !inited {
+        Println(a...)
+        line := ""
+        fmt.Scanln(&line)
+        return line
+    }
     return dialog("doPrompt", a...)
     //if w != nil {
     //    UpdateCanvas()

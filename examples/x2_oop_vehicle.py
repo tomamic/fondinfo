@@ -6,7 +6,7 @@
 
 import g2d
 
-W, H, MARGIN = 480, 360, 100
+W, H = 480, 360
 
 class Vehicle:
     def __init__(self, pos: (int, int), dx: int):
@@ -14,12 +14,13 @@ class Vehicle:
         self._y = pos[1]
         self._w, self._h = 20, 20
         self._dx = dx
+        self._left, self._right = -100, W + 100
 
     def move(self):
-        if self._x + self._dx < -MARGIN:
-            self._x = W + MARGIN
-        if self._x + self._dx > W + MARGIN:
-            self._x = -MARGIN
+        if self._x + self._dx < self._left:
+            self._x = self._right
+        if self._x + self._dx > self._right:
+            self._x = self._left
         self._x += self._dx
 
     def uturn(self):

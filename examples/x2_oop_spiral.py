@@ -10,7 +10,7 @@ ARENA_W, ARENA_H = 600, 600
 
 class Spiral:
     def __init__(self):
-        self._w = math.pi / 32
+        self._w = math.pi / 32  # angular velocity
         self._i = 0
         self._n = 256
 

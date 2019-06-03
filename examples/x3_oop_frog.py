@@ -6,9 +6,11 @@
 
 import g2d
 from actor import Actor, Arena
+from x3_oop_vehicle import Vehicle
 
 class Frog(Actor):
     def __init__(self, arena, pos: (int, int)):
+        self._x0, self._y0 = pos
         self._x, self._y = pos
         self._w, self._h = 20, 20
         self._dx, self._dy = 0, 0
@@ -40,7 +42,7 @@ class Frog(Actor):
         return 0, 0
 
     def collide(self, other):
-        pass
+        self._x, self._y = self._x0, self._y0
 
     def jump_left(self):
         if self._count == 0:
@@ -80,7 +82,9 @@ def tick():
 def main():
     global arena, frog
     arena = Arena((480, 360))
-    frog = Frog(arena, (96, 96))
+    frog = Frog(arena, (230, 340))
+    Vehicle(arena, (40, 40), 5)
+    Vehicle(arena, (80, 80), -5)
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 
