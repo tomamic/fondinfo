@@ -9,8 +9,8 @@ type Ball struct {
     dx, dy     int
 }
 
-func NewBall(x, y int) *Ball {
-    return &Ball{x, y, 20, 20, 5, 5}
+func NewBall(pos Point) *Ball {
+    return &Ball{pos.X, pos.Y, 20, 20, 5, 5}
 }
 
 func (b *Ball) Move() {
@@ -29,8 +29,8 @@ func (b *Ball) Position() Rect {
 }
 
 // Create two objects, instances of the Ball class
-var b1 = NewBall(40, 80)
-var b2 = NewBall(80, 40)
+var b1 = NewBall(Point{40, 80})
+var b2 = NewBall(Point{80, 40})
 
 func mainConsole() {
     for i := 0; i < 25; i++ {
