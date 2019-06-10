@@ -10,5 +10,5 @@ def tick():
         else:
             g2d.fill_circle((x, y), 25)
 
-g2d.init_canvas((640, 480))
+g2d.init_canvas((480, 360))
 g2d.main_loop(tick)
