@@ -4,7 +4,7 @@ import . "g2d"
 
 var image = LoadImage("ball.png")
 var x, y, dx = 50, 50, 5
-const screen = Size{480, 360}
+var screen = Size{480, 360}
 
 func tick() {
     //if KeyPressed("Enter") { ... }
