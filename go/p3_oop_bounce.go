@@ -182,7 +182,7 @@ var ball1 = NewBall(arena, Point{40, 80})
 var ball2 = NewBall(arena, Point{80, 40})
 var ghost = NewGhost(arena, Point{120, 80})
 
-var img = LoadImage("sprites.png")
+var sprites = LoadImage("sprites.png")
 
 func tick() {
     if KeyPressed("ArrowUp") {
@@ -202,7 +202,7 @@ func tick() {
     ClearCanvas()
     for _, a := range arena.Actors() {
         if a.Symbol().H != 0 {
-            DrawImageClip(img, a.Symbol(), a.Position())
+            DrawImageClip(sprites, a.Symbol(), a.Position())
         } else {
             FillRect(a.Position())
         }
