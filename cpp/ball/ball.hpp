@@ -1,15 +1,13 @@
 #ifndef BALL_HPP
 #define BALL_HPP
 
+const int ARENA_W = 320, ARENA_H = 240;
+
 class Ball {
-    int x_;
-    int y_;
-    int dx_ = 5;
-    int dy_ = 5;
+    int x_, y_;
+    int dx_ = 5, dy_ = 5;
 
 public:
-    static const int ARENA_W = 320;
-    static const int ARENA_H = 240;
     static const int W = 20;
     static const int H = 20;
 

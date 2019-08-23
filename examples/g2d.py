@@ -420,10 +420,6 @@ import codecs
 from collections import deque
 from select import select
 
-__all__ = ['WebSocket',
-            'SimpleWebSocketServer',
-            'SimpleSSLWebSocketServer']
-
 def _check_unicode(val):
     if VER >= 3:
         return isinstance(val, str)

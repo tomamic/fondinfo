@@ -4,10 +4,12 @@
 #include <vector>
 #include <algorithm>
 
-struct Point{ int x, y; };
-struct Size{ int w, h; };
-struct Rect{ int x, y, w, h; };
-struct Color{ int r, g, b; };
+namespace g2d {
+
+struct Point { int x, y; };
+struct Size { int w, h; };
+struct Rect { int x, y, w, h; };
+struct Color { int r, g, b; };
 
 class Actor {
 public:
@@ -65,5 +67,16 @@ public:
     }
 };
 
+bool randomized = false;
+
+int randint(int min, int max) {
+    if (!randomized) {
+        srand(time(nullptr));
+        randomized = true;
+    }
+    return min + rand() % (1 + max - min);
+}
+
+}
 
 #endif // ACTOR_HPP

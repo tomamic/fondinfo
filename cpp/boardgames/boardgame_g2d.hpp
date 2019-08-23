@@ -4,6 +4,7 @@
 #include <functional>
 
 using namespace std::chrono_literals;
+using namespace g2d;
 
 auto W = 40, H = 40;
 auto LONG_PRESS = 0.5s;
@@ -20,22 +21,14 @@ public:
         init_canvas(size_);
         update_buttons();
 
-        std::function<void(string)> dn = [&](string key) { mousedown(key); };
-        std::function<void(string)> up = [&](string key) { mouseup(key); };
-        handle_events(nullptr, dn, up);
-        main_loop();
+        main_loop([&]{ tick(); });
     }
 
-    void mousedown(string key) {
-        if (key == "LeftButton") {
+    void tick() {
+        if (key_pressed("LeftButton")) {
             downtime_ = std::chrono::high_resolution_clock::now();
-        }
-    }
-
-    void mouseup(string key) {
-        if (key == "LeftButton") {
+        } else if (key_released("LeftButton")) {
             auto pos = mouse_position();
-            cout << key << " " << pos.x << " " << pos.y << endl;
             auto now = std::chrono::high_resolution_clock::now();
             if (now - downtime_ > LONG_PRESS) {
                 g_->flag_at(pos.x/W, pos.y/H);

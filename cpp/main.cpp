@@ -1,18 +1,21 @@
 #include "g2d/canvas.hpp"
 
-void keydown(string key) {
-    auto pos = mouse_position();
-    if (pos.x < 25 && pos.y < 25 && confirm("Exit?")) {
-        close_canvas();
-    } else {
-        auto radius = 25; //std::stoi(prompt("Radius?"));
-        set_color({randint(0, 255), randint(0, 255), randint(0, 255)});
-        fill_circle({pos.x, pos.y}, radius);
+void update() {
+    if (g2d::key_pressed("LeftButton")) {
+        auto pos = g2d::mouse_position();
+        if (pos.x < 25 && pos.y < 25 && g2d::confirm("Exit?")) {
+            g2d::close_canvas();
+        } else {
+            auto radius = 25;
+            g2d::set_color({g2d::randint(0, 255),
+                            g2d::randint(0, 255),
+                            g2d::randint(0, 255)});
+            g2d::fill_circle({pos.x, pos.y}, radius);
+        }
     }
 }
 
 int main() {
-    init_canvas({640, 480});
-    handle_events(nullptr, keydown, nullptr);
-    main_loop();
+    g2d::init_canvas({640, 480});
+    g2d::main_loop(update);
 }

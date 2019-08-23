@@ -5,6 +5,7 @@
 #include <vector>
 
 using std::vector;
+using namespace g2d;
 
 class Ghost : public Actor {
 private:

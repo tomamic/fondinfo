@@ -8,6 +8,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <set>
 #include <string>
 #include <sstream>
 #include <thread>
@@ -22,11 +23,14 @@ using namespace std::string_literals;
 using std::vector;
 using std::ios;
 
+namespace g2d {
+
 static Point mouse_pos_;
+static std::set<string> _keys;
+static std::set<string> _prev_keys;
+
 static std::ostringstream jscode_;
-static std::function<void()> usr_update_;
-static std::function<void(string)> usr_keydown_;
-static std::function<void(string)> usr_keyup_;
+static std::function<void()> usr_tick;
 static vector<string> answers_, events_;
 static bool inited_ = false;
 static int max_w_ = 480, max_h_ = 360;
@@ -180,7 +184,7 @@ function doPrompt(message) {
 }
 function fixKey(k) {
     if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
-    else if (k==" " || k=="Spacebar") k = "Space";
+    else if (k==" " || k=="Space") k = "Spacebar";
     else if (k=="Esc") k = "Escape";
     else if (k=="Del") k = "Delete";
     return k;
@@ -245,10 +249,6 @@ function closeCanvas() {
 <body></body>
 </html>
 )html";
-
-int randint(int min, int max) {
-    return min + rand() % (1 + max - min);
-}
 
 static string url_encode(const string &value) {
   const char hex[] = "0123456789ABCDEF";
@@ -342,18 +342,6 @@ std::string consume_msg(std::vector<string>& msgs) {
     return msg;
 }
 
-void handle_events(void (*update)(), void (*keydown)(string), void (*keyup)(string)) {
-    usr_update_ = std::function<void()>(update);
-    usr_keydown_ = std::function<void(string)>(keydown);
-    usr_keyup_ = std::function<void(string)>(keyup);
-}
-
-void handle_events(std::function<void()> update, std::function<void(string)> keydown, std::function<void(string)> keyup) {
-    usr_update_ = update;
-    usr_keydown_ = keydown;
-    usr_keyup_ = keyup;
-}
-
 void do_js_(string cmd, vector<string> strs, vector<int> ints) {
     std::istringstream fmt{cmd};
     string part;
@@ -379,8 +367,8 @@ void do_js_(string js) {
 
 void update_canvas() {
     if (inited()) {
-        std::cout << "js: " << jscode_.str() << std::endl;
-        ws_send(jscode_.str());
+        //std::cout << "js: " << jscode_.str() << std::endl;
+        ws::ws_send(jscode_.str());
         jscode_.str("");
         jscode_.clear();
     }
@@ -388,7 +376,7 @@ void update_canvas() {
 
 void close_canvas() {
     if (inited()) {
-        handle_events(nullptr, nullptr, nullptr);
+        usr_tick = std::function<void()>(nullptr);
         do_js_("closeCanvas()");
         update_canvas();
         /*webview_terminate(&wv_);*/
@@ -396,7 +384,7 @@ void close_canvas() {
 }
 
 void handle_event_(string evt) {
-    std::cout << "event: " << evt << std::endl;
+    //std::cout << "event: " << evt << std::endl;
     auto cmd = evt.substr(0, evt.find(' '));
     if (cmd == "answer") {
         produce_msg(evt.substr(7, evt.npos), answers_);
@@ -406,6 +394,14 @@ void handle_event_(string evt) {
         set_inited(false);
     }
     produce_msg(evt, events_);
+}
+
+bool key_pressed(string key) {
+    return _keys.count(key) == 1 && _prev_keys.count(key) == 0;
+}
+
+bool key_released(string key) {
+    return _keys.count(key) == 0 && _prev_keys.count(key) == 1;
 }
 
 void main_loop(int fps=30) {
@@ -421,19 +417,28 @@ void main_loop(int fps=30) {
         string cmd; line >> cmd;
         if (cmd == "mousemove") {
             line >> mouse_pos_.x >> mouse_pos_.y;
-        } else if (cmd == "keydown" && usr_keydown_ != nullptr) {
+        } else if (cmd == "keydown") {
             string key; line >> key;
-            usr_keydown_(key);
-            update_canvas();
-        } else if (cmd == "keyup" && usr_keyup_ != nullptr) {
+            _keys.insert(key);
+        } else if (cmd == "keyup") {
             string key; line >> key;
-            usr_keyup_(key);
+            _keys.erase(key);
+        } else if (cmd == "update" && usr_tick != nullptr) {
+            usr_tick();
             update_canvas();
-        } else if (cmd == "update" && usr_update_ != nullptr) {
-            usr_update_();
-            update_canvas();
+            _prev_keys = _keys;
         }
     }
+}
+
+void main_loop(void (*update)(), int fps=30) {
+    usr_tick = std::function<void()>(update);
+    main_loop(fps);
+}
+
+void main_loop(std::function<void()> update, int fps=30) {
+    usr_tick = update;
+    main_loop(fps);
 }
 
 void set_color(Color c) {
@@ -521,13 +526,14 @@ Point mouse_position() {
 
 void init_canvas(Size size) {
     if (!inited()) {
-        srand(time(nullptr));
         { std::ofstream{"_websocket.html"} << html_; }
-        ws_init(handle_event_);
+        ws::ws_init(handle_event_);
         wait_inited(true);
     }
     do_js_("initCanvas(%, %)", {size.w, size.h});
     update_canvas();
+}
+
 }
 
 #endif // CANVAS_HPP

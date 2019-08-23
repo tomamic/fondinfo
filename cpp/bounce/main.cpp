@@ -11,6 +11,21 @@ auto turtle = new Turtle{arena, {80, 80}};
 auto sprites = load_image("sprites.png");
 
 void update() {
+    if (key_pressed("ArrowUp")) {
+        turtle->go_up();
+    } else if (key_pressed("ArrowDown")) {
+        turtle->go_down();
+    } else if (key_pressed("ArrowLeft")) {
+        turtle->go_left();
+    } else if (key_pressed("ArrowRight")) {
+        turtle->go_right();
+    } else if (key_released("ArrowUp") ||
+               key_released("ArrowDown") ||
+               key_released("ArrowLeft") ||
+               key_released("ArrowRight")) {
+        turtle->stay();
+    }
+
     arena->move_all();
     clear_canvas();
     for (auto a : arena->actors()) {
@@ -18,28 +33,9 @@ void update() {
     }
 }
 
-void keydown(string key) {
-    //cout << key << " dn" << endl;
-    if (key == "ArrowUp") {
-        turtle->go_up();
-    } else if (key == "ArrowDown") {
-        turtle->go_down();
-    } else if (key == "ArrowLeft") {
-        turtle->go_left();
-    } else if (key == "ArrowRight") {
-        turtle->go_right();
-    }
-}
-
-void keyup(string key) {
-    //cout << key << " up" << endl;
-    turtle->stay();
-}
-
 int main() {
     init_canvas(arena->size());
-    handle_events(update, keydown, keyup);
-    main_loop();
+    main_loop(update);
 }
 
 int main_console() {

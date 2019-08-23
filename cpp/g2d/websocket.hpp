@@ -27,6 +27,8 @@ using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace http = boost::beast::http;    // from <boost/beast/http.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
 
+namespace g2d { namespace ws {
+
 // Return a reasonable mime type based on the extension of a file.
 boost::beast::string_view
 mime_type(boost::beast::string_view path)
@@ -532,7 +534,7 @@ public:
         if (ws_event_cb_ != nullptr) ws_event_cb_(msg);
         do_read();
     }
-    
+
     void do_write(std::string const msg) {
         size_t n = boost::asio::buffer_copy(
             wbuff_.prepare(msg.size()),
@@ -682,5 +684,7 @@ void ws_init(void (*handler)(std::string))
         std::thread([ioc] { ioc->run(); }).detach();
     }
 }
+
+} }
 
 #endif // WEBSOCKET_HPP
