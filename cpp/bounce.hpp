@@ -24,6 +24,7 @@ public:
         arena_ = arena;
         arena->add(this);
     }
+
     void move() {
         auto dx = (rand() % 3 - 1) * SPEED;
         auto dy = (rand() % 3 - 1) * SPEED;
@@ -34,8 +35,11 @@ public:
             visible_ = !visible_;
         }
     }
+
     void collide(Actor* other) { }
+
     Rect position() { return {x_, y_, W, H}; }
+
     Rect symbol() {
         if (visible_) return {20, 0, W, H};
         return {20, 20, W, H};
@@ -55,6 +59,7 @@ public:
         arena_ = arena;
         arena->add(this);
     }
+
     void move() {
         auto as = arena_->size();
         if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.w - W)) {
@@ -66,6 +71,7 @@ public:
         x_ += dx_;
         y_ += dy_;
     }
+
     void collide(Actor* other) {
         auto ghost = dynamic_cast<Ghost*>(other);
         if (ghost == nullptr) {
@@ -82,7 +88,9 @@ public:
             }
         }
     }
+
     Rect position() { return {x_, y_, W, H}; }
+
     Rect symbol() { return {0, 0, W, H}; }
 };
 
@@ -99,6 +107,7 @@ public:
         arena_ = arena;
         arena->add(this);
     }
+
     void move() {
         auto as = arena_->size();
         y_ += dy_;
@@ -114,13 +123,21 @@ public:
             x_ = as.w - W;
         }
     }
+
     void collide(Actor* other) { }
+
     Rect position() { return {x_, y_, W, H}; }
+
     Rect symbol() { return {0, 20, W, H}; }
+
     void go_left() { dx_ = -SPEED; dy_ = 0; }
+
     void go_right() { dx_ = SPEED; dy_ = 0; }
+
     void go_up() { dx_ = 0; dy_ = -SPEED; }
+
     void go_down() { dx_ = 0; dy_ = SPEED; }
+
     void stay() { dx_ = 0; dy_ = 0; }
 };
 

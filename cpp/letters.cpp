@@ -9,12 +9,11 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main() {
     vector<int> letters;
     letters.assign(26, 0);
 
-    ifstream fin{"../../exercises/cpp.txt"};
+    ifstream fin{"../exercises/cpp.txt"};
 
     string line;
     if (fin) {

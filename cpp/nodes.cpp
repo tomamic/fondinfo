@@ -91,8 +91,7 @@ private:
 };
 
 
-int main()
-{
+int main() {
     auto a1_0 = new Document("a1.txt", "bla bla 0");
     auto report = new Document("report.dat", "some reports");
     auto data = new Folder("data");
