@@ -2,15 +2,6 @@
 '''
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-
-La stanza del mostro
-- Il giocatore si muove su una scacchiera di 5x5 celle, partendo da un angolo
--- Le righe e le colonne sono numerate da 0 a 4
-- Un tesoro ed un mostro sono nascosti in due posizioni casuali, all'inizio del gioco
-- Ad ogni turno, il giocatore:
--- Sceglie una direzione verso cui spostarsi (alto, basso, sinistra, destra)
--- Se capita sulla cella del tesoro, ha vinto
--- Se capita sulla cella del mostro, ha perso
 '''
 
 from random import randrange

@@ -1,12 +1,13 @@
-#ifndef NODE_H
-#define NODE_H
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-using std::string;
-using std::vector;
+using namespace std;
 
 class Node {
 public:
@@ -18,7 +19,7 @@ public:
 
 class Document : public Node {
 public:
-    Document(std::string name, std::string text) {
+    Document(string name, string text) {
         this->name = name;
         this->text = text;
     }
@@ -28,20 +29,20 @@ public:
     }
 
     void print(int indent) {
-        for (auto i = 0; i < indent; ++i) std::cout << ' ';
-        std::cout << name << std::endl;
+        for (auto i = 0; i < indent; ++i) cout << ' ';
+        cout << name << endl;
     }
 
 private:
-    std::string name;
-    std::string text;
+    string name;
+    string text;
 };
 
 
 class Folder : public Node
 {
 public:
-    Folder(std::string name) {
+    Folder(string name) {
         this->name = name;
     }
 
@@ -64,8 +65,8 @@ public:
     }
 
     void print(int indent) {
-        for (auto i = 0; i < indent; ++i) std::cout << ' ';
-        std::cout << name << std::endl;
+        for (auto i = 0; i < indent; ++i) cout << ' ';
+        cout << name << endl;
         for (auto n : subnodes) {
             n->print(indent + 4);
         }
@@ -89,4 +90,27 @@ private:
     vector<Node*> subnodes;
 };
 
-#endif // NODE_H
+
+int main()
+{
+    auto a1_0 = new Document("a1.txt", "bla bla 0");
+    auto report = new Document("report.dat", "some reports");
+    auto data = new Folder("data");
+    data->add_node(report);
+    auto cmpt166 = new Folder("cmpt166");
+    cmpt166->add_node(a1_0);
+    cmpt166->add_node(data);
+    auto a1_1 = new Document("a1.txt", "a different file");
+    auto macm101 = new Folder("macm101");
+    macm101->add_node(a1_1);
+    auto desktop = new Folder("Desktop");
+    desktop->add_node(cmpt166);
+    desktop->add_node(macm101);
+
+    cout << desktop->size() << endl << endl;
+
+    desktop->print(0);
+
+    delete desktop;
+    return 0;
+}

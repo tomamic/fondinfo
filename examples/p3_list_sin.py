@@ -2,13 +2,6 @@
 '''
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-
-Array, precalcolo
-- Riempire una lista con i valori di sin(x)
--- 360 elementi, indice x tra 0 e 359
-- Poi, ciclicamente...
--- Chiedere un angolo all'utente
--- Visualizzare il corrispondente valore precalcolato
 '''
 
 from math import pi, sin

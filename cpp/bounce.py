@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
 
 import cppyy
 cppyy.include("bounce.hpp")
 from cppyy.gbl import Size, Point, Rect, Arena, Ball, Ghost, Turtle
 
-import sys; sys.path.append('../../examples/')
+import sys; sys.path.append('../examples/')
 import g2d
 
 def make(typ, **attrs):
@@ -23,7 +27,7 @@ g = Ghost(arena, make(Point, x=120, y=80))
 turtle = Turtle(arena, make(Point, x=80, y=80))
 sprites = g2d.load_image("sprites.png")
 
-def update():
+def tick():
     if g2d.key_pressed("ArrowUp"):
         turtle.go_up()
     elif g2d.key_pressed("ArrowDown"):
@@ -46,6 +50,6 @@ def update():
 
 def main():
     g2d.init_canvas(vals(arena.size()))
-    g2d.main_loop(update)
+    g2d.main_loop(tick)
 
 main()

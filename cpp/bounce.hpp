@@ -1,7 +1,12 @@
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
+
 #ifndef BOUNCE_HPP
 #define BOUNCE_HPP
 
-#include "../g2d/actor.hpp"
+#include "g2d/actor.hpp"
 #include <vector>
 
 using std::vector;

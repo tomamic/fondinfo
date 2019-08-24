@@ -5,7 +5,7 @@
 '''
 
 from boardgame import BoardGame, console_play
-from boardgame_g2d import gui_play
+from boardgamegui import gui_play
 from random import choice
 
 class Fifteen(BoardGame):

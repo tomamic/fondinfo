@@ -1,3 +1,11 @@
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
+
+#ifndef BOARDGAMEGUI_H
+#define BOARDGAMEGUI_H
+
 #include "boardgame.hpp"
 #include "../g2d/canvas.hpp"
 #include <chrono>
@@ -5,6 +13,8 @@
 
 using namespace std::chrono_literals;
 using namespace g2d;
+
+namespace g2d {
 
 auto W = 40, H = 40;
 auto LONG_PRESS = 0.5s;
@@ -68,3 +78,7 @@ public:
 void gui_play(BoardGame* game) {
     auto ui = BoardGameGui{game};
 }
+
+}
+
+#endif

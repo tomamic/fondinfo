@@ -1,3 +1,8 @@
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
+
 #ifndef BOARDGAME_H
 #define BOARDGAME_H
 
@@ -9,6 +14,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
+
+namespace g2d {
 
 class BoardGame
 {
@@ -46,6 +53,8 @@ void console_play(BoardGame* game) {
         print_game(game);
     }
     cout << game->message() << endl;
+}
+
 }
 
 #endif // BOARDGAME_H

@@ -1,7 +1,10 @@
-#ifndef LIGHTSOUT_H
-#define LIGHTSOUT_H
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
 
-#include "boardgame.hpp"
+#include "g2d/boardgame.hpp"
+#include "g2d/boardgamegui.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -9,7 +12,7 @@
 using std::string;
 using std::vector;
 
-class LightsOut : public BoardGame
+class LightsOut : public g2d::BoardGame
 {
 public:
     LightsOut(int level, int cols, int rows);
@@ -69,4 +72,8 @@ bool LightsOut::finished()
     return true;
 }
 
-#endif // LIGHTSOUT_H
+int main() {
+    auto g = new LightsOut{4, 5, 5};
+    g2d::gui_play(g);
+    // g2d::console_play(g);
+}

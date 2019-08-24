@@ -1,5 +1,11 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
 import cppyy, time
-cppyy.include("integral.hpp")
+cppyy.include("integral.cpp")
 from cppyy.gbl import integral
 
 def py_f(x: float) -> float:

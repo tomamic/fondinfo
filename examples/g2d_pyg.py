@@ -2,9 +2,6 @@
 '''
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-
-@link    https://www.brython.info/static_doc/en/intro.html
-@link    https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
 '''
 
 from tkinter import Tk, messagebox, simpledialog

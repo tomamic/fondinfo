@@ -3,10 +3,8 @@
 *@license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
-#ifndef FIFTEEN_H
-#define FIFTEEN_H
-
-#include "boardgame.hpp"
+#include "g2d/boardgame.hpp"
+#include "g2d/boardgamegui.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -16,7 +14,7 @@
 using std::string;
 using std::vector;
 
-class Fifteen : public BoardGame
+class Fifteen : public g2d::BoardGame
 {
 public:
     Fifteen(int w, int h);
@@ -69,4 +67,9 @@ string Fifteen::value_at(int x, int y) {
     return "";
 }
 
-#endif // FIFTEEN_H
+int main() {
+    auto g = new Fifteen{3, 3};
+    g2d::gui_play(g);
+    // g2d::console_play(g);
+}
+

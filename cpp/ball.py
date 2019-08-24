@@ -4,9 +4,11 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-a = float(input("1st val? "))
-b = float(input("2nd val? "))
-c = float(input("3rd val? "))
+import cppyy
+cppyy.include("ball.cpp")
+from cppyy.gbl import Ball
 
-total = a + b + c
-print("The sum is ", total)
+b = Ball(150, 200)
+for i in range(10):
+    b.move()
+    print(b.get_x(), b.get_y())

@@ -1,7 +1,11 @@
-#include <iostream>
+/**
+ * @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+ * @license This software is free - http://www.gnu.org/licenses/gpl.html
+ */
 
 #include "bounce.hpp"
 #include "../g2d/canvas.hpp"
+#include <iostream>
 
 auto arena = new Arena{{320, 240}};
 auto b1 = new Ball{arena, {40, 80}};
@@ -10,7 +14,7 @@ auto g = new Ghost{arena, {120, 80}};
 auto turtle = new Turtle{arena, {80, 80}};
 auto sprites = load_image("sprites.png");
 
-void update() {
+void tick() {
     if (key_pressed("ArrowUp")) {
         turtle->go_up();
     } else if (key_pressed("ArrowDown")) {
@@ -35,7 +39,7 @@ void update() {
 
 int main() {
     init_canvas(arena->size());
-    main_loop(update);
+    main_loop(tick);
 }
 
 int main_console() {
