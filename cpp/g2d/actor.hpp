@@ -6,8 +6,9 @@
 #ifndef ACTOR_HPP
 #define ACTOR_HPP
 
-#include <vector>
 #include <algorithm>
+#include <vector>
+#include <ctime>
 
 namespace g2d {
 

@@ -4,7 +4,7 @@
  */
 
 #include "bounce.hpp"
-#include "../g2d/canvas.hpp"
+#include "g2d/canvas.hpp"
 #include <iostream>
 
 auto arena = new Arena{{320, 240}};

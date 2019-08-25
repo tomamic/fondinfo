@@ -26,8 +26,8 @@ public:
     }
 
     void move() {
-        auto dx = (rand() % 3 - 1) * SPEED;
-        auto dy = (rand() % 3 - 1) * SPEED;
+        auto dx = g2d::randint(-1, 1) * SPEED;
+        auto dy = g2d::randint(-1, 1) * SPEED;
         auto as = arena_->size();
         x_ = (x_ + dx + as.w) % as.w;
         y_ = (y_ + dy + as.h) % as.h;
