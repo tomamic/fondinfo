@@ -1,8 +1,8 @@
 ## Compile a program on Linux
 
-- `g++ hello.cpp -o hello -pthread`
+- `g++ anim.cpp -o anim -pthread`
 
 ## Compile a program on Windows
 
 - Run once `setpath.py`
-- `g++ hello.cpp -o hello -lws2_32 -lwsock32`
+- `g++ anim.cpp -o anim.exe -lws2_32 -lwsock32`

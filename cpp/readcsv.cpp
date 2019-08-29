@@ -28,12 +28,11 @@ int main() {
         if (cols == 0) { cols = matrix.size(); }
         ++rows;
     }
-    file1.close();
 
+    file1.close();
     cout << cols << ' ' << rows << endl;
 
-    auto total = 0;
-    auto x = cols-1, y = rows-1;
+    auto total = 0, x = cols-1, y = rows-1;
     while (x >= 0 && y >= 0) {
         total += matrix[y * cols + x];
         --x; --y;
