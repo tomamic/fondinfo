@@ -7,7 +7,7 @@
 import logging, sys, time, functools
 
 
-@functools.lru_cache()
+#@functools.lru_cache()
 def fibonacci1(n: int) -> int:
     if n <= 1:
         return n

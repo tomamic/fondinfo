@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-const int ARENA_W = 320, ARENA_H = 240;
+const int ARENA_W = 480, ARENA_H = 360;
 
 class Ball {
     int x_, y_;

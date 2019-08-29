@@ -14,7 +14,7 @@
 using std::string;
 using std::vector;
 
-const vector<vector<int>> dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+const vector<g2d::Point> dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
 class Fifteen : public g2d::BoardGame {
 public:
@@ -30,12 +30,12 @@ public:
         // do a random walk of the blank tile, until all angle tiles change
         while (board_[0] == 1 || board_[a1] == a1+1 || board_[a2] == a2+1) {
             auto d = dirs[rand() % dirs.size()];
-            play_at(x0_+d[0], y0_+d[1]);
+            play_at(x0_+d.x, y0_+d.y);
         }
     }
 
     void play_at(int x, int y) {
-        auto distance = abs(x - x0_)+abs(y - y0_);
+        auto distance = abs(x - x0_) + abs(y - y0_);
         auto i0 = pos(x0_, y0_), i1 = pos(x, y);
         if (0 <= x && x < w_ && 0 <= y && y < h_ && distance == 1) {
             board_[i0] = board_[i1], board_[i1] = 0;

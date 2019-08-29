@@ -7,7 +7,7 @@
 #define BOARDGAMEGUI_H
 
 #include "boardgame.hpp"
-#include "../g2d/canvas.hpp"
+#include "canvas.hpp"
 #include <chrono>
 #include <functional>
 
