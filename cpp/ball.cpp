@@ -28,11 +28,11 @@ public:
         x_ += dx_; y_ += dy_;
     }
 
-    int get_x() {
+    int pos_x() {
         return x_;
     }
 
-    int get_y() {
+    int pos_y() {
         return y_;
     }
 };
@@ -46,8 +46,8 @@ int main() {
         ball1.move();
         ball2->move();
 
-        cout << ball1.get_x() << ", " << ball1.get_y() << endl;
-        cout << ball2->get_x() << ", " << ball2->get_y() << endl << endl;
+        cout << ball1.pos_x() << ", " << ball1.pos_y() << endl;
+        cout << ball2->pos_x() << ", " << ball2->pos_y() << endl << endl;
     }
 
     delete ball2;
