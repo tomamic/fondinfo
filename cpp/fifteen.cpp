@@ -3,13 +3,9 @@
 *@license This software is free - http://www.gnu.org/licenses/gpl.html
  */
 
+#include "g2d/actor.hpp"
 #include "g2d/boardgame.hpp"
 #include "g2d/boardgamegui.hpp"
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <string>
-#include <vector>
 
 using std::string;
 using std::vector;
@@ -19,7 +15,6 @@ const vector<g2d::Point> dirs = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 class Fifteen : public g2d::BoardGame {
 public:
     Fifteen(int w, int h) {
-        srand(time(nullptr));
         w_ = w, h_ = h, x0_ = w - 1, y0_ = h - 1;
         auto n = w*h, a1 = pos(w-1, 0), a2 = pos(0, h-1);  // angles
         // start with sorted tiles, then...
@@ -29,9 +24,16 @@ public:
         solved_ = board_;
         // do a random walk of the blank tile, until all angle tiles change
         while (board_[0] == 1 || board_[a1] == a1+1 || board_[a2] == a2+1) {
-            auto d = dirs[rand() % dirs.size()];
+            auto d = dirs[g2d::randint(0, dirs.size()-1)];
             play_at(x0_+d.x, y0_+d.y);
         }
+    }
+
+    string value_at(int x, int y) {
+        if (0 <= x && x < w_ && 0 <= y && y < h_ && board_[pos(x, y)] > 0) {
+            return std::to_string(board_[pos(x, y)]);
+        }
+        return "";
     }
 
     void play_at(int x, int y) {
@@ -44,12 +46,6 @@ public:
     }
 
     void flag_at(int x, int y) { }
-        string value_at(int x, int y) {
-        if (0 <= x && x < w_ && 0 <= y && y < h_ && board_[pos(x, y)] > 0) {
-            return std::to_string(board_[pos(x, y)]);
-        }
-        return "";
-    }
 
     bool finished() { return board_ == solved_; }
 

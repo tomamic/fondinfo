@@ -8,33 +8,29 @@
 using std::cout;
 using std::endl;
 
-const int ARENA_W = 480, ARENA_H = 360;
+const int ARENA_W = 480, ARENA_H = 360, BALL_W = 20, BALL_H = 20;
 
 class Ball {
     int x_, y_;
     int dx_ = 5, dy_ = 5;
-
 public:
-    static const int W = 20, H = 20;
-
     Ball(int x0, int y0) {
         x_ = x0;
         y_ = y0;
     }
 
     void move() {
-        if (x_ + dx_ < 0 || x_ + dx_ + W > ARENA_W) dx_ = -dx_;
-        if (y_ + dy_ < 0 || y_ + dy_ + H > ARENA_H) dy_ = -dy_;
+        if (x_+dx_ < 0 || x_+dx_+BALL_W > ARENA_W) {
+            dx_ = -dx_;
+        }
+        if (y_+dy_ < 0 || y_+dy_+BALL_H > ARENA_H) {
+            dy_ = -dy_;
+        }
         x_ += dx_; y_ += dy_;
     }
 
-    int pos_x() {
-        return x_;
-    }
-
-    int pos_y() {
-        return y_;
-    }
+    int pos_x() { return x_; }
+    int pos_y() { return y_; }
 };
 
 int main() {
