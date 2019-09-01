@@ -8,7 +8,7 @@ import (
 func main() {
     radius1, radius2, radius3 := 300.0, 295.0, 280.0
     x, y := radius1, radius1
-    InitCanvas(Size{int(radius1*2), int(radius1*2)})
+    InitCanvas(Point{int(radius1*2), int(radius1*2)})
     SetColor(Color{0, 0, 0})
     for i := 0; i < 12; i++ {
         angle := float64(i) * 2 * math.Pi / 12

@@ -7,7 +7,7 @@
 #define CANVAS_HPP
 
 #include "websocket.hpp"
-#include "actor.hpp"
+#include "basic.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -30,7 +30,7 @@ using std::ios;
 
 namespace g2d {
 
-static Point mouse_pos_;
+static Point mouse_pos_{0, 0};
 static std::set<string> _keys;
 static std::set<string> _prev_keys;
 
@@ -313,7 +313,7 @@ string base64_encode(unsigned char* bytes_to_encode, unsigned int in_len) {
   return ret;
 }
 
-void init_canvas(Size size);
+void init_canvas(Point size);
 
 bool inited() {
     std::unique_lock<std::mutex> mlock(mut_);
@@ -529,13 +529,13 @@ Point mouse_position() {
     return mouse_pos_;
 }
 
-void init_canvas(Size size) {
+void init_canvas(Point size) {
     if (!inited()) {
         { std::ofstream{"_websocket.html"} << html_; }
         ws::ws_init(handle_event_);
         wait_inited(true);
     }
-    do_js_("initCanvas(%, %)", {size.w, size.h});
+    do_js_("initCanvas(%, %)", {size.x, size.y});
     update_canvas();
 }
 

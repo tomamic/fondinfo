@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var a1 = NewVehicle(arena, Point{40, 40}, 5)
 var a2 = NewVehicle(arena, Point{120, 40}, 5)
 var a3 = NewVehicle(arena, Point{80, 80}, -5)
@@ -13,7 +13,7 @@ type Vehicle struct {
 }
 
 func NewVehicle(arena *Arena, pos Point, dx int) *Vehicle {
-    a := &Vehicle{pos.X, pos.Y, 20, 20, dx, -100, arena.Size().W+100}
+    a := &Vehicle{pos.X, pos.Y, 20, 20, dx, -100, arena.Size().X+100}
     arena.Add(a)
     return a
 }

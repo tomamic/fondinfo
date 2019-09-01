@@ -46,14 +46,14 @@ func (a *Mario) Move() {
     a.x += int(a.dx)
     if a.x < 0 {
         a.x = 0
-    } else if a.x > screen.W - a.w {
-        a.x = screen.W - a.w
+    } else if a.x > screen.X - a.w {
+        a.x = screen.X - a.w
     }
     a.y += int(a.dy)
     if a.y < 0 {
         a.y = 0
-    } else if a.y > screen.H - a.h {
-        a.y = screen.H - a.h
+    } else if a.y > screen.Y - a.h {
+        a.y = screen.Y - a.h
         a.landed = true
     }
     a.dy += a.g
@@ -108,7 +108,7 @@ func (a *Mario) Symbol() Rect {
     return Rect{0, 20, a.w, a.h}
 }
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var w1 = NewWall(arena, Point{300, 300})
 var w2 = NewWall(arena, Point{80, 240})
 var hero = NewMario(arena, Point{230, 170})

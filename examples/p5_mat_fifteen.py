@@ -12,9 +12,9 @@ class Fifteen(BoardGame):
 
     def __init__(self, w: int, h: int):
         # start with sorted tiles, then...
+        self._w, self._h = w, h
         b = list(range(1, w * h)) + [0]  # [1 2 3 ... 14 15 0]
         self._board, self._solved = b, b[:]
-        self._w, self._h = w, h
         self._x0, self._y0 = w - 1, h - 1  # blank
         a1, a2 = w - 1, (h - 1) * w
         # do a random walk of the blank tile, until all angle tiles change

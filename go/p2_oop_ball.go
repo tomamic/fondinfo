@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var screen = Size{480, 360}
+var screen = Point{480, 360}
 
 type Ball struct {
     x, y, w, h int

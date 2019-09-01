@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var a1 = NewAlien(arena, Point{40, 40})
 var a2 = NewAlien(arena, Point{80, 80})
 
@@ -45,7 +45,7 @@ type Bullet struct {
 }
 
 func NewBullet(arena *Arena, x int) *Bullet {
-    a := &Bullet{arena, x, arena.Size().H - 10, 5, 10, -5}
+    a := &Bullet{arena, x, arena.Size().Y - 10, 5, 10, -5}
     arena.Add(a)
     return a
 }
@@ -74,7 +74,7 @@ func (a *Bullet) Collide(other Actor) {
 
 func tick() {
     if RandInt(0, 49) == 0 {
-        NewBullet(arena, RandInt(0, arena.Size().W))
+        NewBullet(arena, RandInt(0, arena.Size().X))
     }
     ClearCanvas()
     arena.MoveAll()

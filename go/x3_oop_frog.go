@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var hero = NewFrog(arena, Point{160, 160})
 var a1 = NewVehicle(arena, Point{40, 40}, 5)
 var a2 = NewVehicle(arena, Point{120, 40}, 5)
@@ -34,14 +34,14 @@ func (a *Frog) Move() {
         a.x += a.dx
         if a.x < 0 {
             a.x = 0
-        } else if a.x > as.W-a.w {
-            a.x = as.W - a.w
+        } else if a.x > as.X-a.w {
+            a.x = as.X - a.w
         }
         a.y += a.dy
         if a.y < 0 {
             a.y = 0
-        } else if a.y > as.H-a.h {
-            a.y = as.H - a.h
+        } else if a.y > as.Y-a.h {
+            a.y = as.Y - a.h
         }
     }
 }
@@ -96,7 +96,7 @@ type Vehicle struct {
 }
 
 func NewVehicle(arena *Arena, pos Point, dx int) *Vehicle {
-    a := &Vehicle{pos.X, pos.Y, 20, 20, dx, -100, arena.Size().W+100}
+    a := &Vehicle{pos.X, pos.Y, 20, 20, dx, -100, arena.Size().X+100}
     arena.Add(a)
     return a
 }

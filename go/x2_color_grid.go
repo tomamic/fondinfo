@@ -3,7 +3,7 @@ package main
 import . "g2d"
 
 func main() {
-    size := Size{480, 360}
+    size := Point{480, 360}
     InitCanvas(size)
     rows := ToInt(Prompt("Rows?"))
     cols := ToInt(Prompt("Cols?"))

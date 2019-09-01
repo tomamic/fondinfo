@@ -4,9 +4,7 @@
  */
 
 #include <iostream>
-
-using std::cout;
-using std::endl;
+#include "g2d/basic.hpp"
 
 const int ARENA_W = 480, ARENA_H = 360, BALL_W = 20, BALL_H = 20;
 
@@ -14,10 +12,8 @@ class Ball {
     int x_, y_;
     int dx_ = 5, dy_ = 5;
 public:
-    Ball(int x0, int y0) {
-        x_ = x0;
-        y_ = y0;
-    }
+    Ball(int x, int y) { x_ = x; y_ = y; }
+    Ball(g2d::Point pos) { x_ = pos.x; y_ = pos.y; }
 
     void move() {
         if (x_+dx_ < 0 || x_+dx_+BALL_W > ARENA_W) {
@@ -29,21 +25,19 @@ public:
         x_ += dx_; y_ += dy_;
     }
 
-    int pos_x() { return x_; }
-    int pos_y() { return y_; }
+    g2d::Rect position() { return {x_, y_, BALL_W, BALL_H}; }
 };
 
 int main() {
-    Ball ball1{40, 80};
-    auto ball2 = new Ball{80, 40};
-
+    auto ball1 = Ball{{40, 80}};
+    auto ball2 = new Ball{{80, 40}};
 
     for (auto i = 0; i < 25; ++i) {
         ball1.move();
         ball2->move();
 
-        cout << ball1.pos_x() << ", " << ball1.pos_y() << endl;
-        cout << ball2->pos_x() << ", " << ball2->pos_y() << endl << endl;
+        std::cout << ball1.position() << std::endl;
+        std::cout << ball2->position() << std::endl << std::endl;
     }
 
     delete ball2;

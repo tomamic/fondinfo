@@ -7,7 +7,7 @@
 #include "g2d/canvas.hpp"
 #include <iostream>
 
-auto arena = new Arena{{320, 240}};
+auto arena = new Arena{{480, 360}};
 auto b1 = new Ball{arena, {40, 80}};
 auto b2 = new Ball{arena, {80, 40}};
 auto g = new Ghost{arena, {120, 80}};
@@ -43,12 +43,6 @@ int main() {
 }
 
 int main_console() {
-    auto arena = new Arena{{320, 240}};
-    new Ball{arena, {40, 80}};
-    new Ball{arena, {80, 40}};
-    new Ghost{arena, {120, 80}};
-    auto turtle = new Turtle{arena, {80, 80}};
-
     for (std::string line; std::getline(std::cin, line);) {
         if (line == "w") turtle->go_up();
         else if (line == "a") turtle->go_left();

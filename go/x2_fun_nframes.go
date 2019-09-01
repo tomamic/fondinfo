@@ -25,7 +25,7 @@ func tick() {
 }
 
 func main() {
-    InitCanvas(Size{ARENA_W, ARENA_H})
+    InitCanvas(Point{ARENA_W, ARENA_H})
     SetFrameRate(10)
     MainLoop(tick)  // call tick 10 times/second
 }

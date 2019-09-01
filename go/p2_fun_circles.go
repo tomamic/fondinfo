@@ -15,6 +15,6 @@ func tick() {
 }
 
 func main() {
-    InitCanvas(Size{480, 360})
+    InitCanvas(Point{480, 360})
     MainLoop(tick)  // Call tick 30 times/second
 }

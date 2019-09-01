@@ -20,6 +20,6 @@ func tick() {
 }
 
 func main() {
-    InitCanvas(Size{ARENA_W, ARENA_H})
+    InitCanvas(Point{ARENA_W, ARENA_H})
     MainLoop(tick)
 }

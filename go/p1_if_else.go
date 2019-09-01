@@ -3,7 +3,7 @@ package main
 import . "g2d"
 
 func main() {
-    InitCanvas(Size{400, 400}) // width, height
+    InitCanvas(Point{400, 400}) // width, height
 
     radius := ToInt(Prompt("Radius? [50-99]"))
 

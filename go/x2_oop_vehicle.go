@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var screen = Size{480, 360}
+var screen = Point{480, 360}
 var margin = 100
 var a = NewVehicle(Point{40, 40}, 5)
 

@@ -2,7 +2,7 @@ package main
 
 import . "g2d"
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var a1 = NewAlien(arena, Point{40, 40})
 var a2 = NewAlien(arena, Point{80, 80})
 

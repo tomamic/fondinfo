@@ -16,10 +16,10 @@ func NewBall(arena *Arena, pos Point) *Ball {
 
 func (a *Ball) Move() {
     as := a.arena.Size()
-    if !(0 <= a.x+a.dx && a.x+a.dx <= as.W-a.w) {
+    if !(0 <= a.x+a.dx && a.x+a.dx <= as.X-a.w) {
         a.dx = -a.dx
     }
-    if !(0 <= a.y+a.dy && a.y+a.dy <= as.H-a.h) {
+    if !(0 <= a.y+a.dy && a.y+a.dy <= as.Y-a.h) {
         a.dy = -a.dy
     }
     a.x += a.dx
@@ -68,8 +68,8 @@ func (a *Ghost) Move() {
     as := a.arena.Size()
     dx := RandInt(-1, 1) * a.speed
     dy := RandInt(-1, 1) * a.speed
-    a.x = (a.x + dx + as.W) % as.W
-    a.y = (a.y + dy + as.H) % as.H
+    a.x = (a.x + dx + as.X) % as.X
+    a.y = (a.y + dy + as.Y) % as.Y
 
     if RandInt(0, 99) == 0 {
         a.visible = !a.visible
@@ -107,14 +107,14 @@ func (a *Turtle) Move() {
     a.x += a.dx
     if a.x < 0 {
         a.x = 0
-    } else if a.x > as.W-a.w {
-        a.x = as.W - a.w
+    } else if a.x > as.X-a.w {
+        a.x = as.X - a.w
     }
     a.y += a.dy
     if a.y < 0 {
         a.y = 0
-    } else if a.y > as.H-a.h {
-        a.y = as.H - a.h
+    } else if a.y > as.Y-a.h {
+        a.y = as.Y - a.h
     }
 
 }
@@ -157,7 +157,7 @@ type BounceGame struct {
 }
 
 func NewBounceGame() *BounceGame {
-    a := NewArena(Size{480, 360})
+    a := NewArena(Point{480, 360})
     t := NewTurtle(a, Point{80, 80})
     NewBall(a, Point{40, 80})
     NewBall(a, Point{80, 40})
@@ -176,7 +176,7 @@ func (a *BounceGame) Arena() *Arena {
 var game = NewBounceGame()
 */
 
-var arena = NewArena(Size{480, 360})
+var arena = NewArena(Point{480, 360})
 var hero = NewTurtle(arena, Point{80, 80})
 var ball1 = NewBall(arena, Point{40, 80})
 var ball2 = NewBall(arena, Point{80, 40})

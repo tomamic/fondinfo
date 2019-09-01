@@ -21,8 +21,8 @@ class BoardGameGui:
         if g2d.key_pressed("LeftButton"):
             self._downtime = time()
         elif g2d.key_released("LeftButton"):
-            pos = g2d.mouse_position()
-            x, y = pos[0] // W, pos[1] // H
+            mouse = g2d.mouse_position()
+            x, y = mouse[0] // W, mouse[1] // H
             if time() - self._downtime > LONG_PRESS:
                 self._game.flag_at(x, y)
             else:
@@ -32,7 +32,7 @@ class BoardGameGui:
     def update_buttons(self):
         g2d.clear_canvas()
         g2d.set_color((0, 0, 0))
-        rows, cols = self._game.rows(), self._game.cols()
+        cols, rows = self._game.cols(), self._game.rows()
         for y in range(1, rows):
             g2d.draw_line((0, y * H), (cols * W, y * H))
         for x in range(1, cols):

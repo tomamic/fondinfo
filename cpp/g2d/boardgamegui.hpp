@@ -6,13 +6,11 @@
 #ifndef BOARDGAMEGUI_H
 #define BOARDGAMEGUI_H
 
-#include "boardgame.hpp"
 #include "canvas.hpp"
 #include <chrono>
 #include <functional>
 
 using namespace std::chrono_literals;
-using namespace g2d;
 
 namespace g2d {
 
@@ -22,13 +20,12 @@ auto LONG_PRESS = 0.5s;
 class BoardGameGui {
     BoardGame* g_;
     std::chrono::time_point<std::chrono::high_resolution_clock> downtime_;
-    Size size_;
+    int cols_, rows_;
 
 public:
     BoardGameGui(BoardGame* game) {
-        g_ = game;
-        size_ = Size{W*g_->cols(), H*g_->rows()};
-        init_canvas(size_);
+        g_ = game; cols_ = g_->cols(); rows_ = g_->rows();
+        init_canvas({W*cols_, H*rows_});
         update_buttons();
 
         main_loop([&]{ tick(); });
@@ -52,15 +49,14 @@ public:
     void update_buttons() {
         clear_canvas();
         set_color({0, 0, 0});
-        auto rows = g_->rows(), cols = g_->cols();
-        for (auto y = 0; y < rows; ++y) {
-            draw_line({0, y * H}, {cols * W, y * H});
+        for (auto y = 0; y < rows_; ++y) {
+            draw_line({0, y * H}, {cols_ * W, y * H});
         }
-        for (auto x = 0; x < cols; ++x) {
-            draw_line({x * W, 0}, {x * W, rows * H});
+        for (auto x = 0; x < cols_; ++x) {
+            draw_line({x * W, 0}, {x * W, rows_ * H});
         }
-        for (auto y = 0; y < rows; ++y) {
-            for (auto x = 0; x < cols; ++x) {
+        for (auto y = 0; y < rows_; ++y) {
+            for (auto x = 0; x < cols_; ++x) {
                 auto value = g_->value_at(x, y);
                 auto center = Point{x * W + W/2, y * H + H/2};
                 draw_text_centered(value, center, H/2);
@@ -72,7 +68,6 @@ public:
             close_canvas();
         }
     }
-    Size size() { return size_; }
 };
 
 void gui_play(BoardGame* game) {

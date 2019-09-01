@@ -35,7 +35,7 @@ function invokeExternal(data) {
 </html>
 `
 
-func startServer(size Size) string {
+func startServer(size Point) string {
     ln, err := net.Listen("tcp", "127.0.0.1:0")
     if err != nil {
         log.Fatal(err)
@@ -130,13 +130,13 @@ func max(a, b int) int {
     return b
 }
 
-func InitCanvas(size Size) {
+func InitCanvas(size Point) {
     if !inited {
         index := startServer(size)
         fmt.Println(index)
         w = webview.New(webview.Settings{
-            Width:                  max(size.W, 480),
-            Height:                 max(size.H, 360),
+            Width:                  max(size.X, 480),
+            Height:                 max(size.Y, 360),
             Title:                  "G2D WebView",
             URL:                    index,
             ExternalInvokeCallback: handleRPC,
@@ -145,7 +145,7 @@ func InitCanvas(size Size) {
             w.Loop(true)
         }
     }
-    js := fmt.Sprintf("initCanvas(%d, %d);\n", size.W, size.H)
+    js := fmt.Sprintf("initCanvas(%d, %d);\n", size.X, size.Y)
     jss = append([]string{js}, jss...)
     UpdateCanvas()
 }

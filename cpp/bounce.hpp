@@ -6,7 +6,7 @@
 #ifndef BOUNCE_HPP
 #define BOUNCE_HPP
 
-#include "g2d/actor.hpp"
+#include "g2d/basic.hpp"
 #include <vector>
 
 using std::vector;
@@ -29,8 +29,8 @@ public:
         auto dx = g2d::randint(-1, 1) * SPEED;
         auto dy = g2d::randint(-1, 1) * SPEED;
         auto as = arena_->size();
-        x_ = (x_ + dx + as.w) % as.w;
-        y_ = (y_ + dy + as.h) % as.h;
+        x_ = (x_ + dx + as.x) % as.x;
+        y_ = (y_ + dy + as.y) % as.y;
         if (rand() % 100 == 0) {
             visible_ = !visible_;
         }
@@ -62,10 +62,10 @@ public:
 
     void move() {
         auto as = arena_->size();
-        if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.w - W)) {
+        if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.x - W)) {
             dx_ = -dx_;
         }
-        if (!(0 <= y_ + dy_ &&  y_ + dy_<= as.h - H)) {
+        if (!(0 <= y_ + dy_ &&  y_ + dy_<= as.y - H)) {
             dy_ = -dy_;
         }
         x_ += dx_;
@@ -110,17 +110,17 @@ public:
 
     void move() {
         auto as = arena_->size();
-        y_ += dy_;
-        if (y_ < 0) {
-            y_ = 0;
-        } else if (y_ > as.h - H) {
-            y_ = as.h - H;
-        }
         x_ += dx_;
         if (x_ < 0) {
             x_ = 0;
-        } else if (x_ > as.w - W) {
-            x_ = as.w - W;
+        } else if (x_ > as.x - W) {
+            x_ = as.x - W;
+        }
+        y_ += dy_;
+        if (y_ < 0) {
+            y_ = 0;
+        } else if (y_ > as.y - H) {
+            y_ = as.y - H;
         }
     }
 

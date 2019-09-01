@@ -3,7 +3,7 @@ package main
 import . "g2d"
 
 func main() {
-    InitCanvas(Size{400, 400})
+    InitCanvas(Point{400, 400})
     n := ToInt(Prompt("N?"))
 
     for i := 0; i < n; i++ {

@@ -4,7 +4,7 @@ import . "g2d"
 
 func main() {
     radius := 300
-    InitCanvas(Size{radius*2, radius*2})
+    InitCanvas(Point{radius*2, radius*2})
     n := ToInt(Prompt("N?"))
     for i := n; i > 0; i-- {
         r := i * radius / n

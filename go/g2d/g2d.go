@@ -9,7 +9,7 @@ import (
 )
 
 type Point struct{ X, Y int }
-type Size struct{ W, H int }
+//type Size struct{ W, H int }
 type Rect struct{ X, Y, W, H int }
 type Color struct{ R, G, B int }
 
@@ -282,7 +282,7 @@ func SetFrameRate(fps float64) {
 
 func UpdateCanvas() {
     if !inited {
-        InitCanvas(Size{800, 600})
+        InitCanvas(Point{800, 600})
     }
     code := strings.Join(jss, "")
     //Println(code)

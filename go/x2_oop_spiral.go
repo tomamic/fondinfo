@@ -3,7 +3,7 @@ package main
 import . "g2d"
 import "math"
 
-var size = Size{600, 600}
+var size = Point{600, 600}
 var s = NewSpiral()
 
 type Spiral struct {

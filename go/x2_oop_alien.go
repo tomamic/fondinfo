@@ -34,7 +34,7 @@ func tick() {
 }
 
 func main() {
-    InitCanvas(Size{480, 360})
+    InitCanvas(Point{480, 360})
     SetFrameRate(10)
     MainLoop(tick)
 }

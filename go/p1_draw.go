@@ -3,7 +3,7 @@ package main
 import . "g2d"
 
 func main() {
-    InitCanvas(Size{640, 480}) // width, height
+    InitCanvas(Point{640, 480}) // width, height
 
     SetColor(Color{255, 255, 0})       // red + green = yellow
     FillRect(Rect{150, 100, 250, 200}) // left, top, width, height

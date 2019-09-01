@@ -32,4 +32,3 @@ def console_play(game: BoardGame):
         print_game(game)
 
     print(game.message())
-

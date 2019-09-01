@@ -53,6 +53,6 @@ func tick() {
 }
 
 func main() {
-    InitCanvas(Size{arenaW, arenaH})
+    InitCanvas(Point{arenaW, arenaH})
     MainLoop(tick)
 }

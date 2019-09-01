@@ -49,8 +49,8 @@ func Printf(format string, a ...interface{}) {
     out.Set("scrollTop", out.Get("scrollHeight"))
 }
 
-func InitCanvas(size Size) {
-    doJs("initCanvas(%d, %d)", size.W, size.H)
+func InitCanvas(size Point) {
+    doJs("initCanvas(%d, %d)", size.X, size.Y)
     UpdateCanvas()
 }
 
