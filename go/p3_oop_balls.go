@@ -14,10 +14,10 @@ func NewBall(pos Point) *Ball {
 }
 
 func (b *Ball) Move() {
-    if !(0 <= b.x+b.dx && b.x+b.dx <= screen.W-b.w) {
+    if !(0 <= b.x+b.dx && b.x+b.dx <= screen.X-b.w) {
         b.dx = -b.dx
     }
-    if !(0 <= b.y+b.dy && b.y+b.dy <= screen.H-b.h) {
+    if !(0 <= b.y+b.dy && b.y+b.dy <= screen.Y-b.h) {
         b.dy = -b.dy
     }
     b.x += b.dx

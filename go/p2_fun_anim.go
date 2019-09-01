@@ -8,7 +8,7 @@ var screen = Point{480, 360}
 
 func tick() {
     //if KeyPressed("Enter") { ... }
-    //if x + dx > screen.W { ... }
+    //if x + dx > screen.X { ... }
     ClearCanvas()                  // Draw background
     DrawImage(image, Point{x, y})  // Draw foreground
     x += dx                        // Update ball's position

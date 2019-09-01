@@ -21,8 +21,8 @@ func (s *Spiral) Move() {
 
 func (s *Spiral) Center() Point {
     i := float64(s.i)
-    x := size.W/2 + int(i * math.Cos(i * s.w))
-    y := size.H/2 + int(i * math.Sin(i * s.w))
+    x := size.X/2 + int(i * math.Cos(i * s.w))
+    y := size.Y/2 + int(i * math.Sin(i * s.w))
     return Point{x, y}
 }
 

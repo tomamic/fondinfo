@@ -12,7 +12,7 @@ type Vehicle struct {
 }
 
 func NewVehicle(pos Point, dx int) *Vehicle {
-    return &Vehicle{pos.X, pos.Y, 20, 20, dx, -margin, screen.W+margin}
+    return &Vehicle{pos.X, pos.Y, 20, 20, dx, -margin, screen.X+margin}
 }
 
 func (a *Vehicle) Move() {
