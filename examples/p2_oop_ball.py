@@ -8,9 +8,9 @@ ARENA_W, ARENA_H = 480, 360
 BALL_W, BALL_H = 20, 20
 
 class Ball:
-    def __init__(self, pos: (int, int)):
-        self._x = pos[0]
-        self._y = pos[1]
+    def __init__(self, x: int, y: int):
+        self._x = x
+        self._y = y
         self._dx = 5
         self._dy = 5
 
@@ -29,8 +29,8 @@ class Ball:
 
 def main():
     # Create two objects, instances of the Ball class
-    b1 = Ball((140, 180))
-    b2 = Ball((180, 140))
+    b1 = Ball(140, 180)
+    b2 = Ball(180, 140)
 
     for i in range(25):
         print("b1 @", b1.position(), "b2 @", b2.position())
