@@ -60,15 +60,13 @@ class Arena():
         '''
         actors = list(reversed(self._actors))
         for a in actors:
-            previous_pos = a.position()
             a.move()
-            if a.position() != previous_pos:  # optimization for stationary actors
-                for other in actors:
-                    # reversed order, so actors drawn on top of others
-                    # (towards the end of the cycle) are checked first
-                    if other is not a and self.check_collision(a, other):
-                            a.collide(other)
-                            other.collide(a)
+            for other in actors:
+                # reversed order, so actors drawn on top of others
+                # (towards the end of the cycle) are checked first
+                if other is not a and self.check_collision(a, other):
+                        a.collide(other)
+                        other.collide(a)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check the two actors (args) for mutual collision (bounding-box
