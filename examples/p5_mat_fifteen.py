@@ -11,18 +11,17 @@ from random import choice
 class Fifteen(BoardGame):
 
     def __init__(self, w: int, h: int):
-        # start with sorted tiles, then...
         self._w, self._h = w, h
         self._x0, self._y0 = w - 1, h - 1  # blank
-        self._board = list(range(1, w * h)) + [0]  # [1 2 ... 14 15 0]
+        # start with sorted tiles: [1 2 ... 14 15 0]
+        self._board = list(range(1, w * h)) + [0]
         self._solved = self._board[:]
-        # do a random walk of the blank tile, until all tiles change
+        # then, random walk of the blank tile, until most tiles change
         # https://docs.python.org/3/library/functions.html#any
         # while any(map(eq, self._board, self._solved)):
-        for _ in range(w * h * w * h):
+        while self._board[-1] != 1:
             dx, dy = choice([(0, -1), (+1, 0), (0, +1), (-1, 0)])
             self.play_at(self._x0 + dx, self._y0 + dy)
-
 
     def cols(self) -> int:
         return self._w

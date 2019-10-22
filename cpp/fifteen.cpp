@@ -21,7 +21,7 @@ public:
         }
         solved_ = board_;
         // do a random walk of the blank tile
-        for (auto i = 0; i < n*n; ++i) {
+        while (board_.back() != 1) {
             auto d = dirs[randint(0, dirs.size()-1)];
             play_at(x0_+d.x, y0_+d.y);
         }
