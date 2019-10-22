@@ -199,26 +199,22 @@ var sprites = LoadImage("sprites.png")
 func tick() {
     if KeyPressed("ArrowUp") {
         hero.GoUp(true)
+    } else if KeyReleased("ArrowUp") {
+        hero.GoUp(false)
     }
     if KeyPressed("ArrowRight") {
         hero.GoRight(true)
+    } else if KeyReleased("ArrowRight") {
+        hero.GoRight(false)
     }
     if KeyPressed("ArrowDown") {
         hero.GoDown(true)
+    } else if KeyReleased("ArrowDown") {
+        hero.GoDown(false)
     }
     if KeyPressed("ArrowLeft") {
         hero.GoLeft(true)
-    }
-    if KeyReleased("ArrowUp") {
-        hero.GoUp(false)
-    }
-    if KeyReleased("ArrowRight") {
-        hero.GoRight(false)
-    }
-    if KeyReleased("ArrowDown") {
-        hero.GoDown(false)
-    }
-    if KeyReleased("ArrowLeft") {
+    } else if KeyReleased("ArrowLeft") {
         hero.GoLeft(false)
     }
 

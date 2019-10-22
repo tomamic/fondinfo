@@ -17,19 +17,19 @@ sprites = g2d.load_image("sprites.png")
 def tick():
     if g2d.key_pressed("ArrowUp"):
         turtle.go_up(True)
+    elif g2d.key_released("ArrowUp"):
+        turtle.go_up(False)
     if g2d.key_pressed("ArrowRight"):
         turtle.go_right(True)
+    elif g2d.key_released("ArrowRight"):
+        turtle.go_right(False)
     if g2d.key_pressed("ArrowDown"):
         turtle.go_down(True)
+    elif g2d.key_released("ArrowDown"):
+        turtle.go_down(False)
     if g2d.key_pressed("ArrowLeft"):
         turtle.go_left(True)
-    if g2d.key_released("ArrowUp"):
-        turtle.go_up(False)
-    if g2d.key_released("ArrowRight"):
-        turtle.go_right(False)
-    if g2d.key_released("ArrowDown"):
-        turtle.go_down(False)
-    if g2d.key_released("ArrowLeft"):
+    elif g2d.key_released("ArrowLeft"):
         turtle.go_left(False)
 
     arena.move_all()  # Game logic
