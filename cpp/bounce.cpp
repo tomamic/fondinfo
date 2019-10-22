@@ -16,18 +16,24 @@ auto sprites = load_image("sprites.png");
 
 void tick() {
     if (key_pressed("ArrowUp")) {
-        turtle->go_up();
-    } else if (key_pressed("ArrowDown")) {
-        turtle->go_down();
-    } else if (key_pressed("ArrowLeft")) {
-        turtle->go_left();
-    } else if (key_pressed("ArrowRight")) {
-        turtle->go_right();
-    } else if (key_released("ArrowUp") ||
-               key_released("ArrowDown") ||
-               key_released("ArrowLeft") ||
-               key_released("ArrowRight")) {
-        turtle->stay();
+        turtle->go_up(true);
+    } else if (key_released("ArrowUp")) {
+        turtle->go_up(false);
+    }
+    if (key_pressed("ArrowRight")) {
+        turtle->go_right(true);
+    } else if (key_released("ArrowRight")) {
+        turtle->go_right(false);
+    }
+    if (key_pressed("ArrowDown")) {
+        turtle->go_down(true);
+    } else if (key_released("ArrowDown")) {
+        turtle->go_down(false);
+    }
+    if (key_pressed("ArrowLeft")) {
+        turtle->go_left(true);
+    } else if (key_released("ArrowLeft")) {
+        turtle->go_left(false);
     }
 
     arena->move_all();

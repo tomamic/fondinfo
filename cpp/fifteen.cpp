@@ -14,31 +14,31 @@ class Fifteen : public BoardGame {
 public:
     Fifteen(int cols, int rows) {
         w_ = cols, h_ = rows, x0_ = w_ - 1, y0_ = h_ - 1;
-        auto n = w_*h_, a1 = pos(w_-1, 0), a2 = pos(0, h_-1);  // angles
+        auto n = w_*h_;
         // start with sorted tiles, then...
         for (auto i = 0; i < n; ++i) {
             board_.push_back((i+1) % n);
         }
         solved_ = board_;
-        // do a random walk of the blank tile, until all angle tiles change
-        while (board_[0] == 1 || board_[a1] == a1+1 || board_[a2] == a2+1) {
+        // do a random walk of the blank tile
+        for (auto i = 0; i < n*n; ++i) {
             auto d = dirs[randint(0, dirs.size()-1)];
             play_at(x0_+d.x, y0_+d.y);
         }
     }
 
     std::string value_at(int x, int y) {
-        if (0 <= x && x < w_ && 0 <= y && y < h_ && board_[pos(x, y)] > 0) {
-            return std::to_string(board_[pos(x, y)]);
+        if (0 <= x && x < w_ && 0 <= y && y < h_ && board_[y*w_+x] > 0) {
+            return std::to_string(board_[y*w_+x]);
         }
         return "";
     }
 
     void play_at(int x, int y) {
         auto distance = abs(x - x0_) + abs(y - y0_);
-        auto i0 = pos(x0_, y0_), i1 = pos(x, y);
         if (0 <= x && x < w_ && 0 <= y && y < h_ && distance == 1) {
-            board_[i0] = board_[i1], board_[i1] = 0;
+            board_[y0_*w_+x0_] = board_[y*w_+x];
+            board_[y*w_+x] = 0;
             x0_ = x; y0_ = y;
         }
     }
@@ -50,8 +50,6 @@ public:
     int rows() { return h_; }
 
 private:
-    int pos(int x, int y) { return y*w_+x; }
-
     int w_, h_;
     int x0_, y0_;  // blank
     std::vector<int> board_, solved_;
@@ -59,7 +57,7 @@ private:
 
 int main() {
     auto g = new Fifteen{3, 3};
-    // gui_play(g);
+    //gui_play(g);
     console_play(g);
 }
 

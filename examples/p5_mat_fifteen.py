@@ -13,15 +13,16 @@ class Fifteen(BoardGame):
     def __init__(self, w: int, h: int):
         # start with sorted tiles, then...
         self._w, self._h = w, h
-        b = list(range(1, w * h)) + [0]  # [1 2 3 ... 14 15 0]
-        self._board, self._solved = b, b[:]
         self._x0, self._y0 = w - 1, h - 1  # blank
-        a1, a2 = w - 1, (h - 1) * w
-        # do a random walk of the blank tile, until all angle tiles change
-        while (b[0] == 1 or b[a1] == a1 + 1 or b[a2] == a2 + 1):
+        self._board = list(range(1, w * h)) + [0]  # [1 2 ... 14 15 0]
+        self._solved = self._board[:]
+        # do a random walk of the blank tile, until all tiles change
+        # https://docs.python.org/3/library/functions.html#any
+        # while any(map(eq, self._board, self._solved)):
+        for _ in range(w * h * w * h):
             dx, dy = choice([(0, -1), (+1, 0), (0, +1), (-1, 0)])
             self.play_at(self._x0 + dx, self._y0 + dy)
-            # https://docs.python.org/3/library/functions.html#any
+
 
     def cols(self) -> int:
         return self._w

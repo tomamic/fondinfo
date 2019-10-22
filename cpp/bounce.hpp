@@ -130,15 +130,25 @@ public:
 
     Rect symbol() { return {0, 20, W, H}; }
 
-    void go_left() { dx_ = -SPEED; dy_ = 0; }
+    void go_up(bool go) {
+        if (go) { dy_ = -SPEED; }
+        else if (dy_ < 0) { dy_ = 0; }
+    }
 
-    void go_right() { dx_ = SPEED; dy_ = 0; }
+    void go_right(bool go) {
+        if (go) { dx_ = SPEED; }
+        else if (dx_ > 0) { dx_ = 0; }
+    }
 
-    void go_up() { dx_ = 0; dy_ = -SPEED; }
+    void go_down(bool go) {
+        if (go) { dy_ = SPEED; }
+        else if (dy_ > 0) { dy_ = 0; }
+    }
 
-    void go_down() { dx_ = 0; dy_ = SPEED; }
-
-    void stay() { dx_ = 0; dy_ = 0; }
+    void go_left(bool go) {
+        if (go) { dx_ = -SPEED; }
+        else if (dx_ < 0) { dx_ = 0; }
+    }
 };
 
 #endif // BOUNCE_HPP
