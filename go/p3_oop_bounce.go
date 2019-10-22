@@ -119,24 +119,36 @@ func (a *Turtle) Move() {
 
 }
 
-func (a *Turtle) GoLeft() {
-    a.dx, a.dy = -a.speed, 0
+func (a *Turtle) GoLeft(cmd bool) {
+    if cmd {
+        a.dx = -a.speed
+    } else if a.dx < 0 {
+        a.dx = 0
+    }
 }
 
-func (a *Turtle) GoRight() {
-    a.dx, a.dy = +a.speed, 0
+func (a *Turtle) GoRight(cmd bool) {
+    if cmd {
+        a.dx = a.speed
+    } else if a.dx > 0 {
+        a.dx = 0
+    }
 }
 
-func (a *Turtle) GoUp() {
-    a.dx, a.dy = 0, -a.speed
+func (a *Turtle) GoUp(cmd bool) {
+    if cmd {
+        a.dy = -a.speed
+    } else if a.dy < 0 {
+        a.dy = 0
+    }
 }
 
-func (a *Turtle) GoDown() {
-    a.dx, a.dy = 0, +a.speed
-}
-
-func (a *Turtle) Stay() {
-    a.dx, a.dy = 0, 0
+func (a *Turtle) GoDown(cmd bool) {
+    if cmd {
+        a.dy = a.speed
+    } else if a.dy > 0 {
+        a.dy = 0
+    }
 }
 
 func (a *Turtle) Collide(other Actor) {
@@ -186,16 +198,28 @@ var sprites = LoadImage("sprites.png")
 
 func tick() {
     if KeyPressed("ArrowUp") {
-        hero.GoUp()
-    } else if KeyPressed("ArrowRight") {
-        hero.GoRight()
-    } else if KeyPressed("ArrowDown") {
-        hero.GoDown()
-    } else if KeyPressed("ArrowLeft") {
-        hero.GoLeft()
-    } else if KeyReleased("ArrowUp") || KeyReleased("ArrowRight") ||
-            KeyReleased("ArrowDown") || KeyReleased("ArrowLeft") {
-        hero.Stay()
+        hero.GoUp(true)
+    }
+    if KeyPressed("ArrowRight") {
+        hero.GoRight(true)
+    }
+    if KeyPressed("ArrowDown") {
+        hero.GoDown(true)
+    }
+    if KeyPressed("ArrowLeft") {
+        hero.GoLeft(true)
+    }
+    if KeyReleased("ArrowUp") {
+        hero.GoUp(false)
+    }
+    if KeyReleased("ArrowRight") {
+        hero.GoRight(false)
+    }
+    if KeyReleased("ArrowDown") {
+        hero.GoDown(false)
+    }
+    if KeyReleased("ArrowLeft") {
+        hero.GoLeft(false)
     }
 
     arena.MoveAll()

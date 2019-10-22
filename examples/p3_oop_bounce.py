@@ -97,20 +97,29 @@ class Turtle(Actor):
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
 
-    def go_left(self):
-        self._dx, self._dy = -self._speed, 0
+    def go_left(self, go: bool):
+        if go:
+            self._dx = -self._speed
+        elif self._dx < 0:
+            self._dx = 0
 
-    def go_right(self):
-        self._dx, self._dy = +self._speed, 0
+    def go_right(self, go: bool):
+        if go:
+            self._dx = self._speed
+        elif self._dx > 0:
+            self._dx = 0
 
-    def go_up(self):
-        self._dx, self._dy = 0, -self._speed
+    def go_up(self, go: bool):
+        if go:
+            self._dy = -self._speed
+        elif self._dy < 0:
+            self._dy = 0
 
-    def go_down(self):
-        self._dx, self._dy = 0, +self._speed
-
-    def stay(self):
-        self._dx, self._dy = 0, 0
+    def go_down(self, go: bool):
+        if go:
+            self._dy = self._speed
+        elif self._dy > 0:
+            self._dy = 0
 
     def collide(self, other):
         pass
