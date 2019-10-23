@@ -7,7 +7,7 @@
 ## Canvas functions
 
 - `func InitCanvas(size Point)` : Initialize the drawing canvas
-- `func MainLoop(tick ...func())` : Start the main GUI loop for event handling, accepting an optional `tick` function, which will be called periodically
+- `func MainLoop(tick ...func())` : Start the event loop, accepting an optional `tick` function, which will be called periodically
 - `func ClearCanvas()` : Clear the canvas
 - `func SetFrameRate(fps float64)` : Set the frame rate, which otherwise by default is 30 fps
 - `func UpdateCanvas()` : Draw all pending graphics on the canvas, it is called automaticall after each `tick`

@@ -7,7 +7,7 @@
 ## Canvas functions
 
 - `init_canvas(size: (int, int))` : Initialize the drawing canvas
-- `main_loop(tick=None, fps=30)` : Start the main GUI loop for event handling, accepting an optional `tick` function, which will be called periodically
+- `main_loop(tick=None, fps=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
 - `clear_canvas()` : Clear the canvas
 - `update_canvas()` : Draw all pending graphics on the canvas, it is called automaticall after each `tick`
 - `close_canvas()` : Close the canvas and exit the main loop
