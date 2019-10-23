@@ -49,10 +49,9 @@ sudo snap install go
 go get install -u https://github.com/tomamic/fondinfo/go/g2d
 ```
 
-- GopherJS
+- GopherJS : <http://www.ce.unipr.it/gopherjs>
 ```
 go get -u github.com/gopherjs/gopherjs
 ~/go/bin/gopherjs install
 cp ~/go/pkg/linux_js/g2d.a ~/dev/gopherjs/pkg/g2d.a.js
 ```
-
