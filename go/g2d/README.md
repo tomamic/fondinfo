@@ -26,9 +26,9 @@
 
 ## Input and output
 
-- `func MousePosition() Point`
-- `func KeyPressed(key string) bool`
-- `func KeyReleased(key string) bool`
+- `func MousePosition() Point` : Get current mouse position
+- `func KeyPressed(key string) bool` : Check if a key has been pressed after last `tick`
+- `func KeyReleased(key string) bool` : Check if a key has been released after last `tick`
 - `func Prompt(a ...interface{}) string` : Show a dialog for entering a line of text
 - `func Confirm(a ...interface{}) bool` : Show a dialog for confirming a decision
 - `func Alert(a ...interface{})` : Show a dialog with a message
