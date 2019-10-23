@@ -1,3 +1,9 @@
+## Basic structs
+
+- `type Point struct{ X, Y int }`
+- `type Rect struct{ X, Y, W, H int }`
+- `type Color struct{ R, G, B int }`
+
 ## Canvas functions
 
 - `func InitCanvas(size Point)` : Initialize the drawing canvas
@@ -5,6 +11,7 @@
 - `func ClearCanvas()` : Clear the canvas
 - `func SetFrameRate(fps float64)` : Set the frame rate, which otherwise by default is 30 fps
 - `func UpdateCanvas()` : Draw all pending graphics on the canvas, it is called automaticall after each `tick`
+- `func CloseCanvas()` : Close the canvas and exit the main loop
 
 ## Drawing functions
 
@@ -45,13 +52,14 @@
 
 - Go
 ```
-sudo snap install go
-go get install -u https://github.com/tomamic/fondinfo/go/g2d
+sudo snap install --classic go
+go get -u https://github.com/tomamic/fondinfo/go/g2d
 ```
 
 - GopherJS : <http://www.ce.unipr.it/gopherjs>
 ```
 go get -u github.com/gopherjs/gopherjs
+cd ~/go/src/g2d
 ~/go/bin/gopherjs install
 cp ~/go/pkg/linux_js/g2d.a ~/dev/gopherjs/pkg/g2d.a.js
 ```
