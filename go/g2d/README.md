@@ -53,7 +53,7 @@
 - Go
 ```
 sudo snap install --classic go
-go get -u https://github.com/tomamic/fondinfo/go/g2d
+go get -u github.com/tomamic/fondinfo/go/g2d
 ```
 
 - GopherJS : <http://www.ce.unipr.it/gopherjs>
