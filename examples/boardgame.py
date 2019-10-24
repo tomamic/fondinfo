@@ -20,7 +20,8 @@ class BoardGame:
 def print_game(game: BoardGame):
     for y in range(game.rows()):
         for x in range(game.cols()):
-            print('{:3}'.format(game.value_at(x, y)), end='')
+            val = game.value_at(x, y)
+            print(f"{val:3}", end='')
         print()
 
 def console_play(game: BoardGame):
