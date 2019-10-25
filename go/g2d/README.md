@@ -44,8 +44,8 @@
 
 - `func Println(a ...interface{})` : Same as `fmt.Println`
 - `func Printf(format string, a ...interface{})` : Same as `fmt.Printf`
-- `func ToInt(text string) int` : Convert a text to an int, defaulting to 0
-- `func ToFloat(text string) float64` : Convert a text to a float, defaulting to 0
+- `func ToInt(text string, defval ...int) int` : Convert a text to an int, defaulting to 0 or `defval`
+- `func ToFloat(text string, defval ...float64) float64` : Convert a text to a float, defaulting to 0 or `defval`
 - `func RandInt(min, max int) int`: Generate a number in the closed range `[min, max]`
 
 ## Installing

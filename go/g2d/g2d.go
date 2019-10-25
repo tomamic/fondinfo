@@ -189,14 +189,20 @@ func init() {
     rand.Seed(time.Now().UnixNano())
 }
 
-func ToInt(text string) int {
+func ToInt(text string, defval ...int) int {
     val := 0
+    if len(defval) == 1 {
+        val = defval[0]
+    }
     fmt.Sscan(text, &val)
     return val
 }
 
-func ToFloat(text string) float64 {
+func ToFloat(text string, defval ...float64) float64 {
     val := 0.0
+    if len(defval) == 1 {
+        val = defval[0]
+    }
     fmt.Sscan(text, &val)
     return val
 }
