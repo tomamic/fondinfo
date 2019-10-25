@@ -7,7 +7,7 @@ var x, y, dx = 50, 50, 5
 var screen = Point{480, 360}
 
 func tick() {
-    //if KeyPressed("Enter") { ... }
+    //if KeyPressed("LeftButton") { ... }
     //if x + dx > screen.X { ... }
     ClearCanvas()                  // Draw background
     DrawImage(image, Point{x, y})  // Draw foreground
