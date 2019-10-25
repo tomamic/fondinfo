@@ -10,7 +10,7 @@ var size = Point{20, 20}
 var image = LoadImage("ball.png")
 
 // encapsulates behaviour, but exposes data
-func MoveBall(x, y, dx, dy int) (int, int, int, int) {
+func moveBall(x, y, dx, dy int) (int, int, int, int) {
     if x + dx < 0 || x + dx + size.X > screen.X {
         dx = -dx
     }
@@ -26,8 +26,8 @@ func tick() {
     ClearCanvas()                    // Draw background
     DrawImage(image, Point{x1, y1})  // Draw foreground
     DrawImage(image, Point{x2, y2})  // Draw foreground
-    x1, y1, dx1, dy1 = MoveBall(x1, y1, dx1, dy1)
-    x2, y2, dx2, dy2 = MoveBall(x2, y2, dx2, dy2)
+    x1, y1, dx1, dy1 = moveBall(x1, y1, dx1, dy1)
+    x2, y2, dx2, dy2 = moveBall(x2, y2, dx2, dy2)
 }
 
 func main() {
