@@ -24,11 +24,8 @@ class LightsOut(BoardGame):
         return self._h
 
     def finished(self) -> bool:
-        for y in range(self._h):
-            for x in range(self._w):
-                if self._board[y*self._w+x]:
-                    return False
-        return True
+        # https://docs.python.org/3/library/functions.html#any
+        return not any(self._board)
 
     def play_at(self, x: int, y: int):
         '''Place (or remove) a light at cell (x, y)'''
@@ -45,7 +42,7 @@ class LightsOut(BoardGame):
 
     def value_at(self, x: int, y: int) -> str:
         w, h = self._w, self._h
-        if (0 <= x < w and 0 <= y < h and self._board[y*w+x]):
+        if 0 <= x < w and 0 <= y < h and self._board[y*w+x]:
             return '@'
         return '-'
 
