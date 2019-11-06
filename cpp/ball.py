@@ -8,7 +8,7 @@ import cppyy
 cppyy.include("ball.cpp")
 from cppyy.gbl import Ball
 
-b = Ball((150, 200))
+b = Ball(150, 200)
 for i in range(10):
     b.move()
     print(b.position())

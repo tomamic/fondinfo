@@ -682,7 +682,11 @@ void ws_init(void (*handler)(std::string))
     std::make_shared<ws_listener>(
         *ioc, tcp::endpoint{address, 7574})->run();
 
+    #ifdef __MINGW32__
+    system("start http://localhost:8008/_websocket.html");
+    #else
     system("xdg-open http://localhost:8008/_websocket.html");
+    #endif
 
     // Run the I/O service on the requested number of threads
     for (auto i = threads; i > 0; --i) {
