@@ -5,6 +5,7 @@
 '''
 
 from random import choice, randrange
+from time import time
 from actor import Actor, Arena
 
 class Ball(Actor):
@@ -80,6 +81,8 @@ class Turtle(Actor):
         self._w, self._h = 20, 20
         self._speed = 2
         self._dx, self._dy = 0, 0
+        self._lives = 3
+        self._last_collision = 0
         self._arena = arena
         arena.add(self)
 
@@ -121,29 +124,23 @@ class Turtle(Actor):
         elif self._dy > 0:
             self._dy = 0
 
+    def lives(self) -> int:
+        return self._lives
+
     def collide(self, other):
-        pass
+        if time() - self._last_collision < 2:
+            return
+        self._last_collision = time()
+        if isinstance(other, Ghost):
+            self._lives = 0
+        elif isinstance(other, Ball):
+            self._lives -= 1
 
     def position(self):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
         return 0, 20, self._w, self._h
-
-
-##class BounceGame:
-##    def __init__(self):
-##        self._arena = Arena(320, 240)
-##        Ball(self._arena, 40, 80)
-##        Ball(self._arena, 80, 40)
-##        Ghost(self._arena, 120, 80)
-##        self._hero = Turtle(self._arena, 80, 80)
-##
-##    def arena(self) -> Arena:
-##        return self._arena
-##
-##    def hero(self) -> Turtle:
-##        return self._hero
 
 
 def print_arena(arena):
