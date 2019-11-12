@@ -39,5 +39,4 @@ def main():
     # move all discs from pole 0 to pole 2
     move_towers(towers, discs, 0, 1, 2)
 
-if __name__ == '__main__':
-    main()
+main()

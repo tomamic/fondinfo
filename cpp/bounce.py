@@ -9,7 +9,7 @@ cppyy.include("bounce.hpp")
 from cppyy.gbl import Arena, Ball, Ghost, Turtle, Point, Rect
 
 import sys; sys.path.append('../examples/')
-import g2d
+import g2d_pyg as g2d
 
 def pt(x, y):
     p = Point()
@@ -23,7 +23,7 @@ b1 = Ball(arena, pt(40, 80))
 b2 = Ball(arena, pt(80, 40))
 g = Ghost(arena, pt(120, 80))
 turtle = Turtle(arena, pt(80, 80))
-sprites = g2d.load_image("sprites.png")
+sprites = g2d.load_image("../examples/sprites.png")
 
 def tick():
     if g2d.key_pressed("ArrowUp"):
