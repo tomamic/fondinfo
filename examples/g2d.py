@@ -64,10 +64,12 @@ def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int
     _jss.append(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def draw_text(txt: str, pt: (int, int), size: int) -> None:
-    _jss.append(f"drawText('{txt}', {pt[0]}, {pt[1]}, {size})")
+    txt = txt.replace(r"`", r"\`")
+    _jss.append(f"drawText(`{txt}`, {pt[0]}, {pt[1]}, {size})")
 
 def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
-    _jss.append(f"drawTextCentered('{txt}', {pt[0]}, {pt[1]}, {size})")
+    txt = txt.replace(r"`", r"\`")
+    _jss.append(f"drawTextCentered(`{txt}`, {pt[0]}, {pt[1]}, {size})")
 
 def load_audio(src: str) -> str:
     key = hash(src)
@@ -87,13 +89,16 @@ def _dialog(js: str) -> str:
     return consume_msg(_answers)
 
 def alert(message: str) -> None:
-    _dialog(f"doAlert('{message}')")
+    message = message.replace(r"`", r"\`")
+    _dialog(f"doAlert(`{message}`)")
 
 def confirm(message: str) -> bool:
-    return _dialog(f"doConfirm('{message}')") == "true"
+    message = message.replace(r"`", r"\`")
+    return _dialog(f"doConfirm(`{message}`)") == "true"
 
 def prompt(message: str) -> str:
-    return _dialog(f"doPrompt('{message}')")
+    message = message.replace(r"`", r"\`")
+    return _dialog(f"doPrompt(`{message}`)")
 
 def mouse_position() -> (int, int):
     return _mouse_pos
