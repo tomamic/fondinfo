@@ -8,6 +8,7 @@
 
 #include "websocket.hpp"
 #include "basic.hpp"
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -352,6 +353,7 @@ void do_js_(string cmd, vector<string> strs, vector<int> ints) {
     string part;
     for (auto s : strs) {
         std::getline(fmt, part, '%');
+        std::replace(begin(s), end(s), '`', '\'');
         jscode_ << part << s;
     }
     for (auto a : ints) {
@@ -468,61 +470,61 @@ void fill_rect(Rect r) {
 
 string load_image(string src) {
     auto key = to_string(std::hash<string>{}(src));
-    do_js_("loadImage('%', '%')", {key, src}, {});
+    do_js_("loadImage(`%`, `%`)", {key, src}, {});
     return key;
 }
 
 void draw_image(string image, Point p) {
-    do_js_("drawImage('%', %, %)", {image}, {p.x, p.y});
+    do_js_("drawImage(`%`, %, %)", {image}, {p.x, p.y});
 }
 
 void draw_image_clip(string image, Rect clip, Rect r) {
-    do_js_("drawImageClip('%', %, %, %, %, %, %, %, %)",
+    do_js_("drawImageClip(`%`, %, %, %, %, %, %, %, %)",
         {image}, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
 }
 
 void draw_text(string txt, Point p, int size) {
-    do_js_("drawText('%', %, %, %)", {txt}, {p.x, p.y, size});
+    do_js_("drawText(`%`, %, %, %)", {txt}, {p.x, p.y, size});
 }
 
 void draw_text_centered(string txt, Point p, int size) {
-    do_js_("drawTextCentered('%', %, %, %)", {txt}, {p.x, p.y, size});
+    do_js_("drawTextCentered(`%`, %, %, %)", {txt}, {p.x, p.y, size});
 }
 
 string load_audio(string src) {
     auto key = to_string(std::hash<string>{}(src));
-    do_js_("loadAudio('%', '%')", {key, src}, {});
+    do_js_("loadAudio(`%`, `%`)", {key, src}, {});
     return key;
 }
 
 void play_audio(string audio, bool loop) {
-    if (loop) do_js_("pauseAudio('%', true)", {audio}, {});
-    else do_js_("pauseAudio('%', false)", {audio}, {});
+    if (loop) do_js_("pauseAudio(`%`, true)", {audio}, {});
+    else do_js_("pauseAudio(`%`, false)", {audio}, {});
 }
 
 void pause_audio(string audio) {
-    do_js_("pauseAudio('%')", {audio}, {});
+    do_js_("pauseAudio(`%`)", {audio}, {});
 }
 
-string dialog_(string js) {
+string dialog_(string js, string message) {
     if (!inited()) {
         init_canvas({480, 360});
     }
-    do_js_(js);
+    do_js_(js, {message}, {});
     update_canvas();
     return consume_msg(answers_);
 }
 
 void alert(string message) {
-    dialog_("doAlert('"s + message + "')"s);
+    dialog_("doAlert(`%`)", message);
 }
 
 bool confirm(string message) {
-    return dialog_("doConfirm('"s + message + "')"s) == "true";
+    return dialog_("doConfirm(`%`)", message) == "true";
 }
 
 string prompt(string message) {
-    return dialog_("doPrompt('"s + message + "')"s);
+    return dialog_("doPrompt(`%`)", message);
 }
 
 Point mouse_position() {
