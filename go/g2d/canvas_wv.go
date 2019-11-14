@@ -9,6 +9,7 @@ import (
     "log"
     "net"
     "net/http"
+    "strings"
 )
 
 var w webview.WebView = nil
@@ -64,7 +65,9 @@ func Printf(format string, a ...interface{}) {
 }
 
 func dialog(cmd string, a ...interface{}) string {
-    doJs(cmd+"('%s')", fmt.Sprint(a...))
+    msg := fmt.Sprint(a...)
+    msg = strings.ReplaceAll(msg, "`", "\\`")
+    doJs(cmd+"(`%s`)", msg)
     UpdateCanvas()
     for len(answers) == 0 {
         w.Loop(true)

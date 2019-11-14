@@ -249,11 +249,13 @@ func DrawImageClip(image string, clip Rect, r Rect) {
 }
 
 func DrawText(txt string, p Point, size int) {
-    doJs("drawText('%s', %d, %d, %d)", txt, p.X, p.Y, size)
+    txt = strings.ReplaceAll(txt, "`", "\\`")
+    doJs("drawText(`%s`, %d, %d, %d)", txt, p.X, p.Y, size)
 }
 
 func DrawTextCentered(txt string, p Point, size int) {
-    doJs("drawTextCentered('%s', %d, %d, %d)", txt, p.X, p.Y, size)
+    txt = strings.ReplaceAll(txt, "`", "\\`")
+    doJs("drawTextCentered(`%s`, %d, %d, %d)", txt, p.X, p.Y, size)
 }
 
 func LoadAudio(src string) string {
