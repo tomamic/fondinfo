@@ -4,41 +4,38 @@
  */
 
 #include <iostream>
-#include "g2d/basic.hpp"
+using namespace std;
 
-const int ARENA_W = 480, ARENA_H = 360, BALL_W = 20, BALL_H = 20;
+const int ARENA_W = 480, ARENA_H = 360;
 
 class Ball {
-    int x_, y_;
+    int x_, y_, w_ = 20, h_ = 20;  // private stuff
     int dx_ = 5, dy_ = 5;
 public:
-    Ball(int x, int y) { x_ = x; y_ = y; }
-    Ball(g2d::Point pos) { x_ = pos.x; y_ = pos.y; }
-
+    Ball(int x, int y) {  // constructor
+        x_ = x; y_ = y;
+    }
     void move() {
-        if (x_+dx_ < 0 || x_+dx_+BALL_W > ARENA_W) {
+        if (x_+dx_ < 0 || x_+dx_+w_ > ARENA_W) {
             dx_ = -dx_;
         }
-        if (y_+dy_ < 0 || y_+dy_+BALL_H > ARENA_H) {
+        if (y_+dy_ < 0 || y_+dy_+h_ > ARENA_H) {
             dy_ = -dy_;
         }
         x_ += dx_; y_ += dy_;
     }
-
-    g2d::Rect position() { return {x_, y_, BALL_W, BALL_H}; }
+    int pos_x() { return x_; }
+    int pos_y() { return y_; }
 };
 
 int main() {
-    auto ball1 = Ball{{40, 80}};
-    auto ball2 = new Ball{{80, 40}};
+    auto b1 = Ball{40, 80};
+    auto b2 = Ball{80, 40};
 
     for (auto i = 0; i < 25; ++i) {
-        ball1.move();
-        ball2->move();
-
-        std::cout << ball1.position() << std::endl;
-        std::cout << ball2->position() << std::endl << std::endl;
+        b1.move();
+        b2.move();
+        cout << b1.pos_x() << " " << b1.pos_y() << endl;
+        cout << b2.pos_x() << " " << b2.pos_y() << endl << endl;
     }
-
-    delete ball2;
 }

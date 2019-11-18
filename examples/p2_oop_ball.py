@@ -5,26 +5,27 @@
 '''
 
 ARENA_W, ARENA_H = 480, 360
-BALL_W, BALL_H = 20, 20
 
 class Ball:
     def __init__(self, x: int, y: int):
         self._x = x
         self._y = y
+        self._w = 20
+        self._h = 20
         self._dx = 5
         self._dy = 5
 
     def move(self):
-        if not (0 <= self._x + self._dx <= ARENA_W - BALL_W):
+        if not (0 <= self._x + self._dx <= ARENA_W - self._w):
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= ARENA_H - BALL_H):
+        if not (0 <= self._y + self._dy <= ARENA_H - self._h):
             self._dy = -self._dy
 
         self._x += self._dx
         self._y += self._dy
 
     def position(self) -> (int, int, int, int):
-        return self._x, self._y, BALL_W, BALL_H
+        return self._x, self._y, self._w, self._h
 
 
 def main():
@@ -33,8 +34,8 @@ def main():
     b2 = Ball(180, 140)
 
     for i in range(25):
-        print("b1 @", b1.position(), "b2 @", b2.position())
         b1.move()
         b2.move()
+        print("b1 @", b1.position(), "b2 @", b2.position())
 
 ##main()  # call main to start the program
