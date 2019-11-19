@@ -128,9 +128,9 @@ class Turtle(Actor):
         return self._lives
 
     def collide(self, other):
-        if time() - self._last_collision < 2:
+        if self._arena.count() - self._last_collision < 30:
             return
-        self._last_collision = time()
+        self._last_collision = self._arena.count()
         if isinstance(other, Ghost):
             self._lives = 0
         elif isinstance(other, Ball):

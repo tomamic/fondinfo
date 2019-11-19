@@ -9,7 +9,8 @@ using namespace std;
 const int ARENA_W = 480, ARENA_H = 360;
 
 class Ball {
-    int x_, y_, w_ = 20, h_ = 20;  // private stuff
+    int x_, y_;  // private stuff
+    int w_ = 20, h_ = 20;
     int dx_ = 5, dy_ = 5;
 public:
     Ball(int x, int y) {  // constructor

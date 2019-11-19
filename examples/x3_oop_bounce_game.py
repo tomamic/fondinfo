@@ -15,8 +15,7 @@ class BounceGame:
         Ball(self._arena, (80, 40))
         Ghost(self._arena, (120, 80))
         self._hero = Turtle(self._arena, (80, 80))
-        self._start = time()
-        self._playtime = 120
+        self._playtime = 120  # seconds
 
     def arena(self) -> Arena:
         return self._arena
@@ -25,10 +24,10 @@ class BounceGame:
         return self._hero
 
     def game_over(self) -> bool:
-        return self._hero.lives() == 0
+        return self._hero.lives() <= 0
 
     def game_won(self) -> bool:
-        return time() - self._start > self._playtime
+        return self.remaining_time() <= 0
 
     def remaining_time(self) -> int:
-        return int(self._start + self._playtime - time())
+        return (self._playtime - self._arena.count() // 30)

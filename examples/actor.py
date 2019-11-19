@@ -38,6 +38,7 @@ class Arena():
         '''Create an arena, with given dimensions in pixels
         '''
         self._w, self._h = size
+        self._count = 0
         self._actors = []
 
     def add(self, a: Actor):
@@ -67,6 +68,7 @@ class Arena():
                 if other is not a and self.check_collision(a, other):
                         a.collide(other)
                         other.collide(a)
+        self._count += 1
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check the two actors (args) for mutual collision (bounding-box
@@ -87,3 +89,8 @@ class Arena():
         '''Return the size of the arena as a couple: (width, height)
         '''
         return (self._w, self._h)
+
+    def count(self) -> int:
+        '''Return the total count of ticks (or frames)
+        '''
+        return self._count

@@ -14,7 +14,7 @@ class BounceGui:
         g2d.init_canvas(self._game.arena().size())
         self._sprites = g2d.load_image("sprites.png")
         g2d.main_loop(self.tick)
-        
+
     def handle_keyboard(self):
         hero = self._game.hero()
         if g2d.key_pressed("ArrowUp"):
@@ -33,12 +33,12 @@ class BounceGui:
             hero.go_left(True)
         elif g2d.key_released("ArrowLeft"):
             hero.go_left(False)
-    
+
     def tick(self):
         self.handle_keyboard()
         arena = self._game.arena()
         arena.move_all()  # Game logic
-    
+
         g2d.clear_canvas()
         for a in arena.actors():
             if a.symbol() != (0, 0, 0, 0):

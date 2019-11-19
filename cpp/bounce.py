@@ -11,18 +11,11 @@ from cppyy.gbl import Arena, Ball, Ghost, Turtle, Point, Rect
 import sys; sys.path.append('../examples/')
 import g2d_pyg as g2d
 
-def pt(x, y):
-    p = Point()
-    p.x, p.y = x, y
-    return p
-##cppyy.gbl.Point.__getitem__ = lambda self, key: getattr(self, "xy"[key])
-##cppyy.gbl.Rect.__getitem__ = lambda self, key: getattr(self, "xywh"[key])
-
-arena = Arena(pt(480, 360))
-b1 = Ball(arena, pt(40, 80))
-b2 = Ball(arena, pt(80, 40))
-g = Ghost(arena, pt(120, 80))
-turtle = Turtle(arena, pt(80, 80))
+arena = Arena((480, 360))
+b1 = Ball(arena, (40, 80))
+b2 = Ball(arena, (80, 40))
+g = Ghost(arena, (120, 80))
+turtle = Turtle(arena, (80, 80))
 sprites = g2d.load_image("../examples/sprites.png")
 
 def tick():
@@ -48,8 +41,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         sym, pos = a.symbol(), a.position()
-        g2d.draw_image_clip(sprites, (sym.x, sym.y, sym.w, sym.h),
-                            (pos.x, pos.y, pos.w, pos.h))
+        g2d.draw_image_clip(sprites, a.symbol(), a.position())
 
 def main():
     size = arena.size()
