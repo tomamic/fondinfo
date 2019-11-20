@@ -17,19 +17,19 @@ namespace g2d {
 struct Point {
     int x, y;
     Point(int x0, int y0) { x=x0; y=y0; }
-    int __getitem__(int i) { return vector<int>{x, y}[i]; }
+    int __getitem__(int i) { return i==0 ? x : y; }
     int __len__() { return 2; }
 };
 struct Rect {
     int x, y, w, h;
     Rect(int x0, int y0, int w0, int h0) { x=x0; y=y0; w=w0; h=h0; }
-    int __getitem__(int i) { return vector<int>{x, y, w, h}[i]; }
+    int __getitem__(int i) { return i==0 ? x : i==1 ? y : i==2 ? w : h; }
     int __len__() { return 4; }
 };
 struct Color {
     int r, g, b;
     Color(int r0, int g0, int b0) { r=r0; g=g0; b=b0; }
-    int __getitem__(int i) { return vector<int>{r, g, b}[i]; }
+    int __getitem__(int i) { return i==0 ? r : i==1 ? g : b; }
     int __len__() { return 3; }
 };
 

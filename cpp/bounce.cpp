@@ -50,11 +50,15 @@ int main() {
 
 int main_console() {
     for (std::string line; std::getline(std::cin, line);) {
-        if (line == "w") turtle->go_up();
-        else if (line == "a") turtle->go_left();
-        else if (line == "s") turtle->go_down();
-        else if (line == "d") turtle->go_right();
-        else if (line == " ") turtle->stay();
+        turtle->go_up(false);
+        turtle->go_left(false);
+        turtle->go_down(false);
+        turtle->go_right(false);
+
+        if (line == "w") turtle->go_up(true);
+        else if (line == "a") turtle->go_left(true);
+        else if (line == "s") turtle->go_down(true);
+        else if (line == "d") turtle->go_right(true);
 
         arena->move_all();
         for (auto a : arena->actors()) {
