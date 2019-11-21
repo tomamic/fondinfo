@@ -15,13 +15,13 @@ public:
         w = cols;
         h = rows;
         auto n = w * h;
-
+        // init matrices
         annots.assign(n, false);
         matrix.assign(n, 0);
         for (auto i = 0; i < n; ++i) {
-            matrix[i] = i + 1;
+             matrix[i] = i + 1;
         }
-
+        // shuffle numbers
         for (auto i = 0; i < n; ++i) {
             auto r = rand() % n;
             auto tmp = matrix[i];
@@ -31,15 +31,20 @@ public:
     }
 
     string value_at(int x, int y) {
-        auto result = to_string(matrix[y * w + x]);
-        if (annots[y * w + x]) {
-            result += "!";
+        string result;
+        if (0 <= x && x < w && 0 <= y && y < h) {
+            result = to_string(matrix[y * w + x]);
+            if (annots[y * w + x]) {
+                result += "!";
+            }
         }
         return result;
     }
 
     void play_at(int x, int y) {
-        annots[y * w + x] = ! annots[y * w + x];
+        if (0 <= x && x < w && 0 <= y && y < h) {
+            annots[y * w + x] = ! annots[y * w + x];
+        }
     }
 
     bool finished() {
@@ -47,16 +52,14 @@ public:
             auto isodd = matrix[i] % 2 != 0;
             auto annot = annots[i];
             if (isodd != annot) {
-                return false;
+                return false;  // incorrect annotation found
             }
         }
-        return true;
+        return true;  // no errors found
     }
 
     void flag_at(int x, int y) { }
-
     string message() { return "Solved"; }
-
     int rows() { return h; }
     int cols() { return w; }
 };
