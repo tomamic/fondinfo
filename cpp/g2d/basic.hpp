@@ -135,6 +135,15 @@ int randint(int min, int max) {
     return min + rand() % (1 + max - min);
 }
 
+std::vector<std::string> split(std::string text, char sep) {
+    std::vector<std::string> result;
+    std::istringstream sstr{text};  // a stream view on a string
+    for (std::string item; std::getline(sstr, item, sep);) {
+        result.push_back(item);
+    }
+    return result;
+}
+
 }
 
 std::ostream& operator<<(std::ostream& os, const g2d::Point& p) {
