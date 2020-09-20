@@ -13,8 +13,8 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 ### Installing
 
-- Copy `g2d.py` into the same folder containing your scripts; this will draw into a *browser window*
-- Alternatively, copy `g2d_pyg.py` in that location and rename the file as `g2d.py`; this will use *PyGame*
+- Copy `examples/g2d.py` into the same folder containing your scripts; this will draw into a *browser window*
+- Alternatively, copy `examples/g2d_pyg.py` in that location and rename the file as `g2d.py`; this will use *PyGame*
 
 ### Basic structs
 
