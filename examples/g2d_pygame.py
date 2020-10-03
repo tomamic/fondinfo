@@ -106,12 +106,12 @@ def mouse_position() -> (int, int):
     return _mouse_pos
 
 def web_key(key: int) -> str:
-    word = pygame.key.name(key)
-    word = word[0].upper() + word[1:]
+    name = pygame.key.name(key)
+    word = name[0].upper() + name[1:]
     if len(word) == 1 and word.isalpha():
-        word = "Key" + word
+        word = name #"Key" + word
     elif len(word) == 1 and word.isdigit():
-        word = "Digit" + word
+        word = name #"Digit" + word
     elif word in ("Up", "Down", "Right", "Left"):
         word = "Arrow" + word
     elif word == "Space":
