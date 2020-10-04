@@ -106,19 +106,16 @@ def mouse_position() -> (int, int):
     return _mouse_pos
 
 def web_key(key: int) -> str:
+    fixes = {"up" : "ArrowUp", "down" : "ArrowDown",
+             "right" : "ArrowRight", "left" : "ArrowLeft",
+             "space": "Spacebar", "return": "Enter"}
     name = pygame.key.name(key)
-    word = name[0].upper() + name[1:]
-    if len(word) == 1 and word.isalpha():
-        word = name #"Key" + word
-    elif len(word) == 1 and word.isdigit():
-        word = name #"Digit" + word
-    elif word in ("Up", "Down", "Right", "Left"):
-        word = "Arrow" + word
-    elif word == "Space":
-        word = "Spacebar"
-    elif word == "Return":
-        word = "Enter"
-    return word
+    if name in fixes:
+        name = fixes[name]
+    elif len(name) > 1:
+        name = "".join(w.capitalize() for w in name.split())
+    print(name)
+    return name
 
 def key_pressed(key: str) -> bool:
     return key in _keys and key not in _prev_keys
@@ -148,6 +145,8 @@ def main_loop(tick=None, fps=30) -> None:
             elif (e.type == pygame.MOUSEBUTTONUP and
                   1 <= e.button <= 3):
                 _keys.discard(_mouse_codes[e.button - 1])
+            if "Spacebar" in _keys: _keys.add(" ")
+            else: _keys.discard(" ")
         if _tick:
             _mouse_pos = pygame.mouse.get_pos()
             _tick()

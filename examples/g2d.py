@@ -130,6 +130,8 @@ def main_loop(tick=None, fps=30) -> None:
         elif args[0] == "keyup":
             _keys.discard(args[1])
         elif args[0] == "update" and _usr_tick != None:
+            if "Spacebar" in _keys: _keys.add(" ")
+            else: _keys.discard(" ")
             _usr_tick()
             update_canvas()
             _prev_keys = _keys.copy()
