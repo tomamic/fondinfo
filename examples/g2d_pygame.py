@@ -24,16 +24,19 @@ _mouse_pos = (0, 0)
 _keys, _prev_keys = set(), set()
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 
+def _tup(t: tuple) -> tuple:
+    return tuple(map(int, t))
+
 def init_canvas(size: (int, int)):
     '''Set size of first CANVAS and return it'''
     global _canvas
     pygame.init()
-    _canvas = pygame.display.set_mode(size)
+    _canvas = pygame.display.set_mode(_tup(size))
     clear_canvas()
 
 def set_color(color: (int, int, int)) -> None:
     global _color
-    _color = color
+    _color = _tup(color)
 
 def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
@@ -42,32 +45,33 @@ def update_canvas() -> None:
     pygame.display.update()
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    pygame.draw.line(_canvas, _color, pt1, pt2)
+    pygame.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
 
 def fill_circle(center: (int, int), radius: int) -> None:
-    pygame.draw.circle(_canvas, _color, center, radius)
+    pygame.draw.circle(_canvas, _color, _tup(center), int(radius))
 
 def fill_rect(rectangle: (int, int, int, int)) -> None:
-    pygame.draw.rect(_canvas, _color, rectangle)
+    pygame.draw.rect(_canvas, _color, _tup(rectangle))
 
 def draw_text(txt: str, pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', size)
+    font = pygame.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
-    _canvas.blit(surface, pos)
+    _canvas.blit(surface, _tup(pos))
 
 def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', size)
+    font = pygame.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     w, h = surface.get_size()
-    _canvas.blit(surface, (pos[0] - w // 2, pos[1] - h // 2))
+    _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
 
 def load_image(url: str) -> pygame.Surface:
     return pygame.image.load(url)
 
 def draw_image(image: pygame.Surface, pos: (int, int)) -> None:
-    _canvas.blit(image, pos)
+    _canvas.blit(image, _tup(pos))
 
 def draw_image_clip(image: pygame.Surface, src: (int, int, int, int), dst: (int, int, int, int)) -> None:
+    src, dst = _tup(src), _tup(dst)
     x0, y0, w0, h0 = src
     x1, y1, w1, h1 = dst
     if w0 == w1 and h0 == h1:
