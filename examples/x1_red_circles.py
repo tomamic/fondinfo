@@ -13,8 +13,8 @@ n = int(g2d.prompt("Circles? "))
 for i in range(n):
     g2d.set_color((red, 0, 0))
     g2d.fill_circle((RADIUS, RADIUS), radius)
-
-    radius -= RADIUS // n
-    red -= 255 // (n-1)
+    if n > 1:
+        radius -= RADIUS // n
+        red -= 255 // (n-1)
 
 g2d.main_loop()
