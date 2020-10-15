@@ -109,6 +109,12 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key not in _keys and key in _prev_keys
 
+def pressed_keys() -> set:
+    return _keys - _prev_keys
+
+def released_keys() -> set:
+    return _prev_keys - _keys
+
 def update_canvas() -> None:
     if _ws:
         _ws.sendMessage(";\n".join(_jss + [""]))
