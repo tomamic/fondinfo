@@ -20,9 +20,9 @@ def sierpinski(rect: (int, int, int, int)):
                 sierpinski(rect3)
 
 def main():
-    g2d.init_canvas((263, 263))
+    g2d.init_canvas((243, 243))
     g2d.set_color((127, 0, 0))
-    sierpinski((10, 10, 243, 243))
+    sierpinski((0, 0, 243, 243))
     g2d.main_loop()
 
 main()
