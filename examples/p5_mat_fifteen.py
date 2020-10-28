@@ -41,8 +41,8 @@ class Fifteen(BoardGame):
     def play_at(self, x: int, y: int):
         x0, y0, w, h = self._x0, self._y0, self._w, self._h
         if 0 <= y < h and 0 <= x < w and abs(x - x0) + abs(y - y0) == 1:
-            b, i0, i1 = self._board, y0 * w + x0, y * w + x
-            b[i0], b[i1] = b[i1], 0  # swap tile with blank
+            b, i, i0 = self._board, y * w + x, y0 * w + x0
+            b[i0], b[i] = b[i], 0  # swap tile with blank
             self._x0, self._y0 = x, y
 
     def flag_at(self, x: int, y: int):
