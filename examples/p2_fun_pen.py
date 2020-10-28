@@ -12,10 +12,15 @@ def move_pen(start: (float, float), length: float, angle: float) -> (float, floa
 def main():
     g2d.init_canvas((600, 600))
 
-    pos = move_pen((100, 150), 400, 0)       # horizontal line
-    pos = move_pen(pos, 400, math.pi * 2/3)  # 120°, same length
-    pos = move_pen(pos, 400, math.pi * 4/3)  # 240°, same length
+    pos, length, angle = (100, 150), 400, 0
+    pos = move_pen(pos, length, angle)  # horizontal line
+
+    angle += math.pi * 2/3              # turn 120°
+    pos = move_pen(pos, length, angle)  # line, same length
+
+    angle += math.pi * 2/3              # turn 120°
+    pos = move_pen(pos, length, angle)  # line, same length
 
     g2d.main_loop()
 
-#main()
+main()
