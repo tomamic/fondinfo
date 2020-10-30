@@ -1,4 +1,4 @@
-import g2d_pygame as g2d
+import g2d
 import math
 
 def move_pen(start: (float, float), length: float, angle: float) -> (float, float):
