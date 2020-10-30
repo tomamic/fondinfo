@@ -74,9 +74,10 @@ class Mario(Actor):
             x2, y2, w2, h2 = other.position() # wall's pos
             borders = [(x1+w1 - x2, -1, 0), (x2+w2 - x1, 1, 0),
                        (y1+h1 - y2, 0, -1), (y2+h2 - y1, 0, 1)]
-            move = min(borders)  # find nearest border: ← → ↑ ↓
-            self._x += move[1] * move[0]  ## sign_dx * distance
-            self._y += move[2] * move[0]  ## sign_dy * distance
+            move = min(borders)  # find nearest border: ←→↑↓
+            distance, sign_dx, sign_dy = move
+            self._x += sign_dx * distance
+            self._y += sign_dy * distance
             if move[2] < 0:
                 self._landed = True
             if move[2] != 0:
