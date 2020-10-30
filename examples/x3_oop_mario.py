@@ -78,9 +78,9 @@ class Mario(Actor):
             distance, sign_dx, sign_dy = move
             self._x += sign_dx * distance
             self._y += sign_dy * distance
-            if move[2] < 0:
+            if sign_dy < 0:
                 self._landed = True
-            if move[2] != 0:
+            if sign_dy != 0:
                 self._dy = 1
 
     def position(self):
