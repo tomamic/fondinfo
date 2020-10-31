@@ -30,9 +30,9 @@ def consume_msg(msgs: list) -> str:
 
 def init_canvas(size: (int, int)) -> None:
     if not _ws:
-        threading.Thread(target=serve_files).start()
-        threading.Thread(target=start_websocket).start()
-        threading.Thread(target=start_webview, args=size).start()
+        threading.Thread(target=serve_files, daemon = True).start()
+        threading.Thread(target=start_websocket, daemon = True).start()
+        threading.Thread(target=start_webview, daemon = True, args=size).start()
         consume_msg(_events)
     _jss.append(f"initCanvas({size[0]}, {size[1]})")
     update_canvas()
