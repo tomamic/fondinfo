@@ -11,7 +11,7 @@ class Node:
     def print(self, indent: int):
         raise NotImplementedError("Abstract method")
 
-class File(Node):
+class Document(Node):
     def __init__(self, name: str, text: str):
         self._name = name
         self._text = text
@@ -42,14 +42,14 @@ class Folder(Node):
             n.print(indent + 4)
 
 def main():
-    ball = File('ball.gif', 'an image')
+    ball = Document('ball.gif', 'an image')
     data = Folder('data')
     data.add_node(ball)
-    a1_0 = File('a1.txt', 'bla bla 0')
+    a1_0 = Document('a1.txt', 'bla bla 0')
     cmpt166 = Folder('cmpt166')
     cmpt166.add_node(a1_0)
     cmpt166.add_node(data)
-    a1_1 = File('a1.txt', 'a different file')
+    a1_1 = Document('a1.txt', 'a different file')
     macm101 = Folder('macm101')
     macm101.add_node(a1_1)
     desktop = Folder('Desktop')
@@ -61,5 +61,4 @@ def main():
     print()
     desktop.print(0)
 
-if __name__ == '__main__':
-    main()
+main()
