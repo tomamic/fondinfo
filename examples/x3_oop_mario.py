@@ -39,6 +39,7 @@ class Mario(Actor):
         arena.add(self)
 
     def move(self):
+        self._landed = False
         arena_w, arena_h = self._arena.size()
         self._y += self._dy
         if self._y < 0:
