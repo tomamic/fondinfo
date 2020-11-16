@@ -82,8 +82,8 @@ class Mario(Actor):
             elif previous_y + h <= wall_y:
                 self._y, self._dy = wall_y - h, 1
                 self._landed = True
-            #elif previous_y >= wall_y + wall_h:
-            #    self._y, self._dy = wall_y + wall_h, 1
+            elif previous_y >= wall_y + wall_h:
+                self._y, self._dy = wall_y + wall_h, 1
 
     def position(self):
         return self._x, self._y, self._w, self._h
