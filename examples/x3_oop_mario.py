@@ -10,8 +10,7 @@ from random import choice, randrange
 
 class Wall(Actor):
     def __init__(self, arena, pos):
-        self._x, self._y = pos
-        self._w, self._h = 100, 20
+        self._x, self._y, self._w, self._h = pos
         self._arena = arena
         arena.add(self)
 
@@ -41,6 +40,8 @@ class Mario(Actor):
     def move(self):
         self._landed = False
         arena_w, arena_h = self._arena.size()
+        self._dy += self._g
+
         self._y += self._dy
         if self._y < 0:
             self._y = 0
@@ -53,7 +54,6 @@ class Mario(Actor):
             self._x = 0
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
-        self._dy += self._g
 
     def go_left(self):
         self._dx = -self._speed
@@ -71,18 +71,19 @@ class Mario(Actor):
 
     def collide(self, other):
         if isinstance(other, Wall):
-            x1, y1, w1, h1 = self.position()  # self's pos
-            x2, y2, w2, h2 = other.position() # wall's pos
-            borders = [(x1+w1 - x2, -1, 0), (x2+w2 - x1, 1, 0),
-                       (y1+h1 - y2, 0, -1), (y2+h2 - y1, 0, 1)]
-            move = min(borders)  # find nearest border: ←→↑↓
-            distance, sign_dx, sign_dy = move
-            self._x += sign_dx * distance
-            self._y += sign_dy * distance
-            if sign_dy < 0:
+            wall_x, wall_y, wall_w, wall_h = other.position()
+            x, y, w, h = self.position()
+            previous_x, previous_y = x - self._dx, y - self._dy
+
+            if previous_x + w <= wall_x:
+                self._x = wall_x - w
+            elif previous_x >= wall_x + wall_w:
+                self._x = wall_x + wall_w
+            elif previous_y + h <= wall_y:
+                self._y, self._dy = wall_y - h, 1
                 self._landed = True
-            if sign_dy != 0:
-                self._dy = 1
+            #elif previous_y >= wall_y + wall_h:
+            #    self._y, self._dy = wall_y + wall_h, 1
 
     def position(self):
         return self._x, self._y, self._w, self._h
@@ -92,8 +93,9 @@ class Mario(Actor):
 
 
 arena = Arena((480, 360))
-w1 = Wall(arena, (300, 300))
-w2 = Wall(arena, (80, 240))
+w1 = Wall(arena, (300, 300, 100, 20))
+w2 = Wall(arena, (80, 240, 100, 20))
+w2 = Wall(arena, (380, 220, 20, 80))
 hero = Mario(arena, (230, 170))
 sprites = g2d.load_image("sprites.png")
 
