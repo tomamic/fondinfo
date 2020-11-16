@@ -9,8 +9,8 @@ from actor import Actor, Arena
 from random import choice, randrange
 
 class Wall(Actor):
-    def __init__(self, arena, pos):
-        self._x, self._y, self._w, self._h = pos
+    def __init__(self, arena, rect):
+        self._x, self._y, self._w, self._h = rect
         self._arena = arena
         arena.add(self)
 
@@ -28,11 +28,11 @@ class Wall(Actor):
 
 
 class Mario(Actor):
-    def __init__(self, arena, pos):
+    def __init__(self, arena, pos, delta=(0, 0)):
         self._x, self._y = pos
         self._w, self._h = 20, 20
         self._speed, self._g = 5, 0.5
-        self._dx, self._dy = 0, 0
+        self._dx, self._dy = delta
         self._landed = False
         self._arena = arena
         arena.add(self)
