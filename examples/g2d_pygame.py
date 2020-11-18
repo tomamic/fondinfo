@@ -21,8 +21,9 @@ _canvas = None
 _tick = None
 _color = (127, 127, 127)
 _mouse_pos = (0, 0)
-_keys, _prev_keys = set(), set()
+_pressed, _released = set(), set()
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
+_loaded = {}
 
 def _tup(t: tuple) -> tuple:
     return tuple(map(int, t))
@@ -42,6 +43,8 @@ def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
 
 def update_canvas() -> None:
+    _pressed.clear()
+    _released.clear()
     pygame.display.update()
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
@@ -64,32 +67,37 @@ def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
     w, h = surface.get_size()
     _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
 
-def load_image(url: str) -> pygame.Surface:
-    return pygame.image.load(url)
+def load_image(src: str) -> str:
+    if src not in _loaded:
+        _loaded[src] = pygame.image.load(src)
+    return src
 
-def draw_image(image: pygame.Surface, pos: (int, int)) -> None:
-    _canvas.blit(image, _tup(pos))
+def draw_image(src: str, pos: (int, int)) -> None:
+    _canvas.blit(_loaded[load_image(src)], _tup(pos))
 
-def draw_image_clip(image: pygame.Surface, src: (int, int, int, int), dst: (int, int, int, int)) -> None:
-    src, dst = _tup(src), _tup(dst)
-    x0, y0, w0, h0 = src
-    x1, y1, w1, h1 = dst
+def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, int)) -> None:
+    image = _loaded[load_image(src)]
+    clip, pos = _tup(clip), _tup(pos)
+    x0, y0, w0, h0 = clip
+    x1, y1, w1, h1 = pos
     if w0 == w1 and h0 == h1:
-        _canvas.blit(image, dst, area=src)
+        _canvas.blit(image, pos, area=clip)
     else:
         cropped = pygame.Surface((w0, h0), pygame.SRCALPHA)
-        cropped.blit(image, (0, 0), area=src)
+        cropped.blit(image, (0, 0), area=clip)
         scaled = pygame.transform.smoothscale(cropped, (w1, h1))
         _canvas.blit(scaled, (x1, y1))
 
-def load_audio(url: str) -> pygame.mixer.Sound:
-    return pygame.mixer.Sound(url)
+def load_audio(url: str) -> str:
+    if src not in _loaded:
+        _loaded[src] = pygame.mixer.Sound(url)
+    return src
 
-def play_audio(audio: pygame.mixer.Sound, loop=False) -> None:
-    audio.play(-1 if loop else 0)
+def play_audio(src: str, loop=False) -> None:
+    _loaded[load_audio(src)].play(-1 if loop else 0)
 
-def pause_audio(audio: pygame.mixer.Sound) -> None:
-    audio.stop()
+def pause_audio(src: str) -> None:
+    _loaded[load_audio(src)].stop()
 
 def alert(message: str) -> None:
     if _canvas:
@@ -121,19 +129,19 @@ def web_key(key: int) -> str:
     return name
 
 def key_pressed(key: str) -> bool:
-    return key in _keys and key not in _prev_keys
+    return key in _pressed
 
 def key_released(key: str) -> bool:
-    return key in _prev_keys and key not in _keys
+    return key in _released
 
-def pressed_keys() -> set:
-    return _keys - _prev_keys
+def pressed_keys() -> tuple:
+    return tuple(_pressed)
 
-def released_keys() -> set:
-    return _prev_keys - _keys
+def released_keys() -> tuple:
+    return tuple(_released)
 
 def main_loop(tick=None, fps=30) -> None:
-    global _mouse_pos, _tick, _prev_keys
+    global _mouse_pos, _tick
     _tick = tick
     clock = pygame.time.Clock()
     update_canvas()
@@ -144,22 +152,22 @@ def main_loop(tick=None, fps=30) -> None:
             if e.type == pygame.QUIT:
                 running = False
                 break
-            elif e.type == pygame.KEYDOWN:
-                _keys.add(web_key(e.key))
-            elif e.type == pygame.KEYUP:
-                _keys.discard(web_key(e.key))
-            elif (e.type == pygame.MOUSEBUTTONDOWN and
+            elif e.type in (pygame.KEYDOWN, pygame.KEYUP):
+                key = web_key(e.key)
+                set_in = _released if e.type == pygame.KEYUP else _pressed
+                set_out = _pressed if e.type == pygame.KEYUP else _released
+                if key in set_out: set_out.discard(key)
+                else: set_in.add(key)
+            elif (e.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP) and
                   1 <= e.button <= 3):
-                _keys.add(_mouse_codes[e.button - 1])
-            elif (e.type == pygame.MOUSEBUTTONUP and
-                  1 <= e.button <= 3):
-                _keys.discard(_mouse_codes[e.button - 1])
-        if "Spacebar" in _keys: _keys.add(" ")
-        else: _keys.discard(" ")
+                key = _mouse_codes[e.button - 1]
+                set_in = _released if e.type == pygame.MOUSEBUTTONUP else _pressed
+                set_out = _pressed if e.type == pygame.MOUSEBUTTONUP else _released
+                if key in set_out: set_out.discard(key)
+                else: set_in.add(key)
         if _tick:
             _mouse_pos = pygame.mouse.get_pos()
             _tick()
-            _prev_keys = _keys.copy()
             update_canvas()
         clock.tick(fps)
     close_canvas()

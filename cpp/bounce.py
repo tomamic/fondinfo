@@ -9,7 +9,7 @@ cppyy.include("bounce.hpp")
 from cppyy.gbl import Arena, Ball, Ghost, Turtle, Point, Rect
 
 import sys; sys.path.append('../examples/')
-import g2d_pyg as g2d
+import g2d_pygame as g2d
 
 arena = Arena((480, 360))
 b1 = Ball(arena, (40, 80))

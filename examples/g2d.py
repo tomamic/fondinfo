@@ -4,159 +4,233 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-
-#### g2d
-
-import os, signal, subprocess, sys, threading, time
+import os, subprocess, sys, threading, time
 import http.server, socketserver, webbrowser
 
 _ws, _httpd, _wv = None, None, None
-_usr_tick = None
-_mouse_pos = (0, 0)
-_keys, _prev_keys = set(), set()
-_jss, _answers, _events = [], [], []
-_cond = threading.Condition()
+_http_port, _ws_port = 8008, 7574
+_mouse_pos, _keys, _prev_keys = (0, 0), set(), set()
+_pressed, _released = set(), set()
+_size = 640, 480
+_jss, _answer, _cond = [], None, threading.Condition()
 
-def produce_msg(msg: str, msgs: list) -> None:
+def check_ws() -> bool:
     with _cond:
-        msgs.append(msg)
-        _cond.notify_all()
-
-def consume_msg(msgs: list) -> str:
-    with _cond:
-        while len(msgs) == 0:
-            _cond.wait()
-        return msgs.pop(0)
+        return _ws != None
 
 def init_canvas(size: (int, int)) -> None:
-    if not _ws:
+    global _size
+    _size = size
+    if not check_ws():
         threading.Thread(target=serve_files).start()
         threading.Thread(target=start_websocket).start()
         threading.Thread(target=start_webview, args=size).start()
-        consume_msg(_events)
-    _jss.append(f"initCanvas({size[0]}, {size[1]})")
-    update_canvas()
+        with _cond:
+            while not _ws:
+                _cond.wait()
+    else:
+        _jss.append(f"canvas.width = {size[0]}; canvas.height = {size[1]}")
 
 def set_color(c: (int, int, int)) -> None:
-    _jss.append(f"setColor({c[0]}, {c[1]}, {c[2]})")
+    _jss.append(f"ctx.strokeStyle = `rgb{str(c)}`")
+    _jss.append(f"ctx.fillStyle = `rgb{str(c)}`")
 
 def clear_canvas() -> None:
-    _jss.append(f"clearCanvas()")
+    _jss.append(f"ctx.clearRect(0, 0, canvas.width, canvas.height);")
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    _jss.append(f"drawLine({pt1[0]}, {pt1[1]}, {pt2[0]}, {pt2[1]})")
+    _jss.append(f"ctx.beginPath(); ctx.moveTo({pt1[0]}, {pt1[1]}); ctx.lineTo({pt2[0]}, {pt2[1]}); ctx.stroke()")
 
 def fill_circle(pt: (int, int), r: int) -> None:
-    _jss.append(f"fillCircle({pt[0]}, {pt[1]}, {r})")
+    _jss.append(f"ctx.beginPath(); ctx.arc({pt[0]}, {pt[1]}, {r}, 0, 2*Math.PI); ctx.closePath(); ctx.fill()")
 
 def fill_rect(r: (int, int, int, int)) -> None:
-    _jss.append(f"fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
+    _jss.append(f"ctx.fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
 
 def load_image(src: str) -> str:
-    key = hash(src)
-    _jss.append(f"loadImage('{key}', '{src}')")
-    return key
+    _jss.append(f"loadElement('IMG', '{src}')")
+    return src
 
-def draw_image(img: str, pt: (int, int)) -> None:
-    _jss.append(f"drawImage('{img}', {pt[0]}, {pt[1]})")
+def draw_image(src: str, pt: (int, int)) -> None:
+    _jss.append(f"loadElement('IMG', '{src}')")
+    _jss.append(f"ctx.drawImage(loaded[`{src}`], {pt[0]}, {pt[1]})")
 
-def draw_image_clip(img: str, clip: (int, int, int, int), r: (int, int, int, int)) -> None:
-    _jss.append(f"drawImageClip('{img}', {clip[0]}, {clip[1]}, {clip[2]}, {clip[3]}, {r[0]}, {r[1]}, {r[2]}, {r[3]})")
+def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, int)) -> None:
+    _jss.append(f"loadElement('IMG', '{src}')")
+    _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip)[1:-1]}, {str(pos)[1:-1]})")
 
-def draw_text(txt: str, pt: (int, int), size: int) -> None:
+def draw_text(txt: str, pt: (int, int), size: int, baseline="top", align="left") -> None:
     txt = txt.replace(r"`", r"\`")
-    _jss.append(f"drawText(`{txt}`, {pt[0]}, {pt[1]}, {size})")
+    _jss.append(f"ctx.font = `{size}px sans-serif`")
+    _jss.append(f"ctx.textBaseline = `{baseline}`; ctx.textAlign = `{align}`")
+    _jss.append(f"ctx.fillText(`{txt}`, {pt[0]}, {pt[1]})")
 
 def draw_text_centered(txt: str, pt: (int, int), size: int) -> None:
-    txt = txt.replace(r"`", r"\`")
-    _jss.append(f"drawTextCentered(`{txt}`, {pt[0]}, {pt[1]}, {size})")
+   draw_text(txt, pt, size, "middle", "center")
 
 def load_audio(src: str) -> str:
-    key = hash(src)
-    _jss.append(f"loadAudio('{key}', '{src}')")
-    return key
+    _jss.append(f"loadElement('AUDIO', '{src}')")
+    return src
 
-def play_audio(audio: str, loop=False) -> None:
-    l = str(loop).lower()
-    _jss.append(f"playAudio('{audio}', {l})")
+def play_audio(src: str, loop=False) -> None:
+    _jss.append(f"loadElement('AUDIO', '{src}').loop = {str(loop).lower()}")
+    _jss.append(f"loadElement('AUDIO', '{src}').play()")
 
-def pause_audio(audio: str) -> None:
-    _jss.append(f"pauseAudio('{audio}')")
+def pause_audio(src: str) -> None:
+    _jss.append(f"loadElement('AUDIO', '{src}').pause();")
 
-def _dialog(js: str) -> str:
-    _jss.append(js)
+def _dialog(dialog: str, message: str) -> str:
+    message = message.replace(r"`", r"\`")
+    _jss.append(f"websocket.send(`answer ` + {dialog}(`{message}`))")
     update_canvas()
-    return consume_msg(_answers)
+    with _cond:
+        while _answer == None:
+            _cond.wait()
+        return _answer
 
 def alert(message: str) -> None:
-    message = message.replace(r"`", r"\`")
-    _dialog(f"doAlert(`{message}`)")
+    _dialog("alert", message)
 
 def confirm(message: str) -> bool:
-    message = message.replace(r"`", r"\`")
-    return _dialog(f"doConfirm(`{message}`)") == "true"
+    return _dialog("confirm", message) == "true"
 
 def prompt(message: str) -> str:
-    message = message.replace(r"`", r"\`")
-    return _dialog(f"doPrompt(`{message}`)")
+    return _dialog("prompt", message)
 
 def mouse_position() -> (int, int):
-    return _mouse_pos
+    with _cond:
+        return _mouse_pos
 
 def key_pressed(key: str) -> bool:
-    return key in _keys and key not in _prev_keys
+    with _cond:
+       return key in _pressed
 
 def key_released(key: str) -> bool:
-    return key not in _keys and key in _prev_keys
+    with _cond:
+       return key in _released
 
 def pressed_keys() -> set:
-    return _keys - _prev_keys
+    with _cond:
+        return tuple(_pressed)
 
 def released_keys() -> set:
-    return _prev_keys - _keys
+    with _cond:
+        return tuple(_released)
 
 def update_canvas() -> None:
-    if _ws:
-        _ws.sendMessage(";\n".join(_jss + [""]))
-        _jss.clear()
+    global _answer
+    with _cond:
+        _pressed.clear()
+        _released.clear()
+        _answer = None
+    if not check_ws():
+        init_canvas(_size)
+    _ws.sendMessage(";\n".join(_jss + [""]))
+    _jss.clear()
 
 def main_loop(tick=None, fps=30) -> None:
-    global _mouse_pos, _usr_tick, _prev_keys
-    _usr_tick = tick
-    _jss.append(f"mainLoop({fps})")
     update_canvas()
-    looping = True
-    while looping:
-        msg = consume_msg(_events)
-        args = msg.split(" ")
-        if args[0] == "mousemove":
-            _mouse_pos = int(args[1]), int(args[2])
-        elif args[0] == "keydown":
-            _keys.add(args[1])
-        elif args[0] == "keyup":
-            _keys.discard(args[1])
-        elif args[0] == "update" and _usr_tick != None:
-            if "Spacebar" in _keys: _keys.add(" ")
-            else: _keys.discard(" ")
-            _usr_tick()
+    try:
+        while check_ws():
+            if tick: tick()
             update_canvas()
-            _prev_keys = _keys.copy()
-        elif args[0] == "disconnect":
-            looping = False
-    _httpd.shutdown()
-    if _wv:
-        _wv.terminate()
+            time.sleep(1 / fps)
+    finally:
+        close_canvas()
+        _httpd.shutdown()
+        if _wv: _wv.terminate()
 
 def close_canvas():
-    global _usr_tick
-    _usr_tick = None
-    _jss.append(f"closeCanvas()")
+    _jss.append(f"websocket.close()")
     update_canvas()
+
+
+#### http-server: minimal web server, for files in current dir
+
+class FileHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            html = _html.replace("%%w%%", str(_size[0]))
+            html = html.replace("%%h%%", str(_size[1]))
+            html = html.replace("%%p%%", str(_ws_port))
+            self.wfile.write(html.encode("utf-8"))
+        else:
+            super().do_GET()
+
+def serve_files() -> None:
+    global _httpd
+    socketserver.TCPServer.allow_reuse_address = True
+    _httpd = socketserver.TCPServer(("", 8008), FileHandler)
+    _httpd.serve_forever()
+
+
+#### pywebview
+
+if __name__ == "__main__":
+    import webview
+    webview.create_window(url=f"http://localhost:{_http_port}/",
+        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
+        title="G2D Canvas", resizable=False)
+    webview.start()
+    sys.exit()
+
+
+def start_webview(w, h):
+    global _wv
+    try:
+        import webview
+        _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
+    except:
+        print(f"Open in browser: http://localhost:{_http_port}/")
+        webbrowser.open(f"http://localhost:{_http_port}/", new=0)
+
+
+#### g2d-ws
+
+def start_websocket():
+    class SocketHandler(WebSocket):
+        def handleMessage(self):
+            global _answer, _mouse_pos
+            #print(self.data)
+            with _cond:
+                args = self.data.split(" ", 1)
+                if args[0] == "answer":
+                    _answer = args[1]
+                    _cond.notify_all()
+                elif args[0] == "mousemove":
+                    _mouse_pos = tuple(map(int, args[1].split(" ")))
+                elif args[0] in ("keydown", "keyup"):
+                    key = args[1]  ##" " if args[1] == "Spacebar" else args[1]
+                    set_in = _released if args[0] == "keyup" else _pressed
+                    set_out = _pressed if args[0] == "keyup" else _released
+                    if key in set_out: set_out.discard(key)
+                    else: set_in.add(key)
+
+        def handleConnected(self):
+            global _ws
+            with _cond:
+                _ws = self
+                _cond.notify_all()
+
+        def handleClose(self):
+            global _ws
+            self.server.closing = True
+            self.server.close()
+            with _cond:
+                _ws = None
+
+    server = SimpleWebSocketServer("localhost", _ws_port, SocketHandler)
+    server.closing = False
+    while not server.closing:
+        server.serveonce()
 
 
 #### index.html
 
-html = """<!DOCTYPE html>
+_html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -169,241 +243,72 @@ html = """<!DOCTYPE html>
 </style>
 <script language="javascript" type="text/javascript">
 
-function doConnect() {
-    websocket = new WebSocket("ws://localhost:7574/");
-    websocket.onopen = function(evt) {
-        console.log("open");
-    };
-    websocket.onclose = function(evt) {
-        console.log("close");
-        closeCanvas();
-    };
-    websocket.onmessage = function(evt) {
-        console.log("message: " + evt.data);
-        eval(evt.data);
-    };
-    websocket.onerror = function(evt) {
-        console.log("error");
-        websocket.close();
-    };
-}
-function doSend(message) {
-    console.log("sending: " + message);
-    websocket.send(message);
-}
-function doDisconnect() {
-    console.log("disconnecting");
-    websocket.close();
-}
-window.addEventListener("load", doConnect, false);
-
-invokeExternal = doSend
 loaded = {};
-keyPressed = {};
+pressed = new Set();
+keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown", "Left": "ArrowLeft", "Right": "ArrowRight",
+            " ": "Spacebar", "Space": "Spacebar", "Esc": "Escape", "Del": "Delete"}
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
 
-function initCanvas(w, h) {
+window.addEventListener("load", () => {
     canvas = document.getElementById("g2d-canvas");
-    if (canvas == null) {
-        canvas = document.createElement("CANVAS");
-        canvas.id = "g2d-canvas";
-        document.getElementsByTagName("body")[0].appendChild(canvas);
-    }
-    canvas.width = w;
-    canvas.height = h;
     ctx = canvas.getContext("2d");
-    setColor(127, 127, 127);
-    clearCanvas();
-}
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-function setColor(r, g, b) {
-    ctx.strokeStyle = "rgb("+r+", "+g+", "+b+")";
-    ctx.fillStyle = "rgb("+r+", "+g+", "+b+")";
-}
-function drawLine(x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-function fillCircle(x, y, r) {
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, 2*Math.PI);
-    ctx.closePath();
-    ctx.fill();
-}
-function fillRect(x, y, w, h) {
-    ctx.fillRect(x, y, w, h);
-}
-function loadImage(key, src) {
-    img = document.createElement("IMG");
-    img.src = src;
-    img.onerror = function() {
-        if (img.src.indexOf("githubusercontent") == -1) {
-            img.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = img;
-}
-function drawImage(key, x, y) {
-    img = loaded[key];
-    ctx.drawImage(img, x, y);
-}
-function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[key];
-    ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
-}
-function drawText(txt, x, y, size) {
-    ctx.font = "" + size + "px sans-serif";
-    ctx.textBaseline = "top";
-    ctx.textAlign = "left";
-    ctx.fillText(txt, x, y);
-}
-function drawTextCentered(txt, x, y, size) {
-    ctx.font = "" + size + "px sans-serif";
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    ctx.fillText(txt, x, y);
-}
-function loadAudio(key, src) {
-    audio = document.createElement("AUDIO");
-    audio.src = src;
-    audio.onerror = function() {
-        if (audio.src.indexOf("githubusercontent") == -1) {
-            audio.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = audio;
-}
-function playAudio(key, loop) {
-    audio = loaded[key];
-    audio.loop = loop;
-    audio.play();
-}
-function pauseAudio(key) {
-    audio = loaded[key];
-    audio.pause();
-}
-function doAlert(message) {
-    alert(message);
-    invokeExternal("answer true");
-}
-function doConfirm(message) {
-    ans = confirm(message);
-    invokeExternal("answer " + ans);
-}
-function doPrompt(message) {
-    ans = prompt(message);
-    invokeExternal("answer " + ans);
-}
-function fixKey(k) {
-    if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
-    else if (k==" " || k=="Space") k = "Spacebar";
-    else if (k=="Esc") k = "Escape";
-    else if (k=="Del") k = "Delete";
-    return k;
-}
-function mainLoop(fps) {
-    document.onkeydown = function(e) {
-        var k = fixKey(e.key);
-        if (keyPressed[k]) return;
-        keyPressed[k] = true;
-        invokeExternal("keydown " + k);
+    ctx.strokeStyle = `rgb(127, 127, 127)`;
+    ctx.fillStyle = `rgb(127, 127, 127)`;
+    websocket = new WebSocket("ws://localhost:%%p%%/");
+    websocket.onopen = (evt) => { };
+    websocket.onclose = (evt) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        open("about:blank", "_self").close();
     };
-    document.onkeyup = function(e) {
-        var k = fixKey(e.key);
-        if (keyPressed[k]) keyPressed[k] = false;
-        invokeExternal("keyup " + k);
+    websocket.onmessage = (evt) => { eval(evt.data); };
+    websocket.onerror = (evt) => { websocket.close(); };
+    document.onfocus = (evt) => { pressed.clear(); };
+    document.onkeydown = (evt) => {
+        var k = keyCodes[evt.key] || evt.key;
+        if (pressed.has(k)) return;
+        pressed.add(k);
+        websocket.send("keydown " + k);
     };
-    document.onmousedown = function(e) {
-        if (0 <= e.button && e.button < 3) {
-            invokeExternal("keydown " + mouseCodes[e.button]);
-        }
+    document.onkeyup = (evt) => {
+        var k = keyCodes[evt.key] || evt.key;
+        if (!pressed.has(k)) return;
+        pressed.delete(k);
+        websocket.send("keyup " + k);
     };
-    document.onmouseup = function(e) {
-        if (0 <= e.button && e.button < 3) {
-            invokeExternal("keyup " + mouseCodes[e.button]);
-        }
+    canvas.onmousemove = (evt) => {
+        var rect = canvas.getBoundingClientRect();
+        var x = Math.round(evt.clientX - rect.left);
+        var y = Math.round(evt.clientY - rect.top);
+        websocket.send("mousemove " + x + " " + y);
     };
-    document.onmousemove = function(e) {
-        var rect = canvas.getBoundingClientRect()
-        var x = Math.round(e.clientX - rect.left)
-        var y = Math.round(e.clientY - rect.top)
-        invokeExternal("mousemove " + x + " " + y);
+    canvas.onmousedown = (evt) => {
+        websocket.send("keydown " + mouseCodes[evt.button]);
     };
-    document.onfocus = function(e) {
-        keyPressed = {};
+    canvas.onmouseup = (evt) => {
+        websocket.send("keyup " + mouseCodes[evt.button]);
     };
+});
 
-    if (typeof timerId !== "undefined") {
-        clearInterval(timerId);
-        delete timerId;
+function loadElement(tag, src) {
+    var elem = loaded[src];
+    if (elem) return elem;
+    elem = document.createElement(tag);
+    elem.src = src;
+    elem.onerror = function() {
+        if (!elem.src.startsWith("https://raw.github")) {
+            elem.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
+        }
     }
-    if (fps >= 0) {
-        timerId = setInterval(function(e) {
-            invokeExternal("update");
-        }, 1000/fps);
-    }
-}
-function closeCanvas() {
-    if (typeof timerId !== "undefined") {
-        clearInterval(timerId);
-        delete timerId;
-    }
-    if (typeof canvas !== "undefined") {
-        canvas.parentNode.removeChild(canvas);
-        delete canvas;
-    }
-    doDisconnect();
-    /*alert("You can close this window, now.");*/
-    open("about:blank", "_self").close();
+    loaded[src] = elem;
+    return elem;
 }
 </script>
 </head>
-<body>
-</body>
+<body><canvas id="g2d-canvas" width="%%w%%" height="%%h%%"></canvas></body>
 </html>"""
 
-class FileHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == "/":
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            self.wfile.write(html.encode("utf-8"))
-        else:
-            super().do_GET()
 
-def serve_files() -> None:
-    global _httpd
-    # minimal web server, for files in current dir
-    socketserver.TCPServer.allow_reuse_address = True
-    _httpd = socketserver.TCPServer(("", 8008), FileHandler)
-    _httpd.serve_forever()
-
-
-#### webview
-
-if __name__ == "__main__":
-    import sys, webview
-    webview.create_window(url="http://localhost:8008/",
-        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
-        title="G2D Canvas", resizable=False, debug=False)
-    sys.exit()
-
-
-def start_webview(w, h):
-    global _wv
-    try:
-        import webview
-        _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
-    except:
-        webbrowser.open("http://localhost:8008/", new=0)
-
-
-#### websockets
+#### websockets -- https://github.com/dpallot/simple-websocket-server
 
 '''
 The MIT License (MIT)
@@ -1128,29 +1033,3 @@ class SimpleSSLWebSocketServer(SimpleWebSocketServer):
    def serveforever(self):
       super(SimpleSSLWebSocketServer, self).serveforever()
 
-
-#### g2d-ws
-
-class SocketHandler(WebSocket):
-    def handleMessage(self):
-        #print(self.data)
-        args = self.data.split(" ", 1)
-        if args[0] == "answer":
-            produce_msg(args[1], _answers)
-        produce_msg(self.data, _events)
-
-    def handleConnected(self):
-        global _ws
-        _ws = self
-        produce_msg("connect", _events)
-
-    def handleClose(self):
-        produce_msg("disconnect", _events)
-        self.server.closing = True
-        self.server.close()
-
-def start_websocket():
-    server = SimpleWebSocketServer("localhost", 7574, SocketHandler)
-    server.closing = False
-    while not server.closing:
-        server.serveonce()

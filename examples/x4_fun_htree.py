@@ -25,10 +25,11 @@ def htree(rect: (int, int, int, int), level: int):
     htree(rect1, level - 1)
     htree(rect2, level - 1)
 
-level = int(input('level? '))  ## -1 = infinite
 side = 600
 
 g2d.init_canvas((side, side))
+
+level = int(g2d.prompt('level? '))  ## -1 = infinite
 htree((0, 0, side, side), level)
 
 g2d.main_loop()

@@ -100,29 +100,17 @@ class Turtle(Actor):
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
 
-    def go_left(self, go: bool):
-        if go:
-            self._dx = -self._speed
-        elif self._dx < 0:
-            self._dx = 0
-
-    def go_right(self, go: bool):
-        if go:
-            self._dx = self._speed
-        elif self._dx > 0:
-            self._dx = 0
-
-    def go_up(self, go: bool):
-        if go:
-            self._dy = -self._speed
-        elif self._dy < 0:
-            self._dy = 0
-
-    def go_down(self, go: bool):
-        if go:
-            self._dy = self._speed
-        elif self._dy > 0:
-            self._dy = 0
+    def control(self, pressed, released):
+        #u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
+        u, d, l, r = "w", "s", "a", "d"
+        if u in pressed: self._dy = -self._speed
+        if d in pressed: self._dy = self._speed
+        if l in pressed: self._dx = -self._speed
+        if r in pressed: self._dx = self._speed
+        if u in released and self._dy < 0: self._dy = 0
+        if d in released and self._dy > 0: self._dy = 0
+        if l in released and self._dx < 0: self._dx = 0
+        if r in released and self._dx > 0: self._dx = 0
 
     def lives(self) -> int:
         return self._lives
