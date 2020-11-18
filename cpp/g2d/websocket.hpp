@@ -43,6 +43,7 @@ namespace g2d { namespace ws {
 
 websocket::stream<beast::tcp_stream>* ws_socket_ = nullptr;
 void (*ws_event_cb_)(std::string) = nullptr;
+unsigned const short int http_port_ = 8008, ws_port_ = 7574;
 
 //
 // Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)

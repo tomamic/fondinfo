@@ -20,26 +20,21 @@
 #include <thread>
 #include <vector>
 
-//using namespace std;
-using std::function;
-using std::ptr_fun;
-using std::string;
-using std::to_string;
-using namespace std::string_literals;
-using std::vector;
-using std::ios;
-
 namespace g2d {
 
+using std::string;
+using namespace std::string_literals;
+
 static Point mouse_pos_{0, 0};
-static std::set<string> _keys;
-static std::set<string> _prev_keys;
+static Point size_{640, 480};
+
+static std::set<string> pressed_;
+static std::set<string> released_;
 
 static std::ostringstream jscode_;
-static std::function<void()> usr_tick;
-static vector<string> answers_, events_;
+static std::function<void()> usr_tick_;
+static string answer_ = "";
 static bool inited_ = false;
-static int max_w_ = 480, max_h_ = 360;
 std::mutex mut_;
 std::condition_variable cond_;
 
@@ -57,202 +52,68 @@ static string html_ = R"html(
 </style>
 <script language="javascript" type="text/javascript">
 
-function doConnect() {
-    websocket = new WebSocket("ws://localhost:7574/");
-    websocket.onopen = function(evt) {
-        console.log("open");
-        /*doSend("connect");*/
-    };
-    websocket.onclose = function(evt) {
-        console.log("close");
-        closeCanvas();
-    };
-    websocket.onmessage = function(evt) {
-        console.log("message: " + evt.data);
-        eval(evt.data);
-    };
-    websocket.onerror = function(evt) {
-        console.log("error");
-        websocket.close();
-    };
-}
-function doSend(message) {
-    console.log("sending: " + message);
-    websocket.send(message);
-}
-function doDisconnect() {
-    /*doSend("disconnect");*/
-    console.log("disconnecting");
-    websocket.close();
-}
-window.addEventListener("load", doConnect, false);
-
-invokeExternal = doSend
 loaded = {};
-keyPressed = {};
+pressed = new Set();
+keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown", "Left": "ArrowLeft", "Right": "ArrowRight",
+            " ": "Spacebar", "Space": "Spacebar", "Esc": "Escape", "Del": "Delete"}
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
 
-function initCanvas(w, h) {
+window.addEventListener("load", () => {
     canvas = document.getElementById("g2d-canvas");
-    if (canvas == null) {
-        canvas = document.createElement("CANVAS");
-        canvas.id = "g2d-canvas";
-        document.getElementsByTagName("body")[0].appendChild(canvas);
-    }
-    canvas.width = w;
-    canvas.height = h;
     ctx = canvas.getContext("2d");
-    setColor(127, 127, 127);
-    clearCanvas();
-}
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-function setColor(r, g, b) {
-    ctx.strokeStyle = "rgb("+r+", "+g+", "+b+")";
-    ctx.fillStyle = "rgb("+r+", "+g+", "+b+")";
-}
-function drawLine(x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-function fillCircle(x, y, r) {
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, 2*Math.PI);
-    ctx.closePath();
-    ctx.fill();
-}
-function fillRect(x, y, w, h) {
-    ctx.fillRect(x, y, w, h);
-}
-function loadImage(key, src) {
-    img = document.createElement("IMG");
-    img.src = src;
-    img.onerror = function() {
-        if (img.src.indexOf("githubusercontent") == -1) {
-            img.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = img;
-}
-function drawImage(key, x, y) {
-    img = loaded[key];
-    ctx.drawImage(img, x, y);
-}
-function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[key];
-    ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
-}
-function drawText(txt, x, y, size) {
-    ctx.font = "" + size + "px sans-serif";
-    ctx.textBaseline = "top";
-    ctx.textAlign = "left";
-    ctx.fillText(txt, x, y);
-}
-function drawTextCentered(txt, x, y, size) {
-    ctx.font = "" + size + "px sans-serif";
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    ctx.fillText(txt, x, y);
-}
-function loadAudio(key, src) {
-    audio = document.createElement("AUDIO");
-    audio.src = src;
-    audio.onerror = function() {
-        if (audio.src.indexOf("githubusercontent") == -1) {
-            audio.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = audio;
-}
-function playAudio(key, loop) {
-    audio = loaded[key];
-    audio.loop = loop;
-    audio.play();
-}
-function pauseAudio(key) {
-    audio = loaded[key];
-    audio.pause();
-}
-function doAlert(message) {
-    alert(message);
-    invokeExternal("answer true");
-}
-function doConfirm(message) {
-    ans = confirm(message);
-    invokeExternal("answer " + ans);
-}
-function doPrompt(message) {
-    ans = prompt(message);
-    invokeExternal("answer " + ans);
-}
-function fixKey(k) {
-    if (k=="Left" || k=="Up" || k=="Right" || k=="Down") k = "Arrow"+k;
-    else if (k==" " || k=="Space") k = "Spacebar";
-    else if (k=="Esc") k = "Escape";
-    else if (k=="Del") k = "Delete";
-    return k;
-}
-function mainLoop(fps) {
-    document.onkeydown = function(e) {
-        var k = fixKey(e.key);
-        if (keyPressed[k]) return;
-        keyPressed[k] = true;
-        invokeExternal("keydown " + k);
+    ctx.strokeStyle = `rgb(127, 127, 127)`;
+    ctx.fillStyle = `(127, 127, 127)`;
+    websocket = new WebSocket("ws://localhost:%PORT%/");
+    websocket.onopen = (evt) => { };
+    websocket.onclose = (evt) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        open("about:blank", "_self").close();
     };
-    document.onkeyup = function(e) {
-        var k = fixKey(e.key);
-        if (keyPressed[k]) keyPressed[k] = false;
-        invokeExternal("keyup " + k);
+    websocket.onmessage = (evt) => { eval(evt.data); };
+    websocket.onerror = (evt) => { websocket.close(); };
+    document.onfocus = (evt) => { pressed.clear(); };
+    document.onkeydown = (evt) => {
+        var k = keyCodes[evt.key] || evt.key;
+        if (pressed.has(k)) return;
+        pressed.add(k);
+        websocket.send("keydown " + k);
     };
-    document.onmousedown = function(e) {
-        if (0 <= e.button && e.button < 3) {
-            invokeExternal("keydown " + mouseCodes[e.button]);
-        }
+    document.onkeyup = (evt) => {
+        var k = keyCodes[evt.key] || evt.key;
+        if (!pressed.has(k)) return;
+        pressed.delete(k);
+        websocket.send("keyup " + k);
     };
-    document.onmouseup = function(e) {
-        if (0 <= e.button && e.button < 3) {
-            invokeExternal("keyup " + mouseCodes[e.button]);
-        }
+    canvas.onmousemove = (evt) => {
+        var rect = canvas.getBoundingClientRect();
+        var x = Math.round(evt.clientX - rect.left);
+        var y = Math.round(evt.clientY - rect.top);
+        websocket.send("mousemove " + x + " " + y);
     };
-    document.onmousemove = function(e) {
-        var rect = canvas.getBoundingClientRect()
-        var x = Math.round(e.clientX - rect.left)
-        var y = Math.round(e.clientY - rect.top)
-        invokeExternal("mousemove " + x + " " + y);
+    canvas.onmousedown = (evt) => {
+        websocket.send("keydown " + mouseCodes[evt.button]);
     };
-    document.onfocus = function(e) {
-        keyPressed = {};
+    canvas.onmouseup = (evt) => {
+        websocket.send("keyup " + mouseCodes[evt.button]);
     };
+});
 
-    if (typeof timerId !== "undefined") {
-        clearInterval(timerId);
-        delete timerId;
+function loadElement(tag, src) {
+    var elem = loaded[src];
+    if (elem) return elem;
+    elem = document.createElement(tag);
+    elem.src = src;
+    elem.onerror = () => {
+        if (!elem.src.startsWith("https://raw.github")) {
+            elem.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
+        }
     }
-    if (fps >= 0) {
-        timerId = setInterval(function(e) {
-            invokeExternal("update");
-        }, 1000/fps);
-    }
-}
-function closeCanvas() {
-    if (typeof timerId !== "undefined") {
-        clearInterval(timerId);
-        delete timerId;
-    }
-    if (typeof canvas !== "undefined") {
-        canvas.parentNode.removeChild(canvas);
-        delete canvas;
-    }
-    doDisconnect();
-    /*alert("You can close this window, now.");*/
-    open("about:blank", "_self").close();
+    loaded[src] = elem;
+    return elem;
 }
 </script>
 </head>
-<body></body>
+<body><canvas id="g2d-canvas" width="%WIDTH%" height="%HEIGHT%"></canvas></body>
 </html>
 )html";
 
@@ -321,34 +182,7 @@ bool inited() {
     return inited_;
 }
 
-void wait_inited(bool val) {
-    std::unique_lock<std::mutex> mlock(mut_);
-    cond_.wait(mlock, [=]() { return inited_ == val; } );
-}
-
-void set_inited(bool val) {
-    std::lock_guard<std::mutex> guard(mut_);
-    inited_ = val;
-    cond_.notify_all();
-}
-
-void produce_msg(std::string msg, std::vector<string>& msgs) {
-    std::lock_guard<std::mutex> guard(mut_);
-    msgs.push_back(msg);
-    cond_.notify_all();
-}
-
-std::string consume_msg(std::vector<string>& msgs) {
-    std::unique_lock<std::mutex> mlock(mut_);
-    if (msgs.size() == 0) {
-        cond_.wait(mlock, [&]() { return msgs.size() > 0; } );
-    }
-    auto msg = msgs[0];
-    msgs.erase(msgs.begin());
-    return msg;
-}
-
-void do_js_(string cmd, vector<string> strs, vector<int> ints) {
+void do_js_(string cmd, std::vector<string> strs, std::vector<int> ints) {
     std::istringstream fmt{cmd};
     string part;
     for (auto s : strs) {
@@ -364,7 +198,7 @@ void do_js_(string cmd, vector<string> strs, vector<int> ints) {
     jscode_ << part << ";\n";
 }
 
-void do_js_(string cmd, vector<int> args) {
+void do_js_(string cmd, std::vector<int> args) {
     do_js_(cmd, {}, args);
 }
 
@@ -373,174 +207,196 @@ void do_js_(string js) {
 }
 
 void update_canvas() {
-    if (inited()) {
-        //std::cout << "js: " << jscode_.str() << std::endl;
-        ws::ws_send(jscode_.str());
-        jscode_.str("");
-        jscode_.clear();
+    {
+        std::lock_guard<std::mutex> guard(mut_);
+        answer_ = "";
+        pressed_.clear();
+        released_.clear();
     }
+    if (!inited()) { init_canvas(size_); }
+    //std::cout << "js: " << jscode_.str() << std::endl;
+    ws::ws_send(jscode_.str());
+    jscode_.str("");
+    jscode_.clear();
 }
 
 void close_canvas() {
     if (inited()) {
-        usr_tick = std::function<void()>(nullptr);
-        do_js_("closeCanvas()");
+        usr_tick_ = std::function<void()>(nullptr);
+        do_js_("websocket.close()");
         update_canvas();
         /*webview_terminate(&wv_);*/
     }
 }
 
 void handle_event_(string evt) {
-    //std::cout << "event: " << evt << std::endl;
-    auto cmd = evt.substr(0, evt.find(' '));
+    std::lock_guard<std::mutex> guard(mut_);
+    std::istringstream line{evt};
+    string cmd; line >> cmd;
     if (cmd == "answer") {
-        produce_msg(evt.substr(7, evt.npos), answers_);
+        answer_ = evt.substr(6);
+        cond_.notify_all();
     } else if (cmd == "connect") {
-        set_inited(true);
+        inited_ = true;
+        cond_.notify_all();
     } else if (cmd == "disconnect") {
-        set_inited(false);
+        inited_ = false;
+        cond_.notify_all();
+    } else if (cmd == "mousemove") {
+        line >> mouse_pos_.x >> mouse_pos_.y;
+    } else if (cmd == "keydown" || cmd == "keyup") {
+        string key; line >> key;
+        if (key == "Spacebar") { key = " "; }
+        auto& set_in = (cmd == "keyup") ? released_ : pressed_;
+        auto& set_out = (cmd == "keyup") ? pressed_ : released_;
+        if (set_out.count(key)) { set_out.erase(key); }
+        else { set_in.insert(key); }
     }
-    produce_msg(evt, events_);
+}
+
+Point mouse_position() {
+    std::unique_lock<std::mutex> mlock(mut_);
+    return mouse_pos_;
 }
 
 bool key_pressed(string key) {
-    return _keys.count(key) == 1 && _prev_keys.count(key) == 0;
+    std::unique_lock<std::mutex> mlock(mut_);
+    return pressed_.count(key);
 }
 
 bool key_released(string key) {
-    return _keys.count(key) == 0 && _prev_keys.count(key) == 1;
+    std::unique_lock<std::mutex> mlock(mut_);
+    return released_.count(key);
+}
+
+std::vector<string> pressed_keys() {
+    std::unique_lock<std::mutex> mlock(mut_);
+    return {pressed_.begin(), pressed_.end()};
+}
+
+std::vector<string> released_keys() {
+    std::unique_lock<std::mutex> mlock(mut_);
+    return {released_.begin(), released_.end()};
 }
 
 void main_loop(int fps=30) {
-    if (!inited()) {
-        init_canvas({480, 360});
-    }
-    do_js_("mainLoop(%)", {fps});
     update_canvas();
-
     while (inited()) {
-        auto msg = consume_msg(events_);
-        std::istringstream line{msg};
-        string cmd; line >> cmd;
-        if (cmd == "mousemove") {
-            line >> mouse_pos_.x >> mouse_pos_.y;
-        } else if (cmd == "keydown") {
-            string key; line >> key;
-            _keys.insert(key);
-        } else if (cmd == "keyup") {
-            string key; line >> key;
-            _keys.erase(key);
-        } else if (cmd == "update" && usr_tick != nullptr) {
-            usr_tick();
-            update_canvas();
-            _prev_keys = _keys;
-        }
+        if (usr_tick_ != nullptr) { usr_tick_(); }
+        update_canvas();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / fps));
     }
+    close_canvas();
 }
 
-void main_loop(void (*update)(), int fps=30) {
-    usr_tick = std::function<void()>(update);
+void main_loop(void (*tick)(), int fps=30) {
+    usr_tick_ = std::function<void()>(tick);
     main_loop(fps);
 }
 
-void main_loop(std::function<void()> update, int fps=30) {
-    usr_tick = update;
+void main_loop(std::function<void()> tick, int fps=30) {
+    usr_tick_ = tick;
     main_loop(fps);
 }
 
 void set_color(Color c) {
-    do_js_("setColor(%, %, %)", {c.r, c.g, c.b});
+    do_js_("ctx.strokeStyle = `rgb(%, %, %)`", {c.r, c.g, c.b});
+    do_js_("ctx.fillStyle = `rgb(%, %, %)`", {c.r, c.g, c.b});
 }
 
 void clear_canvas() {
-    do_js_("clearCanvas()");
+    do_js_("ctx.clearRect(0, 0, canvas.width, canvas.height);");
 }
 
 void draw_line(Point pt1, Point pt2) {
-    do_js_("drawLine(%, %, %, %)", {pt1.x, pt1.y, pt2.x, pt2.y});
+    do_js_("ctx.beginPath(); ctx.moveTo(%, %); ctx.lineTo(%, %); ctx.stroke()",
+        {pt1.x, pt1.y, pt2.x, pt2.y});
 }
 
 void fill_circle(Point center, int r) {
-    do_js_("fillCircle(%, %, %)", {center.x, center.y, r});
+    do_js_("ctx.beginPath(); ctx.arc(%, %, %, 0, 2*Math.PI); ctx.closePath(); ctx.fill()",
+    {center.x, center.y, r});
 }
 
 void fill_rect(Rect r) {
-    do_js_("fillRect(%, %, %, %)", {r.x, r.y, r.w, r.h});
+    do_js_("ctx.fillRect(%, %, %, %)", {r.x, r.y, r.w, r.h});
 }
 
 string load_image(string src) {
-    auto key = to_string(std::hash<string>{}(src));
-    do_js_("loadImage(`%`, `%`)", {key, src}, {});
-    return key;
+    do_js_("loadElement(`IMG`, `%`)", {src}, {});
+    return src;
 }
 
-void draw_image(string image, Point p) {
-    do_js_("drawImage(`%`, %, %)", {image}, {p.x, p.y});
+void draw_image(string src, Point p) {
+    do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %)", {src}, {p.x, p.y});
 }
 
-void draw_image_clip(string image, Rect clip, Rect r) {
-    do_js_("drawImageClip(`%`, %, %, %, %, %, %, %, %)",
-        {image}, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
+void draw_image_clip(string src, Rect clip, Rect r) {
+    do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %, %, %, %, %, %, %)",
+        {src}, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
 }
 
-void draw_text(string txt, Point p, int size) {
-    do_js_("drawText(`%`, %, %, %)", {txt}, {p.x, p.y, size});
+void draw_text(string txt, Point p, int size, string baseline="top", string align="left") {
+    do_js_("ctx.font = `%px sans-serif`", {size});
+    do_js_("ctx.textBaseline = `%`; ctx.textAlign = `%`", {baseline, align}, {});
+    do_js_("ctx.fillText(`%`, %, %)", {txt}, {p.x, p.y});
 }
 
 void draw_text_centered(string txt, Point p, int size) {
-    do_js_("drawTextCentered(`%`, %, %, %)", {txt}, {p.x, p.y, size});
+   draw_text(txt, p, size, "middle", "center");
 }
 
 string load_audio(string src) {
-    auto key = to_string(std::hash<string>{}(src));
-    do_js_("loadAudio(`%`, `%`)", {key, src}, {});
-    return key;
+    do_js_("loadElement(`AUDIO`, `%`)", {src}, {});
+    return src;
 }
 
-void play_audio(string audio, bool loop) {
-    if (loop) do_js_("pauseAudio(`%`, true)", {audio}, {});
-    else do_js_("pauseAudio(`%`, false)", {audio}, {});
+void play_audio(string src, bool loop) {
+    do_js_("loadElement(`AUDIO`, `%`).loop = %", {src, loop ? "true" : "false"}, {});
+    do_js_("loadElement(`AUDIO`, `%`).play()", {src}, {});
 }
 
-void pause_audio(string audio) {
-    do_js_("pauseAudio(`%`)", {audio}, {});
+void pause_audio(string src) {
+    do_js_("loadElement(`AUDIO`, `%`)", {src}, {});
+    do_js_("loadElement(`AUDIO`, `%`).pause()", {src}, {});
 }
 
-string dialog_(string js, string message) {
-    if (!inited()) {
-        init_canvas({480, 360});
-    }
-    do_js_(js, {message}, {});
+string dialog_(string dialog, string message) {
+    do_js_("websocket.send(`answer ` + %(`%`))", {dialog, message}, {});
     update_canvas();
-    return consume_msg(answers_);
+
+    std::unique_lock<std::mutex> mlock(mut_);
+    while (answer_ == "") { cond_.wait(mlock); }
+    return answer_.substr(1);
 }
 
 void alert(string message) {
-    dialog_("doAlert(`%`)", message);
+    dialog_("alert", message);
 }
 
 bool confirm(string message) {
-    return dialog_("doConfirm(`%`)", message) == "true";
+    return dialog_("confirm", message) == "true";
 }
 
 string prompt(string message) {
-    return dialog_("doPrompt(`%`)", message);
-}
-
-Point mouse_position() {
-    return mouse_pos_;
+    return dialog_("prompt", message);
 }
 
 void init_canvas(Point size) {
-    if (!inited()) {
-        { std::ofstream{"_websocket.html"} << html_; }
+    if (inited()) {
+        do_js_("canvas.width = %; canvas.height = %", {size.x, size.y});
+    } else {
+        auto html = html_;
+        html = html.replace(html.find("%PORT%"), 6, std::to_string(g2d::ws::ws_port_));
+        html = html.replace(html.find("%WIDTH%"), 7, std::to_string(size.x));
+        html = html.replace(html.find("%HEIGHT%"), 8, std::to_string(size.y));
+        std::ofstream{"_websocket.html"} << html;
         ws::ws_init(handle_event_);
-        wait_inited(true);
+        std::unique_lock<std::mutex> mlock(mut_);
+        while (!inited_) { cond_.wait(mlock); }
     }
-    do_js_("initCanvas(%, %)", {size.x, size.y});
-    update_canvas();
 }
 
-}
+}  // namespace g2d
 
 #endif // CANVAS_HPP

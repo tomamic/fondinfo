@@ -162,8 +162,8 @@ template <typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
     os << "[";
     for (int i = 0; i < v.size(); ++i) {
+        if (i) { os << ", "; }
         os << v[i];
-        if (i != v.size() - 1) { os << ", "; }
     }
     return os << "]";
 }
