@@ -11,7 +11,7 @@ _ws, _httpd, _wv = None, None, None
 _http_port, _ws_port = 8008, 7574
 _mouse_pos, _keys, _prev_keys = (0, 0), set(), set()
 _pressed, _released = set(), set()
-_size = 640, 480
+_size = (640, 480)
 _jss, _answer, _cond = [], None, threading.Condition()
 
 def check_ws() -> bool:
@@ -30,6 +30,9 @@ def init_canvas(size: (int, int)) -> None:
                 _cond.wait()
     else:
         _jss.append(f"canvas.width = {size[0]}; canvas.height = {size[1]}")
+
+def canvas_size() -> (int, int):
+    return _size
 
 def set_color(c: (int, int, int)) -> None:
     _jss.append(f"ctx.strokeStyle = `rgb{str(c)}`")
@@ -109,13 +112,13 @@ def key_released(key: str) -> bool:
     with _cond:
        return key in _released
 
-def pressed_keys() -> set:
+def pressed_keys() -> list:
     with _cond:
-        return tuple(_pressed)
+        return list(_pressed)
 
-def released_keys() -> set:
+def released_keys() -> list:
     with _cond:
-        return tuple(_released)
+        return list(_released)
 
 def update_canvas() -> None:
     global _answer
@@ -153,9 +156,9 @@ class FileHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            html = _html.replace("%%w%%", str(_size[0]))
-            html = html.replace("%%h%%", str(_size[1]))
-            html = html.replace("%%p%%", str(_ws_port))
+            html = _html.replace("%WIDTH%", str(_size[0]))
+            html = html.replace("%HEIGHT%", str(_size[1]))
+            html = html.replace("%PORT%", str(_ws_port))
             self.wfile.write(html.encode("utf-8"))
         else:
             super().do_GET()
@@ -163,7 +166,7 @@ class FileHandler(http.server.SimpleHTTPRequestHandler):
 def serve_files() -> None:
     global _httpd
     socketserver.TCPServer.allow_reuse_address = True
-    _httpd = socketserver.TCPServer(("", 8008), FileHandler)
+    _httpd = socketserver.TCPServer(("", http_port_), FileHandler)
     _httpd.serve_forever()
 
 
@@ -172,7 +175,7 @@ def serve_files() -> None:
 if __name__ == "__main__":
     import webview
     webview.create_window(url=f"http://localhost:{_http_port}/",
-        width=max(480, int(sys.argv[1])), height=max(360, int(sys.argv[2])),
+        width=int(sys.argv[1]) or size[0], height=int(sys.argv[2]) or _size[1],
         title="G2D Canvas", resizable=False)
     webview.start()
     sys.exit()
@@ -254,7 +257,7 @@ window.addEventListener("load", () => {
     ctx = canvas.getContext("2d");
     ctx.strokeStyle = `rgb(127, 127, 127)`;
     ctx.fillStyle = `rgb(127, 127, 127)`;
-    websocket = new WebSocket("ws://localhost:%%p%%/");
+    websocket = new WebSocket("ws://localhost:%PORT%/");
     websocket.onopen = (evt) => { };
     websocket.onclose = (evt) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -304,7 +307,7 @@ function loadElement(tag, src) {
 }
 </script>
 </head>
-<body><canvas id="g2d-canvas" width="%%w%%" height="%%h%%"></canvas></body>
+<body><canvas id="g2d-canvas" width="%WIDTH%" height="%HEIGHT%"></canvas></body>
 </html>"""
 
 

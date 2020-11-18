@@ -31,19 +31,18 @@
 #include <vector>
 
 
+namespace g2d { namespace ws {
+
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
 namespace websocket = beast::websocket;  // from <boost/beast/websocket.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
-
-
-
-namespace g2d { namespace ws {
+using namespace std::string_literals;
 
 websocket::stream<beast::tcp_stream>* ws_socket_ = nullptr;
 void (*ws_event_cb_)(std::string) = nullptr;
-unsigned const short int http_port_ = 8008, ws_port_ = 7574;
+const unsigned short int http_port_ = 8008, ws_port_ = 7574;
 
 //
 // Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)
@@ -748,16 +747,16 @@ void ws_init(void (*handler)(std::string))
 
     // Create and launch a listening port
     std::make_shared<http_listener>(
-        *ioc, tcp::endpoint{address, 8008}, std::make_shared<std::string>("."))->run();
+        *ioc, tcp::endpoint{address, http_port_}, std::make_shared<std::string>("."))->run();
 
     // Create and launch a listening port
     std::make_shared<ws_listener>(
-        *ioc, tcp::endpoint{address, 7574})->run();
+        *ioc, tcp::endpoint{address, ws_port_})->run();
 
     #ifdef __MINGW32__
-    system("start http://localhost:8008/_websocket.html");
+    system(("start http://localhost:"s + std::to_string(http_port_) + "/_websocket.html"s).c_str());
     #else
-    system("xdg-open http://localhost:8008/_websocket.html");
+    system(("xdg-open http://localhost:"s + std::to_string(http_port_) + "/_websocket.html"s).c_str());
     #endif
 
     // Run the I/O service on the requested number of threads

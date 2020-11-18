@@ -7,9 +7,11 @@
 #define BOUNCE_HPP
 
 #include "g2d/basic.hpp"
+#include <string>
 #include <vector>
 
 using std::vector;
+using std::string;
 using namespace g2d;
 
 class Ghost : public Actor {
@@ -130,24 +132,20 @@ public:
 
     Rect symbol() { return {0, 20, W, H}; }
 
-    void go_up(bool go) {
-        if (go) { dy_ = -SPEED; }
-        else if (dy_ < 0) { dy_ = 0; }
-    }
-
-    void go_right(bool go) {
-        if (go) { dx_ = SPEED; }
-        else if (dx_ > 0) { dx_ = 0; }
-    }
-
-    void go_down(bool go) {
-        if (go) { dy_ = SPEED; }
-        else if (dy_ > 0) { dy_ = 0; }
-    }
-
-    void go_left(bool go) {
-        if (go) { dx_ = -SPEED; }
-        else if (dx_ < 0) { dx_ = 0; }
+    void control(vector<string> pressed, vector<string> released) {
+        string u="w", l="a", d="s", r="d";
+        for (auto k : released) {
+            if (k == u && dy_ < 0) { dy_ = 0; }
+            if (k == d && dy_ > 0) { dy_ = 0; }
+            if (k == l && dx_ < 0) { dx_ = 0; }
+            if (k == r && dx_ > 0) { dx_ = 0; }
+        }
+        for (auto k : pressed) {
+            if (k == u) { dy_ = -SPEED; }
+            if (k == d) { dy_ = +SPEED; }
+            if (k == l) { dx_ = -SPEED; }
+            if (k == r) { dx_ = +SPEED; }
+        }
     }
 };
 

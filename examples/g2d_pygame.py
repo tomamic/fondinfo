@@ -7,22 +7,19 @@
 from tkinter import Tk, messagebox, simpledialog
 import subprocess, sys
 try:
-    import pygame
+    import pygame as pg
 except:
     subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
-    import pygame
+    import pygame as pg
 
 _tkmain = Tk()
 _tkmain.wm_withdraw() #to hide the main window
 _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
 _tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
-_canvas = None
-_tick = None
-_color = (127, 127, 127)
-_mouse_pos = (0, 0)
-_pressed, _released = set(), set()
-_mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
+_canvas, _tick = None, None
+_size, _color = (640, 480), (127, 127, 127)
+_mouse_pos, _pressed, _released = (0, 0), set(), set()
 _loaded = {}
 
 def _tup(t: tuple) -> tuple:
@@ -30,10 +27,14 @@ def _tup(t: tuple) -> tuple:
 
 def init_canvas(size: (int, int)):
     '''Set size of first CANVAS and return it'''
-    global _canvas
-    pygame.init()
-    _canvas = pygame.display.set_mode(_tup(size))
+    global _canvas, _size
+    pg.init()
+    _size = size
+    _canvas = pg.display.set_mode(_tup(size))
     clear_canvas()
+
+def canvas_size() -> (int, int):
+    return _size
 
 def set_color(color: (int, int, int)) -> None:
     global _color
@@ -45,31 +46,31 @@ def clear_canvas() -> None:
 def update_canvas() -> None:
     _pressed.clear()
     _released.clear()
-    pygame.display.update()
+    pg.display.update()
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    pygame.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
+    pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
 
 def fill_circle(center: (int, int), radius: int) -> None:
-    pygame.draw.circle(_canvas, _color, _tup(center), int(radius))
+    pg.draw.circle(_canvas, _color, _tup(center), int(radius))
 
 def fill_rect(rectangle: (int, int, int, int)) -> None:
-    pygame.draw.rect(_canvas, _color, _tup(rectangle))
+    pg.draw.rect(_canvas, _color, _tup(rectangle))
 
 def draw_text(txt: str, pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', int(size))
+    font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     _canvas.blit(surface, _tup(pos))
 
 def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
-    font = pygame.font.SysFont('freesansbold', int(size))
+    font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     w, h = surface.get_size()
     _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
 
 def load_image(src: str) -> str:
     if src not in _loaded:
-        _loaded[src] = pygame.image.load(src)
+        _loaded[src] = pg.image.load(src)
     return src
 
 def draw_image(src: str, pos: (int, int)) -> None:
@@ -83,14 +84,14 @@ def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, i
     if w0 == w1 and h0 == h1:
         _canvas.blit(image, pos, area=clip)
     else:
-        cropped = pygame.Surface((w0, h0), pygame.SRCALPHA)
+        cropped = pg.Surface((w0, h0), pg.SRCALPHA)
         cropped.blit(image, (0, 0), area=clip)
-        scaled = pygame.transform.smoothscale(cropped, (w1, h1))
+        scaled = pg.transform.smoothscale(cropped, (w1, h1))
         _canvas.blit(scaled, (x1, y1))
 
 def load_audio(url: str) -> str:
     if src not in _loaded:
-        _loaded[src] = pygame.mixer.Sound(url)
+        _loaded[src] = pg.mixer.Sound(url)
     return src
 
 def play_audio(src: str, loop=False) -> None:
@@ -117,11 +118,15 @@ def prompt(message: str) -> str:
 def mouse_position() -> (int, int):
     return _mouse_pos
 
-def web_key(key: int) -> str:
+def _mb_name(key: int) -> str:
+    return ["LeftButton", "MiddleButton",
+            "RightButton", "MouseButton"][max(key - 1, 3)]
+
+def _kb_name(key: int) -> str:
     fixes = {"up" : "ArrowUp", "down" : "ArrowDown",
              "right" : "ArrowRight", "left" : "ArrowLeft",
              "space": "Spacebar", "return": "Enter"}
-    name = pygame.key.name(key)
+    name = pg.key.name(key)
     if name in fixes:
         name = fixes[name]
     elif len(name) > 1:
@@ -134,44 +139,41 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key in _released
 
-def pressed_keys() -> tuple:
-    return tuple(_pressed)
+def pressed_keys() -> list:
+    return list(_pressed)
 
-def released_keys() -> tuple:
-    return tuple(_released)
+def released_keys() -> list:
+    return list(_released)
+
+def handle_key(key: str, up=False):
+    set_in = _released if up else _pressed
+    set_out = _pressed if up else _released
+    if key in set_out: set_out.discard(key)
+    else: set_in.add(key)
 
 def main_loop(tick=None, fps=30) -> None:
     global _mouse_pos, _tick
     _tick = tick
-    clock = pygame.time.Clock()
+    clock = pg.time.Clock()
     update_canvas()
     running = True
     while running:
-        for e in pygame.event.get():
+        for e in pg.event.get():
             # print(e)
-            if e.type == pygame.QUIT:
+            if e.type == pg.QUIT:
                 running = False
                 break
-            elif e.type in (pygame.KEYDOWN, pygame.KEYUP):
-                key = web_key(e.key)
-                set_in = _released if e.type == pygame.KEYUP else _pressed
-                set_out = _pressed if e.type == pygame.KEYUP else _released
-                if key in set_out: set_out.discard(key)
-                else: set_in.add(key)
-            elif (e.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP) and
-                  1 <= e.button <= 3):
-                key = _mouse_codes[e.button - 1]
-                set_in = _released if e.type == pygame.MOUSEBUTTONUP else _pressed
-                set_out = _pressed if e.type == pygame.MOUSEBUTTONUP else _released
-                if key in set_out: set_out.discard(key)
-                else: set_in.add(key)
+            elif e.type in (pg.KEYDOWN, pg.KEYUP):
+                handle_key(_kb_name(e.key), e.type == pg.KEYUP)
+            elif e.type in (pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP):
+                handle_key(_mb_name(e.button), e.type == pg.MOUSEBUTTONUP)
         if _tick:
-            _mouse_pos = pygame.mouse.get_pos()
+            _mouse_pos = pg.mouse.get_pos()
             _tick()
             update_canvas()
         clock.tick(fps)
     close_canvas()
 
 def close_canvas() -> None:
-    pygame.quit()
+    pg.quit()
     sys.exit()

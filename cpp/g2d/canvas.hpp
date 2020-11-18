@@ -383,6 +383,7 @@ string prompt(string message) {
 }
 
 void init_canvas(Point size) {
+    size_ = size;
     if (inited()) {
         do_js_("canvas.width = %; canvas.height = %", {size.x, size.y});
     } else {
@@ -395,6 +396,10 @@ void init_canvas(Point size) {
         std::unique_lock<std::mutex> mlock(mut_);
         while (!inited_) { cond_.wait(mlock); }
     }
+}
+
+Point canvas_size() {
+    return size_;
 }
 
 }  // namespace g2d

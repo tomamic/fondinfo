@@ -12,34 +12,14 @@ auto b1 = new Ball{arena, {40, 80}};
 auto b2 = new Ball{arena, {80, 40}};
 auto g = new Ghost{arena, {120, 80}};
 auto turtle = new Turtle{arena, {80, 80}};
-auto sprites = load_image("sprites.png");
 
 void tick() {
-    if (key_pressed("ArrowUp")) {
-        turtle->go_up(true);
-    } else if (key_released("ArrowUp")) {
-        turtle->go_up(false);
-    }
-    if (key_pressed("ArrowRight")) {
-        turtle->go_right(true);
-    } else if (key_released("ArrowRight")) {
-        turtle->go_right(false);
-    }
-    if (key_pressed("ArrowDown")) {
-        turtle->go_down(true);
-    } else if (key_released("ArrowDown")) {
-        turtle->go_down(false);
-    }
-    if (key_pressed("ArrowLeft")) {
-        turtle->go_left(true);
-    } else if (key_released("ArrowLeft")) {
-        turtle->go_left(false);
-    }
+    turtle->control(g2d::pressed_keys(), g2d::released_keys());
 
     arena->move_all();
     clear_canvas();
     for (auto a : arena->actors()) {
-        draw_image_clip(sprites, a->symbol(), a->position());
+        draw_image_clip("sprites.png", a->symbol(), a->position());
     }
 }
 
@@ -50,15 +30,7 @@ int main() {
 
 int main_console() {
     for (std::string line; std::getline(std::cin, line);) {
-        turtle->go_up(false);
-        turtle->go_left(false);
-        turtle->go_down(false);
-        turtle->go_right(false);
-
-        if (line == "w") turtle->go_up(true);
-        else if (line == "a") turtle->go_left(true);
-        else if (line == "s") turtle->go_down(true);
-        else if (line == "d") turtle->go_right(true);
+        turtle->control({line}, {"w", "a", "s", "d"});
 
         arena->move_all();
         for (auto a : arena->actors()) {
