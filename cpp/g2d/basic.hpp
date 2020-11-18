@@ -7,10 +7,11 @@
 #define ACTOR_HPP
 
 #include <algorithm>
-#include <iostream>
-#include <iomanip>
-#include <vector>
 #include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <regex>
+#include <vector>
 
 namespace g2d {
 
@@ -135,16 +136,15 @@ int randint(int min, int max) {
     return min + rand() % (1 + max - min);
 }
 
-std::vector<std::string> split(std::string text, char sep) {
-    std::vector<std::string> result;
-    std::istringstream sstr{text};  // a stream view on a string
-    for (std::string item; std::getline(sstr, item, sep);) {
-        result.push_back(item);
-    }
+std::vector<std::string> split(const std::string& text, const std::string& sep) {
+    auto result = std::vector<std::string>{};
+    auto re = std::regex{sep};
+    copy(std::sregex_token_iterator(text.begin(), text.end(), re, -1),
+         std::sregex_token_iterator(), std::back_inserter(result));
     return result;
 }
 
-}
+}  // namespace g2d
 
 std::ostream& operator<<(std::ostream& os, const g2d::Point& p) {
     return os << "Point{" << p.x << ", " << p.y << "}";
