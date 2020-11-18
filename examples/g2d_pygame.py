@@ -120,7 +120,7 @@ def mouse_position() -> (int, int):
 
 def _mb_name(key: int) -> str:
     return ["LeftButton", "MiddleButton",
-            "RightButton", "MouseButton"][max(key - 1, 3)]
+            "RightButton", "MouseButton"][min(key - 1, 3)]
 
 def _kb_name(key: int) -> str:
     fixes = {"up" : "ArrowUp", "down" : "ArrowDown",

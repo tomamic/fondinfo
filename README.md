@@ -25,6 +25,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 ### Canvas functions
 
 - **`init_canvas`** `(size: (int, int))` : Initialize the drawing canvas
+- **`canvas_size`** `() -> (int, int)` : Get the canvas size
 - **`main_loop`** `(tick=None, fps=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
 - **`clear_canvas`** `()` : Clear the canvas
 - **`update_canvas`** `()` : Draw all pending graphics on the canvas, it is called automaticall after each `tick`
@@ -42,15 +43,17 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 ### Images and sounds
 
 - **`load_image`** `(src: str) -> str` : Load an image and return a name for it
-- **`draw_image`** `(image: str, pos: (int, int))` : Blit a whole image, given its name and the position
-- **`draw_image_clip`** `(image: str, clip: (int, int, int, int), rect: (int, int, int, int))` : Blit a portion of an image
+- **`draw_image`** `(src: str, pos: (int, int))` : Blit a whole image, given its name and the position
+- **`draw_image_clip`** `(src: str, clip: (int, int, int, int), rect: (int, int, int, int))` : Blit a portion of an image
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
-- **`play_audio`** `(audio: str, loop: bool)` : Play a sound, possibly in a loop, given its name
-- **`pause_audio`** `(audio: str)` : Stop playing a sound, given its name
+- **`play_audio`** `(src: str, loop: bool)` : Play a sound, possibly in a loop, given its name
+- **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
 
 ### Input and output
 
 - **`mouse_position`** `() -> (int, int)` : Get current mouse position
+- **`pressed_keys`** `() -> list` : Lists of keys that have been pressed after last `tick`
+- **`released_keys`** `() -> list` : Lists of keys that have been released after last `tick`
 - **`key_pressed`** `(key: string) -> bool` : Check if a key has been pressed after last `tick`
 - **`key_released`** `(key: string) -> bool` : Check if a key has been released after last `tick`
 - **`prompt`** `(message: str) -> str` : Show a dialog for entering a line of text

@@ -250,7 +250,7 @@ loaded = {};
 pressed = new Set();
 keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown", "Left": "ArrowLeft", "Right": "ArrowRight",
             " ": "Spacebar", "Space": "Spacebar", "Esc": "Escape", "Del": "Delete"}
-mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
+mouseCodes = ["LeftButton", "MiddleButton", "RightButton", "MouseButton"];
 
 window.addEventListener("load", () => {
     canvas = document.getElementById("g2d-canvas");
@@ -285,10 +285,10 @@ window.addEventListener("load", () => {
         websocket.send("mousemove " + x + " " + y);
     };
     canvas.onmousedown = (evt) => {
-        websocket.send("keydown " + mouseCodes[evt.button]);
+        websocket.send("keydown " + mouseCodes[min(evt.button, 3)]);
     };
     canvas.onmouseup = (evt) => {
-        websocket.send("keyup " + mouseCodes[evt.button]);
+        websocket.send("keyup " + mouseCodes[min(evt.button, 3)]);
     };
 });
 
