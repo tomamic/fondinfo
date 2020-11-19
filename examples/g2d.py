@@ -58,7 +58,8 @@ def draw_image(src: str, pt: (int, int)) -> None:
     _jss.append(f"loadElement('IMG', '{src}')")
     _jss.append(f"ctx.drawImage(loaded[`{src}`], {pt[0]}, {pt[1]})")
 
-def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, int)) -> None:
+def draw_image_clip(src: str, clip: (int, int, int, int),
+                    pos: (int, int, int, int)) -> None:
     _jss.append(f"loadElement('IMG', '{src}')")
     _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip)[1:-1]}, {str(pos)[1:-1]})")
 
@@ -205,12 +206,12 @@ def start_websocket():
                     _cond.notify_all()
                 elif args[0] == "mousemove":
                     _mouse_pos = tuple(map(int, args[1].split(" ")))
-                elif args[0] in ("keydown", "keyup"):
-                    key = args[1]  ##" " if args[1] == "Spacebar" else args[1]
-                    set_in = _released if args[0] == "keyup" else _pressed
-                    set_out = _pressed if args[0] == "keyup" else _released
-                    if key in set_out: set_out.discard(key)
-                    else: set_in.add(key)
+                elif args[0] == "keydown":
+                    if args[1] in _released: _released.discard(args[1])
+                    else: _pressed.add(args[1])
+                elif args[0] == "keyup":
+                    if args[1] in _pressed: _pressed.discard(args[1])
+                    else: _released.add(args[1])
 
         def handleConnected(self):
             global _ws
@@ -233,7 +234,7 @@ def start_websocket():
 
 #### index.html
 
-_html = """<!DOCTYPE html>
+html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -247,9 +248,10 @@ _html = """<!DOCTYPE html>
 <script language="javascript" type="text/javascript">
 
 loaded = {};
-pressed = new Set();
-keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown", "Left": "ArrowLeft", "Right": "ArrowRight",
-            " ": "Spacebar", "Space": "Spacebar", "Esc": "Escape", "Del": "Delete"}
+keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown",
+            "Left": "ArrowLeft", "Right": "ArrowRight",
+            "Space": "Spacebar", " ": "Spacebar",
+            "Esc": "Escape", "Del": "Delete"}
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton", "MouseButton"];
 
 window.addEventListener("load", () => {
@@ -265,17 +267,14 @@ window.addEventListener("load", () => {
     };
     websocket.onmessage = (evt) => { eval(evt.data); };
     websocket.onerror = (evt) => { websocket.close(); };
-    document.onfocus = (evt) => { pressed.clear(); };
+    document.onfocus = (evt) => { };
     document.onkeydown = (evt) => {
+        if (evt.repeat) return;
         var k = keyCodes[evt.key] || evt.key;
-        if (pressed.has(k)) return;
-        pressed.add(k);
         websocket.send("keydown " + k);
     };
     document.onkeyup = (evt) => {
         var k = keyCodes[evt.key] || evt.key;
-        if (!pressed.has(k)) return;
-        pressed.delete(k);
         websocket.send("keyup " + k);
     };
     canvas.onmousemove = (evt) => {

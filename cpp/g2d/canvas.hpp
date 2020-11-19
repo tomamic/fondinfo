@@ -53,7 +53,6 @@ static string html_ = R"html(
 <script language="javascript" type="text/javascript">
 
 loaded = {};
-pressed = new Set();
 keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown", "Left": "ArrowLeft", "Right": "ArrowRight",
             " ": "Spacebar", "Space": "Spacebar", "Esc": "Escape", "Del": "Delete"}
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton", "MouseButton"];
@@ -71,17 +70,14 @@ window.addEventListener("load", () => {
     };
     websocket.onmessage = (evt) => { eval(evt.data); };
     websocket.onerror = (evt) => { websocket.close(); };
-    document.onfocus = (evt) => { pressed.clear(); };
+    document.onfocus = (evt) => { };
     document.onkeydown = (evt) => {
+        if (evt.repeat) return;
         var k = keyCodes[evt.key] || evt.key;
-        if (pressed.has(k)) return;
-        pressed.add(k);
         websocket.send("keydown " + k);
     };
     document.onkeyup = (evt) => {
         var k = keyCodes[evt.key] || evt.key;
-        if (!pressed.has(k)) return;
-        pressed.delete(k);
         websocket.send("keyup " + k);
     };
     canvas.onmousemove = (evt) => {
