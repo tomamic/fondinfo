@@ -7,4 +7,4 @@
 
 - Install MinGW from <https://nuwen.net/mingw.html>
 - Launch `open_distro_window.bat`, in the MinGW folder
-- `g++ anim.cpp -o anim.exe -lws2_32 -lwsock32`
+- `g++ -O1 anim.cpp -o anim.exe -lws2_32 -lwsock32`
