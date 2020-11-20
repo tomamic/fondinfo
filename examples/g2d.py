@@ -167,7 +167,7 @@ class FileHandler(http.server.SimpleHTTPRequestHandler):
 def serve_files() -> None:
     global _httpd
     socketserver.TCPServer.allow_reuse_address = True
-    _httpd = socketserver.TCPServer(("", http_port_), FileHandler)
+    _httpd = socketserver.TCPServer(("", _http_port), FileHandler)
     _httpd.serve_forever()
 
 
@@ -234,7 +234,7 @@ def start_websocket():
 
 #### index.html
 
-html = """<!DOCTYPE html>
+_html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -284,10 +284,10 @@ window.addEventListener("load", () => {
         websocket.send("mousemove " + x + " " + y);
     };
     canvas.onmousedown = (evt) => {
-        websocket.send("keydown " + mouseCodes[min(evt.button, 3)]);
+        websocket.send("keydown " + mouseCodes[Math.min(evt.button, 3)]);
     };
     canvas.onmouseup = (evt) => {
-        websocket.send("keyup " + mouseCodes[min(evt.button, 3)]);
+        websocket.send("keyup " + mouseCodes[Math.min(evt.button, 3)]);
     };
 });
 
