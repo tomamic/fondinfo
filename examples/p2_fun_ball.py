@@ -15,13 +15,13 @@ image = g2d.load_image("ball.png")
 # encapsulates behaviour, but exposes data
 def move_ball(x: int, y: int,
               dx: int, dy: int) -> (int, int, int, int):
-    if x + dx < 0 or x + dx + BALL_W > ARENA_W:
+    if not 0 <= x + dx <= ARENA_W - BALL_H:
         dx = -dx
-    x += dx
-    if y + dy < 0 or y + dy + BALL_H > ARENA_H:
+    if not 0 <= y + dy <= ARENA_H - BALL_H:
         dy = -dy
+    x += dx
     y += dy
-    return x, y, dx, dy
+    return (x, y, dx, dy)
 
 def tick():
     global x1, y1, dx1, dy1

@@ -10,17 +10,14 @@ class Ball:
     def __init__(self, x: int, y: int):
         self._x = x
         self._y = y
-        self._w = 20
-        self._h = 20
-        self._dx = 5
-        self._dy = 5
+        self._dx, self._dy = 5, 5
+        self._w, self._h = 20, 20
 
     def move(self):
-        if not (0 <= self._x + self._dx <= ARENA_W - self._w):
+        if not 0 <= self._x + self._dx <= ARENA_W - self._w:
             self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= ARENA_H - self._h):
+        if not 0 <= self._y + self._dy <= ARENA_H - self._h:
             self._dy = -self._dy
-
         self._x += self._dx
         self._y += self._dy
 
