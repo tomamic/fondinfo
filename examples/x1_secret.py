@@ -20,5 +20,8 @@ while secret != guess and tries < MAX_TRIES:
         print("The secret is smaller than", guess)
     elif secret > guess:
         print("The secret is larger than", guess)
-    else:
-        print("Congratulations, you guessed in", tries, "tries");
+
+if secret == guess:
+    print("Congratulations, you guessed in", tries, "tries");
+else:
+    print("No luck! The secret was", secret);
