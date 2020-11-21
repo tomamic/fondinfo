@@ -11,6 +11,6 @@ while i * i < n:
     i += 1
 
 if i * i == n:
-    print(i)
+    print("Perfect square of", i)
 else:
-    print("No")
+    print("Not a perfect square")

@@ -17,7 +17,8 @@ while monster_x == player_x and monster_y == player_y:
     monster_y = randrange(H)
 gold_x = player_x  # try and use a tuple: gold = 0, 0
 gold_y = player_y
-while (gold_x == player_x and gold_y == player_y) or (gold_x == monster_x and gold_y == monster_y):
+while ((gold_x == player_x and gold_y == player_y) or
+       (gold_x == monster_x and gold_y == monster_y)):
     gold_x = randrange(W)
     gold_y = randrange(H)
 
@@ -25,8 +26,9 @@ while (gold_x == player_x and gold_y == player_y) or (gold_x == monster_x and go
 #print("Gold:", gold_x, gold_y)
 print("Player:", player_x, player_y)
 
-while (player_x != monster_x or player_y != monster_y) and (player_x != gold_x or player_y != gold_y):
-    direction = input("wasd? ")
+while ((player_x != monster_x or player_y != monster_y) and
+       (player_x != gold_x or player_y != gold_y)):
+    direction = input("w/a/s/d? ")
     if direction == "w" and player_y > 0:
         player_y -= 1
     elif direction == "a" and player_x > 0:

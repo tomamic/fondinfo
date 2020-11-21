@@ -7,10 +7,10 @@
 from math import pi
 
 r = float(input("r? "))
-if r < 0:
-    print("error: negative r")
-else:
+if 0 <= r <= 200:
     area = pi * r ** 2
     perimeter = 2 * pi * r
     print("area:", area)
     print("perimeter:", perimeter)
+else:
+    print("error: out of range")

@@ -9,23 +9,23 @@ from random import randint
 a = randint(1, 6)
 b = randint(1, 6)
 c = randint(1, 6)
-min_ = 0
-max_ = 0
+vmin = 0
+vmax = 0
 
 if a < b and a < c:
-    min_ = a
+    vmin = a
 elif b < c:
-    min_ = b
+    vmin = b
 else:
-    min_ = c
+    vmin = c
 
 if a > b and a > c:
-    max_ = a
+    vmax = a
 elif b > c:
-    max_ = b
+    vmax = b
 else:
-    max_ = c
+    vmax = c
 
 print("Values:", a, b, c)
-print("Min:", min_)
-print("Max:", max_)
+print("Min:", vmin)
+print("Max:", vmax)
