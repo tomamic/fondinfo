@@ -10,8 +10,7 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 class Ball:
     def __init__(self, pos: (int, int)):
-        self._x = pos[0]
-        self._y = pos[1]
+        self._x, self._y = pos
         self._dx = 5
         self._dy = 5
         self._count = 0

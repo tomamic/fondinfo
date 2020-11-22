@@ -8,7 +8,6 @@ import g2d
 
 x, y, dx = 50, 50, 5
 ARENA_W, ARENA_H, MARGIN = 480, 360, 100
-image = g2d.load_image("ball.png")
 
 def tick():
     global x, dx

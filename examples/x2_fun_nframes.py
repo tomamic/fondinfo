@@ -6,22 +6,18 @@
 
 import g2d
 
-x, y, dx, count = 50, 50, 5, 0
-ARENA_W, ARENA_H, MARGIN = 480, 360, 100
-image = g2d.load_image("ball.png")
+x, y, dx, count = 50, 50, -5, 0
+ARENA_W, ARENA_H = 480, 360
 
 def tick():
     global x, dx, count
     g2d.clear_canvas()
     g2d.draw_image("ball.png", (x, y))
-    if g2d.key_pressed("LeftButton"):
+    if g2d.key_pressed("LeftButton") and count == 0:
         count = 5
+        dx = -dx
     if count > 0:
         count -= 1
-        if x + dx < -MARGIN:
-            x = ARENA_W + MARGIN
-        if x + dx > ARENA_W + MARGIN:
-            x = -MARGIN
         x += dx
 
 def main():

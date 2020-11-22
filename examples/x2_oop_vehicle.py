@@ -6,15 +6,14 @@
 
 import g2d
 
-W, H = 480, 360
+ARENA_W, ARENA_H = 480, 360
 
 class Vehicle:
     def __init__(self, pos: (int, int), dx: int):
-        self._x = pos[0]
-        self._y = pos[1]
+        self._x, self._y = pos
         self._w, self._h = 20, 20
         self._dx = dx
-        self._left, self._right = -100, W + 100
+        self._left, self._right = -100, ARENA_W + 100
 
     def move(self):
         if self._x + self._dx < self._left:
@@ -40,7 +39,7 @@ def tick():
 def main():
     global b
     b = Vehicle((40, 40), 5)
-    g2d.init_canvas((W, H))
+    g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
 ##main()
