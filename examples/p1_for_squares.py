@@ -6,15 +6,14 @@
 
 import g2d
 
-g2d.init_canvas((400, 400))
+CANVAS, SIDE = 300, 100
+g2d.init_canvas((CANVAS, CANVAS))
 n = int(g2d.prompt("N?"))
 
 for i in range(n):
-    c, p = 0, 0
-    if n > 1:
-        c = i * 255 // (n - 1)
-        p = i * 300 // (n - 1)
-    g2d.set_color((c, 0, 0))
-    g2d.fill_rect((p, p, 100, 100))
+    red = i * 255 // max(n - 1, 1)
+    x = y = i * (CANVAS - SIDE) // max(n - 1, 1)
+    g2d.set_color((red, 0, 0))
+    g2d.fill_rect((x, y, SIDE, SIDE))
 
 g2d.main_loop()
