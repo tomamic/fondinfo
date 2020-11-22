@@ -12,9 +12,9 @@ image = g2d.load_image("ball.png")
 
 def tick():
     global x, dx, count
-    g2d.clear_canvas()  # Draw background
-    g2d.draw_image(image, (x, y))  # Draw foreground
-    if g2d.key_pressed("Enter"):
+    g2d.clear_canvas()
+    g2d.draw_image("ball.png", (x, y))
+    if g2d.key_pressed("LeftButton"):
         count = 5
     if count > 0:
         count -= 1
@@ -22,10 +22,10 @@ def tick():
             x = ARENA_W + MARGIN
         if x + dx > ARENA_W + MARGIN:
             x = -MARGIN
-        x += dx  # Update ball's position
+        x += dx
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(tick, 10)  # call tick 10 times/second
+    g2d.main_loop(tick, 5)  # call tick 5 times/second
 
 main()

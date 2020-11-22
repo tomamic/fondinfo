@@ -13,8 +13,8 @@ def to_polar(pt: (float, float)) -> (float, float):
     a = angle(pt)
     return (r, a)
 
-def from_polar(pol: (float, float)) -> (float, float):
-    r, a = pol
+def from_polar(plr: (float, float)) -> (float, float):
+    r, a = plr
     return (r * cos(a), r * sin(a))
 
 def rotate(pt: (float, float), a: float) -> (float, float):

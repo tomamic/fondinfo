@@ -6,7 +6,7 @@
 
 import g2d
 
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 600, 500
 g2d.init_canvas((WIDTH, HEIGHT))
 
 cols = int(g2d.prompt("Cols? "))

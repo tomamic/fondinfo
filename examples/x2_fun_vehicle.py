@@ -12,15 +12,15 @@ image = g2d.load_image("ball.png")
 
 def tick():
     global x, dx
-    if g2d.key_pressed("Enter"):
+    if g2d.key_pressed("LeftButton"):
         dx = -dx
     if x + dx < -MARGIN:
         x = ARENA_W + MARGIN
     if x + dx > ARENA_W + MARGIN:
         x = -MARGIN
-    g2d.clear_canvas()             # Draw background
-    g2d.draw_image(image, (x, y))  # Draw foreground
-    x += dx                        # Update ball's position
+    g2d.clear_canvas()
+    g2d.draw_image("ball.png", (x, y))
+    x += dx
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
