@@ -1,26 +1,33 @@
-from math import sin, cos, atan2, pi, sqrt
+from math import cos, atan2, pi, sin, sqrt
 
 def radius(pt: (float, float)) -> float:
-    x, y = pt  # ❗ sequence unpacking
+    x, y = pt
     return (x ** 2 + y ** 2) ** 0.5
 
 def angle(pt: (float, float)) -> float:
     x, y = pt
-    return atan2(y, x)
+    return atan2(y, x)  # atan(y/x), correct sign
 
 def to_polar(pt: (float, float)) -> (float, float):
     r = radius(pt)
     a = angle(pt)
-    return (r, a)  # ❗ return a tuple
+    return (r, a)
 
 def from_polar(pol: (float, float)) -> (float, float):
     r, a = pol
     return (r * cos(a), r * sin(a))
 
-def main():
-    r1, a1 = to_polar((0.5, 0.866))  # 1, π/3
-    x1, y1 = from_polar((1, pi/3))  # 1/2, √3/2
-    print(r1, a1)
-    print(x1, y1)
+def rotate(pt: (float, float), a: float) -> (float, float):
+    x, y = pt
+    x1 = x * cos(a) - y * sin(a)
+    y1 = x * sin(a) + y * cos(a)
+    return (x1, y1)
 
-#main()
+def main():
+    pt0 = from_polar((2, pi/4))
+    pt1 = rotate(pt0, pi/12)
+
+    print(pt0, to_polar(pt0))  # (√2, √2) (2, π/4)
+    print(pt1, to_polar(pt1))  # (1, √3) (2, π/3)
+
+main()

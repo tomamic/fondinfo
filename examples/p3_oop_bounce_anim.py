@@ -12,7 +12,6 @@ b1 = Ball(arena, (40, 80))
 b2 = Ball(arena, (80, 40))
 g = Ghost(arena, (120, 80))
 turtle = Turtle(arena, (80, 80))
-sprites = g2d.load_image("sprites.png")
 
 def tick():
     turtle.control(g2d.pressed_keys(), g2d.released_keys())
@@ -21,7 +20,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if a.symbol() != (0, 0, 0, 0):
-            g2d.draw_image_clip(sprites, a.symbol(), a.position())
+            g2d.draw_image_clip("sprites.png", a.symbol(), a.position())
         else:
             g2d.fill_rect(a.position())
 

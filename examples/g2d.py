@@ -48,7 +48,7 @@ def fill_circle(pt: (int, int), r: int) -> None:
     _jss.append(f"ctx.beginPath(); ctx.arc({pt[0]}, {pt[1]}, {r}, 0, 2*Math.PI); ctx.closePath(); ctx.fill()")
 
 def fill_rect(r: (int, int, int, int)) -> None:
-    _jss.append(f"ctx.fillRect({r[0]}, {r[1]}, {r[2]}, {r[3]})")
+    _jss.append(f"ctx.fillRect({str(r)[1:-1]})")
 
 def load_image(src: str) -> str:
     _jss.append(f"loadElement('IMG', '{src}')")
@@ -59,9 +59,9 @@ def draw_image(src: str, pt: (int, int)) -> None:
     _jss.append(f"ctx.drawImage(loaded[`{src}`], {pt[0]}, {pt[1]})")
 
 def draw_image_clip(src: str, clip: (int, int, int, int),
-                    pos: (int, int, int, int)) -> None:
+                    pt: (int, int, int, int)) -> None:
     _jss.append(f"loadElement('IMG', '{src}')")
-    _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip)[1:-1]}, {str(pos)[1:-1]})")
+    _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip+pt)[1:-1]})")
 
 def draw_text(txt: str, pt: (int, int), size: int, baseline="top", align="left") -> None:
     txt = txt.replace(r"`", r"\`")
