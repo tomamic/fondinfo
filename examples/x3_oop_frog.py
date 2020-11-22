@@ -6,7 +6,31 @@
 
 import g2d
 from actor import Actor, Arena
-from x3_oop_vehicle import Vehicle
+
+class Vehicle(Actor):
+    def __init__(self, arena, pos: (int, int), dx: int):
+        self._x, self._y = pos
+        self._w, self._h = 20, 20
+        self._left, self._right = -100, arena.size()[0] + 100
+        self._dx = dx
+        self._arena = arena
+        arena.add(self)
+
+    def move(self):
+        if self._x + self._dx < self._left:
+            self._x = self._right
+        if self._x + self._dx > self._right:
+            self._x = self._left
+        self._x += self._dx
+
+    def position(self):
+        return self._x, self._y, self._w, self._h
+
+    def symbol(self):
+        return 0, 0, self._w, self._h
+
+    def collide(self, other):
+        pass
 
 class Frog(Actor):
     def __init__(self, arena, pos: (int, int)):
@@ -39,7 +63,7 @@ class Frog(Actor):
         return self._x, self._y, self._w, self._h
 
     def symbol(self):
-        return 0, 0
+        return 0, 0, self._w, self._h
 
     def collide(self, other):
         self._x, self._y = self._x0, self._y0

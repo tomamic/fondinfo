@@ -19,11 +19,11 @@ def main():
             max_val = val
         val = float(g2d.prompt("Val? "))
 
-    if len(values) > 0:
-        for i, v in enumerate(values):
-            rect = (0, i * H / len(values),
-                    v * W / max_val, (H / len(values))-1)
-            g2d.fill_rect(rect)
+    n = len(values)
+    for i in range(n):
+        v = values[i]
+        rect = (0, i * H / n, v * W / max_val, (H / n)-1)
+        g2d.fill_rect(rect)
 
     g2d.main_loop()
 
