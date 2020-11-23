@@ -17,4 +17,4 @@ def gen_words(alphabet: str, n: int) -> [str]:
             result.append(symbol + word)
     return result
 
-print(gen_words("AEIOU", 3))
+print(gen_words("ABC", 4))

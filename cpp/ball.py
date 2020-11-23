@@ -8,8 +8,8 @@ import cppyy
 cppyy.include("ball.cpp")
 from cppyy.gbl import Ball
 
-b1 = Ball(40, 80)
-b2 = Ball(80, 40)
+b1 = Ball(140, 180)
+b2 = Ball(180, 140)
 
 for i in range(25):
     b1.move()

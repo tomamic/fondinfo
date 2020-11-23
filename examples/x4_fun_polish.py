@@ -13,10 +13,7 @@ def to_infix(tokens: list) -> str:
         a = to_infix(tokens)
         b = to_infix(tokens)
 
-        result = a + ' ' + token + ' ' + b
-        if token in ('+', '-'):
-            result = '(' + result + ')'
-        return result
+        return f"({a} {token} {b})"
 
 def evaluate(tokens: list) -> float:
     token = tokens.pop(0)
@@ -41,6 +38,6 @@ def main():
     value = evaluate(polish[:])
     print(infix, '==', value)
 
-    # ((1 + 2) * (2 + 3) + 4) mod 5 == 4
+    # ((((1 + 2) * (2 + 3)) + 4) mod 5) == 4
 
 main()

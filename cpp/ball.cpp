@@ -30,8 +30,8 @@ public:
 };
 
 int main() {
-    auto b1 = Ball{40, 80};
-    auto b2 = Ball{80, 40};
+    auto b1 = Ball{140, 180};
+    auto b2 = Ball{180, 140};
 
     for (auto i = 0; i < 25; ++i) {
         b1.move();

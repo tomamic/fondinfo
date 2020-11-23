@@ -5,16 +5,13 @@
 '''
 
 def print_board(board: list):
-    for y in range(len(board)):
-        for x in range(len(board)):
-            if x == board[y]: print('|♛', end='')
-            else: print('| ', end='')
-        print('|')
+    for v in board:
+        print("•" * v + "♛" + "•" * (len(board)-v-1))
 
 def under_attack(board: list, x: int, y: int) -> bool:
-    for d in range(1, y + 1):  # for all rows above y
+    for r in range(y):  # for all rows above y
         # directions: ↖↑↗ (no queens below)
-        if board[y - d] in (x - d, x, x + d):
+        if board[r] in (x - (y-r), x, x + (y-r)):
             return True
     return False
 
