@@ -1,1 +1,1 @@
-u:\mingw\bin\g++ -O1 %1.cpp -o %1.exe -lws2_32 -lwsock32 -Iu:\mingw\include\
+u:\mingw\bin\g++ -O1 %~n1.cpp -o %~n1.exe -lws2_32 -lwsock32 -Iu:\mingw\include\
