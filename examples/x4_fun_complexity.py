@@ -10,7 +10,7 @@ def linear_search(v: list, value, beg, end) -> int:
 def binary_search(v: list, value, beg, end) -> int:
     '''v: a sorted list;
        search in the range [beg, end)'''
-    
+
     if beg >= end:
         return -1
     mid = (beg + end) // 2
@@ -19,6 +19,22 @@ def binary_search(v: list, value, beg, end) -> int:
     elif v[mid] < value:
         return binary_search(v, value, mid + 1, end)
     return mid
+
+
+def find_minimum(v: list, beg, end):
+    min_pos = beg
+    for i in range(beg + 1, end):
+        if v[i] < v[min_pos]:
+            min_pos = i
+    return min_pos
+
+
+def find_maximum(v: list, beg, end):
+    max_pos = beg
+    for i in range(beg + 1, end):
+        if v[i] > v[max_pos]:
+            max_pos = i
+    return max_pos
 
 
 def swap(v: list, i: int, j: int):
@@ -40,10 +56,7 @@ def bubble_sort(v: list, beg, end):
 def selection_sort(v: list, beg, end):
     if end - beg <= 1:
         return
-    min_pos = beg  # find the minimum
-    for i in range(beg + 1, end):
-        if v[i] < v[min_pos]:
-            min_pos = i
+    min_pos = find_minimum(v, beg, end)
     swap(v, min_pos, beg)
     selection_sort(v, beg + 1, end)  # loop
 
