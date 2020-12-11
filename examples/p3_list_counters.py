@@ -4,8 +4,6 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from random import randint
-
 text = input("Text? ")
 counters = [0] * 10
 
