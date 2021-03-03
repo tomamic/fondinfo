@@ -101,8 +101,8 @@ class Turtle(Actor):
             self._x = arena_w - self._w
 
     def control(self, pressed, released):
-        #u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
-        u, d, l, r = "w", "s", "a", "d"
+        u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
+        #u, d, l, r = "w", "s", "a", "d"
         if u in pressed: self._dy = -self._speed
         if d in pressed: self._dy = self._speed
         if l in pressed: self._dx = -self._speed

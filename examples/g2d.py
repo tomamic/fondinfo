@@ -7,27 +7,26 @@
 import os, subprocess, sys, threading, time
 import http.server, socketserver, webbrowser
 
-_ws, _httpd, _wv = None, None, None
 _http_port, _ws_port = 8008, 7574
+_ws, _httpd, _wv = None, None, None
 _mouse_pos, _keys, _prev_keys = (0, 0), set(), set()
 _pressed, _released = set(), set()
 _size = (640, 480)
 _jss, _answer, _cond = [], None, threading.Condition()
 
-def check_ws() -> bool:
+def _cond_check(name: str, wait=False) -> object:
     with _cond:
-        return _ws != None
+        while wait and not globals()[name]: _cond.wait()
+        return globals()[name]
 
 def init_canvas(size: (int, int)) -> None:
     global _size
     _size = size
-    if not check_ws():
+    if not _cond_check("_ws"):
         threading.Thread(target=serve_files).start()
         threading.Thread(target=start_websocket).start()
         threading.Thread(target=start_webview, args=size).start()
-        with _cond:
-            while not _ws:
-                _cond.wait()
+        _cond_check("_ws", True)
     else:
         _jss.append(f"canvas.width = {size[0]}; canvas.height = {size[1]}")
 
@@ -87,10 +86,7 @@ def _dialog(dialog: str, message: str) -> str:
     message = message.replace(r"`", r"\`")
     _jss.append(f"websocket.send(`answer ` + {dialog}(`{message}`))")
     update_canvas()
-    with _cond:
-        while _answer == None:
-            _cond.wait()
-        return _answer
+    return _cond_check("_answer", True)
 
 def alert(message: str) -> None:
     _dialog("alert", message)
@@ -102,40 +98,34 @@ def prompt(message: str) -> str:
     return _dialog("prompt", message)
 
 def mouse_position() -> (int, int):
-    with _cond:
-        return _mouse_pos
+    with _cond: return _mouse_pos
 
 def key_pressed(key: str) -> bool:
-    with _cond:
-       return key in _pressed
+    with _cond: return key in _pressed
 
 def key_released(key: str) -> bool:
-    with _cond:
-       return key in _released
+    with _cond: return key in _released
 
 def pressed_keys() -> list:
-    with _cond:
-        return list(_pressed)
+    with _cond: return list(_pressed)
 
 def released_keys() -> list:
-    with _cond:
-        return list(_released)
+    with _cond: return list(_released)
 
 def update_canvas() -> None:
     global _answer
     with _cond:
-        _pressed.clear()
-        _released.clear()
-        _answer = None
-    if not check_ws():
-        init_canvas(_size)
-    _ws.sendMessage(";\n".join(_jss + [""]))
-    _jss.clear()
+        if _ws:
+           _pressed.clear()
+           _released.clear()
+           _answer = None
+           _ws.sendMessage(";\n".join(_jss + [""]))
+           _jss.clear()
 
 def main_loop(tick=None, fps=30) -> None:
     update_canvas()
     try:
-        while check_ws():
+        while _cond_check("_ws"):
             if tick: tick()
             update_canvas()
             time.sleep(1 / fps)
@@ -153,6 +143,7 @@ def close_canvas():
 
 class FileHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        print(self.path)
         if self.path == "/":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
@@ -223,8 +214,7 @@ def start_websocket():
             global _ws
             self.server.closing = True
             self.server.close()
-            with _cond:
-                _ws = None
+            with _cond: _ws = None
 
     server = SimpleWebSocketServer("localhost", _ws_port, SocketHandler)
     server.closing = False
@@ -234,80 +224,56 @@ def start_websocket():
 
 #### index.html
 
-_html = """<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-
-<title>WebSocket Test</title>
-<style>
-    body { margin: 0; padding: 0; }
-    canvas { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
-             margin: 0; padding: 0; border: 1px solid silver; }
-</style>
-<script language="javascript" type="text/javascript">
-
+_html = """<!DOCTYPE html><html>
+<head><meta charset="utf-8" /><title>g2d</title><style>
+  body, canvas { margin: 0; padding: 0; }
+  canvas { position: fixed; border: 1px solid silver;
+    left: 50%; top: 50%; transform: translate(-50%, -50%); }
+</style></head>
+<body><canvas id="g2d-canvas" width="%WIDTH%" height="%HEIGHT%"></canvas>
+<script>
 loaded = {};
 keyCodes = {"Up": "ArrowUp", "Down": "ArrowDown",
             "Left": "ArrowLeft", "Right": "ArrowRight",
             "Space": "Spacebar", " ": "Spacebar",
             "Esc": "Escape", "Del": "Delete"}
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
-
-window.addEventListener("load", () => {
-    canvas = document.getElementById("g2d-canvas");
-    ctx = canvas.getContext("2d");
-    ctx.strokeStyle = `rgb(127, 127, 127)`;
-    ctx.fillStyle = `rgb(127, 127, 127)`;
-    websocket = new WebSocket("ws://localhost:%PORT%/");
-    websocket.onopen = (evt) => { };
-    websocket.onclose = (evt) => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        open("about:blank", "_self").close();
-    };
-    websocket.onmessage = (evt) => { eval(evt.data); };
-    websocket.onerror = (evt) => { websocket.close(); };
-    document.onfocus = (evt) => { };
-    document.onkeydown = (evt) => {
-        if (evt.repeat) return;
-        var k = keyCodes[evt.key] || evt.key;
-        websocket.send("keydown " + k);
-    };
-    document.onkeyup = (evt) => {
-        var k = keyCodes[evt.key] || evt.key;
-        websocket.send("keyup " + k);
-    };
-    canvas.onmousemove = (evt) => {
-        var rect = canvas.getBoundingClientRect();
-        var x = Math.round(evt.clientX - rect.left);
-        var y = Math.round(evt.clientY - rect.top);
-        websocket.send("mousemove " + x + " " + y);
-    };
-    canvas.onmousedown = (evt) => {
-        websocket.send("keydown " + mouseCodes[Math.min(evt.button, 2)]);
-    };
-    canvas.onmouseup = (evt) => {
-        websocket.send("keyup " + mouseCodes[Math.min(evt.button, 2)]);
-    };
-});
-
-function loadElement(tag, src) {
-    var elem = loaded[src];
-    if (elem) return elem;
-    elem = document.createElement(tag);
-    elem.src = src;
-    elem.onerror = function() {
-        if (!elem.src.startsWith("https://raw.github")) {
-            elem.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[src] = elem;
-    return elem;
+gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/";
+loadElement = (tag, src) => {
+  if (loaded[src]) return loaded[src];
+  var elem = document.createElement(tag); elem.src = src;
+  elem.onerror = () => { if (!elem.src.startsWith(gh)) elem.src = gh+src; };
+  return loaded[src] = elem;
 }
-</script>
-</head>
-<body><canvas id="g2d-canvas" width="%WIDTH%" height="%HEIGHT%"></canvas></body>
-</html>"""
+canvas = document.getElementById("g2d-canvas");
+ctx = canvas.getContext("2d");
+ctx.strokeStyle = ctx.fillStyle = `rgb(127, 127, 127)`;
+websocket = new WebSocket("ws://localhost:%PORT%/");
+websocket.onclose = (evt) => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  open("about:blank", "_self").close();
+};
+websocket.onmessage = (evt) => { eval(evt.data); };
+websocket.onerror = (evt) => { websocket.close(); };
+document.onkeydown = (evt) => { if (!evt.repeat) {
+  websocket.send("keydown " + (keyCodes[evt.key] || evt.key));
+}};
+document.onkeyup = (evt) => {
+  websocket.send("keyup " + (keyCodes[evt.key] || evt.key));
+};
+canvas.onmousemove = (evt) => {
+  var rect = canvas.getBoundingClientRect();
+  var x = Math.round(evt.clientX - rect.left);
+  var y = Math.round(evt.clientY - rect.top);
+  websocket.send("mousemove " + x + " " + y);
+};
+canvas.onmousedown = (evt) => {
+  websocket.send("keydown " + mouseCodes[Math.min(evt.button, 2)]);
+};
+canvas.onmouseup = (evt) => {
+  websocket.send("keyup " + mouseCodes[Math.min(evt.button, 2)]);
+};
+</script></body></html>"""
 
 
 #### websockets -- https://github.com/dpallot/simple-websocket-server

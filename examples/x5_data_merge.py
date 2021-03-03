@@ -10,13 +10,13 @@ from random import randrange
 for n in (1, 2):
     with open(f"_file{n}.dat", "w") as wf:
         data = sorted(randrange(50) for i in range(randrange(15)))
-        print("\n".join(map(str, data)), file=wf, end="")
+        wf.write("\n".join(map(str, data)))
 
 with open("_file1.dat") as f1, open("_file2.dat") as f2:
     a = f1.readline().strip()
     b = f2.readline().strip()
-    while a != "" or b != "":
-        if a != "" and (b == "" or float(a) < float(b)):
+    while a or b:
+        if a and (not b or float(a) < float(b)):
             print(a)
             a = f1.readline().strip()
         else:
