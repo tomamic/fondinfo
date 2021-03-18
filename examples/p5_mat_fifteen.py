@@ -56,4 +56,4 @@ def main():
     gui_play(game)
     ##console_play(game)
 
-main()
+##main()
