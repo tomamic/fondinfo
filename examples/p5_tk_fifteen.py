@@ -2,6 +2,8 @@
 from tkinter import Tk, Button, messagebox
 from p5_mat_fifteen import Fifteen, BoardGame
 
+from functools import partial
+
 class BoardGameGui(Tk):
     def __init__(self, game: BoardGame):
         super().__init__()
@@ -11,7 +13,7 @@ class BoardGameGui(Tk):
         for y in range(game.rows()):
             for x in range(game.cols()):
                 b = Button(self, width=2, height=2, bg="palegreen",
-                     command=lambda x=x, y=y: self.handle_click(x, y))
+                     command=partial(self.handle_click, x, y))
                 b.grid(column=x, row=y)
         self.update_all_buttons()
 
