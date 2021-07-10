@@ -89,9 +89,9 @@ def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, i
         scaled = pg.transform.smoothscale(cropped, (w1, h1))
         _canvas.blit(scaled, (x1, y1))
 
-def load_audio(url: str) -> str:
+def load_audio(src: str) -> str:
     if src not in _loaded:
-        _loaded[src] = pg.mixer.Sound(url)
+        _loaded[src] = pg.mixer.Sound(src)
     return src
 
 def play_audio(src: str, loop=False) -> None:

@@ -8,6 +8,7 @@
 
 #include "g2d/basic.hpp"
 #include <string>
+#include <typeinfo>
 #include <vector>
 
 using std::vector;
@@ -75,8 +76,7 @@ public:
     }
 
     void collide(Actor* other) {
-        auto ghost = dynamic_cast<Ghost*>(other);
-        if (ghost == nullptr) {
+        if (typeid(*other) != typeid(Ghost)) {
             auto op = other->position();
             if (op.x < x_) {
                 dx_ = SPEED;
