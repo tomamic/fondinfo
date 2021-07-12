@@ -70,7 +70,7 @@ func dialog(cmd string, a ...interface{}) string {
     doJs(cmd+"(`%s`)", msg)
     UpdateCanvas()
     for len(answers) == 0 {
-        w.Loop(true)
+        w.Run()
     }
     ans := answers[0]
     answers = answers[1:]
@@ -115,7 +115,7 @@ func evalJs(code string) {
 
 func waitDone() {
     if inited {
-        defer w.Exit()
+        defer w.Destroy()
         w.Run()
     }
 }
@@ -137,15 +137,13 @@ func InitCanvas(size Point) {
     if !inited {
         index := startServer(size)
         fmt.Println(index)
-        w = webview.New(webview.Settings{
-            Width:                  max(size.X, 480),
-            Height:                 max(size.Y, 360),
-            Title:                  "G2D WebView",
-            URL:                    index,
-            ExternalInvokeCallback: handleRPC,
-        })
+        w = webview.New(true)
+        w.SetTitle("G2D WebView")
+        w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
+        w.Navigate(index)
+        w.Bind(handleRPC)  // ExternalInvokeCallback: handleRPC
         for !inited {
-            w.Loop(true)
+            w.Run()
         }
     }
     js := fmt.Sprintf("initCanvas(%d, %d);\n", size.X, size.Y)
