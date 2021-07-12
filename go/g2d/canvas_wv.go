@@ -52,10 +52,6 @@ func startServer(size Point) string {
     return "http://" + ln.Addr().String() + "/index.html"
 }
 
-func handleRPC(data string) {
-    handleData(data)
-}
-
 func Println(a ...interface{}) {
     fmt.Println(a...)
 }
