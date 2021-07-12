@@ -4,11 +4,10 @@ import . "g2d"
 
 var x, y, dx, count = 50, 50, 5, 0
 var ARENA_W, ARENA_H, MARGIN = 480, 360, 100
-var image = LoadImage("ball.png")
 
 func tick() {
     ClearCanvas()  // Draw background
-    DrawImage(image, Point{x, y})  // Draw foreground
+    DrawImage("ball.png", Point{x, y})  // Draw foreground
 
     if x + dx < -MARGIN {
         x = ARENA_W + MARGIN

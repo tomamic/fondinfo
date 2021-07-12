@@ -26,12 +26,16 @@ func (a *Ball) Move() {
     a.y += a.dy
 }
 
-func (a *Ball) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Ball) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Ball) Symbol() Rect {
-    return Rect{0, 0, a.h, a.w}
+func (a *Ball) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Ball) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Ball) Collide(other Actor) {
@@ -76,15 +80,19 @@ func (a *Ghost) Move() {
     }
 }
 
-func (a *Ghost) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Ghost) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Ghost) Symbol() Rect {
+func (a *Ghost) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Ghost) Symbol() Point {
     if a.visible {
-        return Rect{20, 0, a.w, a.h}
+        return Point{20, 0}
     }
-    return Rect{20, 20, a.w, a.h}
+    return Point{20, 20}
 }
 
 func (a *Ghost) Collide(other Actor) {
@@ -154,12 +162,16 @@ func (a *Turtle) GoDown(cmd bool) {
 func (a *Turtle) Collide(other Actor) {
 }
 
-func (a *Turtle) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Turtle) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Turtle) Symbol() Rect {
-    return Rect{0, 20, a.w, a.h}
+func (a *Turtle) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Turtle) Symbol() Point {
+    return Point{0, 20}
 }
 
 /*
@@ -221,10 +233,10 @@ func tick() {
     arena.MoveAll()
     ClearCanvas()
     for _, a := range arena.Actors() {
-        if (a.Symbol() != Rect{0, 0, 0, 0}) {
-            DrawImageClip(sprites, a.Symbol(), a.Position())
+        if (a.Symbol() != Point{-1, -1}) {
+            DrawImageClip(sprites, a.Symbol(), a.Size() a.Position())
         } else {
-            FillRect(a.Position())
+            FillRect(a.Position(), a.Size())
         }
     }
 }

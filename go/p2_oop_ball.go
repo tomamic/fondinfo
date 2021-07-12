@@ -3,29 +3,30 @@ package main
 import . "g2d"
 
 var screen = Point{480, 360}
+var size = Point{20, 20}
 
 type Ball struct {
-    x, y, w, h int
-    dx, dy     int
+    x, y   int
+    dx, dy int
 }
 
 func NewBall(pos Point) *Ball {
-    return &Ball{pos.X, pos.Y, 20, 20, 5, 5}
+    return &Ball{pos.X, pos.Y, 5, 5}
 }
 
 func (b *Ball) Move() {
-    if !(0 <= b.x+b.dx && b.x+b.dx <= screen.X-b.w) {
+    if !(0 <= b.x+b.dx && b.x+b.dx <= screen.X-size.X) {
         b.dx = -b.dx
     }
-    if !(0 <= b.y+b.dy && b.y+b.dy <= screen.Y-b.h) {
+    if !(0 <= b.y+b.dy && b.y+b.dy <= screen.Y-size.Y) {
         b.dy = -b.dy
     }
     b.x += b.dx
     b.y += b.dy
 }
 
-func (b *Ball) Position() Rect {
-    return Rect{b.x, b.y, b.w, b.h}
+func (b *Ball) Position() Point {
+    return Point{b.x, b.y}
 }
 
 // Create two objects, instances of the Ball class
@@ -45,8 +46,8 @@ func tick() {
     ClearCanvas()  // BG
     b1.Move()
     b2.Move()
-    FillRect(b1.Position())  // FG
-    FillRect(b2.Position())  // FG
+    DrawImage("ball.png", b1.Position())  // FG
+    DrawImage("ball.png", b2.Position())  // FG
 }
 
 func main() {

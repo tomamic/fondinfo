@@ -3,8 +3,9 @@ package g2d
 type Actor interface {
     Move()
     Collide(other Actor)
-    Position() Rect
-    Symbol() Rect
+    Position() Point
+    Size() Point
+    Symbol() Point
 }
 
 type Arena struct {
@@ -55,10 +56,12 @@ func (a *Arena) MoveAll() {
 }
 
 func (a *Arena) CheckCollision(a1, a2 Actor) bool {
-    r1 := a1.Position()
-    r2 := a2.Position()
-    return (r2.X < r1.X+r1.W && r1.X < r2.X+r2.W &&
-        r2.Y < r1.Y+r1.H && r1.Y < r2.Y+r2.H &&
+    p1 := a1.Position()
+    s1 := a1.Size()
+    p2 := a2.Position()
+    s2 := a2.Size()
+    return (p2.X < p1.X+s1.X && p1.X < p2.X+s2.X &&
+        p2.Y < p1.Y+s1.Y && p1.Y < p2.Y+s2.Y &&
         a.Contains(a1) && a.Contains(a2))
 }
 

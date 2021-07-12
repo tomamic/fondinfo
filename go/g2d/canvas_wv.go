@@ -5,7 +5,7 @@ package g2d
 import (
     "fmt"
     //"github.com/gen2brain/dlgs"
-    "github.com/zserge/webview"
+    "github.com/webview/webview"
     "log"
     "net"
     "net/http"

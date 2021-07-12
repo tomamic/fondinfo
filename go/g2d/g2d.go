@@ -10,7 +10,6 @@ import (
 
 type Point struct{ X, Y int }
 //type Size struct{ W, H int }
-type Rect struct{ X, Y, W, H int }
 type Color struct{ R, G, B int }
 
 var frameRate = 30.0
@@ -227,8 +226,8 @@ func FillCircle(center Point, r int) {
     doJs("fillCircle(%d, %d, %d)", center.X, center.Y, r)
 }
 
-func FillRect(r Rect) {
-    doJs("fillRect(%d, %d, %d, %d)", r.X, r.Y, r.W, r.H)
+func FillRect(position, size Point) {
+    doJs("fillRect(%d, %d, %d, %d)", position.X, position.Y, size.X, size.Y)
 }
 
 func LoadImage(src string) string {
@@ -243,9 +242,9 @@ func DrawImage(image string, p Point) {
 
 // Clip a rectangular area from an image
 // and draw it at the specified position
-func DrawImageClip(image string, clip Rect, r Rect) {
+func DrawImageClip(image string, clipPos, clipSize, pos Point) {
     doJs("drawImageClip('%s', %d, %d, %d, %d, %d, %d, %d, %d)",
-        image, clip.X, clip.Y, clip.W, clip.H, r.X, r.Y, r.W, r.H)
+        image, clipPos.X, clipPos.Y, clipSize.X, clipSize.Y, pos.X, pos.Y, clipSize.X, clipSize.Y)
 }
 
 func DrawText(txt string, p Point, size int) {

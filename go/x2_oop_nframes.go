@@ -2,26 +2,26 @@ package main
 
 import . "g2d"
 
-var arenaW, arenaH = 480, 360
+var arenaW, arenaH, ballW, ballH = 480, 360, 20, 20
 
 var b1 = NewBall(Point{40, 80})
 var b2 = NewBall(Point{80, 40})
 
 type Ball struct {
-    x, y, w, h, dx, dy, count int
+    x, y, dx, dy, count int
 }
 
 func NewBall(pos Point) *Ball {
-    return &Ball{pos.X, pos.Y, 20, 20, 5, 5, 0}
+    return &Ball{pos.X, pos.Y, 5, 5, 0}
 }
 
 func (b *Ball) Move() {
     if b.count > 0 {
         b.count -= 1
-        if b.x+b.dx < 0 || arenaW - b.w < b.x+b.dx {
+        if b.x+b.dx < 0 || arenaW - ballW < b.x+b.dx {
             b.dx = -b.dx
         }
-        if b.y+b.dy < 0 || arenaH - b.h < b.y+b.dy {
+        if b.y+b.dy < 0 || arenaH - ballH < b.y+b.dy {
             b.dy = -b.dy
         }
 
@@ -34,8 +34,8 @@ func (b *Ball) Start() {
     b.count = 5
 }
 
-func (b *Ball) Position() Rect {
-    return Rect{b.x, b.y, b.w, b.h}
+func (b *Ball) Position() Point {
+    return Point{b.x, b.y}
 }
 
 func tick() {
@@ -48,8 +48,8 @@ func tick() {
     ClearCanvas()
     b1.Move()
     b2.Move()
-    FillRect(b1.Position())
-    FillRect(b2.Position())
+    DrawImage("ball.png", b1.Position())
+    DrawImage("ball.png", b2.Position())
 }
 
 func main() {

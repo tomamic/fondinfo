@@ -18,9 +18,9 @@
 - `func SetColor(c Color)` : Set the drawing color
 - `func DrawLine(pt1, pt2 Point)` : Draw a line from `pt1` to `pt2`
 - `func FillCircle(center Point, r int)` : Fill a circle, given `center` and `radius`
-- `func FillRect(r Rect)` : Fill a given rectangle
-- `func DrawText(txt string, p Point, size int)` : Draw a text, given the left-top position and the font px size
-- `func DrawTextCentered(txt string, p Point, size int)` : Draw a centered text, given the position and the font px size
+- `func FillRect(position, size Point)` : Fill a rectangle, given left-top `position` and `size`
+- `func DrawText(txt string, position Point, size int)` : Draw a text, given left-top `position` and font px `size`
+- `func DrawTextCentered(txt string, position Point, size int)` : Draw a centered text, given center `position` and font px `size`
 
 ## Images and sounds
 

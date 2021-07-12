@@ -5,13 +5,13 @@ import . "g2d"
 var a = NewAlien(Point{40, 40})
 
 type Alien struct {
-    x, y, w, h int
+    x, y int
     xmin, xmax int
     dx, dy     int
 }
 
 func NewAlien(pos Point) *Alien {
-    return &Alien{pos.X, pos.Y, 20, 20, pos.X, pos.X+150, 5, 5}
+    return &Alien{pos.X, pos.Y, pos.X, pos.X+150, 5, 5}
 }
 
 func (a *Alien) Move() {
@@ -23,14 +23,14 @@ func (a *Alien) Move() {
     }
 }
 
-func (a *Alien) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Alien) Position() Point {
+    return Point{a.x, a.y}
 }
 
 func tick() {
     ClearCanvas()
     a.Move()
-    FillRect(a.Position())
+    DrawImage("ball.png", a.Position())
 }
 
 func main() {
