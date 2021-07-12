@@ -166,8 +166,8 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
-github.com/tomamic/fondinfo v0.0.0-20210712193808-8a9942e5b6bc h1:KZXYnmiTTjC4i5elvOx63yp1zfbX+azZcwsu3sbKWN8=
-github.com/tomamic/fondinfo v0.0.0-20210712193808-8a9942e5b6bc/go.mod h1:M8qei4m3+pORV12g0+H7YusiSxQeIgHYmEJdpj2rwYs=
+github.com/tomamic/fondinfo/go/g2d v0.0.0-20210712193808-8a9942e5b6bc h1:KTGfX6/Gbz5c8qDNn9WE8+rmzVR5MCDSkufZjzkWWWE=
+github.com/tomamic/fondinfo/go/g2d v0.0.0-20210712193808-8a9942e5b6bc/go.mod h1:6zmjlSTfaLTTYiaHlXO6fTMnKL6LlFMnL+cds/Vd+Qg=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e h1:z780M7mCrdt6KiICeW9SGirvQjxDlrVU+n99FO93nbI=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=

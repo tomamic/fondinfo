@@ -112,7 +112,7 @@ func evalJs(code string) {
 func waitDone() {
     if inited {
         defer w.Destroy()
-        w.Run()
+        //w.Run()
     }
 }
 
@@ -136,11 +136,9 @@ func InitCanvas(size Point) {
         w = webview.New(true)
         w.SetTitle("G2D WebView")
         w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
-        w.Navigate(index)
         w.Bind("invokeExternal", handleData)  // ExternalInvokeCallback: handleRPC
-        for !inited {
-            w.Run()
-        }
+        w.Navigate(index)
+        //go w.Run()
     }
     js := fmt.Sprintf("initCanvas(%d, %d);\n", size.X, size.Y)
     jss = append([]string{js}, jss...)
