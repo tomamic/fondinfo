@@ -52,7 +52,7 @@ func startServer(size Point) string {
     return "http://" + ln.Addr().String() + "/index.html"
 }
 
-func handleRPC(w webview.WebView, data string) {
+func handleRPC(data string) {
     handleData(data)
 }
 
@@ -141,7 +141,7 @@ func InitCanvas(size Point) {
         w.SetTitle("G2D WebView")
         w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
         w.Navigate(index)
-        w.Bind(handleRPC)  // ExternalInvokeCallback: handleRPC
+        w.Bind("invokeExternal", handleData)  // ExternalInvokeCallback: handleRPC
         for !inited {
             w.Run()
         }
