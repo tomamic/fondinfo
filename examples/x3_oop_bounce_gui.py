@@ -22,10 +22,10 @@ class BounceGui:
 
         g2d.clear_canvas()
         for a in arena.actors():
-            if a.symbol() != (0, 0, 0, 0):
-                g2d.draw_image_clip(self._sprites, a.symbol(), a.position())
+            if a.symbol() != None:
+                g2d.draw_image_clip(self._sprites, a.symbol(), a.size(), a.position())
             else:
-                g2d.fill_rect(a.position())
+                g2d.fill_rect(a.position(), a.size())
         lives = "Lives: " + str(self._game.hero().lives())
         toplay = "Time: " + str(self._game.remaining_time())
         g2d.draw_text(lives + " " + toplay, (0, 0), 24)

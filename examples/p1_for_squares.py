@@ -14,6 +14,6 @@ for i in range(n):
     red = i * 255 // max(n - 1, 1)
     x = y = i * (CANVAS - SIDE) // max(n - 1, 1)
     g2d.set_color((red, 0, 0))
-    g2d.fill_rect((x, y, SIDE, SIDE))
+    g2d.fill_rect((x, y), (SIDE, SIDE))
 
 g2d.main_loop()

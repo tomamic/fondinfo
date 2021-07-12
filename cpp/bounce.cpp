@@ -19,7 +19,7 @@ void tick() {
     arena->move_all();
     clear_canvas();
     for (auto a : arena->actors()) {
-        draw_image_clip("sprites.png", a->symbol(), a->position());
+        draw_image_clip("sprites.png", a->symbol(), a->size(), a->position());
     }
 }
 

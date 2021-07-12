@@ -22,6 +22,6 @@ if rows > 1:
 for y in range(rows):
     for x in range(cols):
         g2d.set_color((0, int(delta_green*y), int(delta_blue*x)))
-        g2d.fill_rect((int(w*x), int(h*y), int(w-1), int(h-1)))
+        g2d.fill_rect((int(w*x), int(h*y)), (int(w-1), int(h-1)))
 
 g2d.main_loop()

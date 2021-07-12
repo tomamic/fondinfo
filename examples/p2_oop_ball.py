@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-ARENA_W, ARENA_H = 480, 360
+ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 class Ball:
     def __init__(self, x: int, y: int):
@@ -21,8 +21,11 @@ class Ball:
         self._x += self._dx
         self._y += self._dy
 
-    def position(self) -> (int, int, int, int):
-        return self._x, self._y, self._w, self._h
+    def position(self) -> (int, int):
+        return self._x, self._y
+
+    def size(self) -> (int, int):
+        return self._w, self._h
 
 
 def main():

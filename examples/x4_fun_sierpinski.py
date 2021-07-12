@@ -6,23 +6,24 @@
 
 import g2d
 
-def sierpinski(rect: (int, int, int, int)):
-    x, y, w, h = rect
+def sierpinski(position: (int, int), size: (int, int)):
+    x, y = position
+    w, h = size
     w3, h3 = w // 3, h // 3
     if w3 < 1 or h3 < 1:
         return
     for row in range(3):
         for col in range(3):
-            rect3 = x + col * w3, y + row * h3, w3, h3
+            pos = x + col * w3, y + row * h3
             if row == 1 and col == 1:
-                g2d.fill_rect(rect3)
+                g2d.fill_rect(pos, (w3, h3))
             else:
-                sierpinski(rect3)
+                sierpinski(pos, (w3, h3))
 
 def main():
     g2d.init_canvas((243, 243))
     g2d.set_color((127, 0, 0))
-    sierpinski((0, 0, 243, 243))
+    sierpinski((0, 0), (243, 243))
     g2d.main_loop()
 
 main()

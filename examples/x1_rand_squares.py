@@ -12,12 +12,13 @@ SIDE = 100
 g2d.init_canvas((W, H))
 
 n = int(g2d.prompt("n? "))
-i = 0
-while i < n:
-    color = randrange(255), randrange(255), randrange(255)
-    rect = randrange(W - SIDE), randrange(H - SIDE), SIDE, SIDE
-    g2d.set_color(color)
-    g2d.fill_rect(rect)
-    i += 1
+for i in range(n):
+    r = randrange(255)
+    g = randrange(255)
+    b = randrange(255)
+    x = randrange(W - SIDE)
+    y = randrange(H - SIDE)
+    g2d.set_color((r, g, b))
+    g2d.fill_rect((x, y), (SIDE, SIDE))
 
 g2d.main_loop()

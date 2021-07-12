@@ -14,8 +14,8 @@ def tick():
     g2d.clear_canvas()  # BG
     b1.move()
     b2.move()
-    g2d.fill_rect(b1.position())  # FG
-    g2d.fill_rect(b2.position())  # FG
+    g2d.draw_image("ball.png", b1.position())  # FG
+    g2d.draw_image("ball.png", b2.position())  # FG
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))

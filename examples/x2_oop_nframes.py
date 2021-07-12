@@ -40,8 +40,8 @@ def tick():
     g2d.clear_canvas()  # BG
     b1.move()
     b2.move()
-    g2d.fill_rect(b1.position())  # FG
-    g2d.fill_rect(b2.position())  # FG
+    g2d.fill_rect(b1.position(), b1.size())  # FG
+    g2d.fill_rect(b2.position(), b2.size())  # FG
 
 def main():
     global b1, b2

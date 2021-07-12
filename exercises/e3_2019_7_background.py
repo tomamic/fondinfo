@@ -24,10 +24,13 @@ class Background(Actor):
         pass
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, self._ys, self._w, self._h
+        return 0, self._ys
 
 arena = Arena((480, 360))
 back = Background(arena, 120, 128, 256, 2)
@@ -40,13 +43,14 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Background):
-            ax, ay, aw, ah = a.position()
-            g2d.draw_image_clip(bg, a.symbol(), (ax, ay, aw, ah))
-            g2d.draw_image_clip(bg, a.symbol(), (ax+aw, ay, aw, ah))
-        elif a.symbol() != (0, 0, 0, 0):
-            g2d.draw_image_clip(sprites, a.symbol(), a.position())
+            ax, ay = a.position()
+            aw, ah = a.size()
+            g2d.draw_image_clip(bg, a.symbol(), a.size(), (ax, ay))
+            g2d.draw_image_clip(bg, a.symbol(), a.size(), (ax+aw, ay))
+        elif a.symbol() == None:
+            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
         else:
-            g2d.fill_rect(a.position())
+            g2d.fill_rect(a.position(), a.size())
 
 def main():
     g2d.init_canvas(arena.size())

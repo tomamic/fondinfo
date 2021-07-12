@@ -39,10 +39,13 @@ class Ball(Actor):
                 self._dy = -self._speed
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 0, self._w, self._h
+        return 0, 0
 
 
 class Ghost(Actor):
@@ -67,12 +70,15 @@ class Ghost(Actor):
         pass
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
         if self._visible:
-            return 20, 0, self._w, self._h
-        return 20, 20, self._w, self._h
+            return 20, 0
+        return 20, 20
 
 
 class Turtle(Actor):
@@ -125,10 +131,13 @@ class Turtle(Actor):
             self._lives -= 1
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 20, self._w, self._h
+        return 0, 20
 
 
 def print_arena(arena):

@@ -30,8 +30,10 @@ class Ball(Actor):
 
     def collide(self, other):
         if isinstance(other, Wall):
-            bx, by, bw, bh = self.position()  # ball's pos
-            wx, wy, ww, wh = other.position() # wall's pos
+            bx, by = self.position()  # ball's pos
+            bw, bh = self.size()
+            wx, wy = other.position() # wall's pos
+            ww, wh = other.size()
             borders_distance = [(wx - bw - bx, 0), (wx + ww - bx, 0),
                                 (0, wy - bh - by), (0, wy + wh - by)]
             # move to the nearest border: left, right, top or bottom
@@ -40,10 +42,13 @@ class Ball(Actor):
             self._y += move[1]
 
     def position(self):
-        return self._x, self._y, self.W, self.H
+        return self._x, self._y
+
+    def size(self):
+        return self.W, self.H
 
     def symbol(self):
-        return 0, 0, self.W, self.H
+        return 0, 0
 
 
 class Wall(Actor):
@@ -61,10 +66,13 @@ class Wall(Actor):
         pass
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 0, self._w, self._h
+        return 0, 0
 
 
 def tick():
@@ -73,19 +81,19 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Wall):
-            g2d.fill_rect(a.position())
+            g2d.fill_rect(a.position(), a.size())
         else:
-            g2d.draw_image_clip(sprites, a.symbol(), a.position())
+            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
 
 def main():
     global arena, sprites
-    arena = Arena(320, 240)
+    arena = Arena((320, 240))
     Ball(arena, 40, 80)
     Ball(arena, 85, 40)
     Wall(arena, 115, 80, 100, 20)
 
     g2d.init_canvas(arena.size())
-    sprites = g2d.load_image("sprites.png")
+    sprites = g2d.load_image("../examples/sprites.png")
     g2d.main_loop(tick)
 
 main()

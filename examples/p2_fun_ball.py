@@ -10,7 +10,6 @@ import g2d
 x1, y1, dx1, dy1 = 40, 80, 5, 5
 x2, y2, dx2, dy2 = 80, 40, 5, 5
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
-image = g2d.load_image("ball.png")
 
 # encapsulates behaviour, but exposes data
 def move_ball(x: int, y: int,
@@ -27,8 +26,8 @@ def tick():
     global x1, y1, dx1, dy1
     global x2, y2, dx2, dy2
     g2d.clear_canvas()               # Draw background
-    g2d.draw_image(image, (x1, y1))  # Draw foreground
-    g2d.draw_image(image, (x2, y2))  # Draw foreground
+    g2d.draw_image("ball.png", (x1, y1))  # Draw foreground
+    g2d.draw_image("ball.png", (x2, y2))  # Draw foreground
     x1, y1, dx1, dy1 = move_ball(x1, y1, dx1, dy1)
     x2, y2, dx2, dy2 = move_ball(x2, y2, dx2, dy2)
 

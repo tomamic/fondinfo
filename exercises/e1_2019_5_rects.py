@@ -10,6 +10,6 @@ if n > 1:
     dcolor = 255 // (n - 1)
 for i in range(n):
     g2d.set_color((0, i * dcolor, 0))
-    g2d.fill_rect((0, 0, size - i * dsize, size - i * dsize))
+    g2d.fill_rect((0, 0), (size - i * dsize, size - i * dsize))
 
 g2d.main_loop()

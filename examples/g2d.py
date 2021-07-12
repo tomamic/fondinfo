@@ -54,40 +54,31 @@ def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
 def fill_circle(center: (int, int), radius: int) -> None:
     pg.draw.circle(_canvas, _color, _tup(center), int(radius))
 
-def fill_rect(rectangle: (int, int, int, int)) -> None:
-    pg.draw.rect(_canvas, _color, _tup(rectangle))
+def fill_rect(position: (int, int), size: (int, int)) -> None:
+    pg.draw.rect(_canvas, _color, _tup(position + size))
 
-def draw_text(txt: str, pos: (int, int), size: int) -> None:
+def draw_text(txt: str, position: (int, int), size: int) -> None:
     font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
-    _canvas.blit(surface, _tup(pos))
+    _canvas.blit(surface, _tup(position))
 
-def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
+def draw_text_centered(txt: str, position: (int, int), size: int) -> None:
     font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     w, h = surface.get_size()
-    _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
+    _canvas.blit(surface, (int(position[0]) - w//2, int(position[1]) - h//2))
 
 def load_image(src: str) -> str:
     if src not in _loaded:
         _loaded[src] = pg.image.load(src)
     return src
 
-def draw_image(src: str, pos: (int, int)) -> None:
-    _canvas.blit(_loaded[load_image(src)], _tup(pos))
+def draw_image(src: str, position: (int, int)) -> None:
+    _canvas.blit(_loaded[load_image(src)], _tup(position))
 
-def draw_image_clip(src: str, clip: (int, int, int, int), pos: (int, int, int, int)) -> None:
+def draw_image_clip(src: str, clip_position: (int, int), clip_size: (int, int), position: (int, int)) -> None:
     image = _loaded[load_image(src)]
-    clip, pos = _tup(clip), _tup(pos)
-    x0, y0, w0, h0 = clip
-    x1, y1, w1, h1 = pos
-    if w0 == w1 and h0 == h1:
-        _canvas.blit(image, pos, area=clip)
-    else:
-        cropped = pg.Surface((w0, h0), pg.SRCALPHA)
-        cropped.blit(image, (0, 0), area=clip)
-        scaled = pg.transform.smoothscale(cropped, (w1, h1))
-        _canvas.blit(scaled, (x1, y1))
+    _canvas.blit(image, _tup(position), area=_tup(clip_position + clip_size))
 
 def load_audio(src: str) -> str:
     if src not in _loaded:

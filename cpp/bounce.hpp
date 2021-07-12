@@ -41,11 +41,13 @@ public:
 
     void collide(Actor* other) { }
 
-    Rect position() { return {x_, y_, W, H}; }
+    Point position() { return {x_, y_}; }
 
-    Rect symbol() {
-        if (visible_) return {20, 0, W, H};
-        return {20, 20, W, H};
+    Point size() { return {W, H}; }
+
+    Point symbol() {
+        if (visible_) return {20, 0};
+        return {20, 20};
     }
 };
 
@@ -91,9 +93,11 @@ public:
         }
     }
 
-    Rect position() { return {x_, y_, W, H}; }
+    Point position() { return {x_, y_}; }
 
-    Rect symbol() { return {0, 0, W, H}; }
+    Point size() { return {W, H}; }
+
+    Point symbol() { return {0, 0}; }
 };
 
 
@@ -128,9 +132,11 @@ public:
 
     void collide(Actor* other) { }
 
-    Rect position() { return {x_, y_, W, H}; }
+    Point position() { return {x_, y_}; }
 
-    Rect symbol() { return {0, 20, W, H}; }
+    Point size() { return {W, H}; }
+
+    Point symbol() { return {0, 20}; }
 
     void control(vector<string> pressed, vector<string> released) {
         string u="w", l="a", d="s", r="d";

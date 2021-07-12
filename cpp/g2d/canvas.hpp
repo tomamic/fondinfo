@@ -314,8 +314,8 @@ void fill_circle(Point center, int r) {
     {center.x, center.y, r});
 }
 
-void fill_rect(Rect r) {
-    do_js_("ctx.fillRect(%, %, %, %)", {r.x, r.y, r.w, r.h});
+void fill_rect(Point p, Point s) {
+    do_js_("ctx.fillRect(%, %, %, %)", {p.x, p.y, s.x, s.y});
 }
 
 string load_image(string src) {
@@ -327,9 +327,9 @@ void draw_image(string src, Point p) {
     do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %)", {src}, {p.x, p.y});
 }
 
-void draw_image_clip(string src, Rect clip, Rect r) {
+void draw_image_clip(string src, Point clip, Point size, Point pos) {
     do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %, %, %, %, %, %, %)",
-        {src}, {clip.x, clip.y, clip.w, clip.h, r.x, r.y, r.w, r.h});
+        {src}, {clip.x, clip.y, size.x, size.y, pos.x, pos.y, size.x, size.y});
 }
 
 void draw_text(string txt, Point p, int size, string baseline="top", string align="left") {

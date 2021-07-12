@@ -9,7 +9,7 @@ import g2d
 g2d.init_canvas((600, 400))  # width, height
 
 g2d.set_color((255, 255, 0))  # red + green = yellow
-g2d.fill_rect((150, 100, 250, 200))  # left, top, width, height
+g2d.fill_rect((150, 100), (250, 200))  # left-top position, size
 
 g2d.set_color((0, 255, 0))
 g2d.draw_line((150, 100), (400, 300))  # point1, point2

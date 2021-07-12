@@ -24,10 +24,13 @@ class Vehicle(Actor):
         self._x += self._dx
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 0, self._w, self._h
+        return 0, 0
 
     def collide(self, other):
         pass
@@ -60,10 +63,13 @@ class Frog(Actor):
                 self._x = arena_w - self._w
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 0, self._w, self._h
+        return 0, 0
 
     def collide(self, other):
         self._x, self._y = self._x0, self._y0
@@ -101,7 +107,7 @@ def tick():
     g2d.clear_canvas()
     arena.move_all()
     for a in arena.actors():
-        g2d.fill_rect(a.position())
+        g2d.fill_rect(a.position(), a.size())
 
 def main():
     global arena, frog

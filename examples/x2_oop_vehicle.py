@@ -26,7 +26,10 @@ class Vehicle:
         self._dx *= -1
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
 
 def tick():
@@ -34,7 +37,7 @@ def tick():
         b.uturn()
     g2d.clear_canvas()
     b.move()
-    g2d.fill_rect(b.position())
+    g2d.fill_rect(b.position(), b.size())
 
 def main():
     global b

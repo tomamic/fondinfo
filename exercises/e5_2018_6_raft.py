@@ -29,14 +29,17 @@ class Ball(Actor):
     def collide(self, other):
         pass
 
-    def position(self):
-        return self._x, self._y, self._w, self._h
-
     def speed(self):
         return self._dx
 
+    def position(self):
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
+
     def symbol(self):
-        return 0, 0, 20, 20
+        return 0, 0
 
 
 class Turtle(Actor):
@@ -97,15 +100,18 @@ class Turtle(Actor):
             self._raft = other
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 20, self._w, self._h
+        return 0, 20
 
 ###
 
 
-arena = Arena(320, 240)
+arena = Arena((320, 240))
 b1 = Ball(arena, 40, 60, 5)
 b2 = Ball(arena, 80, 40, -5)
 turtle = Turtle(arena, 80, 80)
@@ -129,12 +135,12 @@ def tick():
 
     g2d.clear_canvas()
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, a.symbol(), a.position())
+        g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
 
 def main():
     global sprites
     g2d.init_canvas(arena.size())
-    sprites = g2d.load_image("sprites.png")
+    sprites = g2d.load_image("../examples/sprites.png")
     g2d.main_loop(tick)
 
 main()

@@ -26,7 +26,7 @@ delta = side / n
 
 for i in range(n):
     g2d.set_color(palette[i % len(palette)])
-    g2d.fill_rect((0, 0, int(side), int(side)))
+    g2d.fill_rect((0, 0), (int(side), int(side)))
     side -= delta
 
 g2d.main_loop()

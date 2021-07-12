@@ -21,12 +21,6 @@ struct Point {
     int __getitem__(int i) { return i==0 ? x : y; }
     int __len__() { return 2; }
 };
-struct Rect {
-    int x, y, w, h;
-    Rect(int x0, int y0, int w0, int h0) { x=x0; y=y0; w=w0; h=h0; }
-    int __getitem__(int i) { return i==0 ? x : i==1 ? y : i==2 ? w : h; }
-    int __len__() { return 4; }
-};
 struct Color {
     int r, g, b;
     Color(int r0, int g0, int b0) { r=r0; g=g0; b=b0; }
@@ -38,8 +32,9 @@ class Actor {
 public:
     virtual void move() = 0;
     virtual void collide(Actor* other) = 0;
-    virtual Rect position() = 0;
-    virtual Rect symbol() = 0;
+    virtual Point position() = 0;
+    virtual Point size() = 0;
+    virtual Point symbol() = 0;
     virtual ~Actor() {}
 };
 
@@ -75,10 +70,10 @@ public:
         }
     }
     bool check_collision(Actor* a1, Actor* a2) {
-        auto r1 = a1->position();
-        auto r2 = a2->position();
-        return (r2.y < r1.y + r1.h && r1.y < r2.y + r2.h
-            && r2.x < r1.x + r1.w && r1.x < r2.x + r2.w);
+        auto p1 = a1->position(), s1 = a1->size();
+        auto p2 = a2->position(), s2 = a2->size();
+        return (p2.y < p1.y + s1.y && p1.y < p2.y + s2.y
+            && p2.x < p1.x + s1.x && p1.x < p2.x + s2.x);
     }
     std::vector<Actor*> actors() { return actors_; }
     Point size() { return {w_, h_}; }
@@ -148,10 +143,6 @@ std::vector<std::string> split(const std::string& text, const std::string& sep) 
 
 std::ostream& operator<<(std::ostream& os, const g2d::Point& p) {
     return os << "Point{" << p.x << ", " << p.y << "}";
-}
-
-std::ostream& operator<<(std::ostream& os, const g2d::Rect& r) {
-    return os << "Rect{" << r.x << ", " << r.y << ", " << r.w << ", " << r.h << "}";
 }
 
 std::ostream& operator<<(std::ostream& os, const g2d::Color& c) {

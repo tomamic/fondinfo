@@ -5,7 +5,7 @@
 '''
 
 import sys; sys.path.append('../examples/')
-import g2d
+import g2d_web as g2d
 from actor import Actor, Arena
 
 class FallingBall(Actor):
@@ -32,14 +32,17 @@ class FallingBall(Actor):
         self._x += self._dx
         self._y += self._dy
 
-    def position(self) -> (int, int, int, int):
-        return self._x, self._y, self.W, self.H
-
     def collide(self, other: Actor):
         return
 
+    def position(self) -> (int, int):
+        return self._x, self._y
+
+    def size(self) -> (int, int):
+        return self.W, self.H
+
     def symbol(self) -> (int, int):
-        return 0, 0, self.W, self.H
+        return 0, 0
 
 
 class Plane(Actor):
@@ -59,17 +62,20 @@ class Plane(Actor):
         if self._after_collision > 0:
             self._after_collision -= 1
 
-    def position(self) -> (int, int, int, int):
-        return self._x, self._y, self.W, self.H
-
     def collide(self, other: Actor):
         if (isinstance(other, FallingBall)
             and self._after_collision == 0):
             self._dx = -self._dx
             self._after_collision = 60
 
+    def position(self) -> (int, int):
+        return self._x, self._y
+
+    def size(self) -> (int, int):
+        return self.W, self.H
+
     def symbol(self) -> (int, int):
-        return 0, 0, self.W, self.H
+        return 0, 0
 
 
 def tick():
@@ -85,17 +91,17 @@ def tick():
         view_x = max(view_x - 10, 0)
 
     g2d.draw_image_clip(background,
-                        (view_x, view_y, view_w, view_h),
-                        (0, 0, view_w, view_h))  # BG
+                        (view_x, view_y), (view_w, view_h),
+                        (0, 0))  # BG
     arena.move_all()
     for a in arena.actors():
-        x, y, w, h = a.position()
-        g2d.fill_rect((x - view_x, y - view_y, w, h))  # FG
+        x, y = a.position()
+        g2d.fill_rect((x - view_x, y - view_y), a.size())  # FG
 
 def main():
     global arena, view_x, view_y, view_w, view_h, background
 
-    arena = Arena(500, 250)
+    arena = Arena((500, 250))
     FallingBall(arena, 40, 80)
     FallingBall(arena, 80, 40)
     Plane(arena, 60, 60)
@@ -103,7 +109,7 @@ def main():
     view_x, view_y, view_w, view_h = 0, 0, 300, 200
     g2d.init_canvas((view_w, view_h))
 
-    background = g2d.load_image("https://raw.githubusercontent.com/tomamic/fondinfo/gh-pages/images/oop/viewport.png")
+    background = g2d.load_image("https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/oop/viewport.png")
 
     g2d.main_loop(tick)
 

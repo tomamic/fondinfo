@@ -21,12 +21,15 @@ class Alien:
             self._y += self._dy
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
 def tick():
     g2d.clear_canvas()
     a.move()
-    g2d.fill_rect(a.position())
+    g2d.fill_rect(a.position(), a.size())
 
 def main():
     global a

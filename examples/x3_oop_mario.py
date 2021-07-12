@@ -21,10 +21,13 @@ class Wall(Actor):
         pass
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 0, 0, 0
+        return 0, 0
 
 
 class Mario(Actor):
@@ -71,8 +74,10 @@ class Mario(Actor):
 
     def collide(self, other):
         if isinstance(other, Wall):
-            wall_x, wall_y, wall_w, wall_h = other.position()
-            x, y, w, h = self.position()
+            wall_x, wall_y = other.position()
+            wall_w, wall_h = other.size()
+            x, y = self.position()
+            w, h = self.size()
             previous_x, previous_y = x - self._dx, y - self._dy
 
             if previous_x + w <= wall_x:
@@ -86,10 +91,13 @@ class Mario(Actor):
                 self._y, self._dy = wall_y + wall_h, 1
 
     def position(self):
-        return self._x, self._y, self._w, self._h
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
 
     def symbol(self):
-        return 0, 20, self._w, self._h
+        return 0, 20
 
 
 arena = Arena((480, 360))
@@ -114,10 +122,10 @@ def tick():
 
     g2d.clear_canvas()
     for a in arena.actors():
-        if a.symbol() != (0, 0, 0, 0):
-            g2d.draw_image_clip(sprites, a.symbol(), a.position())
+        if not isinstance(a, Wall):
+            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
         else:
-            g2d.fill_rect(a.position())
+            g2d.fill_rect(a.position(), a.size())
 
 def main():
     g2d.init_canvas(arena.size())

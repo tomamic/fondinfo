@@ -11,7 +11,7 @@ def tick():
     g2d.clear_canvas()  # BG
     for b in balls:
         b.move()
-        g2d.fill_rect(b.position())  # FG
+        g2d.draw_image("ball.png", b.position())  # FG
 
 def main():
     global balls
