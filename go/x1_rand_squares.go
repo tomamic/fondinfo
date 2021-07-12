@@ -14,7 +14,7 @@ func main() {
         r, g, b := RandInt(0, 255), RandInt(0, 255), RandInt(0, 255)
         x, y := RandInt(0, w-side), RandInt(0, h-side)
         SetColor(Color{r, g, b})
-        FillRect(Rect{x, y, side, side})
+        FillRect(Point{x, y}, Point{side, side})
         i += 1
     }
     MainLoop()

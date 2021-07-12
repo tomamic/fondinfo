@@ -25,8 +25,8 @@ func (a *Vehicle) Move() {
     a.x += a.dx
 }
 
-func (a *Vehicle) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Vehicle) Position() Point {
+    return Point{a.x, a.y}
 }
 
 func (a *Vehicle) Uturn() {
@@ -39,7 +39,7 @@ func tick() {
     }
     ClearCanvas()
     a.Move()
-    FillRect(a.Position())
+    DrawImage(a.Position())
 }
 
 func main() {

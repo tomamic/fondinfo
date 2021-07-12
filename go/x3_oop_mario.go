@@ -16,12 +16,16 @@ func NewWall(arena *Arena, pos Point) *Wall {
 func (a *Wall) Move() {
 }
 
-func (a *Wall) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Wall) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Wall) Symbol() Rect {
-    return Rect{0, 0, 0, 0}
+func (a *Wall) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Wall) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Wall) Collide(other Actor) {
@@ -100,12 +104,16 @@ func (a *Mario) Collide(other Actor) {
     }
 }
 
-func (a *Mario) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Mario) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Mario) Symbol() Rect {
-    return Rect{0, 20, a.w, a.h}
+func (a *Mario) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Mario) Symbol() Point {
+    return Point{0, 20}
 }
 
 var arena = NewArena(Point{480, 360})
@@ -129,9 +137,9 @@ func tick() {
     ClearCanvas()
     for _, a := range arena.Actors() {
         if a.Symbol().H > 0 {
-            DrawImageClip(img, a.Symbol(), a.Position())
+            DrawImageClip(img, a.Symbol(), a.Size(), a.Position())
         } else {
-            FillRect(a.Position())
+            FillRect(a.Position(), a.Size())
         }
     }
 }

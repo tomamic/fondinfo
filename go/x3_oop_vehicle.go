@@ -28,12 +28,16 @@ func (a *Vehicle) Move() {
     a.x += a.dx
 }
 
-func (a *Vehicle) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Vehicle) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Vehicle) Symbol() Rect {
-    return Rect{0, 0, a.w, a.h}
+func (a *Vehicle) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Vehicle) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Vehicle) Collide(other Actor) {
@@ -43,7 +47,7 @@ func tick() {
     ClearCanvas()
     arena.MoveAll()
     for _, actor := range arena.Actors()  {
-        FillRect(actor.Position())
+        FillRect(actor.Position(), actor.Size())
     }
 }
 

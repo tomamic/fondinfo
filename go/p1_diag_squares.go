@@ -13,7 +13,7 @@ func main() {
             p = i * 300 / (n - 1)
         }
         SetColor(Color{c, 0, 0})
-        FillRect(Rect{p, p, 100, 100})
+        FillRect(Point{p, p}, Point{100, 100})
     }
     MainLoop()
 }

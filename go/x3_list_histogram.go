@@ -18,7 +18,7 @@ func main() {
     InitCanvas(Point{w, h})
     SetColor(Color{100, 100, 100})
     for i, v := range values {
-        FillRect(Rect{0, i*h/n, v*w/max, h/n - 1})
+        FillRect(Point{0, i*h/n}, Point{v*w/max, h/n - 1})
     }
     MainLoop()
 }

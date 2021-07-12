@@ -6,7 +6,7 @@ func main() {
     InitCanvas(Point{640, 480}) // width, height
 
     SetColor(Color{255, 255, 0})       // red + green = yellow
-    FillRect(Rect{150, 100, 250, 200}) // left, top, width, height
+    FillRect(Point{150, 100}, Point{250, 200}) // left, top, width, height
 
     SetColor(Color{0, 255, 0})
     DrawLine(Point{150, 100}, Point{400, 300})

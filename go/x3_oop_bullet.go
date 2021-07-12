@@ -28,12 +28,16 @@ func (a *Alien) Move() {
     }
 }
 
-func (a *Alien) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Alien) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Alien) Symbol() Rect {
-    return Rect{0, 0, a.w, a.h}
+func (a *Alien) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Alien) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Alien) Collide(other Actor) {
@@ -57,12 +61,16 @@ func (a *Bullet) Move() {
     }
 }
 
-func (a *Bullet) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Bullet) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Bullet) Symbol() Rect {
-    return Rect{0, 0, a.w, a.h}
+func (a *Bullet) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Bullet) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Bullet) Collide(other Actor) {
@@ -78,8 +86,8 @@ func tick() {
     }
     ClearCanvas()
     arena.MoveAll()
-    for _, actor := range arena.Actors()  {
-        FillRect(actor.Position())
+    for _, actor := range arena.Actors() {
+        FillRect(actor.Position(), actor.Size())
     }
 }
 

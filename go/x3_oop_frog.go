@@ -79,12 +79,16 @@ func (a *Frog) Collide(other Actor) {
     a.y = a.y0
 }
 
-func (a *Frog) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Frog) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Frog) Symbol() Rect {
-    return Rect{0, 20, a.w, a.h}
+func (a *Frog) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Frog) Symbol() Point {
+    return Point{0, 20}
 }
 
 
@@ -111,12 +115,16 @@ func (a *Vehicle) Move() {
     a.x += a.dx
 }
 
-func (a *Vehicle) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Vehicle) Position() Point {
+    return Point{a.x, a.y}
 }
 
-func (a *Vehicle) Symbol() Rect {
-    return Rect{0, 0, a.w, a.h}
+func (a *Vehicle) Size() Point {
+    return Point{a.w, a.h}
+}
+
+func (a *Vehicle) Symbol() Point {
+    return Point{0, 0}
 }
 
 func (a *Vehicle) Collide(other Actor) {
@@ -139,7 +147,7 @@ func tick() {
     arena.MoveAll()
     ClearCanvas()
     for _, a := range arena.Actors() {
-        FillRect(a.Position())
+        FillRect(a.Position(), a.Size())
     }
 }
 

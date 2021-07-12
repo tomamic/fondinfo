@@ -27,15 +27,15 @@ func (a *Vehicle) Move() {
     a.x += a.dx
 }
 
-func (a *Vehicle) Position() Rect {
-    return Rect{a.x, a.y, a.w, a.h}
+func (a *Vehicle) Position() Point {
+    return Point{a.x, a.y}
 }
 
 func tick() {
     ClearCanvas()
     for _, a := range actors {
         a.Move()
-        FillRect(a.Position())
+        DrawImage("ball.png", a.Position())
     }
 }
 

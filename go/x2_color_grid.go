@@ -12,7 +12,7 @@ func main() {
     for y := 0; y < rows; y++ {
         for x := 0; x < cols; x++ {
             SetColor(Color{0, y * dg, x * db})
-            FillRect(Rect{x * w, y * h, w - 1, h - 1})
+            FillRect(Point{x * w, y * h}, Point{w - 1, h - 1})
         }
     }
     MainLoop()
