@@ -1,6 +1,6 @@
 package main
 
-import . "github.com/tomamic/fondinfo/go/g2d"
+import . "g2d"
 
 func main() {
     InitCanvas(Point{640, 480}) // width, height
