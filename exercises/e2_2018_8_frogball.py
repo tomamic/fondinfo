@@ -9,7 +9,6 @@ import g2d
 
 
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
-img = g2d.load_image("ball.png")
 
 class FrogBall:
     def __init__(self, pos):
@@ -35,18 +34,18 @@ b1 = FrogBall((40, 80))
 b2 = FrogBall((80, 40))
 
 def tick():
-    if g2d.key_pressed("ArrowLeft"):
+    if g2d.key_pressed("1"):
         b1.go()
-    elif g2d.key_pressed("ArrowRight"):
+    elif g2d.key_pressed("2"):
         b2.go()
     g2d.clear_canvas()  # BG
     b1.move()
     b2.move()
-    g2d.draw_image(img, b1.position())  # FG
-    g2d.draw_image(img, b2.position())  # FG
+    g2d.draw_image("../examples/ball.png", b1.position())  # FG
+    g2d.draw_image("../examples/ball.png", b2.position())  # FG
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(tick, 5)
+    g2d.main_loop(tick, 10)
 
 main()

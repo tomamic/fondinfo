@@ -28,7 +28,7 @@ class Ball(Actor):
 
     def collide(self, other):
         if not isinstance(other, Ghost):
-            x, y, w, h = other.position()
+            x, y = other.position()
             if x < self._x:
                 self._dx = self._speed
             else:

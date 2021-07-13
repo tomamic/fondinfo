@@ -5,6 +5,8 @@
 '''
 
 from tkinter import Tk, messagebox, simpledialog
+import io
+from urllib.request import urlopen
 import subprocess, sys
 try:
     import pygame as pg
@@ -69,8 +71,14 @@ def draw_text_centered(txt: str, position: (int, int), size: int) -> None:
     _canvas.blit(surface, (int(position[0]) - w//2, int(position[1]) - h//2))
 
 def load_image(src: str) -> str:
+    gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
     if src not in _loaded:
-        _loaded[src] = pg.image.load(src)
+        try:
+            _loaded[src] = pg.image.load(src)
+        except:
+            url = src if src.startswith("http") else gh + src
+            image = io.BytesIO(urlopen(url).read())
+            _loaded[src] = pg.image.load(image)
     return src
 
 def draw_image(src: str, position: (int, int)) -> None:
@@ -82,7 +90,11 @@ def draw_image_clip(src: str, clip_position: (int, int), clip_size: (int, int), 
 
 def load_audio(src: str) -> str:
     if src not in _loaded:
-        _loaded[src] = pg.mixer.Sound(src)
+        try:
+            _loaded[src] = pg.mixer.Sound(src)
+        except:
+            audio = io.BytesIO(urlopen(src).read())
+            _loaded[src] = pg.mixer.Sound(audio)
     return src
 
 def play_audio(src: str, loop=False) -> None:
@@ -104,7 +116,7 @@ def confirm(message: str) -> bool:
 def prompt(message: str) -> str:
     if _canvas:
         update_canvas()
-    return simpledialog.askstring("", message, parent=_tkmain)
+    return simpledialog.askstring("", message, parent=_tkmain) or ""
 
 def mouse_position() -> (int, int):
     return _mouse_pos

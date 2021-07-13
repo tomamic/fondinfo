@@ -125,7 +125,7 @@ class Wall(Actor):
 
 
 def tick():
-    if g2d.key_pressed("Spacebar"):
+    if g2d.key_pressed(" "):
         mario.jump()
     elif g2d.key_pressed("ArrowLeft"):
         mario.go_left()
@@ -142,7 +142,7 @@ def tick():
         if isinstance(a, Wall):
             g2d.fill_rect(a.position(), a.size())
         else:
-            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
+            g2d.draw_image_clip("sprites.png", a.symbol(), a.size(), a.position())
 
 arena = Arena((320, 240))
 mario = Mario(arena, 80, 80)
@@ -153,5 +153,4 @@ Wall(arena, 120, 160, 80, 20)
 Wall(arena, 0, 220, 320, 20)
 
 g2d.init_canvas(arena.size())
-sprites = g2d.load_image("../examples/sprites.png")
 g2d.main_loop(tick)

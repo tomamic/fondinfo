@@ -11,7 +11,7 @@ class Alien(Actor):
     def __init__(self, arena, pos):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._xmin, self._xmax = x0, x0 + 150
+        self._xmin, self._xmax = self._x, self._x + 150
         self._dx, self._dy = 5, 5
         self._arena = arena
         arena.add(self)

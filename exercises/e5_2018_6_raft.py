@@ -72,28 +72,22 @@ class Turtle(Actor):
             self._x += self._raft.speed()
         self._raft = None
 
-    def go_left(self):
+    def control(self, pressed):
+        u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
+        #u, d, l, r = "w", "s", "a", "d"
         if self._count == 0:
-            self._count = 5
-            self._dx, self._dy = -self._speed, 0
-
-    def go_right(self):
-        if self._count == 0:
-            self._count = 5
-            self._dx, self._dy = +self._speed, 0
-
-    def go_up(self):
-        if self._count == 0:
-            self._count = 5
-            self._dx, self._dy = 0, -self._speed
-
-    def go_down(self):
-        if self._count == 0:
-            self._count = 5
-            self._dx, self._dy = 0, +self._speed
-
-    def stay(self):
-        pass
+            if u in pressed:
+                self._count = 5
+                self._dx, self._dy = 0, -self._speed
+            if d in pressed:
+                self._count = 5
+                self._dx, self._dy = 0, +self._speed
+            if l in pressed:
+                self._count = 5
+                self._dx, self._dy = -self._speed, 0
+            if r in pressed:
+                self._count = 5
+                self._dx, self._dy = +self._speed, 0
 
     def collide(self, other):
         if isinstance(other, Ball) and self._count == 0:
@@ -117,25 +111,16 @@ b2 = Ball(arena, 80, 40, -5)
 turtle = Turtle(arena, 80, 80)
 
 def tick():
-    if g2d.key_pressed("ArrowUp"):
-        turtle.go_up()
-    elif g2d.key_pressed("ArrowRight"):
-        turtle.go_right()
-    elif g2d.key_pressed("ArrowDown"):
-        turtle.go_down()
-    elif g2d.key_pressed("ArrowLeft"):
-        turtle.go_left()
-    elif (g2d.key_released("ArrowUp") or
-          g2d.key_released("ArrowRight") or
-          g2d.key_released("ArrowDown") or
-          g2d.key_released("ArrowLeft")):
-        turtle.stay()
+    turtle.control(g2d.pressed_keys())
 
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
-        g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
+        if a.size() != (20, 20):
+            g2d.fill_rect(a.position(), a.size())
+        else:
+            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
 
 def main():
     global sprites

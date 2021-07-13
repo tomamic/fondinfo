@@ -91,7 +91,7 @@ class Mario(Actor):
                 self._y, self._dy = wall_y + wall_h, 1
 
     def position(self):
-        return self._x, self._y
+        return self._x, int(self._y)
 
     def size(self):
         return self._w, self._h

@@ -1,3 +1,4 @@
+import sys; sys.path.append('../examples/')
 import g2d
 from random import randrange
 

@@ -11,7 +11,6 @@ ARENA_W, ARENA_H = 480, 360
 class Vehicle:
     def __init__(self, pos: (int, int), dx: int):
         self._x, self._y = pos
-        self._w, self._h = 20, 20
         self._dx = dx
         self._left, self._right = -100, ARENA_W + 100
 
@@ -28,16 +27,13 @@ class Vehicle:
     def position(self):
         return self._x, self._y
 
-    def size(self):
-        return self._w, self._h
-
 
 def tick():
-    if g2d.key_pressed("Enter"):
+    if g2d.key_pressed("LeftButton"):
         b.uturn()
     g2d.clear_canvas()
     b.move()
-    g2d.fill_rect(b.position(), b.size())
+    g2d.draw_image("ball.png", b.position())
 
 def main():
     global b
@@ -45,4 +41,4 @@ def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
-##main()
+main()

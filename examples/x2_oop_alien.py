@@ -9,7 +9,6 @@ import g2d
 class Alien:
     def __init__(self, pos: (int, int)):
         self._x, self._y = pos
-        self._w, self._h = 20, 20
         self._xmin, self._xmax = self._x, self._x + 150
         self._dx, self._dy = 5, 5
 
@@ -23,13 +22,11 @@ class Alien:
     def position(self):
         return self._x, self._y
 
-    def size(self):
-        return self._w, self._h
 
 def tick():
     g2d.clear_canvas()
     a.move()
-    g2d.fill_rect(a.position(), a.size())
+    g2d.draw_image("ball.png", a.position())
 
 def main():
     global a

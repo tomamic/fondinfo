@@ -12,12 +12,13 @@ def main():
 
     values = []
     max_val = 0
-    val = float(g2d.prompt("Val? "))
-    while val > 0:
+    txt = g2d.prompt("Val? ")
+    while txt:
+        val = float(txt)
         values.append(val)
         if val > max_val:
             max_val = val
-        val = float(g2d.prompt("Val? "))
+        txt = g2d.prompt("Val? ")
 
     n = len(values)
     for i in range(n):

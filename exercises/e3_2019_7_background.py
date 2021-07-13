@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+import sys; sys.path.append("../examples")
 import g2d
 from actor import Actor, Arena
 
@@ -34,8 +35,8 @@ class Background(Actor):
 
 arena = Arena((480, 360))
 back = Background(arena, 120, 128, 256, 2)
-sprites = g2d.load_image("moon-patrol.png")
-bg = g2d.load_image("moon-patrol-bg.png")
+sprites = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/sprites/moon-patrol.png"
+bg = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/sprites/moon-patrol-bg.png"
 
 def tick():
     arena.move_all()  # Game logic

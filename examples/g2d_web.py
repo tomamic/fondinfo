@@ -75,7 +75,7 @@ def pause_audio(src: str) -> None:
 
 def _dialog(dialog: str, message: str) -> str:
     message = message.replace(r"`", r"\`")
-    _jss.append(f"websocket.send(`answer ` + {dialog}(`{message}`))")
+    _jss.append(f"websocket.send(`answer ` + ({dialog}(`{message}`) || ''))")
     update_canvas()
     return _anq.get()
 

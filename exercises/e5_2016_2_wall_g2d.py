@@ -83,7 +83,7 @@ def tick():
         if isinstance(a, Wall):
             g2d.fill_rect(a.position(), a.size())
         else:
-            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
+            g2d.draw_image_clip("../examples/sprites.png", a.symbol(), a.size(), a.position())
 
 def main():
     global arena, sprites
@@ -93,7 +93,6 @@ def main():
     Wall(arena, 115, 80, 100, 20)
 
     g2d.init_canvas(arena.size())
-    sprites = g2d.load_image("../examples/sprites.png")
     g2d.main_loop(tick)
 
 main()
