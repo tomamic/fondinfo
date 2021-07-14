@@ -2,17 +2,17 @@
 
 package g2d
 
-import (
-    "fmt"
-    //"github.com/gen2brain/dlgs"
-    "github.com/webview/webview"
-    "log"
-    "net"
-    "net/http"
-    "strings"
-)
+import "fmt"
+import "log"
+import "net"
+import "net/http"
+import "strings"
+import "github.com/webview/webview"
 
 var w webview.WebView = nil
+var channelDone = make(chan bool)
+var channelInit = make(chan bool)
+var channelAddr = make(chan string)
 
 var indexHTML = `
 <!doctype html>
@@ -28,28 +28,28 @@ var indexHTML = `
 <body>
 </body>
 <script>
-function invokeExternal(data) {
+/*function invokeExternal(data) {
     window.external.invoke(data);
-}
+}*/
 ` + script + `
 </script>
 </html>
 `
 
-func startServer(size Point) string {
+func startServer(size Point) {
     ln, err := net.Listen("tcp", "127.0.0.1:0")
+    index := "http://" + ln.Addr().String() + "/index.html"
+    fmt.Println(index)
+    channelAddr <- index
     if err != nil {
         log.Fatal(err)
     }
-    go func() {
-        defer ln.Close()
-        http.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
-            w.Write([]byte(indexHTML))
-        })
-        http.Handle("/", http.FileServer(http.Dir(".")))
-        log.Fatal(http.Serve(ln, nil))
-    }()
-    return "http://" + ln.Addr().String() + "/index.html"
+    defer ln.Close()
+    http.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte(indexHTML))
+    })
+    http.Handle("/", http.FileServer(http.Dir(".")))
+    log.Fatal(http.Serve(ln, nil))
 }
 
 func Println(a ...interface{}) {
@@ -65,11 +65,12 @@ func dialog(cmd string, a ...interface{}) string {
     msg = strings.ReplaceAll(msg, "`", "\\`")
     doJs(cmd+"(`%s`)", msg)
     UpdateCanvas()
-    for len(answers) == 0 {
+    /*for len(answers) == 0 {
         w.Run()
     }
     ans := answers[0]
-    answers = answers[1:]
+    answers = answers[1:]*/
+    ans := <-channelAnswer
     return ans
 }
 
@@ -106,20 +107,23 @@ func Alert(a ...interface{}) {
 }
 
 func evalJs(code string) {
-    w.Eval(code)
+    //Println(code)
+    //w.Dispatch(func() {
+        w.Eval(code)
+    //})
 }
 
 func waitDone() {
-    if inited {
-        defer w.Destroy()
-        //w.Run()
-    }
+    <- channelDone
+    //w.Dispatch(func() {
+    w.Destroy()
+    //})
 }
 
 func terminate() {
-    if inited {
+    //w.Dispatch(func() {
         w.Terminate()
-    }
+    //})
 }
 
 func max(a, b int) int {
@@ -131,15 +135,19 @@ func max(a, b int) int {
 
 func InitCanvas(size Point) {
     if !inited {
-        index := startServer(size)
-        fmt.Println(index)
-        w = webview.New(true)
-        w.SetTitle("G2D WebView")
-        w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
-        w.Bind("invokeExternal", handleData)  // ExternalInvokeCallback: handleRPC
-        w.Navigate(index)
-        //go w.Run()
+        go startServer(size)
+        go func() {
+            w = webview.New(true)
+            w.SetTitle("G2D WebView")
+            w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
+            w.Bind("invokeExternal", handleData)  // ExternalInvokeCallback: handleRPC
+            w.Navigate(<-channelAddr)
+            w.Run()
+            channelDone <- true
+        }();
+        <-channelInit
     }
+    inited = true
     js := fmt.Sprintf("initCanvas(%d, %d);\n", size.X, size.Y)
     jss = append([]string{js}, jss...)
     UpdateCanvas()

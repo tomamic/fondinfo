@@ -19,9 +19,10 @@ var keys = make(map[string]bool)
 var prevKeys = make(map[string]bool)
 var jss = make([]string, 0)
 var answers = make([]string, 0)
+var channelAnswer = make(chan string)
 var inited, done = false, false
 var script = `
-window.onload = function(e) { setTimeout("invokeExternal('connect')", 1000); };
+window.onload = (e) => { invokeExternal("connect"); };
 loaded = {};
 keyPressed = {};
 mouseCodes = ["LeftButton", "MiddleButton", "RightButton"];
@@ -31,7 +32,7 @@ function initCanvas(w, h) {
     if (canvas == null) {
         canvas = document.createElement("CANVAS");
         canvas.id = "g2d-canvas";
-        document.getElementsByTagName("body")[0].appendChild(canvas);
+        document.body.appendChild(canvas);
     }
     canvas.width = w;
     canvas.height = h;
@@ -166,9 +167,7 @@ function mainLoop(fps) {
         delete timerId;
     }
     if (fps >= 0) {
-        timerId = setInterval(function(e) {
-            invokeExternal("tick");
-        }, 1000/fps);
+        timerId = setInterval('invokeExternal("tick")', 1000/fps);
     }
 }
 function closeCanvas() {
@@ -288,9 +287,9 @@ func SetFrameRate(fps float64) {
 }
 
 func UpdateCanvas() {
-    if !inited {
+    /*if !inited {
         InitCanvas(Point{800, 600})
-    }
+    }*/
     code := strings.Join(jss, "")
     //Println(code)
     evalJs(code)
@@ -339,7 +338,9 @@ func handleData(data string) {
     } else if args[0] == "answer" {
         ans := strings.SplitN(data, " ", 2)[1]
         answers = append(answers, ans)
+        channelAnswer <- ans
     } else if args[0] == "connect" {
         inited = true
+        channelInit <- true
     }
 }

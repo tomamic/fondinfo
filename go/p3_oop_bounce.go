@@ -234,7 +234,7 @@ func tick() {
     ClearCanvas()
     for _, a := range arena.Actors() {
         if (a.Symbol() != Point{-1, -1}) {
-            DrawImageClip(sprites, a.Symbol(), a.Size() a.Position())
+            DrawImageClip(sprites, a.Symbol(), a.Size(), a.Position())
         } else {
             FillRect(a.Position(), a.Size())
         }
