@@ -141,6 +141,27 @@ std::vector<std::string> split(const std::string& text, const std::string& sep) 
 
 }  // namespace g2d
 
+
+using std::to_string;
+
+std::string to_stream(const g2d::Point& p) {
+    return "Point{"s + to_string(p.x) + ", " + to_string(p.y) + "}";
+}
+
+std::string to_stream(const g2d::Color& c) {
+    return "Color{"s + to_string(c.r) + ", " + to_string(c.g) + ", " + to_string(c.b) + "}";
+}
+
+template <typename T>
+std::string to_string(const std::vector<T>& v) {
+    std::string result = "[";
+    for (int i = 0; i < v.size(); ++i) {
+        if (i) { result += ", "; }
+        result += to_string(v[i]);
+    }
+    return result + "]";
+}
+
 std::ostream& operator<<(std::ostream& os, const g2d::Point& p) {
     return os << "Point{" << p.x << ", " << p.y << "}";
 }
