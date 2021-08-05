@@ -86,7 +86,7 @@ def draw_image(src: str, position: (int, int)) -> None:
 
 def draw_image_clip(src: str, clip_position: (int, int), clip_size: (int, int), position: (int, int)) -> None:
     image = _loaded[load_image(src)]
-    _canvas.blit(image, _tup(position), area=_tup(clip_position + clip_size))
+    _canvas.blit(image, _tup(position), area=_tup(clip_position) + _tup(clip_size))
 
 def load_audio(src: str) -> str:
     if src not in _loaded:
