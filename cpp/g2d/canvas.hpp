@@ -242,12 +242,18 @@ void handle_event_(string evt) {
         line >> mouse_pos_.x >> mouse_pos_.y;
     } else if (cmd == "keydown") {
         string key; line >> key;
+<<<<<<< HEAD
         if (key == "Spacebar") { key = " "; }
+=======
+>>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
         if (released_.count(key)) { released_.erase(key); }
         else { pressed_.insert(key); }
     } else if (cmd == "keyup") {
         string key; line >> key;
+<<<<<<< HEAD
         if (key == "Spacebar") { key = " "; }
+=======
+>>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
         if (pressed_.count(key)) { pressed_.erase(key); }
         else { released_.insert(key); }
     }

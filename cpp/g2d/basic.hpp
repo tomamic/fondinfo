@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <iostream>
 #include <regex>
+#include <string>
 #include <vector>
 
 namespace g2d {
@@ -140,6 +141,25 @@ std::vector<std::string> split(const std::string& text, const std::string& sep) 
 }
 
 }  // namespace g2d
+
+
+std::string to_stream(const g2d::Point& p) {
+    return std::string{"Point{"} + std::to_string(p.x) + ", " + std::to_string(p.y) + "}";
+}
+
+std::string to_stream(const g2d::Color& c) {
+    return std::string{"Color{"} + std::to_string(c.r) + ", " + std::to_string(c.g) + ", " + std::to_string(c.b) + "}";
+}
+
+template <typename T>
+std::string to_string(const std::vector<T>& v) {
+    std::string result = "[";
+    for (int i = 0; i < v.size(); ++i) {
+        if (i) { result += ", "; }
+        result += std::to_string(v[i]);
+    }
+    return result + "]";
+}
 
 std::ostream& operator<<(std::ostream& os, const g2d::Point& p) {
     return os << "Point{" << p.x << ", " << p.y << "}";

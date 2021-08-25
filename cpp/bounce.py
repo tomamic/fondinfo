@@ -6,10 +6,10 @@
 
 import cppyy
 cppyy.include("bounce.hpp")
-from cppyy.gbl import Arena, Ball, Ghost, Turtle, Point, Rect
+from cppyy.gbl import Arena, Ball, Ghost, Turtle, Point
 
 import sys; sys.path.append('../examples/')
-import g2d_pygame as g2d
+import g2d
 
 arena = Arena((480, 360))
 b1 = Ball(arena, (40, 80))
@@ -25,8 +25,7 @@ def tick():
 
     g2d.clear_canvas()
     for a in arena.actors():
-        sym, pos = a.symbol(), a.position()
-        g2d.draw_image_clip(sprites, a.symbol(), a.position())
+        g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
 
 def main():
     size = arena.size()

@@ -5,7 +5,7 @@
 '''
 
 import os, subprocess, sys, threading, time, queue
-import http.server, socketserver, webbrowser
+import http.server, socketserver
 
 _http_port, _ws_port, _httpd, _wv = 8008, 7574, None, None
 _size, _mouse, _pressed, _released = (640, 480), (0, 0), tuple(), tuple()
@@ -168,7 +168,7 @@ def serve_files() -> None:
 if __name__ == "__main__":
     import webview
     webview.create_window(url=f"http://localhost:{_http_port}/",
-        width=int(sys.argv[1]) or size[0], height=int(sys.argv[2]) or _size[1],
+        width=int(sys.argv[1]) or _size[0], height=int(sys.argv[2]) or _size[1],
         title="G2D Canvas", resizable=False)
     webview.start()
     sys.exit()
@@ -181,8 +181,17 @@ def start_webview(w, h):
         _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
     except:
         print(f"Open in browser: http://localhost:{_http_port}/")
+<<<<<<< HEAD
         if not webbrowser.open(f"http://localhost:{_http_port}/", new=0):
             os.system(f"xdg-open localhost:{_http_port}/", new=0)
+=======
+        try:
+            import webbrowser
+            webbrowser.open(f"http://localhost:{_http_port}/", new=0)
+        except:
+            sys.exec(f"termux-open http://localhost:{_http_port}/")
+
+>>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
 
 
 #### g2d-ws
