@@ -240,13 +240,16 @@ void handle_event_(string evt) {
         cond_.notify_all();
     } else if (cmd == "mousemove") {
         line >> mouse_pos_.x >> mouse_pos_.y;
-    } else if (cmd == "keydown" || cmd == "keyup") {
+    } else if (cmd == "keydown") {
         string key; line >> key;
         if (key == "Spacebar") { key = " "; }
-        auto& set_in = (cmd == "keyup") ? released_ : pressed_;
-        auto& set_out = (cmd == "keyup") ? pressed_ : released_;
-        if (set_out.count(key)) { set_out.erase(key); }
-        else { set_in.insert(key); }
+        if (released_.count(key)) { released_.erase(key); }
+        else { pressed_.insert(key); }
+    } else if (cmd == "keyup") {
+        string key; line >> key;
+        if (key == "Spacebar") { key = " "; }
+        if (pressed_.count(key)) { pressed_.erase(key); }
+        else { released_.insert(key); }
     }
 }
 

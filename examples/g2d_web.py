@@ -181,7 +181,8 @@ def start_webview(w, h):
         _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
     except:
         print(f"Open in browser: http://localhost:{_http_port}/")
-        webbrowser.open(f"http://localhost:{_http_port}/", new=0)
+        if not webbrowser.open(f"http://localhost:{_http_port}/", new=0):
+            os.system(f"xdg-open localhost:{_http_port}/", new=0)
 
 
 #### g2d-ws
