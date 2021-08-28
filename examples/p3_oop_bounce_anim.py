@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d_web as g2d
+import g2d
 from p3_oop_bounce import Arena, Ball, Ghost, Turtle
 
 arena = Arena((480, 360))

@@ -5,7 +5,7 @@
 '''
 
 import sys; sys.path.append('../examples/')
-import g2d_web as g2d
+import g2d
 from actor import Actor, Arena
 
 class FallingBall(Actor):
