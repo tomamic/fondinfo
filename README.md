@@ -36,7 +36,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 - **`set_color`** `(color: (int, int, int))` : Set the drawing color
 - **`draw_line`** `(pt1: (int, int), pt2: (int, int))` : Draw a line from `pt1` to `pt2`
 - **`fill_circle`** `(center: (int, int), radius: int)` : Fill a circle, given `center` and `radius`
-- **`fill_rect`** `(rect: (int, int, int, int))` : Fill a given rectangle
+- **`fill_rect`** `(pos: (int, int), size: (int, int))` : Fill a given rectangle
 - **`draw_text`** `(txt: str, pos: (int, int), size: int)` : Draw a text, given the left-top position and the font px size
 - **`draw_text_centered`** `(txt: str, pos: (int, int), size: int)` : Draw a centered text, given the position and the font px size
 
@@ -44,7 +44,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 - **`load_image`** `(src: str) -> str` : Load an image and return a name for it
 - **`draw_image`** `(src: str, pos: (int, int))` : Blit a whole image, given its name and the position
-- **`draw_image_clip`** `(src: str, clip: (int, int, int, int), rect: (int, int, int, int))` : Blit a portion of an image
+- **`draw_image_clip`** `(src: str, clip_pos: (int, int), clip_size: (int, int), pos: (int, int))` : Blit a portion of an image
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
 - **`play_audio`** `(src: str, loop: bool)` : Play a sound, possibly in a loop, given its name
 - **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
