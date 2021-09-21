@@ -181,18 +181,11 @@ def start_webview(w, h):
         _wv = subprocess.Popen([sys.executable, __file__, str(w), str(h)])
     except:
         print(f"Open in browser: http://localhost:{_http_port}/")
-<<<<<<< HEAD
-        if not webbrowser.open(f"http://localhost:{_http_port}/", new=0):
-            os.system(f"xdg-open localhost:{_http_port}/", new=0)
-=======
         try:
             import webbrowser
             webbrowser.open(f"http://localhost:{_http_port}/", new=0)
         except:
-            sys.exec(f"termux-open http://localhost:{_http_port}/")
-
->>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
-
+            os.system(f"xdg-open http://localhost:{_http_port}/")
 
 #### g2d-ws
 
