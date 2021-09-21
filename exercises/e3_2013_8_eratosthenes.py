@@ -10,8 +10,8 @@ def primes(n: int) -> list:
     for x in range(2, n + 1):
         if is_prime[x]:
             nums.append(x)
-            for i in range(x, n // x + 1):
-                is_prime[x * i] = False
+            for i in range(x * x, n + 1, x):
+                is_prime[i] = False
     return nums
 
 def main():
