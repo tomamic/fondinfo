@@ -28,9 +28,6 @@ using namespace std::string_literals;
 static Point mouse_pos_{0, 0};
 static Point size_{640, 480};
 
-static std::set<string> pressed_;
-static std::set<string> released_;
-
 static std::set<string> current_keys_;
 static std::set<string> previous_keys_;
 

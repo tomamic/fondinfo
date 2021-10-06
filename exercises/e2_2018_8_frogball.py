@@ -13,8 +13,8 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 class FrogBall:
     def __init__(self, pos):
         self._x, self._y = pos
-        self._dx = 5
-        self._dy = 5
+        self._dx = 2
+        self._dy = 2
         self._count = 0
 
     def move(self):
@@ -28,15 +28,15 @@ class FrogBall:
 
     def go(self):
         if self._count == 0:
-            self._count = 5
+            self._count = 10
 
 b1 = FrogBall((40, 80))
 b2 = FrogBall((80, 40))
 
 def tick():
-    if g2d.key_pressed("1"):
+    if "1" in g2d.current_keys():
         b1.go()
-    elif g2d.key_pressed("2"):
+    elif "2" in g2d.current_keys():
         b2.go()
     g2d.clear_canvas()  # BG
     b1.move()

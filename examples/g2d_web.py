@@ -101,9 +101,6 @@ def key_released(key: str) -> bool:
 def current_keys() -> set:
     return set(_current_keys)
 
-def previous_keys() -> set:
-    return set(_previous_keys)
-
 def update_canvas() -> None:
     global _previous_keys
     _previous_keys = set(_current_keys)

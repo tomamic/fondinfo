@@ -6,15 +6,15 @@
 
 import g2d
 
-x, y, dx, count = 50, 50, -5, 0
+x, y, dx, count = 40, 40, -2, 0
 ARENA_W, ARENA_H = 480, 360
 
 def tick():
     global x, dx, count
     g2d.clear_canvas()
     g2d.draw_image("ball.png", (x, y))
-    if g2d.key_pressed("LeftButton") and count == 0:
-        count = 5
+    if "LeftButton" in g2d.current_keys() and count == 0:
+        count = 10
         dx = -dx
     if count > 0:
         count -= 1

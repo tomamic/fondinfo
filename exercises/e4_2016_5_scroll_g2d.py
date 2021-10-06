@@ -81,13 +81,14 @@ class Plane(Actor):
 def tick():
     global view_x, view_y
     arena_w, arena_h = arena.size()
-    if g2d.key_pressed("ArrowUp"):
+    keys = g2d.current_keys()
+    if "ArrowUp" in keys:
         view_y = max(view_y - 10, 0)
-    elif g2d.key_pressed("ArrowRight"):
+    elif "ArrowRight" in keys:
         view_x = min(view_x + 10, arena_w - view_w)
-    elif g2d.key_pressed("ArrowDown"):
+    elif "ArrowDown" in keys:
         view_y = min(view_y + 10, arena_h - view_h)
-    elif g2d.key_pressed("ArrowLeft"):
+    elif "ArrowLeft" in keys:
         view_x = max(view_x - 10, 0)
 
     g2d.draw_image_clip(background,

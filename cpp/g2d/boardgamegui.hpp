@@ -19,7 +19,7 @@ auto LONG_PRESS = 0.5s;
 
 class BoardGameGui {
     BoardGame* g_;
-    std::chrono::time_point<std::chrono::high_resolution_clock> downtime_;
+    std::chrono::time_point<std::chrono::high_resolution_clock> downtime_, zero_;
     int cols_, rows_;
 
 public:
@@ -32,9 +32,9 @@ public:
     }
 
     void tick() {
-        if (key_pressed("LeftButton")) {
+        if (current_keys().count("LeftButton") && downtime_ == zero_) {
             downtime_ = std::chrono::high_resolution_clock::now();
-        } else if (key_released("LeftButton")) {
+        } else if (! current_keys().count("LeftButton") && downtime_ != zero_) {
             auto pos = mouse_position();
             auto now = std::chrono::high_resolution_clock::now();
             if (now - downtime_ > LONG_PRESS) {
@@ -43,6 +43,7 @@ public:
                 g_->play_at(pos.x/W, pos.y/H);
             }
             update_buttons();
+            downtime_ = zero_;
         }
     }
 

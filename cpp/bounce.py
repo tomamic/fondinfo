@@ -19,7 +19,7 @@ turtle = Turtle(arena, (80, 80))
 sprites = g2d.load_image("../examples/sprites.png")
 
 def tick():
-    turtle.control(list(g2d.pressed_keys()), list(g2d.released_keys()))
+    turtle.control(g2d.current_keys())
 
     arena.move_all()  # Game logic
 

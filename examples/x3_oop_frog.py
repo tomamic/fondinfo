@@ -41,7 +41,7 @@ class Frog(Actor):
         self._x, self._y = pos
         self._w, self._h = 20, 20
         self._dx, self._dy = 0, 0
-        self._speed, self._steps, self._count = 4, 8, 0
+        self._speed, self._steps, self._count = 2, 10, 0
         self._arena = arena
         arena.add(self)
 
@@ -74,36 +74,22 @@ class Frog(Actor):
     def collide(self, other):
         self._x, self._y = self._x0, self._y0
 
-    def jump_left(self):
-        if self._count == 0:
+    def control(self, keys):
+        if "a" in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = -self._speed, 0
-
-    def jump_right(self):
-        if self._count == 0:
+        elif "d" in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = +self._speed, 0
-
-    def jump_up(self):
-        if self._count == 0:
+        elif "w" in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = 0, -self._speed
-
-    def jump_down(self):
-        if self._count == 0:
+        elif "s" in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = 0, +self._speed
 
 def tick():
-    if g2d.key_pressed("ArrowUp"):
-        frog.jump_up()
-    elif g2d.key_pressed("ArrowRight"):
-        frog.jump_right()
-    elif g2d.key_pressed("ArrowDown"):
-        frog.jump_down()
-    elif g2d.key_pressed("ArrowLeft"):
-        frog.jump_left()
-
+    frog.control(g2d.current_keys())
     g2d.clear_canvas()
     arena.move_all()
     for a in arena.actors():

@@ -38,19 +38,17 @@ class Turtle(Actor):
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
 
-    def jump(self):
-        if self._landed:
+    def control(self, keys: set):
+        if "w" in keys and self._landed:
             self._dy = -self._speed * 2
             self._landed = False
 
-    def go_left(self):
-        self._dx = -self._speed
-
-    def go_right(self):
-        self._dx = +self._speed
-
-    def stay(self):
-        self._dx = 0
+        if "a" in keys:
+            self._dx = -self._speed
+        elif "d" in keys:
+            self._dx = +self._speed
+        else:
+            self._dx = 0
 
     def collide(self, other):
         pass
@@ -66,15 +64,7 @@ class Turtle(Actor):
 
 
 def tick():
-    if g2d.key_pressed("Spacebar"):
-        turtle.jump()
-    elif g2d.key_pressed("ArrowLeft"):
-        turtle.go_left()
-    elif g2d.key_pressed("ArrowRight"):
-        turtle.go_right()
-    elif g2d.key_released("ArrowLeft") or g2d.key_released("ArrowRight"):
-        turtle.stay()
-
+    turtle.control(g2d.current_keys())
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()

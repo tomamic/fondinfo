@@ -144,9 +144,6 @@ def key_released(key: str) -> bool:
 def current_keys() -> set:
     return set(_current_keys)
 
-def previous_keys() -> set:
-    return set(_previous_keys)
-
 def handle_key(key: str, up=False):
     if up:
         _current_keys.discard(key)

@@ -18,9 +18,9 @@ class BoardGameGui:
         self.update_buttons()
 
     def tick(self):
-        if g2d.key_pressed("LeftButton"):
+        if "LeftButton" in g2d.current_keys() and self._downtime == 0:
             self._downtime = time()
-        elif g2d.key_released("LeftButton"):
+        elif "LeftButton" not in g2d.current_keys() and self._downtime > 0:
             mouse = g2d.mouse_position()
             x, y = mouse[0] // W, mouse[1] // H
             if time() - self._downtime > LONG_PRESS:
@@ -28,6 +28,7 @@ class BoardGameGui:
             else:
                 self._game.play_at(x, y)
             self.update_buttons()
+            self._downtime = 0
 
     def update_buttons(self):
         g2d.clear_canvas()
@@ -39,7 +40,7 @@ class BoardGameGui:
             g2d.draw_line((x * W, 0), (x * W, rows * H))
         for y in range(rows):
             for x in range(cols):
-                value = self._game.value_at(x, y)
+                value = str(self._game.value_at(x, y))
                 center = x * W + W//2, y * H + H//2
                 g2d.draw_text_centered(value, center, H//2)
         g2d.update_canvas()

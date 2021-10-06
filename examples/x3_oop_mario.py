@@ -58,19 +58,17 @@ class Mario(Actor):
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
 
-    def go_left(self):
-        self._dx = -self._speed
-
-    def go_right(self):
-        self._dx = +self._speed
-
-    def jump(self):
-        if self._landed:
+    def control(self, keys: set):
+        if "w" in keys and self._landed:
             self._dy = -2 * self._speed
             self._landed = False
 
-    def stay(self):
-        self._dx = 0
+        if "a" in keys:
+            self._dx = -self._speed
+        elif "d" in keys:
+            self._dx = +self._speed
+        else:
+            self._dx = 0
 
     def collide(self, other):
         if isinstance(other, Wall):
@@ -108,16 +106,7 @@ hero = Mario(arena, (230, 170))
 sprites = g2d.load_image("sprites.png")
 
 def tick():
-    if g2d.key_pressed("ArrowUp"):
-        hero.jump()
-    elif g2d.key_pressed("ArrowRight"):
-        hero.go_right()
-    elif g2d.key_pressed("ArrowLeft"):
-        hero.go_left()
-    elif (g2d.key_released("ArrowLeft") or
-          g2d.key_released("ArrowRight")):
-        hero.stay()
-
+    hero.control(g2d.current_keys())
     arena.move_all()  # Game logic
 
     g2d.clear_canvas()

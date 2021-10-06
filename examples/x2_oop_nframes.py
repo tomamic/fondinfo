@@ -11,8 +11,8 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 class Ball:
     def __init__(self, pos: (int, int)):
         self._x, self._y = pos
-        self._dx = 5
-        self._dy = 5
+        self._dx = 2
+        self._dy = 2
         self._count = 0
 
     def move(self):
@@ -27,15 +27,16 @@ class Ball:
             self._count -= 1
 
     def start(self):
-        self._count = 5
+        if self._count == 0:
+            self._count = 10
 
     def position(self) -> (int, int, int, int):
         return self._x, self._y, BALL_W, BALL_H
 
 def tick():
-    if g2d.key_pressed("1"):
+    if "1" in g2d.current_keys():
         b1.start()
-    if g2d.key_pressed("2"):
+    if "2" in g2d.current_keys():
         b2.start()
     g2d.clear_canvas()  # BG
     b1.move()
