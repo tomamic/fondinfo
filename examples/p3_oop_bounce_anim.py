@@ -14,7 +14,6 @@ g = Ghost(arena, (120, 80))
 turtle = Turtle(arena, (80, 80))
 
 def tick():
-    #turtle.control_(g2d.pressed_keys(), g2d.released_keys())
     turtle.control(g2d.current_keys())
     arena.move_all()  # Game logic
 

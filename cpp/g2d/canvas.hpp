@@ -31,6 +31,9 @@ static Point size_{640, 480};
 static std::set<string> pressed_;
 static std::set<string> released_;
 
+static std::set<string> current_keys_;
+static std::set<string> previous_keys_;
+
 static std::ostringstream jscode_;
 static std::function<void()> usr_tick_;
 static string answer_ = "";
@@ -206,8 +209,7 @@ void update_canvas() {
     {
         std::lock_guard<std::mutex> guard(mut_);
         answer_ = "";
-        pressed_.clear();
-        released_.clear();
+        previous_keys_ = current_keys_;
     }
     if (!inited()) { init_canvas(size_); }
     //std::cout << "js: " << jscode_.str() << std::endl;
@@ -242,20 +244,10 @@ void handle_event_(string evt) {
         line >> mouse_pos_.x >> mouse_pos_.y;
     } else if (cmd == "keydown") {
         string key; line >> key;
-<<<<<<< HEAD
-        if (key == "Spacebar") { key = " "; }
-=======
->>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
-        if (released_.count(key)) { released_.erase(key); }
-        else { pressed_.insert(key); }
+        current_keys_.insert(key);
     } else if (cmd == "keyup") {
         string key; line >> key;
-<<<<<<< HEAD
-        if (key == "Spacebar") { key = " "; }
-=======
->>>>>>> e6587d40369f151de639ea07c4e7b24bcdc4c910
-        if (pressed_.count(key)) { pressed_.erase(key); }
-        else { released_.insert(key); }
+        current_keys_.erase(key);
     }
 }
 
@@ -266,22 +258,22 @@ Point mouse_position() {
 
 bool key_pressed(string key) {
     std::unique_lock<std::mutex> mlock(mut_);
-    return pressed_.count(key);
+    return current_keys_.count(key) && ! previous_keys_.count(key);
 }
 
 bool key_released(string key) {
     std::unique_lock<std::mutex> mlock(mut_);
-    return released_.count(key);
+    return previous_keys_.count(key) && ! current_keys_.count(key);
 }
 
-std::vector<string> pressed_keys() {
+std::set<string> current_keys() {
     std::unique_lock<std::mutex> mlock(mut_);
-    return {pressed_.begin(), pressed_.end()};
+    return current_keys_;
 }
 
-std::vector<string> released_keys() {
+std::set<string> previous_keys() {
     std::unique_lock<std::mutex> mlock(mut_);
-    return {released_.begin(), released_.end()};
+    return previous_keys_;
 }
 
 void main_loop(int fps=30) {

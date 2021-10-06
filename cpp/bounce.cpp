@@ -14,7 +14,7 @@ auto g = new Ghost{arena, {120, 80}};
 auto turtle = new Turtle{arena, {80, 80}};
 
 void tick() {
-    turtle->control(g2d::pressed_keys(), g2d::released_keys());
+    turtle->control(g2d::current_keys());
 
     arena->move_all();
     clear_canvas();
@@ -30,7 +30,7 @@ int main() {
 
 int main_console() {
     for (std::string line; std::getline(std::cin, line);) {
-        turtle->control({line}, {"w", "a", "s", "d"});
+        turtle->control({line});
 
         arena->move_all();
         for (auto a : arena->actors()) {

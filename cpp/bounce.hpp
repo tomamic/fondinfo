@@ -7,6 +7,7 @@
 #define BOUNCE_HPP
 
 #include "g2d/basic.hpp"
+#include <set>
 #include <string>
 #include <typeinfo>
 #include <vector>
@@ -138,20 +139,16 @@ public:
 
     Point symbol() { return {0, 20}; }
 
-    void control(vector<string> pressed, vector<string> released) {
+    void control(std::set<string> keys) {
         string u="w", l="a", d="s", r="d";
-        for (auto k : released) {
-            if (k == u && dy_ < 0) { dy_ = 0; }
-            if (k == d && dy_ > 0) { dy_ = 0; }
-            if (k == l && dx_ < 0) { dx_ = 0; }
-            if (k == r && dx_ > 0) { dx_ = 0; }
-        }
-        for (auto k : pressed) {
-            if (k == u) { dy_ = -SPEED; }
-            if (k == d) { dy_ = +SPEED; }
-            if (k == l) { dx_ = -SPEED; }
-            if (k == r) { dx_ = +SPEED; }
-        }
+
+        if (keys.count(u)) { dy_ = -SPEED; }
+        else if (keys.count(d)) { dy_ = SPEED; }
+        else dy_ = 0;
+
+        if (keys.count(l)) { dx_ = -SPEED; }
+        else if (keys.count(r)) { dx_ = SPEED; }
+        else dx_ = 0;
     }
 };
 
