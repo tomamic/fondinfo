@@ -52,8 +52,8 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 ### Input and output
 
 - **`mouse_position`** `() -> (int, int)` : Get current mouse position
-- **`current_keys`** `() -> set` : Set of keys that are currently pressed
-- **`previous_keys`** `() -> set` : Set of keys that were pressed at the previous `tick`
+- **`current_keys`** `() -> set` : Get all keys that are currently held down
+- **`previous_keys`** `() -> set` : Get all keys that were held down at the previous `tick`
 - **`key_pressed`** `(key: string) -> bool` : Check if a key has been pressed after last `tick`
 - **`key_released`** `(key: string) -> bool` : Check if a key has been released after last `tick`
 - **`prompt`** `(message: str) -> str` : Show a dialog for entering a line of text
