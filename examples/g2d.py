@@ -21,7 +21,7 @@ _tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
 _canvas, _tick = None, None
 _size, _color = (640, 480), (127, 127, 127)
-_mouse_pos, _pressed, _released = (0, 0), set(), set()
+_mouse_pos, _current_keys, _previous_keys = (0, 0), set(), set()
 _loaded = {}
 
 def _tup(t: tuple) -> tuple:
@@ -46,8 +46,8 @@ def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
 
 def update_canvas() -> None:
-    _pressed.clear()
-    _released.clear()
+    global _previous_keys
+    _previous_keys = set(_current_keys)
     pg.display.update()
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
@@ -136,22 +136,22 @@ def _kb_name(key: int) -> str:
     return name
 
 def key_pressed(key: str) -> bool:
-    return key in _pressed
+    return key in _current_keys and key not in _previous_keys
 
 def key_released(key: str) -> bool:
-    return key in _released
+    return key in _previous_keys and key not in _current_keys
 
-def pressed_keys() -> list:
-    return list(_pressed)
+def current_keys() -> set:
+    return set(_current_keys)
 
-def released_keys() -> list:
-    return list(_released)
+def previous_keys() -> set:
+    return set(_previous_keys)
 
 def handle_key(key: str, up=False):
-    set_in = _released if up else _pressed
-    set_out = _pressed if up else _released
-    if key in set_out: set_out.discard(key)
-    else: set_in.add(key)
+    if up:
+        _current_keys.discard(key)
+    else:
+        _current_keys.add(key)
 
 def main_loop(tick=None, fps=30) -> None:
     global _mouse_pos, _tick

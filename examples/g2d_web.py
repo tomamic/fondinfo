@@ -8,7 +8,8 @@ import os, subprocess, sys, threading, time, queue
 import http.server, socketserver
 
 _http_port, _ws_port, _httpd, _wv = 8008, 7574, None, None
-_size, _mouse, _pressed, _released = (640, 480), (0, 0), tuple(), tuple()
+_size, _mouse = (640, 480), (0, 0)
+_current_keys, _previous_keys = set(), set()
 _jss, _wsq, _anq, _evq = [], queue.Queue(1), queue.Queue(1), queue.Queue()
 
 def init_canvas(size: (int, int)) -> None:
@@ -92,18 +93,20 @@ def mouse_position() -> (int, int):
     return _mouse
 
 def key_pressed(key: str) -> bool:
-    return key in _pressed
+    return key in _current_keys and key not in _previous_keys
 
 def key_released(key: str) -> bool:
-    return key in _released
+    return key in _previous_keys and key not in _current_keys
 
-def pressed_keys() -> tuple:
-    return _pressed
+def current_keys() -> set:
+    return set(_current_keys)
 
-def released_keys() -> tuple:
-    return _released
+def previous_keys() -> set:
+    return set(_previous_keys)
 
 def update_canvas() -> None:
+    global _previous_keys
+    _previous_keys = set(_current_keys)
     if not _wsq.empty():
         ws = _wsq.get()
         ws.sendMessage(";\n".join(_jss + [""]))
@@ -111,22 +114,18 @@ def update_canvas() -> None:
         _wsq.put(ws)
 
 def main_loop(tick=None, fps=30) -> None:
-    global _pressed, _released, _mouse
+    global _mouse
     update_canvas()
     try:
         while not _wsq.empty():
-            pressed, released = set(), set()
             while not _evq.empty():
                args = _evq.get().split(" ")
                if args[0] == "mousemove":
                    _mouse = int(args[1]), int(args[2])
                elif args[0] == "keydown":
-                   if args[1] in released: released.discard(args[1])
-                   else: pressed.add(args[1])
+                   _current_keys.add(args[1])
                elif args[0] == "keyup":
-                   if args[1] in pressed: pressed.discard(args[1])
-                   else: released.add(args[1])
-            _pressed, _released = tuple(pressed), tuple(released)
+                   _current_keys.discard(args[1])
             if tick: tick()
             update_canvas()
             time.sleep(1 / fps)

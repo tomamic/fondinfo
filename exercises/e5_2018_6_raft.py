@@ -72,20 +72,20 @@ class Turtle(Actor):
             self._x += self._raft.speed()
         self._raft = None
 
-    def control(self, pressed):
+    def control(self, keys):
         u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
         #u, d, l, r = "w", "s", "a", "d"
         if self._count == 0:
-            if u in pressed:
+            if u in keys:
                 self._count = 5
                 self._dx, self._dy = 0, -self._speed
-            if d in pressed:
+            if d in keys:
                 self._count = 5
                 self._dx, self._dy = 0, +self._speed
-            if l in pressed:
+            if l in keys:
                 self._count = 5
                 self._dx, self._dy = -self._speed, 0
-            if r in pressed:
+            if r in keys:
                 self._count = 5
                 self._dx, self._dy = +self._speed, 0
 
@@ -111,7 +111,7 @@ b2 = Ball(arena, 80, 40, -5)
 turtle = Turtle(arena, 80, 80)
 
 def tick():
-    turtle.control(g2d.pressed_keys())
+    turtle.control(g2d.current_keys())
 
     arena.move_all()  # Game logic
 

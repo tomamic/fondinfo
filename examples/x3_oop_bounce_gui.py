@@ -16,7 +16,7 @@ class BounceGui:
         g2d.main_loop(self.tick)
 
     def tick(self):
-        self._game.hero().control(g2d.pressed_keys(), g2d.released_keys())
+        self._game.hero().control(g2d.current_keys())
         arena = self._game.arena()
         arena.move_all()  # Game logic
 
