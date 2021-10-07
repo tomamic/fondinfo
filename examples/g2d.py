@@ -21,7 +21,8 @@ _tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
 _canvas, _tick = None, None
 _size, _color = (640, 480), (127, 127, 127)
-_mouse_pos, _current_keys, _previous_keys = (0, 0), set(), set()
+_mouse_pos, _mouse_down = (0, 0), 0
+_curr_keys, _prev_keys = set(), set()
 _loaded = {}
 
 def _tup(t: tuple) -> tuple:
@@ -46,8 +47,8 @@ def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
 
 def update_canvas() -> None:
-    global _previous_keys
-    _previous_keys = set(_current_keys)
+    global _prev_keys
+    _prev_keys = set(_curr_keys)
     pg.display.update()
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
@@ -135,20 +136,23 @@ def _kb_name(key: int) -> str:
         name = "".join(w.capitalize() for w in name.split())
     return name
 
+def current_keys() -> tuple:
+    return tuple(_curr_keys)
+
+def mouse_clicked() -> bool:
+    return "LeftButton" in _prev_keys and "LeftButton" not in _curr_keys
+
 def key_pressed(key: str) -> bool:
-    return key in _current_keys and key not in _previous_keys
+    return key in _curr_keys and key not in _prev_keys
 
 def key_released(key: str) -> bool:
-    return key in _previous_keys and key not in _current_keys
-
-def current_keys() -> set:
-    return set(_current_keys)
+    return key in _prev_keys and key not in _curr_keys
 
 def handle_key(key: str, up=False):
     if up:
-        _current_keys.discard(key)
+        _curr_keys.discard(key)
     else:
-        _current_keys.add(key)
+        _curr_keys.add(key)
 
 def main_loop(tick=None, fps=30) -> None:
     global _mouse_pos, _tick

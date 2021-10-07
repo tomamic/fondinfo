@@ -29,7 +29,7 @@ class Vehicle:
 
 
 def tick():
-    if g2d.key_pressed("LeftButton"):
+    if g2d.mouse_clicked():
         b.uturn()
     g2d.clear_canvas()
     b.move()

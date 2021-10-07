@@ -8,7 +8,7 @@ import g2d
 from random import randrange
 
 def tick():
-    if g2d.key_pressed("LeftButton"):
+    if g2d.mouse_clicked():
         x, y = g2d.mouse_position()
         if x <= 25 and y <= 25 and g2d.confirm("Exit?"):
             g2d.close_canvas()

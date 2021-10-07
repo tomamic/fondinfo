@@ -11,7 +11,7 @@ ARENA_W, ARENA_H, MARGIN = 480, 360, 100
 
 def tick():
     global x, dx
-    if g2d.key_pressed("LeftButton"):
+    if g2d.mouse_clicked():
         dx = -dx
     if x + dx < -MARGIN:
         x = ARENA_W + MARGIN

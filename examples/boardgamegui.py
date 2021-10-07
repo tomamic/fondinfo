@@ -14,21 +14,21 @@ LONG_PRESS = 0.5
 class BoardGameGui:
     def __init__(self, g: BoardGame):
         self._game = g
-        self._downtime = 0
+        self._mouse_down = 0
         self.update_buttons()
 
     def tick(self):
-        if "LeftButton" in g2d.current_keys() and self._downtime == 0:
-            self._downtime = time()
-        elif "LeftButton" not in g2d.current_keys() and self._downtime > 0:
+        if "LeftButton" in g2d.current_keys() and self._mouse_down == 0:
+            self._mouse_down = time()
+        elif "LeftButton" not in g2d.current_keys() and self._mouse_down > 0:
             mouse = g2d.mouse_position()
             x, y = mouse[0] // W, mouse[1] // H
-            if time() - self._downtime > LONG_PRESS:
+            if time() - self._mouse_down > LONG_PRESS:
                 self._game.flag_at(x, y)
             else:
                 self._game.play_at(x, y)
             self.update_buttons()
-            self._downtime = 0
+            self._mouse_down = 0
 
     def update_buttons(self):
         g2d.clear_canvas()

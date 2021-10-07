@@ -6,7 +6,7 @@
 #include "g2d/canvas.hpp"
 
 void update() {
-    if (g2d::key_pressed("LeftButton")) {
+    if (g2d::mouse_clicked()) {
         auto pos = g2d::mouse_position();
         if (pos.x < 25 && pos.y < 25 && g2d::confirm("Exit?")) {
             g2d::close_canvas();

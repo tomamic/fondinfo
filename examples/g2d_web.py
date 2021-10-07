@@ -9,7 +9,7 @@ import http.server, socketserver
 
 _http_port, _ws_port, _httpd, _wv = 8008, 7574, None, None
 _size, _mouse = (640, 480), (0, 0)
-_current_keys, _previous_keys = set(), set()
+_curr_keys, _prev_keys = set(), set()
 _jss, _wsq, _anq, _evq = [], queue.Queue(1), queue.Queue(1), queue.Queue()
 
 def init_canvas(size: (int, int)) -> None:
@@ -92,18 +92,21 @@ def prompt(message: str) -> str:
 def mouse_position() -> (int, int):
     return _mouse
 
+def current_keys() -> tuple:
+    return tuple(_curr_keys)
+
+def mouse_clicked() -> bool:
+    return "LeftButton" in _prev_keys and "LeftButton" not in _curr_keys
+
 def key_pressed(key: str) -> bool:
-    return key in _current_keys and key not in _previous_keys
+    return key in _curr_keys and key not in _prev_keys
 
 def key_released(key: str) -> bool:
-    return key in _previous_keys and key not in _current_keys
-
-def current_keys() -> set:
-    return set(_current_keys)
+    return key in _prev_keys and key not in _curr_keys
 
 def update_canvas() -> None:
-    global _previous_keys
-    _previous_keys = set(_current_keys)
+    global _prev_keys
+    _prev_keys = set(_curr_keys)
     if not _wsq.empty():
         ws = _wsq.get()
         ws.sendMessage(";\n".join(_jss + [""]))
@@ -120,9 +123,9 @@ def main_loop(tick=None, fps=30) -> None:
                if args[0] == "mousemove":
                    _mouse = int(args[1]), int(args[2])
                elif args[0] == "keydown":
-                   _current_keys.add(args[1])
+                   _curr_keys.add(args[1])
                elif args[0] == "keyup":
-                   _current_keys.discard(args[1])
+                   _curr_keys.discard(args[1])
             if tick: tick()
             update_canvas()
             time.sleep(1 / fps)

@@ -8,7 +8,7 @@
 auto x = 50, y = 50, dx = 5, dy = 0;
 
 void tick() {
-    if (g2d::key_pressed("LeftButton")) dx = -dx;
+    if (g2d::mouse_clicked()) dx = -dx;
     g2d::clear_canvas();
     g2d::draw_image("ball.png", {x, y});
     x += dx;

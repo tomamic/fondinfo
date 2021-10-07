@@ -253,6 +253,12 @@ Point mouse_position() {
     return mouse_pos_;
 }
 
+bool mouse_clicked() {
+    string key = "LeftButton";
+    std::unique_lock<std::mutex> mlock(mut_);
+    return previous_keys_.count(key) && ! current_keys_.count(key);
+}
+
 bool key_pressed(string key) {
     std::unique_lock<std::mutex> mlock(mut_);
     return current_keys_.count(key) && ! previous_keys_.count(key);
