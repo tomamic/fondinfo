@@ -31,7 +31,7 @@ class BoardGameGui:
                 self._game.play_at(x, y)
             self.update_buttons()
             self._mouse_down = 0
-            
+
         if "Escape" in (self._prev_keys - keys):  # "Escape" key released
             g2d.close_canvas()
         self._prev_keys = keys
@@ -49,7 +49,6 @@ class BoardGameGui:
                 value = str(self._game.value_at(x, y))
                 center = x * W + W//2, y * H + H//2
                 g2d.draw_text_centered(value, center, H//2)
-        g2d.update_canvas()
         if self._game.finished():
             g2d.alert(self._game.message())
             g2d.close_canvas()

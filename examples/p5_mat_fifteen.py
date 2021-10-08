@@ -56,4 +56,5 @@ def main():
     gui_play(game)
     ##console_play(game)
 
-##main()
+if __name__ == '__main__':
+    main()
