@@ -15,13 +15,13 @@ class BoardGameGui(Tk):
                 b = Button(self, width=2, height=2, bg="palegreen",
                      command=partial(self.handle_click, x, y))
                 b.grid(column=x, row=y)
-        self.update_all_buttons()
+        self.update_buttons()
 
     def handle_click(self, x: int, y: int):
         self._game.play_at(x, y)
-        self.update_all_buttons()
+        self.update_buttons()
 
-    def update_all_buttons(self):
+    def update_buttons(self):
         for y in range(self._game.rows()):
             for x in range(self._game.cols()):
                 b = self.grid_slaves(row=y, column=x)[0]
