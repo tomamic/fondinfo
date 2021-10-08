@@ -63,7 +63,6 @@ public:
                 draw_text_centered(value, center, H/2);
             }
         }
-        update_canvas();
         if (g_->finished()) {
             alert(g_->message());
             close_canvas();
