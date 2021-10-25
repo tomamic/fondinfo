@@ -9,7 +9,7 @@ class BallTest(unittest.TestCase):
         b = Ball(a, (460, 340))  # dx = 5, dy = 5
         b.move()  # dx = -5, dy = -5
         b.move()
-        self.assertTrue(b.position() == (450, 330, 20, 20))
+        self.assertTrue(b.position() == (450, 330))
 
     def test_move(self):
         a = Arena((480, 360))
@@ -22,7 +22,7 @@ class BallTest(unittest.TestCase):
             x0, y0, x1, y1 = param
             b = Ball(a, (x0, y0))
             b.move()
-            self.assertTrue(b.position() == (x1, y1, 20, 20))
+            self.assertTrue(b.position() == (x1, y1))
 
 
 class TurtleTest(unittest.TestCase):
@@ -30,12 +30,13 @@ class TurtleTest(unittest.TestCase):
     def test_right(self):
         a = Arena((480, 360))
         t = Turtle(a, (230, 170))
-        t.go_right(True)
+        t.control(("ArrowRight"))
         t.move()
+        t.control(("ArrowRight"))
         t.move()
-        t.go_right(False)
+        t.control(())
         t.move()  # no effect
-        self.assertTrue(t.position() == (234, 170, 20, 20))
+        self.assertTrue(t.position() == (234, 170))
 
     def test_collide_ball(self):
         a = Arena((480, 360))

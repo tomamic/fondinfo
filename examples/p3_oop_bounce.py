@@ -88,7 +88,7 @@ class Turtle(Actor):
         self._speed = 2
         self._dx, self._dy = 0, 0
         self._lives = 3
-        self._last_collision = 0
+        self._last_collision = -1000
         self._arena = arena
         arena.add(self)
 
