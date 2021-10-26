@@ -42,16 +42,16 @@ def main():
     for line in sys.stdin:
         n = int(line)
 
-        start = time.clock()
+        start = time.time()
         fib = fibonacci1(n)
-        print('fib1:', fib, time.clock() - start)
+        print('fib1:', fib, time.time() - start)
 
-        start = time.clock()
+        start = time.time()
         fib = fibonacci2(n)
-        print('fib2:', fib, time.clock() - start)
+        print('fib2:', fib, time.time() - start)
 
-        start = time.clock()
+        start = time.time()
         fib = fibonacci3(n)
-        print('fib3:', fib, time.clock() - start)
+        print('fib3:', fib, time.time() - start)
 
 main()
