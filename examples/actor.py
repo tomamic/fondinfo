@@ -67,13 +67,15 @@ class Arena():
         '''
         actors = list(reversed(self._actors))
         for a in actors:
+            pos = a.position()
             a.move()
-            for other in actors:
-                # reversed order, so actors drawn on top of others
-                # (towards the end of the cycle) are checked first
-                if other is not a and self.check_collision(a, other):
-                        a.collide(other)
-                        other.collide(a)
+            if a.position() != pos:
+                for other in actors:
+                    # reversed order, so actors drawn on top of others
+                    # (towards the end of the cycle) are checked first
+                    if other is not a and self.check_collision(a, other):
+                            a.collide(other)
+                            other.collide(a)
         self._count += 1
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
