@@ -12,7 +12,8 @@ transition = {("Q0", "a", "Z"): ("Q0", ["Y"]),
               ("Q1", "b", "Y"): ("Q2", []),
               ("Q1", "b", "A"): ("Q1", [])}
 
-for symbol in input("String? "):
+string = input("String? ")
+for symbol in string:
     if symbol not in input_alphabet:
         raise ValueError(symbol + "∉Σ, Σ=" + str(input_alphabet))
 

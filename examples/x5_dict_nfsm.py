@@ -5,7 +5,8 @@ accepting = {"Q1"}
 transition = {("Q0", "a"): {"Q0"},
               ("Q0", "b"): {"Q0", "Q1"}}
 
-for symbol in input("String? "):
+string = input("String? ")
+for symbol in string:
     if symbol not in alphabet:
         raise ValueError(symbol + "∉Σ, Σ=" + str(alphabet))
 

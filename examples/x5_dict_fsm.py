@@ -7,8 +7,8 @@ transition = {("QS", "a"): "QA", ("QS", "b"): "QB",
               ("QB", "a"): "QC", ("QB", "b"): "QS",
               ("QC", "a"): "QB", ("QC", "b"): "QA"}
 
-
-for symbol in input("String? "):
+string = input("String? ")
+for symbol in string:
     if symbol not in alphabet:
         raise ValueError(symbol + "∉Σ, Σ=" + str(alphabet))
 

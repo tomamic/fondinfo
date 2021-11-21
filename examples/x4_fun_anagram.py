@@ -9,11 +9,10 @@ def anagram(text: str) -> [str]:
         return ['']
 
     result = []
-    for i in range(len(text)):
-        c = text[i]
+    for i, char in enumerate(text):
         rest = text[:i] + text[i + 1:]
-        for p in anagram(rest):
-            result.append(c + p)
+        for partial in anagram(rest):
+            result.append(char + partial)
     return result
 
 print(anagram("RAMO"))
