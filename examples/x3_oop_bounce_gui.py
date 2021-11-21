@@ -16,8 +16,8 @@ class BounceGui:
         g2d.main_loop(self.tick)
 
     def tick(self):
+        game, arena = self._game, self._game.arena()
         self._game.hero().control(g2d.current_keys())
-        arena = self._game.arena()
         arena.move_all()  # Game logic
 
         g2d.clear_canvas()
@@ -26,14 +26,14 @@ class BounceGui:
                 g2d.draw_image_clip(self._sprites, a.symbol(), a.size(), a.position())
             else:
                 g2d.fill_rect(a.position(), a.size())
-        lives = "Lives: " + str(self._game.hero().lives())
-        toplay = "Time: " + str(self._game.remaining_time())
+        lives = "Lives: " + str(game.hero().lives())
+        toplay = "Time: " + str(game.remaining_time())
         g2d.draw_text(lives + " " + toplay, (0, 0), 24)
 
-        if self._game.game_over():
+        if game.game_over():
             g2d.alert("Game over")
             g2d.close_canvas()
-        elif self._game.game_won():
+        elif game.game_won():
             g2d.alert("Game won")
             g2d.close_canvas()
 

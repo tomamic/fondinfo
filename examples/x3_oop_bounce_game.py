@@ -4,7 +4,6 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from time import time
 from p3_oop_bounce import Actor, Arena, Ball, Ghost, Turtle
 
 
