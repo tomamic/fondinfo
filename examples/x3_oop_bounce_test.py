@@ -6,51 +6,50 @@ class BallTest(unittest.TestCase):
 
     def test_corner(self):
         a = Arena((480, 360))
-        b = Ball(a, (460, 340))  # dx = 5, dy = 5
-        b.move()  # dx = -5, dy = -5
-        b.move()
-        self.assertTrue(b.position() == (450, 330))
+        b = Ball((460, 340))  # dx = 4, dy = 4
+        b.act(a)  # dx = -4, dy = -4
+        b.act(a)
+        self.assertEqual(b.pos(), (452, 332))
 
     def test_move(self):
         a = Arena((480, 360))
-        test_values = ( (40, 80, 45, 85),
-                        (40, 215, 45, 220),
-                        (40, 340, 45, 335),
-                        (295, 80, 300, 85),
-                        (460, 80, 455, 85) )
+        test_values = ( (40, 80, 44, 84),
+                        (40, 215, 44, 219),
+                        (40, 340, 44, 336),
+                        (295, 80, 299, 84),
+                        (460, 80, 456, 84) )
         for param in test_values:
             x0, y0, x1, y1 = param
-            b = Ball(a, (x0, y0))
-            b.move()
-            self.assertTrue(b.position() == (x1, y1))
+            b = Ball((x0, y0))
+            b.act(a)
+            self.assertEqual(b.pos(), (x1, y1))
 
 
 class TurtleTest(unittest.TestCase):
 
     def test_right(self):
         a = Arena((480, 360))
-        t = Turtle(a, (230, 170))
-        t.control(("ArrowRight"))
-        t.move()
-        t.control(("ArrowRight"))
-        t.move()
-        t.control(())
-        t.move()  # no effect
-        self.assertTrue(t.position() == (234, 170))
+        a.tick(("ArrowRight"))
+        t = Turtle((230, 170))
+        t.act(a)
+        t.act(a)
+        a.tick()
+        t.act(a)  # no effect
+        self.assertTrue(t.pos() == (234, 170))
 
     def test_collide_ball(self):
         a = Arena((480, 360))
-        b = Ball(a, (0, 0))
-        t = Turtle(a, (230, 170))
-        t.collide(b)
-        t.collide(b)  # no effect
+        b = Ball((0, 0))
+        t = Turtle((230, 170))
+        t.collide(b, a)
+        t.collide(b, a)  # no effect
         self.assertTrue(t.lives() == 2)
 
     def test_collide_ghost(self):
         a = Arena((480, 360))
-        g = Ghost(a, (0, 0))
-        t = Turtle(a, (230, 170))
-        t.collide(g)
+        g = Ghost((0, 0))
+        t = Turtle((230, 170))
+        t.collide(g, a)
         self.assertTrue(t.lives() == 0)
 
 

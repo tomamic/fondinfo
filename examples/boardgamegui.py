@@ -23,7 +23,7 @@ class BoardGameGui:
         if "LeftButton" in keys and self._mouse_down == 0:
             self._mouse_down = time()
         elif "LeftButton" not in keys and self._mouse_down > 0:
-            mouse = g2d.mouse_position()
+            mouse = g2d.mouse_pos()
             x, y = mouse[0] // W, mouse[1] // H
             if time() - self._mouse_down > LONG_PRESS:
                 self._game.flag_at(x, y)

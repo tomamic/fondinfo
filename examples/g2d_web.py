@@ -38,30 +38,29 @@ def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
 def fill_circle(center: (int, int), radius: int) -> None:
     _jss.append(f"ctx.beginPath(); ctx.arc({center[0]}, {center[1]}, {radius}, 0, 2*Math.PI); ctx.closePath(); ctx.fill()")
 
-def fill_rect(position: (int, int), size: (int, int)) -> None:
-    _jss.append(f"ctx.fillRect({str(position+size)[1:-1]})")
+def fill_rect(pos: (int, int), size: (int, int)) -> None:
+    _jss.append(f"ctx.fillRect({str(pos+size)[1:-1]})")
 
 def load_image(src: str) -> str:
     _jss.append(f"loadElement(`IMG`, `{src}`)")
     return src
 
-def draw_image(src: str, pt: (int, int)) -> None:
+def draw_image(src: str, pos: (int, int)) -> None:
     _jss.append(f"loadElement(`IMG`, `{src}`)")
-    _jss.append(f"ctx.drawImage(loaded[`{src}`], {pt[0]}, {pt[1]})")
+    _jss.append(f"ctx.drawImage(loaded[`{src}`], {pos[0]}, {pos[1]})")
 
-def draw_image_clip(src: str, clip_position: (int, int), clip_size: (int, int),
-                    position: (int, int)) -> None:
+def draw_image_clip(src: str, pos: (int, int), clip_pos: (int, int), clip_size: (int, int)) -> None:
     _jss.append(f"loadElement(`IMG`, `{src}`)")
-    _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip_position+clip_size+position+clip_size)[1:-1]})")
+    _jss.append(f"ctx.drawImage(loaded[`{src}`], {str(clip_pos+clip_size+pos+clip_size)[1:-1]})")
 
-def draw_text(txt: str, position: (int, int), size: int, baseline="top", align="left") -> None:
+def draw_text(txt: str, pos: (int, int), size: int, baseline="top", align="left") -> None:
     txt = txt.replace(r"`", r"\`")
     _jss.append(f"ctx.font = `{size}px sans-serif`")
     _jss.append(f"ctx.textBaseline = `{baseline}`; ctx.textAlign = `{align}`")
-    _jss.append(f"ctx.fillText(`{txt}`, {position[0]}, {position[1]})")
+    _jss.append(f"ctx.fillText(`{txt}`, {pos[0]}, {pos[1]})")
 
-def draw_text_centered(txt: str, position: (int, int), size: int) -> None:
-   draw_text(txt, position, size, "middle", "center")
+def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
+   draw_text(txt, pos, size, "middle", "center")
 
 def load_audio(src: str) -> str:
     _jss.append(f"loadElement(`AUDIO`, `{src}`)")
@@ -89,7 +88,7 @@ def confirm(message: str) -> bool:
 def prompt(message: str) -> str:
     return _dialog("prompt", message)
 
-def mouse_position() -> (int, int):
+def mouse_pos() -> (int, int):
     return _mouse
 
 def current_keys() -> tuple:

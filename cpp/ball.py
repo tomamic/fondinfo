@@ -12,7 +12,7 @@ b1 = Ball(140, 180)
 b2 = Ball(180, 140)
 
 for i in range(25):
-    b1.move()
-    b2.move()
+    b1.act()
+    b2.act()
     print(b1.pos_x(), b1.pos_y())
     print(b2.pos_x(), b2.pos_y())

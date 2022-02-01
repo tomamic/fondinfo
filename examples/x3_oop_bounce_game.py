@@ -10,23 +10,34 @@ from p3_oop_bounce import Actor, Arena, Ball, Ghost, Turtle
 class BounceGame:
     def __init__(self):
         self._arena = Arena((480, 360))
-        Ball(self._arena, (40, 80))
-        Ball(self._arena, (80, 40))
-        Ghost(self._arena, (120, 80))
-        self._hero = Turtle(self._arena, (80, 80))
-        self._playtime = 120  # seconds
+        self._arena.spawn(Ball((40, 80)))
+        self._arena.spawn(Ball((80, 40)))
+        self._arena.spawn(Ghost((120, 80)))
+        self._arena.spawn(Turtle((80, 80)))
+        self._time = 120 * 30  # 120 seconds
 
-    def arena(self) -> Arena:
-        return self._arena
+    def tick(self, keys=tuple()):
+        self._arena.tick(keys)
+        self._time -= 1
 
-    def hero(self) -> Turtle:
-        return self._hero
+    def size(self) -> (int, int):
+        return self._arena.size()
+
+    def actors(self) -> [Actor]:
+        return self._arena.actors()
 
     def game_over(self) -> bool:
-        return self._hero.lives() <= 0
+        return self.lives() <= 0
 
     def game_won(self) -> bool:
-        return self.remaining_time() <= 0
+        return self._time <= 0
 
-    def remaining_time(self) -> int:
-        return (self._playtime - self._arena.count() // 30)
+    def lives(self) -> int:
+        lives = 0
+        for a in self._arena.actors():
+            if isinstance(a, Turtle):
+                lives = a.lives()
+        return lives
+
+    def time(self) -> int:
+        return self._time // 30

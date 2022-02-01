@@ -85,7 +85,7 @@ def load_image(src: str) -> str:
 def draw_image(src: str, pos: (int, int)) -> None:
     _canvas.blit(_loaded[load_image(src)], _tup(pos))
 
-def draw_image_clip(src: str, clip_pos: (int, int), clip_size: (int, int), pos: (int, int)) -> None:
+def draw_image_clip(src: str, pos: (int, int), clip_pos: (int, int), clip_size: (int, int)) -> None:
     image = _loaded[load_image(src)]
     _canvas.blit(image, _tup(pos), area=_tup(clip_pos) + _tup(clip_size))
 
@@ -119,7 +119,7 @@ def prompt(message: str) -> str:
         update_canvas()
     return simpledialog.askstring("", message, parent=_tkmain) or ""
 
-def mouse_position() -> (int, int):
+def mouse_pos() -> (int, int):
     return _mouse_pos
 
 def _mb_name(key: int) -> str:
@@ -165,7 +165,7 @@ def main_loop(tick=None, fps=30) -> None:
             # print(e)
             if e.type == pg.QUIT:
                 running = False
-                break
+                # break
             elif e.type in (pg.KEYDOWN, pg.KEYUP):
                 handle_key(_kb_name(e.key), e.type == pg.KEYUP)
             elif e.type in (pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP):

@@ -7,7 +7,7 @@
 
 void update() {
     if (g2d::mouse_clicked()) {
-        auto pos = g2d::mouse_position();
+        auto pos = g2d::mouse_pos();
         if (pos.x < 25 && pos.y < 25 && g2d::confirm("Exit?")) {
             g2d::close_canvas();
         } else {

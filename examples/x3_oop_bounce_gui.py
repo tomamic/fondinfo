@@ -11,29 +11,25 @@ from x3_oop_bounce_game import BounceGame
 class BounceGui:
     def __init__(self):
         self._game = BounceGame()
-        g2d.init_canvas(self._game.arena().size())
-        self._sprites = g2d.load_image("sprites.png")
+        g2d.init_canvas(self._game.size())
         g2d.main_loop(self.tick)
 
     def tick(self):
-        game, arena = self._game, self._game.arena()
-        self._game.hero().control(g2d.current_keys())
-        arena.move_all()  # Game logic
+        self._game.tick(g2d.current_keys())  # Game logic
 
         g2d.clear_canvas()
-        for a in arena.actors():
-            if a.symbol() != None:
-                g2d.draw_image_clip(self._sprites, a.symbol(), a.size(), a.position())
+        for a in self._game.actors():
+            if a.sprite() != None:
+                g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
             else:
-                g2d.fill_rect(a.position(), a.size())
-        lives = "Lives: " + str(game.hero().lives())
-        toplay = "Time: " + str(game.remaining_time())
-        g2d.draw_text(lives + " " + toplay, (0, 0), 24)
+                pass  # g2d.fill_rect(a.pos(), a.size())
+        lives, time = self._game.lives(), self._game.time()
+        g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24)
 
-        if game.game_over():
+        if self._game.game_over():
             g2d.alert("Game over")
             g2d.close_canvas()
-        elif game.game_won():
+        elif self._game.game_won():
             g2d.alert("Game won")
             g2d.close_canvas()
 

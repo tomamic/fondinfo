@@ -25,7 +25,7 @@ class Planet:
         y = self._orbit * math.sin(self._theta)
         return int(x), int(y)
 
-    def move(self):
+    def act(self):
         self._theta += self._omega
 
     def diameter(self):
@@ -41,7 +41,7 @@ def tick():
     g2d.set_color((255, 255, 0))
     g2d.fill_circle((center_x, center_y), 30)
     for p in planets:
-        p.move()
+        p.act()
         x, y = p.pos()
         radius = p.diameter() // 2
         g2d.set_color(p.color())

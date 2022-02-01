@@ -12,10 +12,10 @@ b2 = Ball(80, 40)
 
 def tick():
     g2d.clear_canvas()  # BG
-    b1.move()
-    b2.move()
-    g2d.draw_image("ball.png", b1.position())  # FG
-    g2d.draw_image("ball.png", b2.position())  # FG
+    b1.act()
+    b2.act()
+    g2d.draw_image("ball.png", b1.pos())  # FG
+    g2d.draw_image("ball.png", b2.pos())  # FG
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))

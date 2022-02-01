@@ -9,26 +9,28 @@ from time import time
 from actor import Actor, Arena
 
 class Ball(Actor):
-    def __init__(self, arena, pos):
+    def __init__(self, pos):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._speed = 5
+        self._speed = 4
         self._dx, self._dy = self._speed, self._speed
-        self._arena = arena
-        arena.add(self)
 
-    def move(self):
-        arena_w, arena_h = self._arena.size()
-        if not (0 <= self._x + self._dx <= arena_w - self._w):
-            self._dx = -self._dx
-        if not (0 <= self._y + self._dy <= arena_h - self._h):
-            self._dy = -self._dy
+    def act(self, arena: Arena):
+        arena_w, arena_h = arena.size()
+        if self._x + self._dx < 0:
+            self._dx = self._speed
+        if  self._x + self._dx + self._w > arena_w:
+            self._dx = -self._speed
+        if self._y + self._dy < 0:
+            self._dy = self._speed
+        if  self._y + self._dy + self._h > arena_h:
+            self._dy = -self._speed
         self._x += self._dx
         self._y += self._dy
 
-    def collide(self, other):
+    def collide(self, other: Actor, arena: Arena):
         if not isinstance(other, Ghost):
-            x, y = other.position()
+            x, y = other.pos()
             if x < self._x:
                 self._dx = self._speed
             else:
@@ -38,118 +40,117 @@ class Ball(Actor):
             else:
                 self._dy = -self._speed
 
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
     def size(self):
         return self._w, self._h
 
-    def symbol(self):
+    def sprite(self):
         return 0, 0
 
 
 class Ghost(Actor):
-    def __init__(self, arena, pos):
+    def __init__(self, pos):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._arena = arena
-        arena.add(self)
         self._visible = True
 
-    def move(self):
-        dx = choice([-5, 0, 5])
-        dy = choice([-5, 0, 5])
-        arena_w, arena_h = self._arena.size()
-        self._x = (self._x + dx) % arena_w
-        self._y = (self._y + dy) % arena_h
+    def act(self, arena: Arena):
+        aw, ah = arena.size()
+        dx = choice([-4, 0, 4])
+        dy = choice([-4, 0, 4])
+        self._x = (self._x + dx) % aw
+        self._y = (self._y + dy) % ah
 
         if randrange(100) == 0:
             self._visible = not self._visible
 
-    def collide(self, other):
+    def collide(self, other: Actor, arena: Arena):
         pass
 
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
     def size(self):
         return self._w, self._h
 
-    def symbol(self):
+    def sprite(self):
         if self._visible:
             return 20, 0
         return 20, 20
 
+    def visible(self):
+        return self._visible
 
 class Turtle(Actor):
-    def __init__(self, arena, pos):
+    def __init__(self, pos):
         self._x, self._y = pos
+        self._dx, self._dy = 0, 0
         self._w, self._h = 20, 20
         self._speed = 2
-        self._dx, self._dy = 0, 0
         self._lives = 3
-        self._last_collision = -1000
-        self._arena = arena
-        arena.add(self)
+        self._blinking = 0
 
-    def move(self):
-        arena_w, arena_h = self._arena.size()
-        self._y += self._dy
-        if self._y < 0:
-            self._y = 0
-        elif self._y > arena_h - self._h:
-            self._y = arena_h - self._h
-
+    def act(self, arena: Arena):
+        keys = arena.current_keys()
+        self._dx = self._dy = 0
+        if "ArrowUp" in keys:
+            self._dy = -self._speed
+        elif "ArrowDown" in keys:
+            self._dy = self._speed
+        if "ArrowLeft" in keys:
+            self._dx = -self._speed
+        elif "ArrowRight" in keys:
+            self._dx = self._speed
         self._x += self._dx
-        if self._x < 0:
-            self._x = 0
-        elif self._x > arena_w - self._w:
-            self._x = arena_w - self._w
+        self._y += self._dy
 
-    def control(self, keys):
-        u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
-        #u, d, l, r = "w", "s", "a", "d"
+        aw, ah = arena.size()
+        self._x = min(max(self._x, 0), aw - self._w)  # clamp
+        self._y = min(max(self._y, 0), ah - self._h)  # clamp
+        if self._blinking > 0:
+            self._blinking -= 1
 
-        if u in keys: self._dy = -self._speed
-        elif d in keys: self._dy = self._speed
-        else: self._dy = 0
-
-        if l in keys: self._dx = -self._speed
-        elif r in keys: self._dx = self._speed
-        else: self._dx = 0
+    def collide(self, other: Actor, arena: Arena):
+        if self._blinking == 0:
+            self._blinking = 60
+            if isinstance(other, Ghost):
+                if other.visible():
+                    self._lives = 0
+                else:
+                    self._lives += 1
+                    arena.spawn(Ball((self._x + 100, self._y + 100)))
+            elif isinstance(other, Ball):
+                self._lives -= 1
+        if self._lives <= 0:
+            arena.kill(self)
 
     def lives(self) -> int:
         return self._lives
 
-    def collide(self, other):
-        if self._arena.count() - self._last_collision < 30:
-            return
-        self._last_collision = self._arena.count()
-        if isinstance(other, Ghost):
-            self._lives = 0
-        elif isinstance(other, Ball):
-            self._lives -= 1
-
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
     def size(self):
         return self._w, self._h
 
-    def symbol(self):
+    def sprite(self):
+        if self._blinking > 0 and self._blinking % 4 <= 2:
+            return None
         return 0, 20
 
 
 def print_arena(arena):
     for a in arena.actors():
-        print(type(a).__name__, '@', a.position())
+        print(type(a).__name__, '@', a.pos())
 
 
 def main():
     arena = Arena((480, 360))
-    Ball(arena, (40, 80))
-    Ball(arena, (80, 40))
-    Ghost(arena, (120, 80))
+    arena.spawn(Ball((40, 80)))
+    arena.spawn(Ball((80, 40)))
+    arena.spawn(Ghost((120, 80)))
 
     for i in range(25):
         print_arena(arena)

@@ -35,7 +35,7 @@ public:
         if (current_keys().count("LeftButton") && downtime_ == zero_) {
             downtime_ = std::chrono::high_resolution_clock::now();
         } else if (! current_keys().count("LeftButton") && downtime_ != zero_) {
-            auto pos = mouse_position();
+            auto pos = mouse_pos();
             auto now = std::chrono::high_resolution_clock::now();
             if (now - downtime_ > LONG_PRESS) {
                 g_->flag_at(pos.x/W, pos.y/H);

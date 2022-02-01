@@ -13,9 +13,9 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 320, 240, 20, 20
 
 def tick():
     global x, y, count
-    if "LeftButton" in g2d.current_keys() and count == 10:
+    if g2d.mouse_clicked() and count == 10:
         count = 0
-    g2d.clear_canvas()             # Draw background
+    g2d.clear_canvas()                  # Draw background
     g2d.draw_image("ball.png", (x, y))  # Draw foreground
     if count < 10:
         x = (x + dx) % ARENA_W     # Update ball's position

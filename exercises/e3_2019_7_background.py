@@ -9,49 +9,43 @@ import g2d
 from actor import Actor, Arena
 
 class Background(Actor):
-    def __init__(self, arena, y, h, ys, speed):
+    def __init__(self, y, h, ys, speed):
         self._x, self._y, self._ys = 0, y, ys
         self._w, self._h = 512, h
         self._speed = speed
-        self._arena = arena
-        arena.add(self)
 
-    def move(self):
+    def act(self, arena):
         self._x -= self._speed
         if self._x + self._w < 0:
             self._x += self._w
 
-    def collide(self, other):
+    def collide(self, other, arena):
         pass
 
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
     def size(self):
         return self._w, self._h
 
-    def symbol(self):
+    def sprite(self):
         return 0, self._ys
 
+
 arena = Arena((480, 360))
-back = Background(arena, 120, 128, 256, 2)
-sprites = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/sprites/moon-patrol.png"
+arena.spawn(Background(120, 128, 256, 2))
 bg = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/sprites/moon-patrol-bg.png"
 
 def tick():
-    arena.move_all()  # Game logic
+    arena.tick()  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Background):
-            ax, ay = a.position()
+            ax, ay = a.pos()
             aw, ah = a.size()
-            g2d.draw_image_clip(bg, a.symbol(), a.size(), (ax, ay))
-            g2d.draw_image_clip(bg, a.symbol(), a.size(), (ax+aw, ay))
-        elif a.symbol() == None:
-            g2d.draw_image_clip(sprites, a.symbol(), a.size(), a.position())
-        else:
-            g2d.fill_rect(a.position(), a.size())
+            g2d.draw_image_clip(bg, (ax, ay), a.sprite(), a.size())
+            g2d.draw_image_clip(bg, (ax+aw, ay), a.sprite(), a.size())
 
 def main():
     g2d.init_canvas(arena.size())

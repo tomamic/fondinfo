@@ -17,7 +17,7 @@ class TurningBall:
         self._count = 0
         self._x = randrange(ARENA_W - BALL_W - 50)
         self._y = randrange(ARENA_H - BALL_H - 50)
-    def move(self):
+    def act(self):
         self._x += self._dx
         self._y += self._dy
 
@@ -25,15 +25,15 @@ class TurningBall:
         if self._count == 10:
             self._dx, self._dy = -self._dy, self._dx  # rot 90°
             self._count = 0
-    def position(self) -> (int, int):
+    def pos(self) -> (int, int):
         return self._x, self._y
 
 def tick():
     g2d.clear_canvas()
-    b1.move()
-    b2.move()
-    g2d.draw_image("../examples/ball.png", b1.position())
-    g2d.draw_image("../examples/ball.png", b2.position())
+    b1.act()
+    b2.act()
+    g2d.draw_image("../examples/ball.png", b1.pos())
+    g2d.draw_image("../examples/ball.png", b2.pos())
 
 b1, b2 = TurningBall(), TurningBall()
 g2d.init_canvas((ARENA_W, ARENA_H))

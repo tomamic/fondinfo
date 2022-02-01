@@ -18,21 +18,18 @@ using namespace g2d;
 
 class Ghost : public Actor {
 private:
-    Arena* arena_;
     int x_, y_;
     bool visible_ = true;
     static const int W = 20, H = 20, SPEED = 5;
 public:
-    Ghost(Arena* arena, Point position) {
+    Ghost(Point position) {
         x_ = position.x; y_ = position.y;
-        arena_ = arena;
-        arena->add(this);
     }
 
-    void move() {
+    void act(Arena* arena) {
         auto dx = g2d::randint(-1, 1) * SPEED;
         auto dy = g2d::randint(-1, 1) * SPEED;
-        auto as = arena_->size();
+        auto as = arena->size();
         x_ = (x_ + dx + as.x) % as.x;
         y_ = (y_ + dy + as.y) % as.y;
         if (rand() % 100 == 0) {
@@ -40,13 +37,13 @@ public:
         }
     }
 
-    void collide(Actor* other) { }
+    void collide(Actor* other, Arena* arena) { }
 
-    Point position() { return {x_, y_}; }
+    Point pos() { return {x_, y_}; }
 
     Point size() { return {W, H}; }
 
-    Point symbol() {
+    Point sprite() {
         if (visible_) return {20, 0};
         return {20, 20};
     }
@@ -55,19 +52,16 @@ public:
 
 class Ball : public Actor {
 private:
-    Arena* arena_;
     int x_, y_, dx_, dy_;
     static const int W = 20, H = 20, SPEED = 5;
 public:
-    Ball(Arena* arena, Point position) {
-        x_ = position.x; y_ = position.y;
+    Ball(Point pos) {
+        x_ = pos.x; y_ = pos.y;
         dx_ = SPEED; dy_ = SPEED;
-        arena_ = arena;
-        arena->add(this);
     }
 
-    void move() {
-        auto as = arena_->size();
+    void act(Arena* arena) {
+        auto as = arena->size();
         if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.x - W)) {
             dx_ = -dx_;
         }
@@ -78,9 +72,9 @@ public:
         y_ += dy_;
     }
 
-    void collide(Actor* other) {
+    void collide(Actor* other, Arena* arena) {
         if (typeid(*other) != typeid(Ghost)) {
-            auto op = other->position();
+            auto op = other->pos();
             if (op.x < x_) {
                 dx_ = SPEED;
             } else {
@@ -94,29 +88,37 @@ public:
         }
     }
 
-    Point position() { return {x_, y_}; }
+    Point pos() { return {x_, y_}; }
 
     Point size() { return {W, H}; }
 
-    Point symbol() { return {0, 0}; }
+    Point sprite() { return {0, 0}; }
 };
 
 
 class Turtle : public Actor {
 private:
-    Arena* arena_;
     int x_, y_, dx_, dy_;
     static const int W = 20, H = 20, SPEED = 2;
 public:
-    Turtle(Arena* arena, Point position) {
-        x_ = position.x; y_ = position.y;
+    Turtle(Point pos) {
+        x_ = pos.x; y_ = pos.y;
         dx_ = 0; dy_ = 0;
-        arena_ = arena;
-        arena->add(this);
     }
 
-    void move() {
-        auto as = arena_->size();
+    void act(Arena* arena) {
+        auto keys = arena->current_keys();
+        string u="w", l="a", d="s", r="d";
+
+        if (keys.count(u)) { dy_ = -SPEED; }
+        else if (keys.count(d)) { dy_ = SPEED; }
+        else dy_ = 0;
+
+        if (keys.count(l)) { dx_ = -SPEED; }
+        else if (keys.count(r)) { dx_ = SPEED; }
+        else dx_ = 0;
+
+        auto as = arena->size();
         x_ += dx_;
         if (x_ < 0) {
             x_ = 0;
@@ -131,25 +133,17 @@ public:
         }
     }
 
-    void collide(Actor* other) { }
+    void collide(Actor* other, Arena* arena) {
+        if (typeid(*other) == typeid(Ghost)) {
+            arena->kill(this);
+        }
+    }
 
-    Point position() { return {x_, y_}; }
+    Point pos() { return {x_, y_}; }
 
     Point size() { return {W, H}; }
 
-    Point symbol() { return {0, 20}; }
-
-    void control(std::set<string> keys) {
-        string u="w", l="a", d="s", r="d";
-
-        if (keys.count(u)) { dy_ = -SPEED; }
-        else if (keys.count(d)) { dy_ = SPEED; }
-        else dy_ = 0;
-
-        if (keys.count(l)) { dx_ = -SPEED; }
-        else if (keys.count(r)) { dx_ = SPEED; }
-        else dx_ = 0;
-    }
+    Point sprite() { return {0, 20}; }
 };
 
 #endif // BOUNCE_HPP

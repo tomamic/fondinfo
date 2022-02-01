@@ -15,8 +15,8 @@ g2d.init_canvas((W, H))
 n = int(g2d.prompt("n? "))
 for i in range(n):
     color = randrange(255), randrange(255), randrange(255)
-    position = randrange(W - SIDE), randrange(H - SIDE)
+    pos = randrange(W - SIDE), randrange(H - SIDE)
     g2d.set_color(color)
-    g2d.fill_rect(position, size)
+    g2d.fill_rect(pos, size)
 
 g2d.main_loop()

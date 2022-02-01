@@ -248,7 +248,7 @@ void handle_event_(string evt) {
     }
 }
 
-Point mouse_position() {
+Point mouse_pos() {
     std::unique_lock<std::mutex> mlock(mut_);
     return mouse_pos_;
 }
@@ -331,7 +331,7 @@ void draw_image(string src, Point p) {
     do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %)", {src}, {p.x, p.y});
 }
 
-void draw_image_clip(string src, Point clip, Point size, Point pos) {
+void draw_image_clip(string src, Point pos, Point clip, Point size) {
     do_js_("ctx.drawImage(loadElement(`IMG`, `%`), %, %, %, %, %, %, %, %)",
         {src}, {clip.x, clip.y, size.x, size.y, pos.x, pos.y, size.x, size.y});
 }

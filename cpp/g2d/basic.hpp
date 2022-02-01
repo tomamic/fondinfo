@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <iostream>
 #include <regex>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -29,50 +30,61 @@ struct Color {
     int __len__() { return 3; }
 };
 
+class Arena;
+
 class Actor {
 public:
-    virtual void move() = 0;
-    virtual void collide(Actor* other) = 0;
-    virtual Point position() = 0;
+    virtual void act(Arena* arena) = 0;
+    virtual void collide(Actor* other, Arena* arena) = 0;
+    virtual Point pos() = 0;
     virtual Point size() = 0;
-    virtual Point symbol() = 0;
+    virtual Point sprite() = 0;
     virtual ~Actor() {}
 };
 
 class Arena {
 private:
-    int w_, h_;
+    int w_, h_, count_;
     std::vector<Actor*> actors_;
+    std::vector<Actor*> spawned_;
+    std::vector<Actor*> killed_;
+    std::set<std::string> current_keys_;
+    std::set<std::string> previous_keys_;
 public:
-    Arena(Point size) { w_ = size.x; h_ = size.y; }
-    void add(Actor* a) {
-        auto pos = find(begin(actors_), end(actors_), a);
-        if (pos == end(actors_)) {
-            actors_.push_back(a);
-        }
+    Arena(Point size) { w_ = size.x; h_ = size.y; count_ = 0; }
+    void spawn(Actor* a) {
+        spawned_.push_back(a);
     }
-    void remove(Actor* a) {
-        auto pos = find(begin(actors_), end(actors_), a);
-        if (pos != end(actors_)) {
-            actors_.erase(pos);
-        }
+    void kill(Actor* a) {
+        killed_.push_back(a);
     }
-    void move_all() {
+    void tick(std::set<std::string> keys={}) {
+        previous_keys_ = current_keys_;
+        current_keys_ = keys;
+
         auto acts = actors();
         reverse(begin(acts), end(acts));
         for (auto a : acts) {
-            a->move();
+            a->act(this);
             for (auto other : acts) {
                 if (other != a && check_collision(a, other)) {
-                    a->collide(other);
-                    other->collide(a);
+                    a->collide(other, this);
                 }
             }
         }
+
+        actors_.insert(actors_.end(), spawned_.begin(), spawned_.end());
+        spawned_.clear();
+        for (auto a : killed_) {
+            auto pos = find(begin(actors_), end(actors_), a);
+            if (pos != end(actors_)) { actors_.erase (pos); }
+        }
+        killed_.clear();
+        count_++;
     }
     bool check_collision(Actor* a1, Actor* a2) {
-        auto p1 = a1->position(), s1 = a1->size();
-        auto p2 = a2->position(), s2 = a2->size();
+        auto p1 = a1->pos(), s1 = a1->size();
+        auto p2 = a2->pos(), s2 = a2->size();
         return (p2.y < p1.y + s1.y && p1.y < p2.y + s2.y
             && p2.x < p1.x + s1.x && p1.x < p2.x + s2.x);
     }
@@ -84,6 +96,8 @@ public:
             actors_.pop_back();
         }
     }
+    std::set<std::string> current_keys() { return current_keys_; }
+    std::set<std::string> previous_keys() { return previous_keys_; }
 };
 
 class BoardGame {

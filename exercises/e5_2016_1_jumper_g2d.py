@@ -11,17 +11,27 @@ from actor import Actor, Arena
 
 
 class Turtle(Actor):
-    def __init__(self, arena, pos):
+    def __init__(self, pos):
         self._x, self._y = pos
         self._dx, self._dy = 0, 0
         self._w, self._h = 20, 20
         self._speed = 4
         self._landed = False
-        self._arena = arena
-        arena.add(self)
 
-    def move(self):
-        arena_w, arena_h = self._arena.size()
+    def act(self, arena):
+        keys = arena.current_keys()
+        if "w" in keys and self._landed:
+            self._dy = -self._speed * 2
+            self._landed = False
+
+        if "a" in keys:
+            self._dx = -self._speed
+        elif "d" in keys:
+            self._dx = +self._speed
+        else:
+            self._dx = 0
+
+        arena_w, arena_h = arena.size()
         self._y += self._dy
         if self._y < 0:
             self._y = 0
@@ -38,44 +48,31 @@ class Turtle(Actor):
         elif self._x > arena_w - self._w:
             self._x = arena_w - self._w
 
-    def control(self, keys: set):
-        if "w" in keys and self._landed:
-            self._dy = -self._speed * 2
-            self._landed = False
-
-        if "a" in keys:
-            self._dx = -self._speed
-        elif "d" in keys:
-            self._dx = +self._speed
-        else:
-            self._dx = 0
-
-    def collide(self, other):
+    def collide(self, other, arena):
         pass
 
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
     def size(self):
         return self._w, self._h
 
-    def symbol(self):
+    def sprite(self):
         return 0, 20
 
 
 def tick():
-    turtle.control(g2d.current_keys())
-    arena.move_all()  # Game logic
+    arena.tick(g2d.current_keys())  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
-        g2d.draw_image_clip("sprites.png", a.symbol(), a.size(), a.position())
+        g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
 
 def main():
     global arena, turtle
 
     arena = Arena((320, 240))
-    turtle = Turtle(arena, (80, 80))
+    arena.spawn(Turtle((80, 80)))
 
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)

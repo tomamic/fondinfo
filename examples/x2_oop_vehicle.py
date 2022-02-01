@@ -14,7 +14,7 @@ class Vehicle:
         self._dx = dx
         self._left, self._right = -100, ARENA_W + 100
 
-    def move(self):
+    def act(self):
         if self._x + self._dx < self._left:
             self._x = self._right
         if self._x + self._dx > self._right:
@@ -24,7 +24,7 @@ class Vehicle:
     def uturn(self):
         self._dx *= -1
 
-    def position(self):
+    def pos(self):
         return self._x, self._y
 
 
@@ -32,8 +32,8 @@ def tick():
     if g2d.mouse_clicked():
         b.uturn()
     g2d.clear_canvas()
-    b.move()
-    g2d.draw_image("ball.png", b.position())
+    b.act()
+    g2d.draw_image("ball.png", b.pos())
 
 def main():
     global b

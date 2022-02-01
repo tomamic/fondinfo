@@ -23,9 +23,9 @@ def main():
     n = len(values)
     for i in range(n):
         v = values[i]
-        position = 0, i * H / n
+        pos = 0, i * H / n
         size = v * W / max_val, (H / n) - 1
-        g2d.fill_rect(position, size)
+        g2d.fill_rect(pos, size)
 
     g2d.main_loop()
 

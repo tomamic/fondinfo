@@ -8,21 +8,20 @@ import g2d
 from p3_oop_bounce import Arena, Ball, Ghost, Turtle
 
 arena = Arena((480, 360))
-b1 = Ball(arena, (40, 80))
-b2 = Ball(arena, (80, 40))
-g = Ghost(arena, (120, 80))
-turtle = Turtle(arena, (80, 80))
+arena.spawn(Ball((40, 80)))
+arena.spawn(Ball((80, 40)))
+arena.spawn(Ghost((120, 80)))
+arena.spawn(Turtle((80, 80)))
 
 def tick():
-    turtle.control(g2d.current_keys())
-    arena.move_all()  # Game logic
+    arena.tick(g2d.current_keys())  # Game logic
 
     g2d.clear_canvas()
     for a in arena.actors():
-        if a.symbol() != None:
-            g2d.draw_image_clip("sprites.png", a.symbol(), a.size(), a.position())
+        if a.sprite() != None:
+            g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
         else:
-            g2d.fill_rect(a.position(), a.size())
+            pass  # g2d.fill_rect(a.pos(), a.size())
 
 def main():
     g2d.init_canvas(arena.size())
