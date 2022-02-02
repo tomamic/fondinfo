@@ -17,7 +17,7 @@ class TurningBall:
         self._count = 0
         self._x = randrange(ARENA_W - BALL_W - 50)
         self._y = randrange(ARENA_H - BALL_H - 50)
-    def act(self):
+    def move(self):
         self._x += self._dx
         self._y += self._dy
 
@@ -30,8 +30,8 @@ class TurningBall:
 
 def tick():
     g2d.clear_canvas()
-    b1.act()
-    b2.act()
+    b1.move()
+    b2.move()
     g2d.draw_image("../examples/ball.png", b1.pos())
     g2d.draw_image("../examples/ball.png", b2.pos())
 

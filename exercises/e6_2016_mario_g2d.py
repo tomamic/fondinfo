@@ -20,7 +20,7 @@ class Jumper(Actor):
         self._gravity = 0.4
         self._landed = False
 
-    def act(self, arena):
+    def move(self, arena):
         arena_w, arena_h = arena.size()
         self._y += self._dy
         if not self._landed:
@@ -63,7 +63,7 @@ class Jumper(Actor):
 
 
 class Mario(Jumper):
-    def act(self, arena):
+    def move(self, arena):
         keys = arena.current_keys()
         if "w" in keys and self._landed:
             self._dy = -self._max_speed
@@ -76,11 +76,11 @@ class Mario(Jumper):
         else:
             self._dx = 0
 
-        Jumper.act(self, arena)
+        Jumper.move(self, arena)
 
 
 class CrazyGoomba(Jumper):
-    def act(self, arena):
+    def move(self, arena):
         # random move, just as an example
         # implement your desired behaviour here
 
@@ -92,7 +92,7 @@ class CrazyGoomba(Jumper):
         elif r == 2 and self._landed:
             self._dy = -self._max_speed
             self._landed = False
-        Jumper.act(self, arena)
+        Jumper.move(self, arena)
 
     def sprite(self):
         return 20, 0
@@ -104,7 +104,7 @@ class Wall(Actor):
         self._x, self._y = x, y
         self._w, self._h = w, h
 
-    def act(self, arena):
+    def move(self, arena):
         pass
 
     def collide(self, other, arena):

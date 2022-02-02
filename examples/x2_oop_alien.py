@@ -12,7 +12,7 @@ class Alien:
         self._xmin, self._xmax = self._x, self._x + 150
         self._dx, self._dy = 5, 5
 
-    def act(self):
+    def move(self):
         if self._xmin <= self._x + self._dx <= self._xmax:
             self._x += self._dx
         else:
@@ -25,7 +25,7 @@ class Alien:
 
 def tick():
     g2d.clear_canvas()
-    a.act()
+    a.move()
     g2d.draw_image("ball.png", a.pos())
 
 def main():

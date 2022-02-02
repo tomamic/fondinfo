@@ -17,7 +17,7 @@ class Ball:
         self._y = randrange(canvas_h - self._h)
         self._r, self._g, self._b = randrange(256), randrange(256), randrange(256)
 
-    def act(self):
+    def move(self):
         if not (0 <= self._x + self._dx <= canvas_w - self._w):
             self._dx *= -1
         if not (0 <= self._y + self._dy <= canvas_h - self._h):
@@ -41,7 +41,7 @@ class Ball:
 def tick():
     g2d.clear_canvas()
     for b in balls:
-        b.act()
+        b.move()
         g2d.set_color(b.color())
         g2d.fill_rect(b.pos(), b.size())
 

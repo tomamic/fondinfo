@@ -16,7 +16,7 @@ class TurningBall:
         self._x = randrange(canvas_w - ball_w)
         self._y = randrange(canvas_h - ball_h)
 
-    def act(self):
+    def move(self):
         self._x += self._dx
         self._y += self._dy
         self._count += 1
@@ -28,7 +28,7 @@ class TurningBall:
         return self._x, self._y
 
 def tick():
-    b.act()
+    b.move()
     g2d.clear_canvas()
     g2d.draw_image("ball.png", b.pos())
 

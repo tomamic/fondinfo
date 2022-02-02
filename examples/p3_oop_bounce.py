@@ -15,7 +15,7 @@ class Ball(Actor):
         self._speed = 4
         self._dx, self._dy = self._speed, self._speed
 
-    def act(self, arena: Arena):
+    def move(self, arena: Arena):
         arena_w, arena_h = arena.size()
         if self._x + self._dx < 0:
             self._dx = self._speed
@@ -56,7 +56,7 @@ class Ghost(Actor):
         self._w, self._h = 20, 20
         self._visible = True
 
-    def act(self, arena: Arena):
+    def move(self, arena: Arena):
         aw, ah = arena.size()
         dx = choice([-4, 0, 4])
         dy = choice([-4, 0, 4])
@@ -92,7 +92,7 @@ class Turtle(Actor):
         self._lives = 3
         self._blinking = 0
 
-    def act(self, arena: Arena):
+    def move(self, arena: Arena):
         keys = arena.current_keys()
         self._dx = self._dy = 0
         if "ArrowUp" in keys:

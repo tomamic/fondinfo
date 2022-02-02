@@ -14,7 +14,7 @@ class Background(Actor):
         self._w, self._h = 512, h
         self._speed = speed
 
-    def act(self, arena):
+    def move(self, arena):
         self._x -= self._speed
         if self._x + self._w < 0:
             self._x += self._w

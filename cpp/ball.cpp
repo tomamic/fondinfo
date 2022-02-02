@@ -16,7 +16,7 @@ public:
     Ball(int x, int y) {  // constructor
         x_ = x; y_ = y;
     }
-    void act() {
+    void move() {
         if (x_+dx_ < 0 || x_+dx_+w_ > ARENA_W) {
             dx_ = -dx_;
         }
@@ -34,8 +34,8 @@ int main() {
     auto b2 = Ball{180, 140};
 
     for (auto i = 0; i < 25; ++i) {
-        b1.act();
-        b2.act();
+        b1.move();
+        b2.move();
         cout << b1.pos_x() << " " << b1.pos_y() << endl;
         cout << b2.pos_x() << " " << b2.pos_y() << endl << endl;
     }

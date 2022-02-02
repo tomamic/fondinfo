@@ -34,7 +34,7 @@ class Arena;
 
 class Actor {
 public:
-    virtual void act(Arena* arena) = 0;
+    virtual void move(Arena* arena) = 0;
     virtual void collide(Actor* other, Arena* arena) = 0;
     virtual Point pos() = 0;
     virtual Point size() = 0;
@@ -65,9 +65,9 @@ public:
         auto acts = actors();
         reverse(begin(acts), end(acts));
         for (auto a : acts) {
-            a->act(this);
+            a->move(this);
             for (auto other : acts) {
-                if (other != a && check_collision(a, other)) {
+                if (check_collision(a, other)) {
                     a->collide(other, this);
                 }
             }
@@ -85,7 +85,7 @@ public:
     bool check_collision(Actor* a1, Actor* a2) {
         auto p1 = a1->pos(), s1 = a1->size();
         auto p2 = a2->pos(), s2 = a2->size();
-        return (p2.y < p1.y + s1.y && p1.y < p2.y + s2.y
+        return (a1 != a2 && p2.y < p1.y + s1.y && p1.y < p2.y + s2.y
             && p2.x < p1.x + s1.x && p1.x < p2.x + s2.x);
     }
     std::vector<Actor*> actors() { return actors_; }

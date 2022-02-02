@@ -7,7 +7,7 @@
 class Actor():
     '''Interface to be implemented by each game character.
     '''
-    def act(self, arena: "Arena"):
+    def move(self, arena: "Arena"):
         '''Called by Arena, at the actor's turn.
         '''
         raise NotImplementedError('Abstract method')
@@ -65,7 +65,7 @@ class Arena():
         self._prev_keys = self._curr_keys
         self._curr_keys = keys
         for a in reversed(self._actors):
-            a.act(self)
+            a.move(self)
 
         for a1 in reversed(self._actors):
             for a2 in reversed(self._actors):

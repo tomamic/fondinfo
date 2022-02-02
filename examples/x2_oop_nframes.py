@@ -15,7 +15,7 @@ class Ball:
         self._dy = 2
         self._count = 0
 
-    def act(self):
+    def move(self):
         if self._count > 0:
             if not (0 <= self._x + self._dx <= ARENA_W - BALL_W):
                 self._dx = -self._dx
@@ -39,8 +39,8 @@ def tick():
     if "2" in g2d.current_keys():
         b2.start()
     g2d.clear_canvas()  # BG
-    b1.act()
-    b2.act()
+    b1.move()
+    b2.move()
     g2d.draw_image("ball.png", b1.pos())  # FG
     g2d.draw_image("ball.png", b2.pos())  # FG
 

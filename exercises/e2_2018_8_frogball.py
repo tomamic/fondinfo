@@ -17,7 +17,7 @@ class FrogBall:
         self._dy = 2
         self._count = 0
 
-    def act(self):
+    def move(self):
         if self._count > 0:
             self._x = (self._x + self._dx) % ARENA_W
             self._y = (self._y + self._dy) % ARENA_H
@@ -39,8 +39,8 @@ def tick():
     elif "2" in g2d.current_keys():
         b2.go()
     g2d.clear_canvas()  # BG
-    b1.act()
-    b2.act()
+    b1.move()
+    b2.move()
     g2d.draw_image("../examples/ball.png", b1.pos())  # FG
     g2d.draw_image("../examples/ball.png", b2.pos())  # FG
 

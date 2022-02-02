@@ -26,7 +26,7 @@ public:
         x_ = position.x; y_ = position.y;
     }
 
-    void act(Arena* arena) {
+    void move(Arena* arena) {
         auto dx = g2d::randint(-1, 1) * SPEED;
         auto dy = g2d::randint(-1, 1) * SPEED;
         auto as = arena->size();
@@ -60,7 +60,7 @@ public:
         dx_ = SPEED; dy_ = SPEED;
     }
 
-    void act(Arena* arena) {
+    void move(Arena* arena) {
         auto as = arena->size();
         if (!(0 <= x_ + dx_ &&  x_ + dx_<= as.x - W)) {
             dx_ = -dx_;
@@ -106,7 +106,7 @@ public:
         dx_ = 0; dy_ = 0;
     }
 
-    void act(Arena* arena) {
+    void move(Arena* arena) {
         auto keys = arena->current_keys();
         string u="w", l="a", d="s", r="d";
 

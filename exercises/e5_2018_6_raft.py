@@ -15,7 +15,7 @@ class Ball(Actor):
         self._w, self._h = 60, 20
         self._dx = dx
 
-    def act(self, arena):
+    def move(self, arena):
         arena_w, arena_h = arena.size()
         margin, width = arena_w // 2, arena_w * 2
         self._x += self._dx
@@ -49,7 +49,7 @@ class Turtle(Actor):
         self._raft = None
         self._count = 0
 
-    def act(self, arena):
+    def move(self, arena):
         keys = arena.current_keys()
         u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
         #u, d, l, r = "w", "s", "a", "d"

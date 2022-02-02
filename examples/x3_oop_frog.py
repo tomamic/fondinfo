@@ -14,7 +14,7 @@ class Vehicle(Actor):
         self._left, self._right = -100, arena.size()[0] + 100
         self._dx = dx
 
-    def act(self, arena):
+    def move(self, arena):
         if self._x + self._dx < self._left:
             self._x = self._right
         if self._x + self._dx > self._right:
@@ -41,7 +41,7 @@ class Frog(Actor):
         self._dx, self._dy = 0, 0
         self._speed, self._steps, self._count = 2, 10, 0
 
-    def act(self, arena):
+    def move(self, arena):
         keys = arena.current_keys()
         if "a" in keys and self._count == 0:
             self._count = self._steps

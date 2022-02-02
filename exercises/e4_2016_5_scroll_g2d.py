@@ -18,7 +18,7 @@ class FallingBall(Actor):
         self._dy = 0
         self._g = 0.3
 
-    def act(self, arena: Arena):
+    def move(self, arena: Arena):
         aw, ah = arena.size()
         if not (0 <= self._x + self._dx <= aw - self.W):
             self._dx = -self._dx
@@ -52,7 +52,7 @@ class Plane(Actor):
         self._dx = 5
         self._after_collision = 0
 
-    def act(self, arena: Arena):
+    def move(self, arena: Arena):
         aw, ah = arena.size()
         self._x = (self._x + self._dx) % aw
         if self._after_collision > 0:

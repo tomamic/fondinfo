@@ -14,7 +14,7 @@ class Alien(Actor):
         self._xmin, self._xmax = self._x, self._x + 150
         self._dx, self._dy = 5, 5
 
-    def act(self, arena):
+    def move(self, arena):
         if self._xmin <= self._x + self._dx <= self._xmax:
             self._x += self._dx
         else:
@@ -41,7 +41,7 @@ class Bullet(Actor):
         self._x, self._y = x0, arena.size()[1] - self._h
         self._dy = -5
 
-    def act(self, arena):
+    def move(self, arena):
         self._y += self._dy
         if self._y < 0:
             arena.kill(self)

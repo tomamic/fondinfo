@@ -17,7 +17,7 @@ class Ball(Actor):
         self._x, self._y = x, y
         self._dx, self._dy = self.SPEED, self.SPEED
 
-    def act(self, arena):
+    def move(self, arena):
         arena_w, arena_h = arena.size()
         if not (0 <= self._x + self._dx <= arena_w - self.W):
             self._dx = -self._dx
@@ -55,7 +55,7 @@ class Wall(Actor):
         self._x, self._y = x, y
         self._w, self._h = w, h
 
-    def act(self, arena):
+    def move(self, arena):
         pass
 
     def collide(self, other, arena):

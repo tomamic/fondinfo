@@ -13,7 +13,7 @@ class Wall(Actor):
         self._x, self._y = pos
         self._w, self._h = size
 
-    def act(self, arena):
+    def move(self, arena):
         pass
 
     def collide(self, other, arena):
@@ -37,7 +37,7 @@ class Mario(Actor):
         self._dx, self._dy = delta
         self._landed = False
 
-    def act(self, arena):
+    def move(self, arena):
         keys = arena.current_keys()
         if "w" in keys and self._landed:
             self._dy = -2 * self._speed

@@ -15,7 +15,7 @@ class Ball:
         self._x = randrange(canvas_w - ball_w)
         self._y = randrange(canvas_h - ball_h)
 
-    def act(self):
+    def move(self):
         if self._x + self._dx > canvas_w - ball_w:
             self._x = canvas_w - ball_w
             self._dx, self._dy = 0, 5
@@ -35,7 +35,7 @@ class Ball:
         return self._x, self._y
 
 def tick():
-    b.act()
+    b.move()
     g2d.clear_canvas()
     g2d.draw_image("ball.png", b.pos())
 

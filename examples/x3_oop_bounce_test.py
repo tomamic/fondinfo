@@ -7,8 +7,8 @@ class BallTest(unittest.TestCase):
     def test_corner(self):
         a = Arena((480, 360))
         b = Ball((460, 340))  # dx = 4, dy = 4
-        b.act(a)  # dx = -4, dy = -4
-        b.act(a)
+        b.move(a)  # dx = -4, dy = -4
+        b.move(a)
         self.assertEqual(b.pos(), (452, 332))
 
     def test_move(self):
@@ -21,7 +21,7 @@ class BallTest(unittest.TestCase):
         for param in test_values:
             x0, y0, x1, y1 = param
             b = Ball((x0, y0))
-            b.act(a)
+            b.move(a)
             self.assertEqual(b.pos(), (x1, y1))
 
 
@@ -31,11 +31,11 @@ class TurtleTest(unittest.TestCase):
         a = Arena((480, 360))
         a.tick(("ArrowRight"))
         t = Turtle((230, 170))
-        t.act(a)
-        t.act(a)
+        t.move(a)
+        t.move(a)
         a.tick()
-        t.act(a)  # no effect
-        self.assertTrue(t.pos() == (234, 170))
+        t.move(a)  # no effect
+        self.assertEqual(t.pos(), (234, 170))
 
     def test_collide_ball(self):
         a = Arena((480, 360))
@@ -43,14 +43,14 @@ class TurtleTest(unittest.TestCase):
         t = Turtle((230, 170))
         t.collide(b, a)
         t.collide(b, a)  # no effect
-        self.assertTrue(t.lives() == 2)
+        self.assertEqual(t.lives(), 2)
 
     def test_collide_ghost(self):
         a = Arena((480, 360))
         g = Ghost((0, 0))
         t = Turtle((230, 170))
         t.collide(g, a)
-        self.assertTrue(t.lives() == 0)
+        self.assertEqual(t.lives(), 0)
 
 
 if __name__ == '__main__':

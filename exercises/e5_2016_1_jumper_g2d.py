@@ -18,7 +18,7 @@ class Turtle(Actor):
         self._speed = 4
         self._landed = False
 
-    def act(self, arena):
+    def move(self, arena):
         keys = arena.current_keys()
         if "w" in keys and self._landed:
             self._dy = -self._speed * 2

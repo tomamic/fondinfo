@@ -12,7 +12,7 @@ class Ball:
         self._y = y
         self._dx, self._dy = 5, 5
 
-    def act(self):
+    def move(self):
         if not 0 <= self._x + self._dx <= ARENA_W - BALL_W:
             self._dx = -self._dx
         if not 0 <= self._y + self._dy <= ARENA_H - BALL_H:
@@ -30,8 +30,8 @@ def main():
     b2 = Ball(180, 140)
 
     for i in range(25):
-        b1.act()
-        b2.act()
+        b1.move()
+        b2.move()
         print("b1 @", b1.pos(), "b2 @", b2.pos())
 
 ##main()  # call main to start the program
