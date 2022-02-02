@@ -3,6 +3,7 @@ package main
 import . "g2d"
 
 func main() {
+    InitCanvas(Point{400, 400}) // width, height
     n := ToInt(Prompt("n?"))
 
     i := 1
@@ -15,4 +16,6 @@ func main() {
     } else {
         Alert("No")
     }
+
+    MainLoop()
 }

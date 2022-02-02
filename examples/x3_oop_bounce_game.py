@@ -12,6 +12,9 @@ class BounceGame:
         self._arena = Arena((480, 360))
         self._arena.spawn(Ball((40, 80)))
         self._arena.spawn(Ball((80, 40)))
+        '''from random import randrange
+        for _ in range(500):
+            self._arena.spawn(Ball((randrange(480), randrange(360))))'''
         self._arena.spawn(Ghost((120, 80)))
         self._arena.spawn(Turtle((80, 80)))
         self._time = 120 * 30  # 120 seconds

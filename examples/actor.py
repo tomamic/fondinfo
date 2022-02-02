@@ -43,9 +43,7 @@ class Arena():
         '''
         self._w, self._h = size
         self._count = 0
-        self._actors = []
-        self._spawned = []
-        self._killed = []
+        self._actors, self._spawned, self._killed = [], [], []
         self._curr_keys = self._prev_keys = tuple()
 
     def spawn(self, a: Actor):
@@ -67,16 +65,40 @@ class Arena():
         for a in reversed(self._actors):
             a.move(self)
 
-        for a1 in reversed(self._actors):
+        '''for a1 in reversed(self._actors):
             for a2 in reversed(self._actors):
                 if self.check_collision(a1, a2):
-                    a1.collide(a2, self)
+                    a1.collide(a2, self)'''
+        self.find_collisions()
 
         self._actors = [a for a in self._actors + self._spawned
                         if a not in self._killed]
-        self._spawned = []
-        self._killed = []
+        self._spawned, self._killed = [], []
         self._count += 1
+
+    def find_collisions(self):
+        # divide the arena in tiles, for efficient collision detection
+        tile = 40
+        nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
+        cells = [set() for _ in range(nx * ny)]
+        for i, a in enumerate(self._actors):
+            x, y, w, h = a.pos() + a.size()
+            for tx in range(x // tile, 1 + (x + w) // tile):
+                for ty in range(y // tile, 1 + (y + h) // tile):
+                    if 0 <= tx < nx and 0 <= ty < ny:
+                        cells[ty * nx + tx].add(i)
+        for i in reversed(range(len(self._actors))):
+            a1 = self._actors[i]
+            neighs = set()
+            x, y, w, h = a1.pos() + a1.size()
+            for tx in range(x // tile, 1 + (x + w) // tile):
+                for ty in range(y // tile, 1 + (y + h) // tile):
+                    if 0 <= tx < nx and 0 <= ty < ny:
+                        neighs |= cells[ty * nx + tx]
+            for j in reversed(sorted(list(neighs))):
+                a2 = self._actors[j]
+                if self.check_collision(a1, a2):
+                    a1.collide(a2, self)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check the two actors (args) for mutual collision (bounding-box
