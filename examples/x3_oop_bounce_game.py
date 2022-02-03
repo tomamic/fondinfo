@@ -7,22 +7,21 @@
 from random import randrange
 from p3_oop_bounce import Actor, Arena, Ball, Ghost, Turtle
 
-def randpt(sz) -> (int, int):
-    w, h, xc, yc = sz[0], sz[1], sz[0] // 2, sz[1] // 2
+def randpt(w: int, h: int) -> (int, int):
     x, y = randrange(w), randrange(h)
-    while (x - xc) ** 2 + (y - yc) ** 2 < 100 ** 2:
+    while (x - w // 2) ** 2 + (y - h // 2) ** 2 < 100 ** 2:
         x, y = randrange(w), randrange(h)
     return x, y
 
 class BounceGame:
     def __init__(self, size=(480, 360), nballs=3, nghosts=2, secs=120):
         self._arena = Arena(size)
-        sz = size[0] - 20, size[1] - 20
-        self._arena.spawn(Turtle((sz[0] // 2, sz[1] // 2)))  # center
+        w, h = size[0] - 20, size[1] - 20
+        self._arena.spawn(Turtle((w // 2, h // 2)))  # center
         for _ in range(nballs):
-            self._arena.spawn(Ball(randpt(sz)))
+            self._arena.spawn(Ball(randpt(w, h)))
         for _ in range(nghosts):
-            self._arena.spawn(Ghost(randpt(sz)))
+            self._arena.spawn(Ghost(randpt(w, h)))
         self._time = secs * 30  # 120 seconds
         self._lives = 1
 
