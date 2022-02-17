@@ -140,7 +140,7 @@ def current_keys() -> tuple:
     return tuple(_curr_keys)
 
 def mouse_clicked() -> bool:
-    return "LeftButton" in _prev_keys and "LeftButton" not in _curr_keys
+    return key_released("LeftButton")
 
 def key_pressed(key: str) -> bool:
     return key in _curr_keys and key not in _prev_keys

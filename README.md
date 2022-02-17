@@ -19,7 +19,6 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 ### Basic structs
 
 - A `point` or a `size` is a tuple `(x, y)`
-- A `rect` is a tuple `(x, y, w, h)`
 - A `color` is a tuple `(r, g, b)`
 
 ### Canvas functions
@@ -42,7 +41,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 - **`load_image`** `(src: str) -> str` : Load an image and return a name for it
 - **`draw_image`** `(src: str, pos: (int, int))` : Blit a whole image, given its name and the position
-- **`draw_image_clip`** `(src: str, clip_pos: (int, int), clip_size: (int, int), pos: (int, int))` : Blit a portion of an image
+- **`draw_image_clip`** `(src: str, pos: (int, int), clip_pos: (int, int), clip_size: (int, int))` : Blit a portion of an image
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
 - **`play_audio`** `(src: str, loop: bool)` : Play a sound, possibly in a loop, given its name
 - **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
@@ -51,7 +50,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 - **`mouse_position`** `() -> (int, int)` : Get current mouse position
 - **`mouse_clicked`** `() -> bool` : Check if left mouse button has been clicked
-- **`current_keys`** `() -> set` : Get all keys that are currently held down
+- **`current_keys`** `() -> tuple` : Get all keys that are currently held down
 - **`prompt`** `(message: str) -> str` : Show a dialog for entering a line of text
 - **`confirm`** `(message: str) -> bool` : Show a dialog for confirming a decision
 - **`alert`** `(message: str)` : Show a dialog with a message
