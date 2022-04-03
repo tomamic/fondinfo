@@ -148,12 +148,6 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key in _prev_keys and key not in _curr_keys
 
-def handle_key(key: str, up=False):
-    if up:
-        _curr_keys.discard(key)
-    else:
-        _curr_keys.add(key)
-
 def main_loop(tick=None, fps=30) -> None:
     global _mouse_pos, _tick
     _tick = tick
@@ -166,10 +160,14 @@ def main_loop(tick=None, fps=30) -> None:
             if e.type == pg.QUIT:
                 running = False
                 # break
-            elif e.type in (pg.KEYDOWN, pg.KEYUP):
-                handle_key(_kb_name(e.key), e.type == pg.KEYUP)
-            elif e.type in (pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP):
-                handle_key(_mb_name(e.button), e.type == pg.MOUSEBUTTONUP)
+            elif e.type == pg.KEYDOWN:
+                _curr_keys.add(_kb_name(e.key))
+            elif e.type == pg.KEYUP:
+                _curr_keys.discard(_kb_name(e.key))
+            elif e.type == pg.MOUSEBUTTONDOWN:
+                _curr_keys.add(_mb_name(e.button))
+            elif e.type == pg.MOUSEBUTTONUP:
+                _curr_keys.discard(_mb_name(e.button))
         if _tick:
             _mouse_pos = pg.mouse.get_pos()
             _tick()
