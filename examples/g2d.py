@@ -139,6 +139,9 @@ def _kb_name(key: int) -> str:
 def current_keys() -> tuple:
     return tuple(_curr_keys)
 
+def previous_keys() -> tuple:
+    return tuple(_prev_keys)
+
 def mouse_clicked() -> bool:
     return key_released("LeftButton")
 
