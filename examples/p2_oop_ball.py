@@ -7,9 +7,9 @@
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 class Ball:
-    def __init__(self, x: int, y: int):
-        self._x = x
-        self._y = y
+    def __init__(self, x0: int, y0: int):
+        self._x = x0
+        self._y = y0
         self._dx, self._dy = 5, 5
 
     def move(self):
