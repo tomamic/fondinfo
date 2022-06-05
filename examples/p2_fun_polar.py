@@ -25,7 +25,8 @@ def rotate(pt: (float, float), a: float) -> (float, float):
 
 def main():
     pt0 = from_polar((2, pi/4))
-    pt1 = rotate(pt0, pi/12)
+    # pt0 = sqrt(2), sqrt(2)  # same point, ∡ π/4
+    pt1 = rotate(pt0, pi/12)  # (1, √3) ∡ π/3
 
     print(pt0, to_polar(pt0))  # (√2, √2) (2, π/4)
     print(pt1, to_polar(pt1))  # (1, √3) (2, π/3)
