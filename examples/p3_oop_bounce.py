@@ -154,7 +154,7 @@ def main():
 
     for i in range(25):
         print_arena(arena)
-        arena.move_all()
+        arena.tick()
 
 ##main()  # call main to start the program
 
