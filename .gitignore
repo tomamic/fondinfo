@@ -3,3 +3,5 @@
 *.user
 *__pycache__*
 _*
+go.mod
+go.sum
