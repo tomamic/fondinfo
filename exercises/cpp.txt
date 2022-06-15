@@ -1,7 +1,0 @@
-C++ pronounced cee plus plus is a statically typed free-form multi-paradigm compiled general-purpose programming language
-
-It is regarded as an intermediate-level language as it comprises a combination of both high-level and low-level language features
-
-It was developed by Bjarne Stroustrup starting in 1979 at Bell Labs as an enhancement to the C language
-
-Originally named C with Classes the language was later renamed C++ in 1983
