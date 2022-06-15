@@ -62,23 +62,18 @@ function fillCircle(x, y, r) {
 function fillRect(x, y, w, h) {
     ctx.fillRect(x, y, w, h);
 }
-function loadImage(key, src) {
-    img = document.createElement("IMG");
-    img.src = src;
-    img.onerror = function() {
-        if (img.src.indexOf("githubusercontent") == -1) {
-            img.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = img;
+gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/";
+loadElement = (tag, src) => {
+  if (loaded[src]) return loaded[src];
+  var elem = document.createElement(tag); elem.src = src;
+  elem.onerror = () => { if (!elem.src.startsWith(gh)) elem.src = gh+src; };
+  return loaded[src] = elem;
 }
 function drawImage(key, x, y) {
-    img = loaded[key];
-    ctx.drawImage(img, x, y);
+    ctx.drawImage(loadElement("IMG", key), x, y);
 }
 function drawImageClip(key, x0, y0, w0, h0, x1, y1, w1, h1) {
-    img = loaded[key];
-    ctx.drawImage(img, x0, y0, w0, h0, x1, y1, w1, h1);
+    ctx.drawImage(loadElement("IMG", key), x0, y0, w0, h0, x1, y1, w1, h1);
 }
 function drawText(txt, x, y, size) {
     ctx.font = "" + size + "px sans-serif";
@@ -92,24 +87,13 @@ function drawTextCentered(txt, x, y, size) {
     ctx.textAlign = "center";
     ctx.fillText(txt, x, y);
 }
-function loadAudio(key, src) {
-    audio = document.createElement("AUDIO");
-    audio.src = src;
-    audio.onerror = function() {
-        if (audio.src.indexOf("githubusercontent") == -1) {
-            audio.src = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/" + src;
-        }
-    }
-    loaded[key] = audio;
-}
 function playAudio(key, loop) {
-    audio = loaded[key];
+    audio = loadElement("AUDIO", key);
     audio.loop = loop;
     audio.play();
 }
 function pauseAudio(key) {
-    audio = loaded[key];
-    audio.pause();
+    loadElement("AUDIO", key).pause();
 }
 function doAlert(message) {
     alert(message);
@@ -241,7 +225,7 @@ func DrawImage(image string, p Point) {
 
 // Clip a rectangular area from an image
 // and draw it at the specified position
-func DrawImageClip(image string, clipPos, clipSize, pos Point) {
+func DrawImageClip(image string, pos, clipPos, clipSize Point) {
     doJs("drawImageClip('%s', %d, %d, %d, %d, %d, %d, %d, %d)",
         image, clipPos.X, clipPos.Y, clipSize.X, clipSize.Y, pos.X, pos.Y, clipSize.X, clipSize.Y)
 }
@@ -274,20 +258,16 @@ func MousePosition() Point {
     return mousePos
 }
 
-func CurrentKeys() []string {
-    result := make([]string, 0, len(keys))
-    for k := range keys {
-        result = append(result, k)
-    }
-    return result
+func MouseClicked() bool {
+    return KeyReleased("LeftButton")
 }
 
-func PreviousKeys() []string {
-    result := make([]string, 0, len(prevKeys))
-    for k := range prevKeys {
-        result = append(result, k)
-    }
-    return result
+func CurrentKeys() map[string]bool {
+    return keys
+}
+
+func PreviousKeys() map[string]bool {
+    return prevKeys
 }
 
 func KeyPressed(key string) bool {

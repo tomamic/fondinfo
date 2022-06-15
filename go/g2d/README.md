@@ -25,8 +25,8 @@
 ## Images and sounds
 
 - `func LoadImage(src string) string` : Load an image and return a name for it
-- `func DrawImage(image string, p Point)` : Blit a whole image, given its name and the position
-- `func DrawImageClip(image string, clip Rect, r Rect)` : Blit a portion of an image
+- `func DrawImage(image string, pos Point)` : Blit a whole image, given its name and the position
+- `func DrawImageClip(image string, pos Point, clip Point, size Point)` : Blit a portion of an image
 - `func LoadAudio(src string) string` : Load a sound and return a name for it
 - `func PlayAudio(audio string, loop bool)` : Play a sound, possibly in a loop, given its name
 - `func PauseAudio(audio string)` : Stop playing a sound, given its name
@@ -34,8 +34,9 @@
 ## Input and output
 
 - `func MousePosition() Point` : Get current mouse position
-- `func KeyPressed(key string) bool` : Check if a key has been pressed after last `tick`
-- `func KeyReleased(key string) bool` : Check if a key has been released after last `tick`
+- `func MouseClicked() bool` : Check if the mouse has been clicked after last `tick`
+- `func CurrentKeys() map[string]bool` : Get all keys that are currently held down
+- `func PreviousKeys() map[string]bool` : Get all keys held down at the previous frame
 - `func Prompt(a ...interface{}) string` : Show a dialog for entering a line of text
 - `func Confirm(a ...interface{}) bool` : Show a dialog for confirming a decision
 - `func Alert(a ...interface{})` : Show a dialog with a message
@@ -52,8 +53,9 @@
 
 - Go
 ```
-sudo snap install --classic go
-go get -u github.com/tomamic/fondinfo/go/g2d
+sudo apt install golang-go
+cd /fondinfo-master/go
+bash go_mod.sh
 ```
 
 - GopherJS : <http://www.ce.unipr.it/gopherjs>

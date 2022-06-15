@@ -25,7 +25,7 @@ func (b *Ball) Move() {
     b.y += b.dy
 }
 
-func (b *Ball) Position() Point {
+func (b *Ball) Pos() Point {
     return Point{b.x, b.y}
 }
 
@@ -35,8 +35,8 @@ var b2 = NewBall(Point{80, 40})
 
 func mainConsole() {
     for i := 0; i < 25; i++ {
-        Println("Ball 1 @", b1.Position())
-        Println("Ball 2 @", b2.Position())
+        Println("Ball 1 @", b1.Pos())
+        Println("Ball 2 @", b2.Pos())
         b1.Move()
         b2.Move()
     }
@@ -46,8 +46,8 @@ func tick() {
     ClearCanvas()  // BG
     b1.Move()
     b2.Move()
-    DrawImage("ball.png", b1.Position())  // FG
-    DrawImage("ball.png", b2.Position())  // FG
+    DrawImage("ball.png", b1.Pos())  // FG
+    DrawImage("ball.png", b2.Pos())  // FG
 }
 
 func main() {

@@ -10,11 +10,11 @@ type Ball struct {
 
 func NewBall(arena *Arena, pos Point) *Ball {
     a := &Ball{arena, pos.X, pos.Y, 20, 20, 5, 5, 5}
-    arena.Add(a)
+    arena.Spawn(a)
     return a
 }
 
-func (a *Ball) Move() {
+func (a *Ball) Move(arena *Arena) {
     as := a.arena.Size()
     if !(0 <= a.x+a.dx && a.x+a.dx <= as.X-a.w) {
         a.dx = -a.dx
@@ -26,7 +26,7 @@ func (a *Ball) Move() {
     a.y += a.dy
 }
 
-func (a *Ball) Position() Point {
+func (a *Ball) Pos() Point {
     return Point{a.x, a.y}
 }
 
@@ -34,14 +34,14 @@ func (a *Ball) Size() Point {
     return Point{a.w, a.h}
 }
 
-func (a *Ball) Symbol() Point {
+func (a *Ball) Sprite() Point {
     return Point{0, 0}
 }
 
 func (a *Ball) Collide(other Actor) {
     _, ok := other.(*Ghost)
     if !ok {
-        op := other.Position()
+        op := other.Pos()
         if op.X < a.x {
             a.dx = a.speed
         } else {
@@ -64,12 +64,12 @@ type Ghost struct {
 
 func NewGhost(arena *Arena, pos Point) *Ghost {
     a := &Ghost{arena, pos.X, pos.Y, 20, 20, 5, true}
-    arena.Add(a)
+    arena.Spawn(a)
     return a
 }
 
-func (a *Ghost) Move() {
-    as := a.arena.Size()
+func (a *Ghost) Move(arena *Arena) {
+    as := arena.Size()
     dx := RandInt(-1, 1) * a.speed
     dy := RandInt(-1, 1) * a.speed
     a.x = (a.x + dx + as.X) % as.X
@@ -80,7 +80,7 @@ func (a *Ghost) Move() {
     }
 }
 
-func (a *Ghost) Position() Point {
+func (a *Ghost) Pos() Point {
     return Point{a.x, a.y}
 }
 
@@ -88,7 +88,7 @@ func (a *Ghost) Size() Point {
     return Point{a.w, a.h}
 }
 
-func (a *Ghost) Symbol() Point {
+func (a *Ghost) Sprite() Point {
     if a.visible {
         return Point{20, 0}
     }
@@ -106,11 +106,25 @@ type Turtle struct {
 
 func NewTurtle(arena *Arena, pos Point) *Turtle {
     a := &Turtle{arena, pos.X, pos.Y, 20, 20, 2, 0, 0}
-    arena.Add(a)
+    arena.Spawn(a)
     return a
 }
 
-func (a *Turtle) Move() {
+func (a *Turtle) Move(arena *Arena) {
+    a.dx = 0
+    a.dy = 0
+    keys := arena.CurrentKeys()
+    if keys["ArrowUp"] {
+        a.dy = -a.speed
+    } else if keys["ArrowDown"] {
+        a.dy = a.speed
+    }
+    if keys["ArrowLeft"] {
+        a.dx = -a.speed
+    } else if keys["ArrowRight"] {
+        a.dx = a.speed
+    }
+
     as := a.arena.Size()
     a.x += a.dx
     if a.x < 0 {
@@ -127,42 +141,10 @@ func (a *Turtle) Move() {
 
 }
 
-func (a *Turtle) GoLeft(cmd bool) {
-    if cmd {
-        a.dx = -a.speed
-    } else if a.dx < 0 {
-        a.dx = 0
-    }
-}
-
-func (a *Turtle) GoRight(cmd bool) {
-    if cmd {
-        a.dx = a.speed
-    } else if a.dx > 0 {
-        a.dx = 0
-    }
-}
-
-func (a *Turtle) GoUp(cmd bool) {
-    if cmd {
-        a.dy = -a.speed
-    } else if a.dy < 0 {
-        a.dy = 0
-    }
-}
-
-func (a *Turtle) GoDown(cmd bool) {
-    if cmd {
-        a.dy = a.speed
-    } else if a.dy > 0 {
-        a.dy = 0
-    }
-}
-
 func (a *Turtle) Collide(other Actor) {
 }
 
-func (a *Turtle) Position() Point {
+func (a *Turtle) Pos() Point {
     return Point{a.x, a.y}
 }
 
@@ -170,7 +152,7 @@ func (a *Turtle) Size() Point {
     return Point{a.w, a.h}
 }
 
-func (a *Turtle) Symbol() Point {
+func (a *Turtle) Sprite() Point {
     return Point{0, 20}
 }
 
@@ -206,37 +188,14 @@ var ball1 = NewBall(arena, Point{40, 80})
 var ball2 = NewBall(arena, Point{80, 40})
 var ghost = NewGhost(arena, Point{120, 80})
 
-var sprites = LoadImage("sprites.png")
-
 func tick() {
-    if KeyPressed("ArrowUp") {
-        hero.GoUp(true)
-    } else if KeyReleased("ArrowUp") {
-        hero.GoUp(false)
-    }
-    if KeyPressed("ArrowRight") {
-        hero.GoRight(true)
-    } else if KeyReleased("ArrowRight") {
-        hero.GoRight(false)
-    }
-    if KeyPressed("ArrowDown") {
-        hero.GoDown(true)
-    } else if KeyReleased("ArrowDown") {
-        hero.GoDown(false)
-    }
-    if KeyPressed("ArrowLeft") {
-        hero.GoLeft(true)
-    } else if KeyReleased("ArrowLeft") {
-        hero.GoLeft(false)
-    }
-
-    arena.MoveAll()
+    arena.Tick(CurrentKeys(), PreviousKeys())
     ClearCanvas()
     for _, a := range arena.Actors() {
-        if (a.Symbol() != Point{-1, -1}) {
-            DrawImageClip(sprites, a.Symbol(), a.Size(), a.Position())
+        if (a.Sprite() != Point{-1, -1}) {
+            DrawImageClip("sprites.png", a.Pos(), a.Sprite(), a.Size())
         } else {
-            FillRect(a.Position(), a.Size())
+            FillRect(a.Pos(), a.Size())
         }
     }
 }

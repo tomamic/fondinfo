@@ -25,7 +25,7 @@ func (b *Ball) Move() {
     b.y += b.dy
 }
 
-func (b *Ball) Position() Point {
+func (b *Ball) Pos() Point {
     return Point{b.x, b.y}
 }
 
@@ -36,7 +36,7 @@ func tick() {
     ClearCanvas() // BG
     for _, b := range balls {
         b.Move()
-        DrawImage("ball.png", b.Position()) // FG
+        DrawImage("ball.png", b.Pos()) // FG
     }
 }
 

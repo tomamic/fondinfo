@@ -1,30 +1,31 @@
 package g2d
 
 type Actor interface {
-    Move()
+    Move(arena *Arena)
     Collide(other Actor)
-    Position() Point
+    Pos() Point
     Size() Point
-    Symbol() Point
+    Sprite() Point
 }
 
 type Arena struct {
     w, h   int
     actors []Actor
+    currKeys, prevKeys map[string]bool
 }
 
 func NewArena(size Point) *Arena {
-    a := &Arena{size.X, size.Y, []Actor{}}
+    a := &Arena{size.X, size.Y, []Actor{}, make(map[string]bool), make(map[string]bool)}
     return a
 }
 
-func (a *Arena) Add(actor Actor) {
+func (a *Arena) Spawn(actor Actor) {
     if !a.Contains(actor) {
         a.actors = append(a.actors, actor)
     }
 }
 
-func (a *Arena) Remove(actor Actor) {
+func (a *Arena) Kill(actor Actor) {
     for i, v := range a.actors {
         if v == actor {
             a.actors = append(a.actors[:i], a.actors[i+1:]...)
@@ -42,10 +43,12 @@ func (a *Arena) Contains(actor Actor) bool {
     return false
 }
 
-func (a *Arena) MoveAll() {
+func (a *Arena) Tick(currKeys, prevKeys map[string]bool) {
+    a.currKeys = currKeys
+    a.prevKeys = prevKeys
     actors := a.ReversedActors()
     for _, actor := range actors {
-        actor.Move()
+        actor.Move(a)
         for _, other := range actors {
             if actor != other && a.CheckCollision(actor, other) {
                 actor.Collide(other)
@@ -56,9 +59,9 @@ func (a *Arena) MoveAll() {
 }
 
 func (a *Arena) CheckCollision(a1, a2 Actor) bool {
-    p1 := a1.Position()
+    p1 := a1.Pos()
     s1 := a1.Size()
-    p2 := a2.Position()
+    p2 := a2.Pos()
     s2 := a2.Size()
     return (p2.X < p1.X+s1.X && p1.X < p2.X+s2.X &&
         p2.Y < p1.Y+s1.Y && p1.Y < p2.Y+s2.Y &&
@@ -83,4 +86,12 @@ func (a *Arena) ReversedActors() []Actor {
 
 func (a *Arena) Size() Point {
     return Point{a.w, a.h}
+}
+
+func (a *Arena) CurrentKeys() map[string]bool {
+    return a.currKeys
+}
+
+func (a *Arena) PreviousKeys() map[string]bool {
+    return a.prevKeys
 }
