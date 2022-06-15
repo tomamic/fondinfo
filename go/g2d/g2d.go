@@ -274,6 +274,22 @@ func MousePosition() Point {
     return mousePos
 }
 
+func CurrentKeys() []string {
+    result := make([]string, 0, len(keys))
+    for k := range keys {
+        result = append(result, k)
+    }
+    return result
+}
+
+func PreviousKeys() []string {
+    result := make([]string, 0, len(prevKeys))
+    for k := range prevKeys {
+        result = append(result, k)
+    }
+    return result
+}
+
 func KeyPressed(key string) bool {
     return keys[key] && !prevKeys[key];
 }

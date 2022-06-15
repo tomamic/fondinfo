@@ -138,6 +138,7 @@ func InitCanvas(size Point) {
         go startServer(size)
         go func() {
             w = webview.New(true)
+            defer w.Destroy()
             w.SetTitle("G2D WebView")
             w.SetSize(max(size.X, 480), max(size.Y, 360), webview.HintNone)
             w.Bind("invokeExternal", handleData)  // ExternalInvokeCallback: handleRPC
