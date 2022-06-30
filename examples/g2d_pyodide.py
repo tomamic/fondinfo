@@ -95,10 +95,10 @@ def init_canvas(size: (int, int)) -> None:
         _canvas.setAttribute('style', 'background:white; border: 1px solid silver; position:absolute; z-index:100; right:40px; top:40px' )
         js.document.body.prepend(_canvas)
     _ctx = _canvas.getContext("2d")
-    set_color((127, 127, 127))
     _canvas.setAttribute('width', size[0])
     _canvas.setAttribute('height', size[1])
     clear_canvas()
+    set_color((127, 127, 127))
 
 
 def set_color(color: (int, int, int)) -> None:
