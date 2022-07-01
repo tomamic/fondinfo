@@ -4,41 +4,43 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-class Actor():
+Point = "tuple[int, int]"
+
+class Actor:
     '''Interface to be implemented by each game character.
     '''
     def move(self, arena: "Arena"):
         '''Called by Arena, at the actor's turn.
         '''
-        raise NotImplementedError('Abstract method')
+        raise NotImplementedError("Abstract method")
 
     def collide(self, other: "Actor", arena: "Arena"):
         '''Called by Arena, at the actor's turn.
         '''
-        raise NotImplementedError('Abstract method')
+        raise NotImplementedError("Abstract method")
 
-    def pos(self) -> (int, int):
+    def pos(self) -> Point:
         '''Return the position (x, y) of the actor (left-top corner).
         '''
-        raise NotImplementedError('Abstract method')
+        raise NotImplementedError("Abstract method")
 
-    def size(self) -> (int, int):
+    def size(self) -> Point:
         '''Return the size (w, h) of the actor.
         '''
-        raise NotImplementedError('Abstract method')
+        raise NotImplementedError("Abstract method")
 
-    def sprite(self) -> (int, int):
+    def sprite(self) -> Point:
         '''Return the position (x, y) of current sprite,
         if it is contained in a larger image, with other sprites;
         Otherwise, simply return None.
         '''
-        raise NotImplementedError('Abstract method')
+        raise NotImplementedError("Abstract method")
 
 
 class Arena():
     '''A generic 2D game, with a given size in pixels and a list of actors.
     '''
-    def __init__(self, size: (int, int)):
+    def __init__(self, size: Point):
         '''Create an arena, with given dimensions in pixels.
         '''
         self._w, self._h = size
@@ -69,14 +71,14 @@ class Arena():
             for a2 in reversed(self._actors):
                 if self.check_collision(a1, a2):
                     a1.collide(a2, self)'''
-        self.find_collisions()
+        self.detect_collisions()
 
         self._actors = [a for a in self._actors + self._spawned
                         if a not in self._killed]
         self._spawned, self._killed = [], []
         self._count += 1
 
-    def find_collisions(self):
+    def detect_collisions(self):
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
@@ -125,12 +127,12 @@ class Arena():
         '''
         return self._count
 
-    def current_keys(self) -> "tuple[str]":
+    def current_keys(self) -> "tuple[str, ...]":
         '''Return the currently pressed keys, as a tuple of strs.
         '''
         return self._curr_keys
 
-    def previous_keys(self) -> "tuple[str]":
+    def previous_keys(self) -> "tuple[str, ...]":
         '''Return the keys pressed at last tick, as a tuple of strs.
         '''
         return self._prev_keys

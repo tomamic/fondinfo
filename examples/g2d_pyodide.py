@@ -60,8 +60,8 @@ except:
     print("Serving at port", 8008)
     httpd.serve_forever()
 
-
-K_LEFT, K_UP, K_RIGHT, K_DOWN = 37, 38, 39, 40
+Point = "tuple[int, int]"
+Color = "tuple[int, int, int]"
 
 _canvas, _ctx, _usr_tick = None, None, None
 _mouse_pos, _curr_keys, _prev_keys = (0, 0), set(), set()
@@ -84,7 +84,7 @@ try:
 except:
     pass
 
-def init_canvas(size: (int, int)) -> None:
+def init_canvas(size: Point) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas, _ctx, _size
     if js.document.getElementById('g2d-canvas') != None:
@@ -101,29 +101,29 @@ def init_canvas(size: (int, int)) -> None:
     set_color((127, 127, 127))
 
 
-def set_color(color: (int, int, int)) -> None:
+def set_color(color: Color) -> None:
     _ctx.strokeStyle = "rgb" + str(color)
     _ctx.fillStyle = "rgb" + str(color)
 
 def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
 
-def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
+def draw_line(pt1: Point, pt2: Point) -> None:
     _ctx.moveTo(*pt1)
     _ctx.lineTo(*pt2)
     _ctx.stroke()
 
-def fill_circle(center: (int, int), radius: int) -> None:
+def fill_circle(center: Point, radius: int) -> None:
     from math import pi
     _ctx.beginPath()
     _ctx.arc(*center, radius, 0, 2 * pi)
     _ctx.closePath()
     _ctx.fill()
 
-def fill_rect(pos: (int, int), size: (int, int)) -> None:
+def fill_rect(pos: Point, size: Point) -> None:
     _ctx.fillRect(*pos, *size)
 
-def draw_text(txt: str, pos: (int, int), size: int) -> None:
+def draw_text(txt: str, pos: Point, size: int) -> None:
     _ctx.font = str(size) + "px sans-serif";
 
     # clear background rect assuming height of font
@@ -134,7 +134,7 @@ def draw_text(txt: str, pos: (int, int), size: int) -> None:
     _ctx.textAlign="left";
     _ctx.fillText(txt, *pos)
 
-def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
+def draw_text_centered(txt: str, pos: Point, size: int) -> None:
     _ctx.font = str(size) + "px sans-serif";
 
     # draw background rect assuming height of font
@@ -152,11 +152,11 @@ def load_image(src: str) -> str:
         _loaded[src] = img
     return src
 
-def draw_image(src: str, pos: (int, int)) -> None:
+def draw_image(src: str, pos: Point) -> None:
     _ctx.drawImage(_loaded[load_image(src)], *pos)
 
-def draw_image_clip(src: str, pos: (int, int), clip: (int, int),
-                    size: (int, int)) -> None:
+def draw_image_clip(src: str, pos: Point, clip: Point,
+                    size: Point) -> None:
     _ctx.drawImage(_loaded[load_image(src)], *clip, *size, *pos, *size)
 
 def load_audio(src: str) -> str:
@@ -174,7 +174,7 @@ def pause_audio(src: str) -> None:
     audio = _loaded[load_audio(src)]
     audio.pause()
 
-def mouse_pos() -> (int, int):
+def mouse_pos() -> Point:
     return _mouse_pos
 
 def update_canvas() -> None:

@@ -14,6 +14,9 @@ except:
     subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
     import pygame as pg
 
+Point = "tuple[int, int]"
+Color = "tuple[int, int, int]"
+
 _tkmain = Tk()
 _tkmain.wm_withdraw() #to hide the main window
 _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
@@ -28,7 +31,7 @@ _loaded = {}
 def _tup(t: tuple) -> tuple:
     return tuple(map(int, t))
 
-def init_canvas(size: (int, int)):
+def init_canvas(size: Point):
     '''Set size of first CANVAS and return it'''
     global _canvas, _size
     pg.init()
@@ -36,10 +39,10 @@ def init_canvas(size: (int, int)):
     _canvas = pg.display.set_mode(_tup(size))
     clear_canvas()
 
-def canvas_size() -> (int, int):
+def canvas_size() -> Point:
     return _size
 
-def set_color(color: (int, int, int)) -> None:
+def set_color(color: Color) -> None:
     global _color
     _color = _tup(color)
 
@@ -51,21 +54,21 @@ def update_canvas() -> None:
     _prev_keys = set(_curr_keys)
     pg.display.update()
 
-def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
+def draw_line(pt1: Point, pt2: Point) -> None:
     pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
 
-def fill_circle(center: (int, int), radius: int) -> None:
+def fill_circle(center: Point, radius: int) -> None:
     pg.draw.circle(_canvas, _color, _tup(center), int(radius))
 
-def fill_rect(pos: (int, int), size: (int, int)) -> None:
+def fill_rect(pos: Point, size: Point) -> None:
     pg.draw.rect(_canvas, _color, _tup(pos + size))
 
-def draw_text(txt: str, pos: (int, int), size: int) -> None:
+def draw_text(txt: str, pos: Point, size: int) -> None:
     font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     _canvas.blit(surface, _tup(pos))
 
-def draw_text_centered(txt: str, pos: (int, int), size: int) -> None:
+def draw_text_centered(txt: str, pos: Point, size: int) -> None:
     font = pg.font.SysFont('freesansbold', int(size))
     surface = font.render(txt, True, _color)
     w, h = surface.get_size()
@@ -82,10 +85,10 @@ def load_image(src: str) -> str:
             _loaded[src] = pg.image.load(image)
     return src
 
-def draw_image(src: str, pos: (int, int)) -> None:
+def draw_image(src: str, pos: Point) -> None:
     _canvas.blit(_loaded[load_image(src)], _tup(pos))
 
-def draw_image_clip(src: str, pos: (int, int), clip_pos: (int, int), clip_size: (int, int)) -> None:
+def draw_image_clip(src: str, pos: Point, clip_pos: Point, clip_size: Point) -> None:
     image = _loaded[load_image(src)]
     _canvas.blit(image, _tup(pos), area=_tup(clip_pos) + _tup(clip_size))
 
@@ -119,7 +122,7 @@ def prompt(message: str) -> str:
         update_canvas()
     return simpledialog.askstring("", message, parent=_tkmain) or ""
 
-def mouse_pos() -> (int, int):
+def mouse_pos() -> Point:
     return _mouse_pos
 
 def _mb_name(key: int) -> str:
