@@ -18,30 +18,31 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 ### Basic structs
 
-- A `point` or a `size` is a tuple `(x, y)`
-- A `color` is a tuple `(r, g, b)`
+- A `Color` is a tuple `(red, green, blue)`
+- A `Point` is a tuple `(x, y)`
+- A `Size` is a tuple `(width, height)`
 
 ### Canvas functions
 
-- **`init_canvas`** `(size: (int, int))` : Initialize the drawing canvas
+- **`init_canvas`** `(size: Size)` : Initialize the drawing canvas
 - **`main_loop`** `(tick=None, fps=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
 - **`clear_canvas`** `()` : Clear the canvas
 - **`close_canvas`** `()` : Close the canvas and exit the main loop
 
 ### Drawing functions
 
-- **`set_color`** `(color: (int, int, int))` : Set the drawing color
-- **`draw_line`** `(pt1: (int, int), pt2: (int, int))` : Draw a line from `pt1` to `pt2`
-- **`fill_circle`** `(center: (int, int), radius: int)` : Fill a circle, given `center` and `radius`
-- **`fill_rect`** `(pos: (int, int), size: (int, int))` : Fill a given rectangle, given left-top position and size
-- **`draw_text`** `(txt: str, pos: (int, int), size: int)` : Draw a text, given left-top position and font px size
-- **`draw_text_centered`** `(txt: str, pos: (int, int), size: int)` : Draw a centered text, given center and font px size
+- **`set_color`** `(color: Color)` : Set the drawing color
+- **`draw_line`** `(pt1: Point, pt2: Point)` : Draw a line from `pt1` to `pt2`
+- **`fill_circle`** `(center: Point, radius: int)` : Fill a circle, given `center` and `radius`
+- **`fill_rect`** `(pos: Point, size: Size)` : Fill a given rectangle, given left-top position and size
+- **`draw_text`** `(txt: str, pos: Point, size: int)` : Draw a text, given left-top position and font px size
+- **`draw_text_centered`** `(txt: str, pos: Point, size: int)` : Draw a centered text, given center and font px size
 
 ### Images and sounds
 
 - **`load_image`** `(src: str) -> str` : Load an image and return a name for it
-- **`draw_image`** `(src: str, pos: (int, int))` : Blit a whole image, given its name and the position
-- **`draw_image_clip`** `(src: str, pos: (int, int), clip_pos: (int, int), clip_size: (int, int))` : Blit a portion of an image
+- **`draw_image`** `(src: str, pos: Point)` : Blit a whole image, given its name and the position
+- **`draw_image_clip`** `(src: str, pos: Point, clip_pos: Point, clip_size: Size)` : Blit a portion of an image
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
 - **`play_audio`** `(src: str, loop: bool)` : Play a sound, possibly in a loop, given its name
 - **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
@@ -55,3 +56,5 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 - **`prompt`** `(message: str) -> str` : Show a dialog for entering a line of text
 - **`confirm`** `(message: str) -> bool` : Show a dialog for confirming a decision
 - **`alert`** `(message: str)` : Show a dialog with a message
+
+[*Key values*](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) + `"Spacebar", "LeftButton", "RightButton", "MiddleButton"`
