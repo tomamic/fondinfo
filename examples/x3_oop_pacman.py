@@ -84,18 +84,20 @@ class PacMan(Actor):
         return self._w, self._h
 
     def sprite(self):
-        return
+        return (0, 0)
 
     def collide(self, other, arena):
         return
 
 
 def tick():
+    background = "https://tomamic.github.io/images/sprites/pac-man-bg.png"
+    sprites = "https://tomamic.github.io/images/sprites/pac-man.png"
+
     arena.tick(g2d.current_keys())
-    bg = "https://tomamic.github.io/images/sprites/pac-man-bg.png"
-    g2d.draw_image(bg, (0, 0))
+    g2d.draw_image(background, (0, 0))
     for a in arena.actors():
-        g2d.fill_rect(a.pos(), a.size())
+        g2d.draw_image_clip(sprites, a.pos(), a.sprite(), a.size())
 
 def main():
     global arena
