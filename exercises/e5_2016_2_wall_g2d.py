@@ -28,16 +28,14 @@ class Ball(Actor):
 
     def collide(self, other, arena):
         if isinstance(other, Wall):
-            bx, by = self.pos()  # ball's pos
-            bw, bh = self.size()
-            wx, wy = other.pos() # wall's pos
-            ww, wh = other.size()
+            bx, by, bw, bh = self.pos() + self.size()  # ball's rect
+            wx, wy, ww, wh = other.pos() + other.size()  # wall's rect
             borders_distance = [(wx - bw - bx, 0), (wx + ww - bx, 0),
                                 (0, wy - bh - by), (0, wy + wh - by)]
             # move to the nearest border: left, right, top or bottom
-            move = min(borders_distance, key=lambda m: abs(m[0] + m[1]))
-            self._x += move[0]
-            self._y += move[1]
+            dx, dy = min(borders_distance, key=lambda m: abs(sum(m)))
+            self._x += dx
+            self._y += dy
 
     def pos(self):
         return self._x, self._y
