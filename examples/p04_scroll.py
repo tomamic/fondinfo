@@ -5,17 +5,17 @@
 '''
 
 import g2d
-#from p04_vehicle import Vehicle
 
 ARENA_W, ARENA_H = 500, 250
 VIEW_W, VIEW_H = 300, 200
 BALL_W, BALL_H = 20, 20
 
 class FallingBall:
-    def __init__(self, pos):
+    def __init__(self, pos, speed=(4, 0), gravity=0.4):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._dx, self._dy, self._g = 5, 0, 0.3
+        self._dx, self._dy = speed
+        self._g = gravity
 
     def move(self):
         if not (0 <= self._x + self._dx <= ARENA_W - self._w):
@@ -35,11 +35,13 @@ class FallingBall:
         return self._w, self._h
 
     def sprite(self) -> (int, int):
+        if self._g == 0 and self._dy == 0:
+            return 20, 0
         return 0, 0
 
 
-balls = [FallingBall((40, 80)), FallingBall((80, 40))]
-#ghosts = [Vehicle((60, 60), 6), Vehicle((60, 80), -4)]
+balls = [FallingBall((40, 80)), FallingBall((80, 120)),
+         FallingBall((60, 60), (3, 0), 0), FallingBall((60, 80), (-3, 0), 0)]
 view_x, view_y = 0, 0
 
 def tick():
@@ -56,7 +58,7 @@ def tick():
 
     g2d.draw_image_clip("https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/oop/viewport.png",
                         (0, 0), (view_x, view_y), (VIEW_W, VIEW_H))
-    for a in balls:  # or `ghosts`
+    for a in balls:
         x, y = a.pos()
         g2d.draw_image_clip("sprites.png", (x - view_x, y - view_y), a.sprite(), a.size())
         a.move()
