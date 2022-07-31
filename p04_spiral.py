@@ -31,7 +31,7 @@ class Spiral:
 def tick():
     g2d.clear_canvas()
     g2d.set_color(a.color())
-    g2d.fill_circle(a.center(), a.radius())
+    g2d.draw_circle(a.center(), a.radius())
     a.move()
 
 def main():

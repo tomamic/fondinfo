@@ -17,6 +17,6 @@ for i in range(n):
     color = randrange(255), randrange(255), randrange(255)
     pos = randrange(W - SIDE), randrange(H - SIDE)
     g2d.set_color(color)
-    g2d.fill_rect(pos, size)
+    g2d.draw_rect(pos, size)
 
 g2d.main_loop()

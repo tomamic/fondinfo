@@ -15,7 +15,7 @@ def sierpinski(pos: (int, int), size: (int, int)):
         for col in range(3):
             inner = x + col * w3, y + row * h3
             if row == 1 and col == 1:
-                g2d.fill_rect(inner, (w3, h3))
+                g2d.draw_rect(inner, (w3, h3))
             else:
                 sierpinski(inner, (w3, h3))
 

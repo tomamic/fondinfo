@@ -15,6 +15,6 @@ while r < 50 or r > 99:
     r = int(g2d.prompt("Radius? [50-99]"))
 
 g2d.set_color((0, 0, 255))
-g2d.fill_circle((200, 200), r)
+g2d.draw_circle((200, 200), r)
 
 g2d.main_loop()  # manage the window/canvas

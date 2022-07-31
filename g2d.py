@@ -57,10 +57,10 @@ def update_canvas() -> None:
 def draw_line(pt1: Point, pt2: Point) -> None:
     pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
 
-def fill_circle(center: Point, radius: int) -> None:
+def draw_circle(center: Point, radius: int) -> None:
     pg.draw.circle(_canvas, _color, _tup(center), int(radius))
 
-def fill_rect(pos: Point, size: Point) -> None:
+def draw_rect(pos: Point, size: Point) -> None:
     pg.draw.rect(_canvas, _color, _tup(pos + size))
 
 def draw_text(txt: str, pos: Point, size: int) -> None:
@@ -75,7 +75,7 @@ def draw_text_centered(txt: str, pos: Point, size: int) -> None:
     _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
 
 def load_image(src: str) -> str:
-    gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/examples/"
+    gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/"
     if src not in _loaded:
         try:
             _loaded[src] = pg.image.load(src)
@@ -140,10 +140,10 @@ def _kb_name(key: int) -> str:
     return name
 
 def current_keys() -> tuple:
-    return tuple(_curr_keys)
+    return list(_curr_keys)
 
 def previous_keys() -> tuple:
-    return tuple(_prev_keys)
+    return list(_prev_keys)
 
 def mouse_clicked() -> bool:
     return key_released("LeftButton")

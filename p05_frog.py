@@ -62,7 +62,7 @@ class Frog(Actor):
 
             x = self._x + self._dx
             y = self._y + self._dy
-            
+
         arena_w, arena_h = arena.size()
         self._x = min(max(x, 0), arena_w - self._w)
         self._y = min(max(y, 0), arena_h - self._h)
@@ -84,7 +84,7 @@ def tick():
     arena.tick(g2d.current_keys())
     g2d.clear_canvas()
     for a in arena.actors():
-        g2d.fill_rect(a.pos(), a.size())
+        g2d.draw_rect(a.pos(), a.size())
 
 def main():
     global arena, frog

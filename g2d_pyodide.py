@@ -113,14 +113,14 @@ def draw_line(pt1: Point, pt2: Point) -> None:
     _ctx.lineTo(*pt2)
     _ctx.stroke()
 
-def fill_circle(center: Point, radius: int) -> None:
+def draw_circle(center: Point, radius: int) -> None:
     from math import pi
     _ctx.beginPath()
     _ctx.arc(*center, radius, 0, 2 * pi)
     _ctx.closePath()
     _ctx.fill()
 
-def fill_rect(pos: Point, size: Point) -> None:
+def draw_rect(pos: Point, size: Point) -> None:
     _ctx.fillRect(*pos, *size)
 
 def draw_text(txt: str, pos: Point, size: int) -> None:
@@ -217,11 +217,11 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key in _prev_keys - _curr_keys
 
-def current_keys() -> tuple:
-    return tuple(_curr_keys)
+def current_keys() -> list:
+    return list(_curr_keys)
 
-def previous_keys() -> tuple:
-    return tuple(_prev_keys)
+def previous_keys() -> list:
+    return list(_prev_keys)
 
 def mouse_clicked() -> bool:
     return key_released("LeftButton")

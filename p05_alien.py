@@ -66,7 +66,7 @@ def tick():
         arena.spawn(Bullet(random.randrange(arena.size()[0])))
     arena.tick()
     for a in arena.actors():
-        g2d.fill_rect(a.pos(), a.size())
+        g2d.draw_rect(a.pos(), a.size())
 
 def main():
     global arena

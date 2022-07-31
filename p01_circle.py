@@ -11,7 +11,7 @@ g2d.init_canvas((400, 400))
 r = float(g2d.prompt("Radius? "))
 
 if 0 <= r <= 200:
-    g2d.fill_circle((200, 200), r)
+    g2d.draw_circle((200, 200), r)
     area = pi * r ** 2
     perimeter = 2 * pi * r
     g2d.alert("Area: " + str(area))

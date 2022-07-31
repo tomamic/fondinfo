@@ -14,6 +14,6 @@ for i in reversed(range(n)):
     red = i * 255 // max(n - 1, 1)
     radius = (i + 1) * RADIUS // n
     g2d.set_color((red, 0, 0))
-    g2d.fill_circle((RADIUS, RADIUS), radius)
+    g2d.draw_circle((RADIUS, RADIUS), radius)
 
 g2d.main_loop()

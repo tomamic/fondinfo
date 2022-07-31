@@ -105,7 +105,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if a.size() != (20, 20):
-            g2d.fill_rect(a.pos(), a.size())
+            g2d.draw_rect(a.pos(), a.size())
         else:
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
 

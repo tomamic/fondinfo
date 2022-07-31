@@ -18,6 +18,6 @@ for i in range(n):
     pos = i * step_pos
     red = i * step_red
     g2d.set_color((red, 0, 0))
-    g2d.fill_rect((pos, pos), (side, side))
+    g2d.draw_rect((pos, pos), (side, side))
 
 g2d.main_loop()

@@ -14,7 +14,7 @@ def tick():
             g2d.close_canvas()
         else:
             g2d.set_color((randrange(256), randrange(256), randrange(256)))
-            g2d.fill_circle((x, y), 25)
+            g2d.draw_circle((x, y), 25)
 
 g2d.init_canvas((480, 360))
 g2d.main_loop(tick)

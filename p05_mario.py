@@ -33,7 +33,7 @@ class Wall(Actor):
 
 
 class Mario(Actor):
-    
+
     def __init__(self, x, y):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
@@ -56,7 +56,7 @@ class Mario(Actor):
 
         self._x += self._dx
         self._y += self._dy
-        
+
         if not self._landed:
             self._dy = min(self._dy + self._gravity, self._max_speed)
         self._landed = False
@@ -69,7 +69,7 @@ class Mario(Actor):
         if isinstance(other, Wall):
             sx, sy, sw, sh = self.pos() + self.size()  # self's pos
             ox, oy, ow, oh = other.pos() + other.size()  # other's pos
-            
+
             # move to the nearest border: left, right, top or bottom
             dx = min(ox - sx - sw, ox + ow - sx, key=abs)
             dy = min(oy - sy - sh, oy + oh - sy, key=abs)
@@ -96,7 +96,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Wall):
-            g2d.fill_rect(a.pos(), a.size())
+            g2d.draw_rect(a.pos(), a.size())
         else:
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
 

@@ -18,6 +18,6 @@ delta_green = 255.0 / max(rows - 1, 1)
 for y in range(rows):
     for x in range(cols):
         g2d.set_color((0, delta_green * y, delta_blue * x))
-        g2d.fill_rect((w * x, h * y), (w - 1, h - 1))
+        g2d.draw_rect((w * x, h * y), (w - 1, h - 1))
 
 g2d.main_loop()

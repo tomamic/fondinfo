@@ -35,10 +35,10 @@ def clear_canvas() -> None:
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
     _jss.append(f"ctx.beginPath(); ctx.moveTo({pt1[0]}, {pt1[1]}); ctx.lineTo({pt2[0]}, {pt2[1]}); ctx.stroke()")
 
-def fill_circle(center: (int, int), radius: int) -> None:
+def draw_circle(center: (int, int), radius: int) -> None:
     _jss.append(f"ctx.beginPath(); ctx.arc({center[0]}, {center[1]}, {radius}, 0, 2*Math.PI); ctx.closePath(); ctx.fill()")
 
-def fill_rect(pos: (int, int), size: (int, int)) -> None:
+def draw_rect(pos: (int, int), size: (int, int)) -> None:
     _jss.append(f"ctx.fillRect({str(pos+size)[1:-1]})")
 
 def load_image(src: str) -> str:
@@ -91,11 +91,11 @@ def prompt(message: str) -> str:
 def mouse_pos() -> (int, int):
     return _mouse
 
-def current_keys() -> tuple:
-    return tuple(_curr_keys)
+def current_keys() -> "list[str]":
+    return list(_curr_keys)
 
-def previous_keys() -> tuple:
-    return tuple(_prev_keys)
+def previous_keys() -> "list[str]":
+    return list(_prev_keys)
 
 def mouse_clicked() -> bool:
     return key_released("LeftButton")

@@ -15,7 +15,7 @@ def tick():
     y = int(300 + i * math.sin(i * math.pi / 32))
     g2d.clear_canvas()
     g2d.set_color((255 - i, 0, i))
-    g2d.fill_circle((x, y), i // 2)
+    g2d.draw_circle((x, y), i // 2)
     i = (i + 1) % n
 
 def main():

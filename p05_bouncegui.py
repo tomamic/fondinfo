@@ -22,7 +22,7 @@ class BounceGui:
             if a.sprite() != None:
                 g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
             else:
-                pass  # g2d.fill_rect(a.pos(), a.size())
+                pass  # g2d.draw_rect(a.pos(), a.size())
         lives, time = self._game.lives(), self._game.time()
         g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24)
 
