@@ -23,12 +23,9 @@ class Document(Node):
         print(' ' * indent + self._name)
 
 class Folder(Node):
-    def __init__(self, name: str):
+    def __init__(self, name: str, subnodes: list[Node]):
         self._name = name
-        self._subnodes = []
-
-    def add_node(self, n: Node):
-        self._subnodes.append(n)
+        self._subnodes = subnodes
 
     def size(self) -> int:
         total_size = 0
@@ -43,18 +40,12 @@ class Folder(Node):
 
 def main():
     ball = Document('ball.gif', 'an image')
-    data = Folder('data')
-    data.add_node(ball)
+    data = Folder('data', [ball])
     a1_0 = Document('a1.txt', 'bla bla 0')
-    cmpt166 = Folder('cmpt166')
-    cmpt166.add_node(a1_0)
-    cmpt166.add_node(data)
+    cmpt166 = Folder('cmpt166', [a1_0, data])
     a1_1 = Document('a1.txt', 'a different file')
-    macm101 = Folder('macm101')
-    macm101.add_node(a1_1)
-    desktop = Folder('Desktop')
-    desktop.add_node(cmpt166)
-    desktop.add_node(macm101)
+    macm101 = Folder('macm101', [a1_1])
+    desktop = Folder('Desktop', [cmpt166, macm101])
 
     print(desktop.size())
 
