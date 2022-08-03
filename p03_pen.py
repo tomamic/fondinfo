@@ -31,4 +31,4 @@ def main():
 
     g2d.main_loop()
 
-main()
+#main()
