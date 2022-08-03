@@ -33,7 +33,7 @@ def clear_canvas() -> None:
     _jss.append(f"ctx.clearRect(0, 0, canvas.width, canvas.height)")
 
 def draw_line(pt1: (int, int), pt2: (int, int)) -> None:
-    _jss.append(f"ctx.beginPath(); ctx.moveTo({pt1[0]}, {pt1[1]}); ctx.lineTo({pt2[0]}, {pt2[1]}); ctx.stroke()")
+    _jss.append(f"ctx.beginPath(); ctx.moveTo({pt1[0]}, {pt1[1]}); ctx.lineTo({pt2[0]}, {pt2[1]}); ctx.closePath(); ctx.stroke();")
 
 def draw_circle(center: (int, int), radius: int) -> None:
     _jss.append(f"ctx.beginPath(); ctx.arc({center[0]}, {center[1]}, {radius}, 0, 2*Math.PI); ctx.closePath(); ctx.fill()")

@@ -109,8 +109,10 @@ def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
 
 def draw_line(pt1: Point, pt2: Point) -> None:
+    _ctx.beginPath()
     _ctx.moveTo(*pt1)
     _ctx.lineTo(*pt2)
+    _ctx.closePath()
     _ctx.stroke()
 
 def draw_circle(center: Point, radius: int) -> None:
