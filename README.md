@@ -1,6 +1,6 @@
 ## Programming lab @ UniPR
 
-http://tomamic.github.io/fondinfo/
+http://tomamic.github.io
 
 Python and C++ examples
 
