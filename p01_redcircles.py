@@ -6,7 +6,7 @@
 
 import g2d
 
-RADIUS, radius, red = 300, 300, 255
+RADIUS = 300
 g2d.init_canvas((RADIUS * 2, RADIUS * 2))
 
 n = int(g2d.prompt("Circles? "))

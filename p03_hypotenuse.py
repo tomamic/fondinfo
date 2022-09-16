@@ -17,5 +17,5 @@ def main():
     c = hypotenuse(a, b)
     print(c)
 
-main()  ## remove if importing the module elsewhere
+main()  # remove if importing the module elsewhere
 
