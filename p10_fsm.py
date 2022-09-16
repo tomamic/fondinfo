@@ -1,7 +1,7 @@
-alphabet = ["a", "b"]
-states = ["Q0", "Q1", "Q2", "Q3"]
+alphabet = {"a", "b"}
+states = {"Q0", "Q1", "Q2", "Q3"}
 state = "Q0"
-accepting = ["Q0"]
+accepting = {"Q0"}
 transition = {("Q0", "a"): "Q1", ("Q0", "b"): "Q2",
               ("Q1", "a"): "Q0", ("Q1", "b"): "Q3",
               ("Q2", "a"): "Q3", ("Q2", "b"): "Q0",
