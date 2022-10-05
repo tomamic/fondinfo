@@ -24,10 +24,10 @@ class Ball:
         return self._x, self._y
 
 
-b1 = Ball(140, 180)
-b2 = Ball(180, 140)
+def console_run():
+    b1 = Ball(140, 180)
+    b2 = Ball(180, 140)
 
-def main_console():
     for i in range(25):  # let's see just some cycles
         b1.move()
         b2.move()
@@ -41,11 +41,13 @@ def tick():
     g2d.draw_image("ball.png", b1.pos())  # FG
     g2d.draw_image("ball.png", b2.pos())  # FG
 
-def main_g2d():
-    global g2d
+def main():
+    global b1, b2, g2d
     import g2d  # Ball does not depend on g2d
+    b1 = Ball(140, 180)
+    b2 = Ball(180, 140)
+
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
-##main_console()
-##main_g2d()
+##main()
