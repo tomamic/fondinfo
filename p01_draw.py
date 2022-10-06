@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d_pyodide as g2d
+import g2d
 
 g2d.init_canvas((600, 400))  # width, height
 
