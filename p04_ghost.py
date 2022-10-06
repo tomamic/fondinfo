@@ -1,5 +1,7 @@
 from random import choice, randrange
 
+ARENA_W, ARENA_H = 480, 360
+
 class Ghost:
     def __init__(self, pos):
         self._x, self._y = pos
@@ -7,11 +9,10 @@ class Ghost:
         self._visible = True
 
     def move(self):
-        arena_w, arena_h = 480, 360
         dx = choice([-4, 0, 4])
         dy = choice([-4, 0, 4])
-        self._x = (self._x + dx) % arena_w
-        self._y = (self._y + dy) % arena_h
+        self._x = (self._x + dx) % ARENA_W
+        self._y = (self._y + dy) % ARENA_H
 
         if randrange(100) == 0:
             self._visible = not self._visible
@@ -41,9 +42,9 @@ def main():
 
     ghosts = []
     for i in range(5):
-        ghosts.append(Ghost((randrange(480), randrange(360))))
+        ghosts.append(Ghost((randrange(ARENA_W), randrange(ARENA_H))))
 
-    g2d.init_canvas((480, 360))
+    g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
 ##main()
