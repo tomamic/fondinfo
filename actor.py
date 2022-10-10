@@ -79,6 +79,7 @@ class Arena():
         self._count += 1
 
     def detect_collisions(self):
+        collisions = []
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
@@ -100,7 +101,9 @@ class Arena():
             for j in reversed(sorted(list(neighs))):
                 a2 = self._actors[j]
                 if self.check_collision(a1, a2):
-                    a1.collide(a2, self)
+                    collisions.append((a1, a2))
+        for a1, a2 in collisions:
+            a1.collide(a2, self)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check the two actors (args) for mutual collision (bounding-box
@@ -117,7 +120,7 @@ class Arena():
         '''
         return list(self._actors)
 
-    def size(self) -> (int, int):
+    def size(self) -> Point:
         '''Return the size (w, h) of the arena.
         '''
         return (self._w, self._h)
