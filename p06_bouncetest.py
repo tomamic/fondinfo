@@ -1,5 +1,5 @@
 import unittest
-from p3_oop_bounce import Arena, Ball, Ghost, Turtle
+from p05_bouncegame import Arena, Ball, Ghost, TurtleHero
 
 
 class BallTest(unittest.TestCase):
@@ -30,7 +30,7 @@ class TurtleTest(unittest.TestCase):
     def test_right(self):
         a = Arena((480, 360))
         a.tick(("ArrowRight"))
-        t = Turtle((230, 170))
+        t = TurtleHero((230, 170))
         t.move(a)
         t.move(a)
         a.tick()
@@ -40,7 +40,7 @@ class TurtleTest(unittest.TestCase):
     def test_collide_ball(self):
         a = Arena((480, 360))
         b = Ball((0, 0))
-        t = Turtle((230, 170))
+        t = TurtleHero((230, 170))
         t.collide(b, a)
         t.collide(b, a)  # no effect
         self.assertEqual(t.lives(), 2)
@@ -48,9 +48,9 @@ class TurtleTest(unittest.TestCase):
     def test_collide_ghost(self):
         a = Arena((480, 360))
         g = Ghost((0, 0))
-        t = Turtle((230, 170))
+        t = TurtleHero((230, 170))
         t.collide(g, a)
-        self.assertEqual(t.lives(), 0)
+        self.assertEqual(t.lives(), 3)
 
 
 if __name__ == '__main__':
