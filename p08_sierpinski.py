@@ -6,20 +6,24 @@
 
 import g2d
 
-def sierpinski(pos: (int, int), size: (int, int), level):
-    x, y, w, h = pos + size
+def sierpinski(x, y, w, h, level):
     w2, h2 = w // 2, h // 2
     if w2 < 2 or h2 < 2 or level == 0:
         return
-    g2d.draw_rect((x + w2, y), (w - w2, h2))
-    sierpinski((x, y), (w2, h2), level - 1)
-    sierpinski((x, y + h2), (w2, h - h2), level - 1)
-    sierpinski((x + w2, y + h2), (w - w2, h - h2), level - 1)
+    g2d.draw_rect((x, y), (w2, h2))
+    sierpinski(x+w2, y, w-w2, h2, level-1)
+    sierpinski(x, y+h2, w2, h-h2, level-1)
+    sierpinski(x+w2, y+h2, w-w2, h-h2, level-1)
 
 def main():
-    size = (600, 600)
-    g2d.init_canvas(size)
-    sierpinski((0, 0), size, 8)
+    w, h = 600, 600
+    g2d.init_canvas((w, h))
+
+    g2d.set_color((0, 0, 0))
+    g2d.draw_rect((0, 0), (w, h))
+    g2d.set_color((255, 255, 255))
+
+    sierpinski(0, 0, w, h, 6)
     g2d.main_loop()
 
 main()

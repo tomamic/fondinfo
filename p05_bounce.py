@@ -5,7 +5,6 @@
 '''
 
 from random import choice, randrange
-from time import time
 from actor import Actor, Arena
 
 class Ball(Actor):
