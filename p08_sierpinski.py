@@ -11,12 +11,12 @@ def sierpinski(x, y, w, h, level):
     if w2 < 2 or h2 < 2 or level == 0:
         return
     g2d.draw_rect((x, y), (w2, h2))
-    sierpinski(x+w2, y, w-w2, h2, level-1)
-    sierpinski(x, y+h2, w2, h-h2, level-1)
-    sierpinski(x+w2, y+h2, w-w2, h-h2, level-1)
+    sierpinski(x + w2, y, w2, h2, level - 1)
+    sierpinski(x, y + h2, w2, h2, level - 1)
+    sierpinski(x + w2, y + h2, w2, h2, level - 1)
 
 def main():
-    w, h = 600, 600
+    w, h = 512, 512
     g2d.init_canvas((w, h))
 
     g2d.set_color((0, 0, 0))
