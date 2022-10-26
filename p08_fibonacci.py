@@ -4,34 +4,30 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import logging, sys, time, functools
+import logging, time, functools
 
-
-#@functools.lru_cache()
+@functools.lru_cache()
 def fibonacci1(n: int) -> int:
-    if n <= 1:
+    if n < 2:
         return n
-    logging.debug('fib {}'.format(n))
-    return fibonacci1(n-1) + fibonacci1(n-2)
+    logging.debug("fib " + str(n))
+    return fibonacci1(n - 1) + fibonacci1(n - 2)
+
+_fibonacci2_lookup = [0, 1]
 
 def fibonacci2(n: int) -> int:
-    if n < len(fibonacci2._lookup):
-        return fibonacci2._lookup[n]
-    logging.debug('fib {}'.format(n))
+    if n < len(_fibonacci2_lookup):
+        return _fibonacci2_lookup[n]
+    logging.debug("fib " + str(n))
     result = fibonacci2(n - 1) + fibonacci2(n - 2)
-    fibonacci2._lookup.append(result)
+    _fibonacci2_lookup.append(result)
     return result
-
-fibonacci2._lookup = [0, 1]
-# lookup is a variable associated with the
-# function itself, not a particular activation
-
 
 def fibonacci3(n: int) -> int:
     val, nxt = 0, 1
 
     for i in range(n):
-        logging.debug('fib {}'.format(i+1))
+        logging.debug("fib " + str(n))
         val, nxt = nxt, val + nxt
 
     return val
@@ -39,19 +35,18 @@ def fibonacci3(n: int) -> int:
 
 def main():
 ##    logging.basicConfig(level=logging.DEBUG)
-    for line in sys.stdin:
-        n = int(line)
+    n = int(input("n? "))
 
-        start = time.time()
-        fib = fibonacci1(n)
-        print('fib1:', fib, time.time() - start)
+    start = time.time()
+    fib = fibonacci1(n)
+    print("fib1:", fib, time.time() - start)
 
-        start = time.time()
-        fib = fibonacci2(n)
-        print('fib2:', fib, time.time() - start)
+    start = time.time()
+    fib = fibonacci2(n)
+    print("fib2:", fib, time.time() - start)
 
-        start = time.time()
-        fib = fibonacci3(n)
-        print('fib3:', fib, time.time() - start)
+    start = time.time()
+    fib = fibonacci3(n)
+    print('fib3:', fib, time.time() - start)
 
 main()
