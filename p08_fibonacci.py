@@ -12,13 +12,11 @@ def fibonacci1(n: int) -> int:
         return n
     return fibonacci1(n - 1) + fibonacci1(n - 2)
 
-_fibonacci2_lookup = [0, 1]
-
-def fibonacci2(n: int) -> int:
-    if n < len(_fibonacci2_lookup):
-        return _fibonacci2_lookup[n]
+def fibonacci2(n: int, _cache=[0, 1]) -> int:
+    if n < len(_cache):
+        return _cache[n]
     result = fibonacci2(n - 1) + fibonacci2(n - 2)
-    _fibonacci2_lookup.append(result)
+    _cache.append(result)
     return result
 
 def fibonacci3(n: int) -> int:
