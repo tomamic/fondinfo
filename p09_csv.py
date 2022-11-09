@@ -23,7 +23,7 @@ def write_csv(filename: str, data: list, cols: int, rows: int):
                 print(data[y * cols + x], end=sep, file=f)
 
 def main():
-    write_csv("_data.csv", [randint(1, 12) for i in range(20)], 4, 5)
+    #write_csv("_data.csv", [randint(1, 12) for i in range(20)], 4, 5)
 
     data, cols, rows = read_csv("_data.csv")
 
