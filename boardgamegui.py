@@ -20,6 +20,14 @@ class BoardGameGui:
 
     def tick(self):
         keys = set(g2d.current_keys())
+        if "Escape" in (self._prev_keys - keys):  # "Escape" key released
+            g2d.close_canvas()
+            return
+        if self._game.finished():
+            g2d.alert(self._game.message())
+            g2d.close_canvas()
+            return
+        
         if "LeftButton" in keys and self._mouse_down == 0:
             self._mouse_down = time()
         elif "LeftButton" not in keys and self._mouse_down > 0:
@@ -32,8 +40,6 @@ class BoardGameGui:
             self.update_buttons()
             self._mouse_down = 0
 
-        if "Escape" in (self._prev_keys - keys):  # "Escape" key released
-            g2d.close_canvas()
         self._prev_keys = keys
 
     def update_buttons(self):
@@ -49,9 +55,6 @@ class BoardGameGui:
                 value = str(self._game.value_at(x, y))
                 center = x * W + W//2, y * H + H//2
                 g2d.draw_text_centered(value, center, H//2)
-        if self._game.finished():
-            g2d.alert(self._game.message())
-            g2d.close_canvas()
 
 def gui_play(game: BoardGame):
     g2d.init_canvas((game.cols() * W, game.rows() * H))
