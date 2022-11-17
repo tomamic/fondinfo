@@ -70,6 +70,7 @@ _key_codes = {"Up": "ArrowUp", "Down": "ArrowDown",
               "Space": "Spacebar", " ": "Spacebar",
               "Esc": "Escape", "Del": "Delete"}
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
+_lclick, _rclick = False, False
 _timer, _delay = None, 1000//30
 _loaded = {}
 
@@ -108,12 +109,14 @@ def set_color(color: Color) -> None:
 def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
 
-def draw_line(pt1: Point, pt2: Point) -> None:
+def draw_line(pt1: Point, pt2: Point, width=1) -> None:
+    _ctx.lineWidth = width
     _ctx.beginPath()
     _ctx.moveTo(*pt1)
     _ctx.lineTo(*pt2)
     _ctx.closePath()
     _ctx.stroke()
+    _ctx.lineWidth = 1
 
 def draw_circle(center: Point, radius: int) -> None:
     from math import pi
@@ -180,8 +183,14 @@ def mouse_pos() -> Point:
     return _mouse_pos
 
 def update_canvas() -> None:
-    global _prev_keys
+    global _prev_keys, _lclick, _rclick
     _prev_keys = set(_curr_keys)
+    if _lclick:
+        _curr_keys.discard(_mouse_codes[0])
+        _lclick = False
+    if _rclick:
+        _curr_keys.discard(_mouse_codes[2])
+        _rclick = False
 
 def main_loop(tick=None, fps=30) -> None:
     global _timer, _delay, _usr_tick
@@ -192,13 +201,15 @@ def main_loop(tick=None, fps=30) -> None:
         _timer = None
     if _usr_tick:
         _g2d_tick()  # to solve a Brython issue
-        _timer = js.setInterval(pyodide.create_proxy(_g2d_tick), _delay)
-    js.document.body.addEventListener("keydown", pyodide.create_proxy(_g2d_keydown))
-    js.document.body.addEventListener("keyup", pyodide.create_proxy(_g2d_keyup))
-    _canvas.addEventListener("focus", pyodide.create_proxy(_g2d_focus))
-    _canvas.addEventListener("mousemove", pyodide.create_proxy(_g2d_mousemove))
-    _canvas.addEventListener("mousedown", pyodide.create_proxy(_g2d_mousedown))
-    _canvas.addEventListener("mouseup", pyodide.create_proxy(_g2d_mouseup))
+        _timer = js.setInterval(pyodide.ffi.create_proxy(_g2d_tick), _delay)
+    js.document.body.addEventListener("keydown", pyodide.ffi.create_proxy(_g2d_keydown))
+    js.document.body.addEventListener("keyup", pyodide.ffi.create_proxy(_g2d_keyup))
+    _canvas.addEventListener("focus", pyodide.ffi.create_proxy(_g2d_focus))
+    _canvas.addEventListener("mousemove", pyodide.ffi.create_proxy(_g2d_mousemove))
+    _canvas.addEventListener("mousedown", pyodide.ffi.create_proxy(_g2d_mousedown))
+    _canvas.addEventListener("mouseup", pyodide.ffi.create_proxy(_g2d_mouseup))
+    _canvas.addEventListener("click", pyodide.ffi.create_proxy(_g2d_lclick))
+    _canvas.addEventListener("contextmenu", pyodide.ffi.create_proxy(_g2d_rclick))
 
 def close_canvas() -> None:
     global _canvas, _timer, _usr_tick
@@ -226,7 +237,10 @@ def previous_keys() -> list:
     return list(_prev_keys)
 
 def mouse_clicked() -> bool:
-    return key_released("LeftButton")
+    return key_released(_mouse_codes[0])
+
+def mouse_right_clicked() -> bool:
+    return key_released(_mouse_codes[2])
 
 def _g2d_tick() -> None:
     if _usr_tick:
@@ -261,7 +275,7 @@ def _g2d_mousemove(e: js.event) -> None:
     canvas = js.document.getElementById('g2d-canvas')
     if canvas != None:
         rect = canvas.getBoundingClientRect()
-        _mouse_pos = e.clientX - rect.left, e.clientY - rect.top
+        _mouse_pos = int(e.clientX - rect.left), int(e.clientY - rect.top)
 
 def _g2d_mousedown(e: js.event) -> None:
     e.key = _mouse_codes[min(e.button, 2)]
@@ -270,6 +284,20 @@ def _g2d_mousedown(e: js.event) -> None:
 def _g2d_mouseup(e: js.event) -> None:
     e.key = _mouse_codes[min(e.button, 2)]
     _g2d_keyup(e)
+
+def _g2d_lclick(e: js.event) -> None:
+    global _lclick
+    _curr_keys.add(_mouse_codes[0])
+    _lclick = True
+    #e.preventDefault()
+    e.stopPropagation()
+
+def _g2d_rclick(e: js.event) -> None:
+    global _rclick
+    _curr_keys.add(_mouse_codes[2])
+    _rclick = True
+    #e.preventDefault()
+    e.stopPropagation()
 
 alert = js.alert
 confirm = js.confirm

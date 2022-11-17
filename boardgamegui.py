@@ -14,33 +14,23 @@ LONG_PRESS = 0.5
 class BoardGameGui:
     def __init__(self, g: BoardGame):
         self._game = g
-        self._mouse_down = 0
-        self._prev_keys = set()
         self.update_buttons()
 
     def tick(self):
-        keys = set(g2d.current_keys())
-        if "Escape" in (self._prev_keys - keys):  # "Escape" key released
-            g2d.close_canvas()
-            return
+        released = set(g2d.previous_keys()) - set(g2d.current_keys())
         if self._game.finished():
             g2d.alert(self._game.message())
             g2d.close_canvas()
-            return
-        
-        if "LeftButton" in keys and self._mouse_down == 0:
-            self._mouse_down = time()
-        elif "LeftButton" not in keys and self._mouse_down > 0:
-            mouse = g2d.mouse_pos()
-            x, y = mouse[0] // W, mouse[1] // H
-            if time() - self._mouse_down > LONG_PRESS:
-                self._game.flag_at(x, y)
-            else:
-                self._game.play_at(x, y)
+        elif "Escape" in released:  # "Escape" key released
+            g2d.close_canvas()
+        elif "LeftButton" in released:
+            x, y = g2d.mouse_pos()
+            self._game.play_at(x // W, y // H)
             self.update_buttons()
-            self._mouse_down = 0
-
-        self._prev_keys = keys
+        elif "RightButton" in released:
+            x, y = g2d.mouse_pos()
+            self._game.flag_at(x // W, y // H)
+            self.update_buttons()
 
     def update_buttons(self):
         g2d.clear_canvas()

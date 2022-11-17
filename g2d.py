@@ -54,8 +54,8 @@ def update_canvas() -> None:
     _prev_keys = set(_curr_keys)
     pg.display.update()
 
-def draw_line(pt1: Point, pt2: Point) -> None:
-    pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2))
+def draw_line(pt1: Point, pt2: Point, width=1) -> None:
+    pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2), int(width))
 
 def draw_circle(center: Point, radius: int) -> None:
     pg.draw.circle(_canvas, _color, _tup(center), int(radius))
@@ -147,6 +147,9 @@ def previous_keys() -> tuple:
 
 def mouse_clicked() -> bool:
     return key_released("LeftButton")
+
+def mouse_right_clicked() -> bool:
+    return key_released("RightButton")
 
 def key_pressed(key: str) -> bool:
     return key in _curr_keys and key not in _prev_keys

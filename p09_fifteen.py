@@ -46,7 +46,7 @@ class Fifteen(BoardGame):
             self._x0, self._y0 = x, y
 
     def flag_at(self, x: int, y: int):
-        pass
+        return
 
     def finished(self) -> bool:
         return self._board == self._solved
