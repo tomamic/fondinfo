@@ -15,6 +15,6 @@ for symbol in string:
     new_state = transition.get((state, symbol), None)
     print((state, symbol), "→", new_state)
     state = new_state
-    if not state: break
+    if not state: break  # implicit error trap state
 
 print("Result:", state in accepting)
