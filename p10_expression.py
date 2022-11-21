@@ -58,13 +58,13 @@ class Sum(Expression):
 
 
 def main():
-                                              #   *  (prod2)
-    prod1 = Product(Literal(3), Literal(2))   #  / \
-    sum1 = Sum(Literal(4), prod1)             # 5   +  (sum1)
-    prod2 = Product(Literal(5), sum1)         #    / \
-    print(prod2.eval())                       #   4   *  (prod1)
-    print(prod2.infix())                      #      / \
-    print(prod2.prefix())                     #     3   2
+                                             #          *  (prod2)
+    prod1 = Product(Literal(3), Literal(2))  #         / \
+    sum1 = Sum(Literal(4), prod1)            #        5   +  (sum1)
+    prod2 = Product(sum1, Literal(5))        #           / \
+    print(prod2.eval())                      # (prod1)  *   4
+    print(prod2.infix())                     #         / \
+    print(prod2.prefix())                    #        3   2
 
 if __name__ == "__main__":
     main()

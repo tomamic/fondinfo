@@ -15,11 +15,11 @@ transition = {("Q0", "a", "Z"): ("Q0", ["Y"]),
 string = input("String? ")
 for symbol in string:
     if symbol not in input_alphabet:
-        raise ValueError(symbol + "∉Σ, Σ=" + str(input_alphabet))
+        raise ValueError(f"{symbol}∉Σ, Σ={input_alphabet}")
 
-    head = None if not stack else stack.pop()
+    head = None if not stack else stack.pop()  # head is at list end
     new_state, data = transition.get((state, symbol, head), (None, []))
-    stack += data
+    stack += data  # stack grows at list end
     print((state, symbol, head), "→", (new_state, data), "§§", stack)
     state = new_state
     if not state: break
