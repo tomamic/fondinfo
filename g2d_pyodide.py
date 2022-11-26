@@ -296,7 +296,7 @@ def _g2d_rclick(e: js.event) -> None:
     global _rclick
     _curr_keys.add(_mouse_codes[2])
     _rclick = True
-    #e.preventDefault()
+    e.preventDefault()
     e.stopPropagation()
 
 alert = js.alert
