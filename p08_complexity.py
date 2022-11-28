@@ -42,15 +42,14 @@ def swap(v: list, i: int, j: int):
 
 
 def bubble_sort(v: list, beg, end):
-    if end - beg <= 1:
-        return
-    ##swapped = False
+    ##last_swap = 0
     for i in range(beg, end - 1):
         if v[i] > v[i + 1]:
             swap(v, i, i + 1)
-            ##swapped = True
-    ##if not swapped: return
-    bubble_sort(v, beg, end - 1)  # loop
+            ##last_swap = i + 1
+    end -= 1  ##end = last_swap
+    if end - beg > 1:
+        bubble_sort(v, beg, end)  # loop
 
 
 def selection_sort(v: list, beg, end):
@@ -70,7 +69,7 @@ def insertion_sort(v: list, beg, end, mid=1):
         v[i] = v[i - 1]  # shift right
         i -= 1
     v[i] = value
-    insertion_sort(v, mid + 1)  # loop
+    insertion_sort(v, beg, end, mid + 1)  # loop
 
 
 def quick_sort(v: list, beg, end):
@@ -108,7 +107,14 @@ def merge_sort(v: list, beg, end: int):
 
 
 def main():
-    vals = [38, 27, 43, 3, 9, 82, 10]
-    merge_sort(vals, 0, len(vals))
+    names = ["Ada", "Ann", "Bea", "Eva", "Ivy",
+             "Kay", "Lea", "Meg", "Sue", "Zoe"]
+    i = binary_search(names, "Meg", 0, len(names))
+    print(i)
+    
+    vals = [3, 0, 1, 8, 7, 2, 5, 4, 6, 9]
+    bubble_sort(vals, 0, len(vals))
     print(vals)
 
+if __name__ == "__main__":
+    main()
