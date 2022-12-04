@@ -20,7 +20,7 @@ class Document(Node):
         return len(self._text)
 
     def print(self, indent: int):
-        print(' ' * indent + self._name)
+        print(" " * indent + self._name)
 
 class Folder(Node):
     def __init__(self, name: str, subnodes: list[Node]):
@@ -34,18 +34,18 @@ class Folder(Node):
         return total_size
 
     def print(self, indent: int):
-        print(' ' * indent + self._name)
+        print(" " * indent + self._name)
         for n in self._subnodes:
             n.print(indent + 4)
 
 def main():
-    ball = Document('ball.gif', 'an image')
-    data = Folder('data', [ball])
-    a1_0 = Document('a1.txt', 'bla bla 0')
-    cmpt166 = Folder('cmpt166', [a1_0, data])
-    a1_1 = Document('a1.txt', 'a different file')
-    macm101 = Folder('macm101', [a1_1])
-    desktop = Folder('Desktop', [cmpt166, macm101])
+    ball = Document("ball.txt", "spherics")
+    data = Folder("data", [ball])
+    a1_0 = Document("a1.txt", "bla bla 0")
+    cmpt166 = Folder("cmpt166", [a1_0, data])
+    a1_1 = Document("a1.txt", "a different file")
+    macm101 = Folder("macm101", [a1_1])
+    desktop = Folder("Desktop", [cmpt166, macm101])
 
     print(desktop.size())
 
