@@ -18,17 +18,15 @@ html = '''<!DOCTYPE html>
         window.languagePluginUrl = "./pyodide/";
         let pyodide = await loadPyodide();
         await pyodide.runPythonAsync(`
-            import base64, io, os, shutil, sys, zipfile
-            app_data = """__data__"""
-            with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), 'r') as zip_ref:
-                zip_ref.extractall()
-            if os.path.exists("g2d_pyodide.py"):
-                shutil.copyfile("g2d_pyodide.py", "g2d.py")
-            sys.path.append(".")
+import base64, io, os, shutil, sys, zipfile
+app_data = """__data__"""
+with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), 'r') as zip_ref:
+    zip_ref.extractall()
+if os.path.exists("g2d_pyodide.py"):
+    shutil.copyfile("g2d_pyodide.py", "g2d.py")
+sys.path.append(".")
+import __script__
         `);
-        main_py = pyodide.FS.readFile("__script__", { encoding: "utf8" })
-        console.log(main_py)
-        await pyodide.runPythonAsync(main_py)
         };
         main();
         </script>
@@ -42,6 +40,7 @@ try:
     import pyodide
     import sys
 except:
+    print("here")
     # if not in browser...
     import base64, os, sys, webbrowser, shutil
     # zip the whole app folder
@@ -56,7 +55,8 @@ except:
     # prepare a custom html file
     script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
     with open(app_file, "w") as f:
-        print(html.replace("__script__", script_name).replace("__data__", b64), file=f)
+        print(html.replace("__script__", script_name[0:-3]).replace("__data__", b64), file=f)
+
     # open html file in default browser
     webbrowser.open(app_file)
     sys.exit()

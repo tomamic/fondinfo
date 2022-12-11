@@ -4,10 +4,11 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d
 from boardgame import BoardGame
 
 W, H = 40, 40
+
+import g2d
 
 class BoardGameGui:
     def __init__(self, g: BoardGame):
@@ -41,8 +42,8 @@ class BoardGameGui:
         for y in range(rows):
             for x in range(cols):
                 value = str(self._game.value_at(x, y))
-                center = x * W + W // 2, y * H + H // 2
-                g2d.draw_text_centered(value, center, H // 2)
+                center = x * W + W//2, y * H + H//2
+                g2d.draw_text_centered(value, center, H//2)
 
 def gui_play(game: BoardGame):
     g2d.init_canvas((game.cols() * W, game.rows() * H))

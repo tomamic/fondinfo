@@ -4,8 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from boardgame import BoardGame, console_play
-from boardgamegui import gui_play
+from boardgame import BoardGame
 from random import randrange
 
 class LightsOut(BoardGame):
@@ -51,8 +50,8 @@ class LightsOut(BoardGame):
 
 
 def main():
-    game = LightsOut()
-    gui_play(game)
-    ##console_play(game)
+    from boardgamegui import gui_play
+    gui_play(LightsOut())
 
-main()
+if __name__ == "__main__":
+    main()
