@@ -63,9 +63,9 @@ class Frog(Actor):
             x = self._x + self._dx
             y = self._y + self._dy
 
-        arena_w, arena_h = arena.size()
-        self._x = min(max(x, 0), arena_w - self._w)
-        self._y = min(max(y, 0), arena_h - self._h)
+            arena_w, arena_h = arena.size()
+            self._x = min(max(x, 0), arena_w - self._w)
+            self._y = min(max(y, 0), arena_h - self._h)
 
     def pos(self):
         return self._x, self._y
