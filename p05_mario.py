@@ -5,7 +5,6 @@
 '''
 
 import g2d
-from random import choice, randrange
 from actor import Actor, Arena
 
 
