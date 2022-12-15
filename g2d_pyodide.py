@@ -27,7 +27,6 @@ html = '''<!DOCTYPE html>
             sys.path.append(".")
         `);
         main_py = pyodide.FS.readFile("__script__", { encoding: "utf8" })
-        console.log(main_py)
         await pyodide.runPythonAsync(main_py)
         };
         main();
@@ -40,11 +39,11 @@ html = '''<!DOCTYPE html>
 try:
     import js
     import pyodide
+    from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
     import sys
 except:
-    # if not in browser...
+    # if not in browser, zip the whole app folder
     import base64, os, sys, webbrowser, shutil
-    # zip the whole app folder
     tmp_file, app_file = os.path.expanduser("~/_g2dapp.zip"), "_app.html"
     if os.path.exists(app_file): os.remove(app_file)
     shutil.make_archive(tmp_file[:-4], "zip")
@@ -72,7 +71,7 @@ _key_codes = {"Up": "ArrowUp", "Down": "ArrowDown",
               "Esc": "Escape", "Del": "Delete"}
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 _lclick, _rclick = False, False
-_timer, _delay = None, 1000//30
+_delay, _last_frame = 1000 / 30, 0
 _loaded = {}
 
 try:
@@ -194,34 +193,27 @@ def update_canvas() -> None:
         _rclick = False
 
 def main_loop(tick=None, fps=30) -> None:
-    global _timer, _delay, _usr_tick
-    _delay = 1000 // fps
+    global _delay, _usr_tick
+    _delay = 1000 / fps
     _usr_tick = tick
-    if _timer:
-        js.clearInterval(_timer)
-        _timer = None
-    if _usr_tick:
-        _g2d_tick()  # to solve a Brython issue
-        _timer = js.setInterval(pyodide.ffi.create_proxy(_g2d_tick), _delay)
-    js.document.body.addEventListener("keydown", pyodide.ffi.create_proxy(_g2d_keydown))
-    js.document.body.addEventListener("keyup", pyodide.ffi.create_proxy(_g2d_keyup))
-    _canvas.addEventListener("focus", pyodide.ffi.create_proxy(_g2d_focus))
-    _canvas.addEventListener("mousemove", pyodide.ffi.create_proxy(_g2d_mousemove))
-    _canvas.addEventListener("mousedown", pyodide.ffi.create_proxy(_g2d_mousedown))
-    _canvas.addEventListener("mouseup", pyodide.ffi.create_proxy(_g2d_mouseup))
-    _canvas.addEventListener("click", pyodide.ffi.create_proxy(_g2d_lclick))
-    _canvas.addEventListener("contextmenu", pyodide.ffi.create_proxy(_g2d_rclick))
+    js.requestAnimationFrame(_proxy_tick)
+    if _canvas:
+        add_event_listener(js.document.body, "keydown", _g2d_keydown)
+        add_event_listener(js.document.body, "keyup", _g2d_keyup)
+        add_event_listener(_canvas, "focus", _g2d_focus)
+        add_event_listener(_canvas, "mousemove", _g2d_mousemove)
+        add_event_listener(_canvas, "mousedown", _g2d_mousedown)
+        add_event_listener(_canvas, "mouseup", _g2d_mouseup)
+        add_event_listener(_canvas, "click", _g2d_lclick)
+        add_event_listener(_canvas, "contextmenu", _g2d_rclick)
 
 def close_canvas() -> None:
-    global _canvas, _timer, _usr_tick
+    global _canvas, _usr_tick
     _usr_tick = None
-    if _timer:
-        js.clearInterval(_timer)
-        _timer = None
     if _canvas:
         clear_canvas()
-        js.document.body.removeEventListener("keydown", _g2d_keydown)
-        js.document.body.removeEventListener("keyup", _g2d_keyup)
+        remove_event_listener(js.document.body, "keydown", _g2d_keydown)
+        remove_event_listener(js.document.body, "keyup", _g2d_keyup)
         _canvas.parentElement.removeChild(_canvas)
         _canvas = None
 
@@ -243,10 +235,16 @@ def mouse_clicked() -> bool:
 def mouse_right_clicked() -> bool:
     return key_released(_mouse_codes[2])
 
-def _g2d_tick() -> None:
+def _g2d_tick(now: float) -> None:
+    global _last_frame
     if _usr_tick:
-        _usr_tick()
-        update_canvas()
+        if now - _last_frame >= _delay:
+            _last_frame = now
+            _usr_tick()
+            update_canvas()
+        js.requestAnimationFrame(_proxy_tick)
+        
+_proxy_tick = pyodide.ffi.create_proxy(_g2d_tick)
 
 def _g2d_keydown(e: js.event) -> None:
     try:

@@ -135,7 +135,7 @@ def tick():
 
 def main():
     global g2d, arena
-    import g2d_pyodide as g2d  # game classes do not depend on g2d
+    import g2d  # game classes do not depend on g2d
 
     arena = Arena((480, 360))
     arena.spawn(Ball((40, 80)))
