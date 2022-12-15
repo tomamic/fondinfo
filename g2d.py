@@ -22,7 +22,7 @@ _tkmain.wm_withdraw() #to hide the main window
 _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
 _tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
 
-_canvas, _tick = None, None
+_canvas, _display, _tick = None, None, None
 _size, _color = (640, 480), (127, 127, 127)
 _mouse_pos, _mouse_down = (0, 0), 0
 _curr_keys, _prev_keys = set(), set()
@@ -31,12 +31,14 @@ _loaded = {}
 def _tup(t: tuple) -> tuple:
     return tuple(map(int, t))
 
-def init_canvas(size: Point):
+def init_canvas(size: Point, scale=1):
     '''Set size of first CANVAS and return it'''
-    global _canvas, _size
+    global _canvas, _display, _size
     pg.init()
-    _size = size
-    _canvas = pg.display.set_mode(_tup(size))
+    _size = _tup(size)
+    w, h = _size
+    _display = pg.display.set_mode((w * scale, h * scale))
+    _canvas = pg.Surface(_size) if scale != 1 else _display
     clear_canvas()
 
 def canvas_size() -> Point:
@@ -52,6 +54,9 @@ def clear_canvas() -> None:
 def update_canvas() -> None:
     global _prev_keys
     _prev_keys = set(_curr_keys)
+    if _canvas is not _display:
+        scaled = pg.transform.scale(_canvas, _display.get_size())
+        _display.blit(scaled, (0, 0))
     pg.display.update()
 
 def draw_line(pt1: Point, pt2: Point, width=1) -> None:

@@ -85,7 +85,7 @@ try:
 except:
     pass
 
-def init_canvas(size: Point) -> None:
+def init_canvas(size: Point, scale=1) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas, _ctx, _size
     if js.document.getElementById('g2d-canvas') != None:
@@ -96,8 +96,9 @@ def init_canvas(size: Point) -> None:
         _canvas.setAttribute('style', 'background:white; border: 1px solid silver; position:absolute; z-index:100; right:40px; top:40px' )
         js.document.body.prepend(_canvas)
     _ctx = _canvas.getContext("2d")
-    _canvas.setAttribute('width', size[0])
-    _canvas.setAttribute('height', size[1])
+    _canvas.setAttribute('width', size[0] * scale)
+    _canvas.setAttribute('height', size[1] * scale)
+    _ctx.scale(scale, scale)
     clear_canvas()
     set_color((127, 127, 127))
 
