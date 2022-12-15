@@ -143,7 +143,7 @@ def main():
     arena.spawn(Ghost((120, 80)))
     arena.spawn(Turtle((80, 80)))
 
-    g2d.init_canvas(arena.size(), 3)
+    g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 
 if __name__ == "__main__":
