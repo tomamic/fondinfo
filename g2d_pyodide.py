@@ -88,6 +88,8 @@ except:
 def init_canvas(size: Point, scale=1) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas, _ctx, _size
+    js.document.querySelector("#run_button").style.display = "none"
+    js.document.querySelector("#clear_button").style.display = "inline"
     if js.document.getElementById('g2d-canvas') != None:
         _canvas = js.document.getElementById("g2d-canvas")
     else:
@@ -101,7 +103,6 @@ def init_canvas(size: Point, scale=1) -> None:
     _ctx.scale(scale, scale)
     clear_canvas()
     set_color((127, 127, 127))
-
 
 def set_color(color: Color) -> None:
     _ctx.strokeStyle = "rgb" + str(color)
@@ -209,14 +210,16 @@ def main_loop(tick=None, fps=30) -> None:
         add_event_listener(_canvas, "contextmenu", _g2d_rclick)
 
 def close_canvas() -> None:
+    js.document.querySelector("#run_button").style.display = "inline"
+    js.document.querySelector("#clear_button").style.display = "none"
     global _canvas, _usr_tick
     _usr_tick = None
     if _canvas:
         clear_canvas()
-        remove_event_listener(js.document.body, "keydown", _g2d_keydown)
-        remove_event_listener(js.document.body, "keyup", _g2d_keyup)
         _canvas.parentElement.removeChild(_canvas)
         _canvas = None
+        remove_event_listener(js.document.body, "keydown", _g2d_keydown)
+        remove_event_listener(js.document.body, "keyup", _g2d_keyup)
 
 def key_pressed(key: str) -> bool:
     return key in _curr_keys - _prev_keys
@@ -244,7 +247,7 @@ def _g2d_tick(now: float) -> None:
             _usr_tick()
             update_canvas()
         js.requestAnimationFrame(_proxy_tick)
-        
+
 _proxy_tick = pyodide.ffi.create_proxy(_g2d_tick)
 
 def _g2d_keydown(e: js.event) -> None:
@@ -253,7 +256,7 @@ def _g2d_keydown(e: js.event) -> None:
     except:
         pass
     if _usr_tick:
-        #e.preventDefault()
+        e.preventDefault() #
         e.stopPropagation()
     key = _key_codes.get(e.key, e.key)
     _curr_keys.add(key)
@@ -262,7 +265,7 @@ def _g2d_keydown(e: js.event) -> None:
 
 def _g2d_keyup(e: js.event) -> None:
     if _usr_tick:
-        #e.preventDefault()
+        e.preventDefault() #
         e.stopPropagation()
     key = _key_codes.get(e.key, e.key)
     _curr_keys.discard(key)

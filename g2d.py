@@ -170,10 +170,9 @@ def main_loop(tick=None, fps=30) -> None:
     running = True
     while running:
         for e in pg.event.get():
-            # print(e)
             if e.type == pg.QUIT:
                 running = False
-                # break
+                break
             elif e.type == pg.KEYDOWN:
                 _curr_keys.add(_kb_name(e.key))
             elif e.type == pg.KEYUP:
