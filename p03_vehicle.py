@@ -7,16 +7,16 @@ import g2d
 
 x, y, dx = 50, 50, 5
 ARENA_W, ARENA_H = 480, 360
-XMIN, XMAX, LENGTH = -100, ARENA_W + 100, ARENA_W + 200
+XMIN, XMAX = -100, ARENA_W + 100
 
 def tick():
     global x, dx
     if g2d.mouse_clicked():
         dx = -dx
     if x + dx < XMIN:
-        x += LENGTH
+        x += XMAX - XMIN
     if x + dx > XMAX:
-        x -= LENGTH
+        x -= XMAX - XMIN
     g2d.clear_canvas()
     g2d.draw_image("ball.png", (x, y))
     x += dx

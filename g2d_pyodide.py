@@ -13,34 +13,39 @@ html = '''<!DOCTYPE html>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
     </head>
     <body>
+        <canvas id="g2d-canvas" style="border: 1px solid silver"></canvas>
+        <br><textarea id="console" rows="5" cols="50" readonly style="border: 0"></textarea>
         <script>
         async function main() {
         window.languagePluginUrl = "./pyodide/";
         let pyodide = await loadPyodide();
         await pyodide.runPythonAsync(`
-            import base64, io, os, shutil, sys, zipfile
+            import base64, io, js, os, shutil, sys, zipfile
             app_data = """__data__"""
             with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), 'r') as zip_ref:
                 zip_ref.extractall()
             if os.path.exists("g2d_pyodide.py"):
                 shutil.copyfile("g2d_pyodide.py", "g2d.py")
             sys.path.append(".")
+
+            def write(data):
+                console = js.document.getElementById("console")
+                console.value += str(data)
+                console.scrollTop = console.scrollHeight
+            sys.stdout.write = write
+            sys.stderr.write = write
         `);
         main_py = pyodide.FS.readFile("__script__", { encoding: "utf8" })
         await pyodide.runPythonAsync(main_py)
         };
         main();
         </script>
-        <canvas id="g2d-canvas" style="border: 1px solid silver"></canvas>
-        <br><textarea id="console" rows="5" cols="50" readonly style="border: 0"></textarea>
     </body>
 </html>'''
 
 try:
-    import js
-    import pyodide
+    import base64, js, pyodide, sys
     from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
-    import sys
 except:
     # if not in browser, zip the whole app folder
     import base64, os, sys, webbrowser, shutil
@@ -50,7 +55,7 @@ except:
     # encode the zip content as Base64
     b64 = ""
     with open(tmp_file, "rb") as f:
-        b64 = base64.b64encode(f.read()).decode('ascii')
+        b64 = base64.b64encode(f.read()).decode("ascii")
     if os.path.exists(tmp_file): os.remove(tmp_file)
     # prepare a custom html file
     script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
@@ -74,32 +79,17 @@ _lclick, _rclick = False, False
 _delay, _last_frame = 1000 / 30, 0
 _loaded = {}
 
-try:
-    def write(data):
-        con = js.document.getElementById("console")
-        if con:
-            con.value += str(data)
-            con.scrollTop = con.scrollHeight
-    sys.stdout.write = write
-    sys.stderr.write = write
-except:
-    pass
-
 def init_canvas(size: Point, scale=1) -> None:
     '''Set size of first CANVAS and return it'''
     global _canvas, _ctx, _size
-    js.document.querySelector("#run_button").style.display = "none"
-    js.document.querySelector("#clear_button").style.display = "inline"
-    if js.document.getElementById('g2d-canvas') != None:
-        _canvas = js.document.getElementById("g2d-canvas")
-    else:
-        _canvas = js.document.createElement('canvas')
-        _canvas.setAttribute('id', 'g2d-canvas')
-        _canvas.setAttribute('style', 'background:white; border: 1px solid silver; position:absolute; z-index:100; right:40px; top:40px' )
+    if not (_canvas := js.document.getElementById("g2d-canvas")):
+        _canvas = js.document.createElement("canvas")
+        _canvas.setAttribute("id", "g2d-canvas")
+        _canvas.setAttribute("style", "background:white; border: 1px solid silver; position:absolute; z-index:100; right:40px; top:40px")
         js.document.body.prepend(_canvas)
     _ctx = _canvas.getContext("2d")
-    _canvas.setAttribute('width', size[0] * scale)
-    _canvas.setAttribute('height', size[1] * scale)
+    _canvas.setAttribute("width", size[0] * scale)
+    _canvas.setAttribute("height", size[1] * scale)
     _ctx.scale(scale, scale)
     clear_canvas()
     set_color((127, 127, 127))
@@ -156,6 +146,9 @@ def load_image(src: str) -> str:
     if src not in _loaded:
         img = js.Image.new()
         img.src = src
+        if not src.startswith("http"):
+            with open(src, "rb") as f:
+                img.src = "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
         _loaded[src] = img
     return src
 
@@ -168,7 +161,11 @@ def draw_image_clip(src: str, pos: Point, clip: Point,
 
 def load_audio(src: str) -> str:
     if src not in _loaded:
-        aud = js.Audio.new(src)
+        aud = js.Audio.new()
+        aud.src = src
+        if not src.startswith("http"):
+            with open(src, "rb") as f:
+                aud.src = "data:audio/mpeg;base64," + base64.b64encode(f.read()).decode("ascii")
         _loaded[src] = aud
     return src
 
@@ -210,16 +207,16 @@ def main_loop(tick=None, fps=30) -> None:
         add_event_listener(_canvas, "contextmenu", _g2d_rclick)
 
 def close_canvas() -> None:
-    js.document.querySelector("#run_button").style.display = "inline"
-    js.document.querySelector("#clear_button").style.display = "none"
     global _canvas, _usr_tick
     _usr_tick = None
     if _canvas:
-        clear_canvas()
         _canvas.parentElement.removeChild(_canvas)
         _canvas = None
-        remove_event_listener(js.document.body, "keydown", _g2d_keydown)
-        remove_event_listener(js.document.body, "keyup", _g2d_keyup)
+        try:
+            remove_event_listener(js.document.body, "keydown", _g2d_keydown)
+            remove_event_listener(js.document.body, "keyup", _g2d_keyup)
+        except:
+            pass
 
 def key_pressed(key: str) -> bool:
     return key in _curr_keys - _prev_keys
