@@ -14,11 +14,6 @@ class Actor:
         '''
         raise NotImplementedError("Abstract method")
 
-    def collide(self, other: "Actor", arena: "Arena"):
-        '''Called by Arena, at the actor's turn.
-        '''
-        raise NotImplementedError("Abstract method")
-
     def pos(self) -> Point:
         '''Return the position (x, y) of the actor (left-top corner).
         '''
@@ -47,6 +42,7 @@ class Arena():
         self._count = 0
         self._actors, self._spawned, self._killed = [], [], []
         self._curr_keys = self._prev_keys = tuple()
+        self._collisions = {}
 
     def spawn(self, a: Actor):
         '''Register an actor into this arena.
@@ -60,6 +56,12 @@ class Arena():
         self._killed.append(a)
 
     def tick(self, keys=tuple()):
+        '''for a1 in reversed(self._actors):
+            for a2 in reversed(self._actors):
+                if self.check_collision(a1, a2):
+                    a1.collide(a2, self)'''
+        self.detect_collisions()
+
         '''Move all actors (through their own act method).
         '''
         self._prev_keys = self._curr_keys
@@ -67,19 +69,13 @@ class Arena():
         for a in reversed(self._actors):
             a.move(self)
 
-        '''for a1 in reversed(self._actors):
-            for a2 in reversed(self._actors):
-                if self.check_collision(a1, a2):
-                    a1.collide(a2, self)'''
-        self.detect_collisions()
-
         self._actors = [a for a in self._actors + self._spawned
                         if a not in self._killed]
         self._spawned, self._killed = [], []
         self._count += 1
 
     def detect_collisions(self):
-        collisions = []
+        self._collisions = {a:[] for a in self._actors}
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
@@ -101,9 +97,7 @@ class Arena():
             for j in reversed(sorted(list(neighs))):
                 a2 = self._actors[j]
                 if self.check_collision(a1, a2):
-                    collisions.append((a1, a2))
-        for a1, a2 in collisions:
-            a1.collide(a2, self)
+                    self._collisions[a1].append(a2)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
         '''Check the two actors (args) for mutual collision (bounding-box
@@ -114,6 +108,10 @@ class Arena():
         return (a1 is not a2
             and y2 < y1 + h1 and y1 < y2 + h2
             and x2 < x1 + w1 and x1 < x2 + w2)
+    
+    def collisions(self, a: Actor) -> list[Actor]:
+        '''Get the list of actors colliding with the actor `a`'''
+        return self._collisions[a]
 
     def actors(self) -> list:
         '''Return a copy of the list of actors.

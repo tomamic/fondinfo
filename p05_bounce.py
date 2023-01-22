@@ -15,6 +15,18 @@ class Ball(Actor):
         self._dx, self._dy = self._speed, self._speed
 
     def move(self, arena: Arena):
+        for other in arena.collisions(self):
+            if not isinstance(other, Ghost):
+                x, y = other.pos()
+                if x < self._x:
+                    self._dx = self._speed
+                else:
+                    self._dx = -self._speed
+                if y < self._y:
+                    self._dy = self._speed
+                else:
+                    self._dy = -self._speed
+
         arena_w, arena_h = arena.size()
         if self._x + self._dx < 0:
             self._dx = self._speed
@@ -26,18 +38,6 @@ class Ball(Actor):
             self._dy = -self._speed
         self._x += self._dx
         self._y += self._dy
-
-    def collide(self, other: Actor, arena: Arena):
-        if not isinstance(other, Ghost):
-            x, y = other.pos()
-            if x < self._x:
-                self._dx = self._speed
-            else:
-                self._dx = -self._speed
-            if y < self._y:
-                self._dy = self._speed
-            else:
-                self._dy = -self._speed
 
     def pos(self):
         return self._x, self._y
@@ -67,9 +67,6 @@ class Ghost(Actor):
         if randrange(1000) == 0:
             arena.spawn(Ball(self.pos()))
 
-    def collide(self, other: Actor, arena: Arena):
-        pass
-
     def pos(self):
         return self._x, self._y
 
@@ -92,6 +89,10 @@ class Turtle(Actor):
         self._speed = 2
 
     def move(self, arena: Arena):
+        for other in arena.collisions(self):
+            if isinstance(other, Ball):
+                self.hit(arena)
+
         keys = arena.current_keys()
         self._dx = self._dy = 0
         if "ArrowUp" in keys:
@@ -109,9 +110,8 @@ class Turtle(Actor):
         self._x = min(max(self._x, 0), aw - self._w)  # clamp
         self._y = min(max(self._y, 0), ah - self._h)  # clamp
 
-    def collide(self, other: Actor, arena: Arena):
-        if isinstance(other, Ball):
-            arena.kill(self)
+    def hit(self, arena: Arena):
+        arena.kill(self)
 
     def pos(self):
         return self._x, self._y

@@ -28,11 +28,11 @@ def console_run():
     b1 = Ball(140, 180)
     b2 = Ball(180, 140)
 
-    for i in range(25):  # let's see just some cycles
-        b1.move()
-        b2.move()
-        print("b1 @", b1.pos(),
-              "b2 @", b2.pos())
+    b1.move()
+    b2.move()
+
+    print("b1 @", b1.pos())
+    print("b2 @", b2.pos())
 
 def tick():
     g2d.clear_canvas()  # BG

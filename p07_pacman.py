@@ -86,9 +86,6 @@ class PacMan(Actor):
     def sprite(self):
         return (0, 0)
 
-    def collide(self, other, arena):
-        return
-
 
 def tick():
     background = "https://tomamic.github.io/images/sprites/pac-man-bg.png"

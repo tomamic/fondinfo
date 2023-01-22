@@ -3,9 +3,9 @@ from random import choice, randrange
 ARENA_W, ARENA_H = 480, 360
 
 class Ghost:
-    def __init__(self, pos):
-        self._x, self._y = pos
+    def __init__(self):
         self._w, self._h = 20, 20
+        self._x, self._y = ARENA_W // 2, ARENA_H // 2
         self._visible = True
 
     def move(self):
@@ -42,7 +42,7 @@ def main():
 
     ghosts = []
     for i in range(5):
-        ghosts.append(Ghost((randrange(ARENA_W), randrange(ARENA_H))))
+        ghosts.append(Ghost())
 
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)

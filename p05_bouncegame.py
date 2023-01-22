@@ -24,13 +24,12 @@ class TurtleHero(Turtle):
         if self._blinking > 0:
             self._blinking -= 1
 
-    def collide(self, other: Actor, arena: Arena):
+    def hit(self, arena: Arena):
         if self._blinking == 0:
             self._blinking = 60
-            if isinstance(other, Ball):
-                self._lives -= 1
-        if self._lives <= 0:
-            arena.kill(self)
+            self._lives -= 1
+            if self._lives <= 0:
+                arena.kill(self)
 
     def lives(self) -> int:
         return self._lives

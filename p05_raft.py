@@ -24,9 +24,6 @@ class Raft(Actor):
         if self._x >= arena_w + margin:
             self._x -= width
 
-    def collide(self, other, arena):
-        pass
-
     def speed(self):
         return self._dx
 
@@ -50,6 +47,10 @@ class Frog(Actor):
         self._count, self._steps = 0, 5
 
     def move(self, arena):
+        for other in arena.collisions(self):
+            if isinstance(other, Raft) and self._count == 0:
+                self._dragging = other.speed()
+
         keys = arena.current_keys()
         u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
         #u, d, l, r = "w", "s", "a", "d"
@@ -77,10 +78,6 @@ class Frog(Actor):
         arena_w, arena_h = arena.size()
         self._x = min(max(0, self._x), arena_w - self._w)
         self._y = min(max(0, self._y), arena_h - self._h)
-
-    def collide(self, other, arena):
-        if isinstance(other, Raft) and self._count == 0:
-            self._dragging = other.speed()
 
     def pos(self):
         return self._x, self._y

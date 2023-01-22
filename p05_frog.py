@@ -43,6 +43,9 @@ class Frog(Actor):
         self._speed, self._steps, self._count = 2, 10, 0
 
     def move(self, arena):
+        if arena.collisions(self):
+            self._x, self._y = self._x0, self._y0
+
         keys = arena.current_keys()
         if "a" in keys and self._count == 0:
             self._count = self._steps
@@ -75,9 +78,6 @@ class Frog(Actor):
 
     def sprite(self):
         return 0, 0
-
-    def collide(self, other, arena):
-        self._x, self._y = self._x0, self._y0
 
 
 def tick():

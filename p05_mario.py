@@ -17,9 +17,6 @@ class Wall(Actor):
     def move(self, arena):
         pass
 
-    def collide(self, other, arena):
-        pass
-
     def pos(self):
         return self._x, self._y
 
@@ -40,6 +37,21 @@ class Mario(Actor):
         self._landed = False
 
     def move(self, arena):
+        for other in arena.collisions(self):
+            if isinstance(other, Wall):
+                sx, sy, sw, sh = self.pos() + self.size()  # self's pos
+                ox, oy, ow, oh = other.pos() + other.size()  # other's pos
+
+                # move to the nearest border: left, right, top or bottom
+                dx = min(ox - sx - sw, ox + ow - sx, key=abs)
+                dy = min(oy - sy - sh, oy + oh - sy, key=abs)
+                if abs(dx) < abs(dy):
+                    self._x += dx
+                else:
+                    self._y += dy
+                    self._dy = 1
+                    self._landed = dy < 0
+
         keys = arena.current_keys()
         if self._landed and "w" in keys and "w" not in arena.previous_keys():
             self._dy = -self._max_speed
@@ -62,21 +74,6 @@ class Mario(Actor):
         aw, ah = arena.size()
         self._x = min(max(self._x, 0), aw - self._w)  # clamp
         self._y = min(max(self._y, 0), ah - self._h)  # clamp
-
-    def collide(self, other, arena):
-        if isinstance(other, Wall):
-            sx, sy, sw, sh = self.pos() + self.size()  # self's pos
-            ox, oy, ow, oh = other.pos() + other.size()  # other's pos
-
-            # move to the nearest border: left, right, top or bottom
-            dx = min(ox - sx - sw, ox + ow - sx, key=abs)
-            dy = min(oy - sy - sh, oy + oh - sy, key=abs)
-            if abs(dx) < abs(dy):
-                self._x += dx
-            else:
-                self._y += dy
-                self._dy = 1
-                self._landed = dy < 0
 
     def pos(self):
         return self._x, self._y

@@ -8,6 +8,7 @@ class BallTest(TestCase):
     def test_corner(self):
         arena = Mock()
         arena.size.return_value = (480, 360)
+        arena.collisions.return_value = []
         ball = Ball((460, 340))  # dx = 4, dy = 4
         ball.move(arena)  # dx = -4, dy = -4
         ball.move(arena)
@@ -16,6 +17,7 @@ class BallTest(TestCase):
     def test_move(self):
         arena = Mock()
         arena.size.return_value = (480, 360)
+        arena.collisions.return_value = []
         test_values = ( (40, 80, 44, 84),
                         (40, 215, 44, 219),
                         (40, 340, 44, 336),
@@ -34,6 +36,7 @@ class TurtleTest(TestCase):
         arena = Mock()
         arena.size.return_value = (480, 360)
         arena.current_keys.return_value = ["ArrowRight"]
+        arena.collisions.return_value = []
         turtle = TurtleHero((230, 170))
         turtle.move(arena)
         turtle.move(arena)
@@ -42,20 +45,24 @@ class TurtleTest(TestCase):
         self.assertEqual(turtle.pos(), (234, 170))
 
     def test_collide_ball(self):
+        ball = Mock(spec=Ball)  # to fool isinstance
         arena = Mock()
         arena.size.return_value = (480, 360)
-        ball = Mock(spec=Ball)  # to fool isinstance
+        arena.current_keys.return_value = []
+        arena.collisions.return_value = [ball]
         turtle = TurtleHero((230, 170))
-        turtle.collide(ball, arena)
-        turtle.collide(ball, arena)  # no effect
+        turtle.move(arena)
+        turtle.move(arena)  # no effect
         self.assertEqual(turtle.lives(), 2)
 
     def test_collide_ghost(self):
+        ghost = Mock(spec=Ghost)  # to fool isinstance
         arena = Mock()
         arena.size.return_value = (480, 360)
-        ghost = Mock(spec=Ghost)  # to fool isinstance
+        arena.current_keys.return_value = []
+        arena.collisions.return_value = [ghost]
         turtle = TurtleHero((230, 170))
-        turtle.collide(ghost, arena)
+        turtle.move(arena)
         self.assertEqual(turtle.lives(), 3)
 
 
