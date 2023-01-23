@@ -11,14 +11,14 @@ XMIN, XMAX = -100, ARENA_W + 100
 
 def tick():
     global x, dx
+    g2d.clear_canvas()
+    g2d.draw_image("ball.png", (x, y))
     if g2d.mouse_clicked():
         dx = -dx
     if x + dx < XMIN:
         x += XMAX - XMIN
     if x + dx > XMAX:
         x -= XMAX - XMIN
-    g2d.clear_canvas()
-    g2d.draw_image("ball.png", (x, y))
     x += dx
 
 def main():

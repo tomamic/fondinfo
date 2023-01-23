@@ -97,14 +97,14 @@ arena.spawn(Raft(80, 40, -5))
 arena.spawn(Frog(80, 80))
 
 def tick():
-    arena.tick(g2d.current_keys())  # Game logic
-
     g2d.clear_canvas()
     for a in arena.actors():
         if a.size() != (20, 20):
             g2d.draw_rect(a.pos(), a.size())
         else:
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+
+    arena.tick(g2d.current_keys())  # Game logic
 
 def main():
     global sprites

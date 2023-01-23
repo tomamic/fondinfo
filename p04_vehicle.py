@@ -33,16 +33,16 @@ class Vehicle:
 
 
 def tick():
+    g2d.clear_canvas()
+    g2d.draw_image("ball.png", v.pos())
     if g2d.mouse_clicked():
         v.uturn()
-    g2d.clear_canvas()
     v.move()
-    g2d.draw_image("ball.png", v.pos())
 
 def main():
     global g2d, v
     import g2d  # Vehicle does not depend on g2d
-    
+
     v = Vehicle((40, 40), 5)
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)

@@ -86,14 +86,14 @@ class Mario(Actor):
 
 
 def tick():
-    arena.tick(g2d.current_keys())  # Game logic
-
     g2d.clear_canvas()
     for a in arena.actors():
         if isinstance(a, Wall):
             g2d.draw_rect(a.pos(), a.size())
         else:
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+
+    arena.tick(g2d.current_keys())  # Game logic
 
 arena = Arena((320, 240))
 arena.spawn(Mario(80, 80))

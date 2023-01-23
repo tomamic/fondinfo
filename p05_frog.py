@@ -81,10 +81,10 @@ class Frog(Actor):
 
 
 def tick():
-    arena.tick(g2d.current_keys())
     g2d.clear_canvas()
     for a in arena.actors():
         g2d.draw_rect(a.pos(), a.size())
+    arena.tick(g2d.current_keys())
 
 def main():
     global arena, frog

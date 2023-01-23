@@ -15,8 +15,6 @@ class BounceGui:
         g2d.main_loop(self.tick)
 
     def tick(self):
-        self._game.tick(g2d.current_keys())  # Game logic
-
         g2d.clear_canvas()
         for a in self._game.actors():
             if a.sprite() != None:
@@ -32,5 +30,8 @@ class BounceGui:
         elif self._game.game_won():
             g2d.alert("Game won")
             g2d.close_canvas()
+        else:
+            self._game.tick(g2d.current_keys())  # Game logic
+
 
 gui = BounceGui()

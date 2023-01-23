@@ -61,11 +61,11 @@ class Bullet(Actor):
 
 def tick():
     g2d.clear_canvas()
+    for a in arena.actors():
+        g2d.draw_rect(a.pos(), a.size())
     if random.randrange(50) == 0:
         arena.spawn(Bullet(random.randrange(arena.size()[0])))
     arena.tick()
-    for a in arena.actors():
-        g2d.draw_rect(a.pos(), a.size())
 
 def main():
     global arena

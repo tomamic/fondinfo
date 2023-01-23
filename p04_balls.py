@@ -10,8 +10,8 @@ from p04_ball import Ball, ARENA_W, ARENA_H
 def tick():
     g2d.clear_canvas()  # BG
     for b in balls:
-        b.move()
         g2d.draw_image("ball.png", b.pos())  # FG
+        b.move()
 
 def main():
     global balls

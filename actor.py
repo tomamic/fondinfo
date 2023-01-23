@@ -41,7 +41,7 @@ class Arena():
         self._w, self._h = size
         self._count = 0
         self._turn = None
-        self._actors, self._spawned, self._killed = [], [], []
+        self._actors = []
         self._curr_keys = self._prev_keys = tuple()
         self._collisions = {}
 
@@ -49,47 +49,42 @@ class Arena():
         '''Register an actor into this arena.
         Actors are blitted in their order of registration.
         '''
-        self._spawned.append(a)
+        if a not in self._actors:
+            self._actors.append(a)
 
     def kill(self, a: Actor):
         '''Removes an actor from this arena.
         '''
-        self._killed.append(a)
+        if a in self._actors:
+            self._actors.remove(a)
 
     def tick(self, keys=tuple()):
-        '''for a1 in reversed(self._actors):
-            for a2 in reversed(self._actors):
-                if self.check_collision(a1, a2):
-                    a1.collide(a2, self)'''
-        self.detect_collisions()
-
         '''Move all actors (through their own act method).
         '''
+        actors = list(self._actors)
+        self._detect_collisions(actors)
         self._prev_keys = self._curr_keys
         self._curr_keys = keys
-        for a in reversed(self._actors):
+        for a in reversed(actors):
             self._turn = a
             a.move(self)
 
-        self._actors = [a for a in self._actors + self._spawned
-                        if a not in self._killed]
-        self._spawned, self._killed = [], []
         self._count += 1
 
-    def detect_collisions(self):
-        self._collisions = {a:[] for a in self._actors}
+    def _detect_collisions(self, actors):
+        self._collisions = {a:[] for a in actors}
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
         cells = [set() for _ in range(nx * ny)]
-        for i, a in enumerate(self._actors):
+        for i, a in enumerate(actors):
             x, y, w, h = map(int, a.pos() + a.size())
             for tx in range(x // tile, 1 + (x + w) // tile):
                 for ty in range(y // tile, 1 + (y + h) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
                         cells[ty * nx + tx].add(i)
-        for i in reversed(range(len(self._actors))):
-            a1 = self._actors[i]
+        for i in reversed(range(len(actors))):
+            a1 = actors[i]
             neighs = set()
             x, y, w, h = map(int, a1.pos() + a1.size())
             for tx in range(x // tile, 1 + (x + w) // tile):
@@ -97,7 +92,7 @@ class Arena():
                     if 0 <= tx < nx and 0 <= ty < ny:
                         neighs |= cells[ty * nx + tx]
             for j in reversed(sorted(list(neighs))):
-                a2 = self._actors[j]
+                a2 = actors[j]
                 if self.check_collision(a1, a2):
                     self._collisions[a1].append(a2)
 

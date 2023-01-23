@@ -36,10 +36,10 @@ def console_run():
 
 def tick():
     g2d.clear_canvas()  # BG
-    b1.move()
-    b2.move()
     g2d.draw_image("ball.png", b1.pos())  # FG
     g2d.draw_image("ball.png", b2.pos())  # FG
+    b1.move()
+    b2.move()
 
 def main():
     global b1, b2, g2d

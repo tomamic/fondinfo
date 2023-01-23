@@ -124,14 +124,15 @@ class Turtle(Actor):
 
 
 def tick():
-    arena.tick(g2d.current_keys())  # Game logic
-
     g2d.clear_canvas()
     for a in arena.actors():
         if a.sprite() != None:
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
         else:
             pass  # g2d.draw_rect(a.pos(), a.size())
+
+    arena.tick(g2d.current_keys())  # Game logic
+
 
 def main():
     global g2d, arena

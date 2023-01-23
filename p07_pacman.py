@@ -90,11 +90,11 @@ class PacMan(Actor):
 def tick():
     background = "https://tomamic.github.io/images/sprites/pac-man-bg.png"
     sprites = "https://tomamic.github.io/images/sprites/pac-man.png"
-
-    arena.tick(g2d.current_keys())
     g2d.draw_image(background, (0, 0))
     for a in arena.actors():
         g2d.draw_image_clip(sprites, a.pos(), a.sprite(), a.size())
+
+    arena.tick(g2d.current_keys())
 
 def main():
     global arena
