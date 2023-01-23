@@ -37,7 +37,7 @@ class Mario(Actor):
         self._landed = False
 
     def move(self, arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if isinstance(other, Wall):
                 sx, sy, sw, sh = self.pos() + self.size()  # self's pos
                 ox, oy, ow, oh = other.pos() + other.size()  # other's pos

@@ -15,7 +15,7 @@ class Alien(Actor):
         self._dx, self._dy = 5, 5
 
     def move(self, arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if isinstance(other, Bullet):
                 arena.kill(self)
         if self._xmin <= self._x + self._dx <= self._xmax:
@@ -41,10 +41,10 @@ class Bullet(Actor):
         self._dy = -5
 
     def move(self, arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if isinstance(other, Alien):
                 arena.kill(self)
-                
+
         self._y += self._dy
         if self._y < 0:
             arena.kill(self)

@@ -15,7 +15,7 @@ class Ball(Actor):
         self._dx, self._dy = self._speed, self._speed
 
     def move(self, arena: Arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if not isinstance(other, Ghost):
                 x, y = other.pos()
                 if x < self._x:
@@ -89,7 +89,7 @@ class Turtle(Actor):
         self._speed = 2
 
     def move(self, arena: Arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if isinstance(other, Ball):
                 self.hit(arena)
 

@@ -40,6 +40,7 @@ class Arena():
         '''
         self._w, self._h = size
         self._count = 0
+        self._turn = None
         self._actors, self._spawned, self._killed = [], [], []
         self._curr_keys = self._prev_keys = tuple()
         self._collisions = {}
@@ -67,6 +68,7 @@ class Arena():
         self._prev_keys = self._curr_keys
         self._curr_keys = keys
         for a in reversed(self._actors):
+            self._turn = a
             a.move(self)
 
         self._actors = [a for a in self._actors + self._spawned
@@ -109,9 +111,9 @@ class Arena():
             and y2 < y1 + h1 and y1 < y2 + h2
             and x2 < x1 + w1 and x1 < x2 + w2)
     
-    def collisions(self, a: Actor) -> list[Actor]:
+    def collisions(self) -> list[Actor]:
         '''Get the list of actors colliding with the actor `a`'''
-        return self._collisions[a]
+        return self._collisions.get(self._turn, [])
 
     def actors(self) -> list:
         '''Return a copy of the list of actors.

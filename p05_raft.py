@@ -47,7 +47,7 @@ class Frog(Actor):
         self._count, self._steps = 0, 5
 
     def move(self, arena):
-        for other in arena.collisions(self):
+        for other in arena.collisions():
             if isinstance(other, Raft) and self._count == 0:
                 self._dragging = other.speed()
 

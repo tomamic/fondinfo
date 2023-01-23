@@ -43,7 +43,7 @@ class Frog(Actor):
         self._speed, self._steps, self._count = 2, 10, 0
 
     def move(self, arena):
-        if arena.collisions(self):
+        if arena.collisions():
             self._x, self._y = self._x0, self._y0
 
         keys = arena.current_keys()
