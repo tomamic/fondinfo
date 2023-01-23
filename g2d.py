@@ -5,9 +5,8 @@
 '''
 
 from tkinter import Tk, messagebox, simpledialog
-import io
 from urllib.request import urlopen
-import subprocess, sys
+import io, subprocess, sys
 try:
     import pygame as pg
 except:
@@ -29,7 +28,7 @@ _curr_keys, _prev_keys = set(), set()
 _loaded = {}
 
 def _tup(t: tuple) -> tuple:
-    return tuple(map(int, t))
+    return tuple(map(round, t))
 
 def init_canvas(size: Point, scale=1):
     '''Set size of first CANVAS and return it'''

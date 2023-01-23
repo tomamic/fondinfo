@@ -78,7 +78,7 @@ class Arena():
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
         cells = [set() for _ in range(nx * ny)]
         for i, a in enumerate(actors):
-            x, y, w, h = map(int, a.pos() + a.size())
+            x, y, w, h = map(round, a.pos() + a.size())
             for tx in range(x // tile, 1 + (x + w) // tile):
                 for ty in range(y // tile, 1 + (y + h) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
@@ -86,7 +86,7 @@ class Arena():
         for i in reversed(range(len(actors))):
             a1 = actors[i]
             neighs = set()
-            x, y, w, h = map(int, a1.pos() + a1.size())
+            x, y, w, h = map(round, a1.pos() + a1.size())
             for tx in range(x // tile, 1 + (x + w) // tile):
                 for ty in range(y // tile, 1 + (y + h) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:

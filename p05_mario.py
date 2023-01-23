@@ -33,7 +33,7 @@ class Mario(Actor):
         self._x, self._y = x, y
         self._dx, self._dy = 0, 0
         self._w, self._h = 20, 20
-        self._speed, self._max_speed, self._gravity = 4, 8, 0.4
+        self._speed, self._max_speed, self._gravity = 2, 4, 0.1
         self._landed = False
 
     def move(self, arena):
@@ -102,4 +102,4 @@ arena.spawn(Wall(120, 160, 80, 20))
 arena.spawn(Wall(0, 220, 320, 20))
 
 g2d.init_canvas(arena.size())
-g2d.main_loop(tick)
+g2d.main_loop(tick, 60)
