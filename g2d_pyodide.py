@@ -45,6 +45,7 @@ html = '''<!DOCTYPE html>
 
 try:
     import base64, js, pyodide, sys
+    import traceback
     from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 except:
     # if not in browser, zip the whole app folder
@@ -238,12 +239,15 @@ def mouse_right_clicked() -> bool:
 
 def _g2d_tick(now: float) -> None:
     global _last_frame
-    if _usr_tick:
-        if now - _last_frame >= _delay:
-            _last_frame = now
-            _usr_tick()
-            update_canvas()
-        js.requestAnimationFrame(_proxy_tick)
+    try:
+        if _usr_tick:
+            if now - _last_frame >= _delay:
+                _last_frame = now
+                _usr_tick()
+                update_canvas()
+            js.requestAnimationFrame(_proxy_tick)
+    except:
+        traceback.print_exc()
 
 _proxy_tick = pyodide.ffi.create_proxy(_g2d_tick)
 
