@@ -7,7 +7,7 @@
 html = '''<!DOCTYPE html>
 <html>
     <head>
-        <title>__script__</title>
+        <title>%%SCRIPT%%</title>
         <meta charset="UTF-8">
         <script src="https://cdn.jsdelivr.net/pyodide/dev/full/pyodide.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
@@ -19,9 +19,9 @@ html = '''<!DOCTYPE html>
         async function main() {
         window.languagePluginUrl = "./pyodide/";
         let pyodide = await loadPyodide();
-        await pyodide.runPythonAsync(`
+        pyodide.runPython(`
             import base64, io, js, os, shutil, sys, zipfile
-            app_data = """__data__"""
+            app_data = """%%DATA%%"""
             with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), 'r') as zip_ref:
                 zip_ref.extractall()
             if os.path.exists("g2d_pyodide.py"):
@@ -32,39 +32,45 @@ html = '''<!DOCTYPE html>
                 console = js.document.getElementById("console")
                 console.value += str(data)
                 console.scrollTop = console.scrollHeight
-            sys.stdout.write = write
-            sys.stderr.write = write
-        `);
-        main_py = pyodide.FS.readFile("__script__", { encoding: "utf8" })
-        await pyodide.runPythonAsync(main_py)
+            sys.stdout.write = sys.stderr.write = write
+        `, { globals: pyodide.globals.get("dict")() } );
+        main_py = pyodide.FS.readFile("%%SCRIPT%%", { encoding: "utf8" });
+        pyodide.runPython(main_py);
         };
         main();
         </script>
     </body>
 </html>'''
 
+def _archive_project():
+    # if not in browser, zip the whole app folder
+    import base64, io, os, sys, webbrowser, zipfile
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        for dirname, subdirs, files in os.walk("."):
+            subdirs[:] = (n for n in subdirs if n[0:1].isalnum())
+            for n in files:
+                if n[0:1].isalnum():
+                    zf.write(os.path.join(dirname, n))
+    # encode the zip content as Base64
+    b64 = base64.b64encode(zip_buffer.getvalue()).decode("ascii")
+    if __name__ != "__main__":
+        # prepare a custom html file, open in default browser
+        app_file = "_g2dapp.html"
+        with open(app_file, "w") as f:
+            script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
+            print(html.replace("%%SCRIPT%%", script_name).replace("%%DATA%%", b64), file=f)
+        webbrowser.open(app_file)
+    else:
+        print(b64)
+    sys.exit()
+
 try:
     import base64, js, pyodide, sys
     import traceback
     from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 except:
-    # if not in browser, zip the whole app folder
-    import base64, os, sys, webbrowser, shutil
-    tmp_file, app_file = os.path.expanduser("~/_g2dapp.zip"), "_app.html"
-    if os.path.exists(app_file): os.remove(app_file)
-    shutil.make_archive(tmp_file[:-4], "zip")
-    # encode the zip content as Base64
-    b64 = ""
-    with open(tmp_file, "rb") as f:
-        b64 = base64.b64encode(f.read()).decode("ascii")
-    if os.path.exists(tmp_file): os.remove(tmp_file)
-    # prepare a custom html file
-    script_name = sys.argv[0].replace("\\", "/").split("/")[-1]
-    with open(app_file, "w") as f:
-        print(html.replace("__script__", script_name).replace("__data__", b64), file=f)
-    # open html file in default browser
-    webbrowser.open(app_file)
-    sys.exit()
+    _archive_project()
 
 Point = "tuple[int, int]"
 Color = "tuple[int, int, int]"

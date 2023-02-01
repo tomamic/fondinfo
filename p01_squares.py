@@ -6,18 +6,18 @@
 
 import g2d
 
-CANVAS_SIZE = 300
-g2d.init_canvas((CANVAS_SIZE, CANVAS_SIZE))
+L = 500
+g2d.init_canvas((L, L))
 
-n = 5           ## int(g2d.prompt("N?"))
-step_pos = 50   ## CANVAS_SIZE // (n + 1)
-step_red = 60   ## 255 // max(n - 1, 1)
-side = step_pos * 2
+n = 4        ## int(g2d.prompt("N?"))
+l = 200      ## 2 * L / (n + 1)
+d_pos = 100  ## l / 2
+d_red = 85   ## 255 // max(n - 1, 1)
 
 for i in range(n):
-    pos = i * step_pos
-    red = i * step_red
+    pos = i * d_pos
+    red = i * d_red
     g2d.set_color((red, 0, 0))
-    g2d.draw_rect((pos, pos), (side, side))
+    g2d.draw_rect((pos, pos), (l, l))
 
 g2d.main_loop()

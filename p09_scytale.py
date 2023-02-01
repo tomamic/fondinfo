@@ -4,26 +4,18 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+COLS, ROWS = 4, 3
 text = "informazioneSEGRETISSIMA"
 #with open("p09_scytale.py") as infile:
 #    text = infile.read()
 
 with open("_output.txt", "w") as outfile:
-    FILLER = ' '
-    ROWS = 3
-    COLS = 4
-
-    matrix = [FILLER] * (ROWS * COLS)
-    i = 0
-    while i < len(text):
-        for y in range(ROWS):
-            for x in range(COLS):
-                if i < len(text):
-                    matrix[y * COLS + x] = text[i]
-                    i += 1
-                else:
-                    matrix[y * COLS + x] = FILLER
-
+    matrix = [" "] * (COLS * ROWS)
+    i, n = 0, len(text)
+    while i < n:
         for x in range(COLS):
             for y in range(ROWS):
-                print(matrix[y * COLS + x], end="", file=outfile)
+                c = text[i] if i < n else " "
+                matrix[y * COLS + x] = c
+                i += 1
+        print("".join(matrix), end="", file=outfile)
