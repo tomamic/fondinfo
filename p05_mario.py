@@ -9,28 +9,26 @@ from actor import Actor, Arena
 
 
 class Wall(Actor):
-
-    def __init__(self, x, y, w, h):
-        self._x, self._y = x, y
-        self._w, self._h = w, h
+    def __init__(self, pos, size):
+        self._pos = pos
+        self._size = size
 
     def move(self, arena):
-        pass
+        return
 
     def pos(self):
-        return self._x, self._y
+        return self._pos
 
     def size(self):
-        return self._w, self._h
+        return self._size
 
     def sprite(self):
-        return 0, 0
+        return None
 
 
 class Mario(Actor):
-
-    def __init__(self, x, y):
-        self._x, self._y = x, y
+    def __init__(self, pos):
+        self._x, self._y = pos
         self._dx, self._dy = 0, 0
         self._w, self._h = 20, 20
         self._speed, self._max_speed, self._gravity = 2, 4, 0.1
@@ -88,18 +86,18 @@ class Mario(Actor):
 def tick():
     g2d.clear_canvas()
     for a in arena.actors():
-        if isinstance(a, Wall):
-            g2d.draw_rect(a.pos(), a.size())
-        else:
+        if a.sprite():
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+        else:
+            g2d.draw_rect(a.pos(), a.size())
 
     arena.tick(g2d.current_keys())  # Game logic
 
 arena = Arena((320, 240))
-arena.spawn(Mario(80, 80))
-arena.spawn(Wall(200, 80, 80, 20))
-arena.spawn(Wall(120, 160, 80, 20))
-arena.spawn(Wall(0, 220, 320, 20))
+arena.spawn(Mario((80, 80)))
+arena.spawn(Wall((200, 80), (80, 20)))
+arena.spawn(Wall((120, 160), (80, 20)))
+arena.spawn(Wall((0, 220), (320, 20)))
 
 g2d.init_canvas(arena.size())
 g2d.main_loop(tick, 60)

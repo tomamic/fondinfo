@@ -7,14 +7,14 @@
 # Sum of the numbers from 1 to n
 
 # Example intended for educational purposes.
-# Instead, use a `for` cycle. It's simpler!
+# Instead, use a `for` cycle (or Gauss' trick).
 
 n = int(input("n? "))
 total = 0
 count = 1
 
 while count <= n:
-    total = total + count
-    count = count + 1
+    total += count
+    count += 1
 
 print("The sum is", total)

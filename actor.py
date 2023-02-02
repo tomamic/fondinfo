@@ -40,10 +40,10 @@ class Arena():
         '''
         self._w, self._h = size
         self._count = 0
-        self._turn = None
+        self._turn = -1
         self._actors = []
         self._curr_keys = self._prev_keys = tuple()
-        self._collisions = {}
+        self._collisions = []
 
     def spawn(self, a: Actor):
         '''Register an actor into this arena.
@@ -58,21 +58,19 @@ class Arena():
         if a in self._actors:
             self._actors.remove(a)
 
-    def tick(self, keys=tuple()):
+    def tick(self, keys=list()):
         '''Move all actors (through their own act method).
         '''
-        actors = list(self._actors)
+        actors = list(reversed(self._actors))
         self._detect_collisions(actors)
         self._prev_keys = self._curr_keys
         self._curr_keys = keys
-        for a in reversed(actors):
-            self._turn = a
+        for self._turn, a in enumerate(actors):
             a.move(self)
-
         self._count += 1
 
     def _detect_collisions(self, actors):
-        self._collisions = {a:[] for a in actors}
+        self._collisions.clear()
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
@@ -83,22 +81,21 @@ class Arena():
                 for ty in range(y // tile, 1 + (y + h) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
                         cells[ty * nx + tx].add(i)
-        for i in reversed(range(len(actors))):
-            a1 = actors[i]
+        for i, a in enumerate(actors):
             neighs = set()
-            x, y, w, h = map(round, a1.pos() + a1.size())
+            x, y, w, h = map(round, a.pos() + a.size())
             for tx in range(x // tile, 1 + (x + w) // tile):
                 for ty in range(y // tile, 1 + (y + h) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
                         neighs |= cells[ty * nx + tx]
-            for j in reversed(sorted(list(neighs))):
-                a2 = actors[j]
-                if self.check_collision(a1, a2):
-                    self._collisions[a1].append(a2)
+            colls = [actors[j] for j in reversed(sorted(neighs))
+                     if self.check_collision(a, actors[j])]
+            self._collisions.append(colls)
 
     def check_collision(self, a1: Actor, a2: Actor) -> bool:
-        '''Check the two actors (args) for mutual collision (bounding-box
-        collision detection). Return True if colliding, False otherwise.
+        '''Check two actors (args) for mutual collision,
+        according to bounding-box collision detection.
+        Return True if colliding, False otherwise.
         '''
         x1, y1, w1, h1 = a1.pos() + a1.size()
         x2, y2, w2, h2 = a2.pos() + a2.size()
@@ -107,8 +104,9 @@ class Arena():
             and x2 < x1 + w1 and x1 < x2 + w2)
     
     def collisions(self) -> list[Actor]:
-        '''Get the list of actors colliding with the actor `a`'''
-        return self._collisions.get(self._turn, [])
+        '''Get list of actors colliding with current actor'''
+        t, colls = self._turn, self._collisions
+        return colls[t] if 0 <= t < len(colls) else []
 
     def actors(self) -> list:
         '''Return a copy of the list of actors.
@@ -125,12 +123,12 @@ class Arena():
         '''
         return self._count
 
-    def current_keys(self) -> "tuple[str, ...]":
-        '''Return the currently pressed keys, as a tuple of strs.
+    def current_keys(self) -> "list[str]":
+        '''Return the currently pressed keys.
         '''
         return self._curr_keys
 
-    def previous_keys(self) -> "tuple[str, ...]":
-        '''Return the keys pressed at last tick, as a tuple of strs.
+    def previous_keys(self) -> "list[str]":
+        '''Return the keys pressed at last tick.
         '''
         return self._prev_keys

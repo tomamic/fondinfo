@@ -12,8 +12,8 @@ cols = int(g2d.prompt("Cols? "))
 rows = int(g2d.prompt("Rows? "))
 
 w, h = WIDTH / cols, HEIGHT / rows
-delta_blue = 255.0 / max(cols - 1, 1)
-delta_green = 255.0 / max(rows - 1, 1)
+delta_blue = 255 / max(cols - 1, 1)
+delta_green = 255 / max(rows - 1, 1)
 
 for y in range(rows):
     for x in range(cols):

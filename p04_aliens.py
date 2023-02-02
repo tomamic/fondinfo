@@ -6,14 +6,18 @@
 
 import g2d
 
+W, H = 480, 360
+
 class Alien:
     def __init__(self, pos: (int, int)):
         self._x, self._y = pos
-        self._xmin, self._xmax = self._x, self._x + 150
+        # TODO: give each alien its own moving space, e.g. 150px
+        # self._xmin, self._xmax = ...
         self._dx, self._dy = 5, 5
 
     def move(self):
-        if self._xmin <= self._x + self._dx <= self._xmax:
+        # TODO: use the alien's own limits
+        if 0 <= self._x + self._dx <= W - 20:
             self._x += self._dx
         else:
             self._dx = -self._dx
@@ -30,9 +34,10 @@ def tick():
         a.move()
 
 def main():
-    global aliens
+    global aliens, W, H
     aliens = [Alien((40, 40)), Alien((80, 40)), Alien((60, 80))]
-    g2d.init_canvas((480, 360))
+    g2d.init_canvas((W, H))
     g2d.main_loop(tick, 10)
 
-main()  # call main to start the program
+if __name__ == "__main__":
+    main()  # called only if this file is executed directly

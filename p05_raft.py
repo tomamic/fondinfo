@@ -16,12 +16,12 @@ class Raft(Actor):
         self._dx = dx
 
     def move(self, arena):
-        arena_w, arena_h = arena.size()
-        margin, width = arena_w // 2, arena_w * 2
+        aw, ah = arena.size()
+        margin, width = aw // 2, aw * 2
         self._x += self._dx
         if self._x < -margin:
             self._x += width
-        if self._x >= arena_w + margin:
+        if self._x >= aw + margin:
             self._x -= width
 
     def speed(self):
@@ -31,10 +31,10 @@ class Raft(Actor):
         return self._x, self._y
 
     def size(self):
-        return self._w, self._h
+        return 60, 20
 
     def sprite(self):
-        return 0, 0
+        return None
 
 
 class Frog(Actor):
@@ -75,9 +75,9 @@ class Frog(Actor):
         self._x += self._dragging
         self._dragging = 0
 
-        arena_w, arena_h = arena.size()
-        self._x = min(max(0, self._x), arena_w - self._w)
-        self._y = min(max(0, self._y), arena_h - self._h)
+        aw, ah = arena.size()
+        self._x = min(max(0, self._x), aw - self._w)
+        self._y = min(max(0, self._y), ah - self._h)
 
     def pos(self):
         return self._x, self._y
@@ -99,10 +99,10 @@ arena.spawn(Frog(80, 80))
 def tick():
     g2d.clear_canvas()
     for a in arena.actors():
-        if a.size() != (20, 20):
-            g2d.draw_rect(a.pos(), a.size())
-        else:
+        if a.sprite():
             g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+        else:
+            g2d.draw_rect(a.pos(), a.size())
 
     arena.tick(g2d.current_keys())  # Game logic
 

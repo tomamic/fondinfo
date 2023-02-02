@@ -14,15 +14,15 @@ class Ellipse:
     def area(self) -> float:
         return math.pi * self._a * self._b
 
-    def focal_distance(self) -> float:
-        return 2 * math.sqrt(abs(self._a ** 2 - self._b ** 2))
+    def focus(self) -> float:
+        return math.sqrt(abs(self._a ** 2 - self._b ** 2))
 
 def main():
     val_a = float(input("a? "))
     val_b = float(input("b? "))
     e = Ellipse(val_a, val_b)
     area = e.area()
-    dist = e.focal_distance()
-    print(area, dist)
+    focus = e.focus()
+    print(area, focus)
 
 main()

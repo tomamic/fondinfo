@@ -35,7 +35,7 @@ class FallingBall:
         return self._w, self._h
 
     def sprite(self) -> (int, int):
-        if self._g == 0 and self._dy == 0:
+        if self._g == 0:
             return 20, 0
         return 0, 0
 

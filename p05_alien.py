@@ -10,15 +10,17 @@ from actor import Actor, Arena
 class Alien(Actor):
     def __init__(self, pos):
         self._x, self._y = pos
-        self._w, self._h = 20, 20
-        self._xmin, self._xmax = self._x, self._x + 150
+        # TODO: give each alien its own moving space, e.g. 150px
+        # self._xmin, self._xmax = ...
         self._dx, self._dy = 5, 5
 
     def move(self, arena):
         for other in arena.collisions():
             if isinstance(other, Bullet):
                 arena.kill(self)
-        if self._xmin <= self._x + self._dx <= self._xmax:
+        # TODO: use the alien's own limits
+        aw, ah = arena.size()
+        if 0 <= self._x + self._dx <= aw:
             self._x += self._dx
         else:
             self._dx = -self._dx
@@ -28,24 +30,23 @@ class Alien(Actor):
         return self._x, self._y
 
     def size(self):
-        return self._w, self._h
+        return 20, 20
 
     def sprite(self):
         return 0, 0
 
 
 class Bullet(Actor):
-    def __init__(self, x0: int):
-        self._w, self._h = 5, 10
-        self._x, self._y = x0, arena.size()[1] - self._h
-        self._dy = -5
+    def __init__(self, pos: "tuple[int, int]"):
+        self._x, self._y = pos
+        # ...
 
     def move(self, arena):
         for other in arena.collisions():
             if isinstance(other, Alien):
                 arena.kill(self)
 
-        self._y += self._dy
+        self._y -= 5
         if self._y < 0:
             arena.kill(self)
 
@@ -53,7 +54,7 @@ class Bullet(Actor):
         return self._x, self._y
 
     def size(self):
-        return self._w, self._h
+        return 5, 10
 
     def sprite(self):
         return 0, 0
@@ -63,8 +64,9 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         g2d.draw_rect(a.pos(), a.size())
-    if random.randrange(50) == 0:
-        arena.spawn(Bullet(random.randrange(arena.size()[0])))
+    if arena.count() % 40 == 0:
+        aw, ah = arena.size()
+        arena.spawn(Bullet((aw / 2, ah)))
     arena.tick()
 
 def main():

@@ -10,9 +10,9 @@ L = 500
 g2d.init_canvas((L, L))
 
 n = 4        ## int(g2d.prompt("N?"))
-l = 200      ## 2 * L / (n + 1)
-d_pos = 100  ## l / 2
-d_red = 85   ## 255 // max(n - 1, 1)
+d_red = 85   ## 255 / max(n - 1, 1)
+d_pos = 100  ## L / (n + 1)
+l = 200      ## d_pos * 2
 
 for i in range(n):
     pos = i * d_pos
