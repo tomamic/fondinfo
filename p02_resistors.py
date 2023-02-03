@@ -13,5 +13,5 @@ while val > 0:
     total_inv += 1 / val
     val = float(input("val? "))
 
-if total > 0:
+if total_inv > 0:
     print(total, 1 / total_inv)

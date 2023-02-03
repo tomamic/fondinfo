@@ -11,10 +11,9 @@ def main():
     g2d.init_canvas((W, H))
 
     values = []
-    txt = g2d.prompt("Val? ")
-    while txt:
+
+    while (txt := g2d.prompt("Val? ")):
         values.append(float(txt))
-        txt = g2d.prompt("Val? ")
 
     n, max_val = len(values), max(values)
     for i, v in enumerate(values):

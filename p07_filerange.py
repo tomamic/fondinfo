@@ -4,13 +4,15 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+import math
+
 filename = input("filename? ")
-minval, maxval = None, None
+minval, maxval = math.inf, -math.inf
 with open(filename) as f:
     for line in f:
         val = float(line)
-        if minval == None or val < minval:
+        if val < minval:
             minval = val
-        if maxval == None or val > maxval:
+        if val > maxval:
             maxval = val
 print(minval, maxval)

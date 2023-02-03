@@ -16,5 +16,4 @@ for r in range(rolls):
     results[val - 2] += 1
 
 for i, v in enumerate(results):
-    #print(i + 2, v)
-    print(f"{i + 2:2}", "=" * v)  # f-string, string repetition
+    print(i + 2, v, "=" * v, sep="\t")
