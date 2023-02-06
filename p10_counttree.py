@@ -1,4 +1,4 @@
-def count_tree(t) -> int:
+def count_tree(t: int | list) -> int:
     count = 0
     if isinstance(t, list):
         for v in t:

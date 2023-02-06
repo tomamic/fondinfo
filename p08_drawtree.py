@@ -20,8 +20,8 @@ def draw_tree(pos, length, angle):
     else:
         g2d.set_color((128, 64, 0))
         g2d.draw_line(pos, nxt)
-        draw_tree(nxt, length * 4 / 5, angle + math.pi / 6)
-        draw_tree(nxt, length * 4 / 5, angle - math.pi / 6)
+        draw_tree(nxt, length * 0.8, angle + math.pi / 6)
+        draw_tree(nxt, length * 0.8, angle - math.pi / 6)
 
 def main():
     W, H = 480, 360

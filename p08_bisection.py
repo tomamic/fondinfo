@@ -9,14 +9,16 @@
 def f3(x: float) -> float:
     return x ** 3 - x - 1
 
-def find_zero(f, low: float, high: float, err: float) -> float:
-    x = (low + high) / 2
+def find_zero(f, xmin: float, xmax: float, err: float) -> float:
+    if f(xmin) * f(xmax) > 0:
+        raise ValueError("Cannot find a solution in the range")
+    x = (xmin + xmax) / 2
     y = f(x)
     if abs(y) > err:
-        if y * f(low) < 0:
-            x = find_zero(f, low, x, err)
+        if y * f(xmin) < 0:
+            x = find_zero(f, xmin, x, err)
         else:
-            x = find_zero(f, x, high, err)
+            x = find_zero(f, x, xmax, err)
     return x
 
 def main():

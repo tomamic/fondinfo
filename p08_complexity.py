@@ -75,9 +75,9 @@ def insertion_sort(v: list, beg, end, mid=1):
 def quick_sort(v: list, beg, end):
     if end - beg <= 1:
         return
-    mid = beg
+    mid, pivot = beg, v[end - 1]
     for i in range(beg, end):
-        if v[i] <= v[end - 1]:  # last val as pivot
+        if v[i] <= pivot:
             swap(v, i, mid)
             mid += 1
     quick_sort(v, beg, mid - 1)
