@@ -67,16 +67,16 @@ def draw_circle(center: Point, radius: int) -> None:
 def draw_rect(pos: Point, size: Point) -> None:
     pg.draw.rect(_canvas, _color, _tup(pos + size))
 
-def draw_text(txt: str, pos: Point, size: int) -> None:
-    font = pg.font.SysFont('freesansbold', int(size))
+def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
+    fname, fonts = "segoeuisymbol", pg.font.get_fonts()
+    fname = fname if fname in fonts else "freesansbold"
+    font = pg.font.SysFont(fname, int(size))
     surface = font.render(txt, True, _color)
-    _canvas.blit(surface, _tup(pos))
+    (x, y), (w, h) = _tup(pos), surface.get_size() if centered else (0, 0)
+    _canvas.blit(surface, (x - w//2, y - h//2))
 
 def draw_text_centered(txt: str, pos: Point, size: int) -> None:
-    font = pg.font.SysFont('freesansbold', int(size))
-    surface = font.render(txt, True, _color)
-    w, h = surface.get_size()
-    _canvas.blit(surface, (int(pos[0]) - w//2, int(pos[1]) - h//2))
+    draw_text(txt, pos, size, True)
 
 def load_image(src: str) -> str:
     gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/"

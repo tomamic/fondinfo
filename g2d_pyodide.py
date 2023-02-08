@@ -87,7 +87,6 @@ _delay, _last_frame = 1000 / 30, 0
 _loaded = {}
 
 def init_canvas(size: Point, scale=1) -> None:
-    '''Set size of first CANVAS and return it'''
     global _canvas, _ctx, _size
     if not (_canvas := js.document.getElementById("g2d-canvas")):
         _canvas = js.document.createElement("canvas")
@@ -127,27 +126,19 @@ def draw_circle(center: Point, radius: int) -> None:
 def draw_rect(pos: Point, size: Point) -> None:
     _ctx.fillRect(*pos, *size)
 
-def draw_text(txt: str, pos: Point, size: int) -> None:
+def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
     _ctx.font = str(size) + "px sans-serif";
 
     # clear background rect assuming height of font
     ## width = _ctx.measureText(txt).width;
     ## _ctx.clearRect(x, y, width, size);
 
-    _ctx.textBaseline = "top";
-    _ctx.textAlign="left";
+    _ctx.textBaseline = "middle" if centered else "top";
+    _ctx.textAlign = "center" if centered else "left";
     _ctx.fillText(txt, *pos)
 
 def draw_text_centered(txt: str, pos: Point, size: int) -> None:
-    _ctx.font = str(size) + "px sans-serif";
-
-    # draw background rect assuming height of font
-    ## width = _ctx.measureText(txt).width;
-    ## _ctx.clearRect(x - width//2, y - size//2, width, size);
-
-    _ctx.textBaseline = "middle";
-    _ctx.textAlign="center";
-    _ctx.fillText(txt, *pos)
+   draw_text(txt, pos, size, True)
 
 def load_image(src: str) -> str:
     if src not in _loaded:
