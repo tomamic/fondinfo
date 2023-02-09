@@ -7,18 +7,20 @@
 from boardgame import BoardGame
 from random import shuffle
 
-FREE, ORC, GOLD, FOUND, OUT = range(5)
+FREE, ORC, GOLD, FOUND, OUT = range(5)  # 5 constants
 
 class Quest(BoardGame):
     def __init__(self, w: int, h: int, golds: int, orcs: int):
-        if (rest := w * h - golds - orcs - 1) < 0:
+        rest = w * h - golds - orcs - 1
+        if rest < 0:
             raise VaueError("Too many golds and orcs")
-        shuffle(bd := [GOLD] * golds + [ORC] * orcs + [FREE] * rest)
+        bd = [GOLD] * golds + [ORC] * orcs + [FREE] * rest
+        shuffle(bd)
         self._bd, self._w, self._h = [FREE] + bd, w, h
         self._x = self._y = 0
         self._n, self._dead = golds, False
 
-    def _get(self, x, y) -> int:
+    def _get(self, x, y) -> int:  # OUT if outside of board
         bd, w, h = self._bd, self._w, self._h
         return bd[y * w + x] if (0 <= x < w and 0 <= y < h) else OUT
 
