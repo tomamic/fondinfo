@@ -40,43 +40,31 @@ class TurtleHero(Turtle):
         return super().sprite()
 
 
-class BounceGame:
+class BounceGame(Arena):
     def __init__(self, size=(480, 360), nballs=3, nghosts=2, secs=120):
-        self._arena = Arena(size)
+        super().__init__(size)
         w, h = size
-        self._arena.spawn(TurtleHero((w // 2, h // 2)))  # center
+        self.spawn(TurtleHero((w // 2, h // 2)))  # center
         for _ in range(nballs):
-            self._arena.spawn(Ball(randpt(w, h)))
+            self.spawn(Ball(randpt(w, h)))
         for _ in range(nghosts):
-            self._arena.spawn(Ghost(randpt(w, h)))
-        self._time = secs * 30  # 120 seconds
-        self._lives = 1
-
-    def tick(self, keys=[]):
-        self._arena.tick(keys)
-        self._time -= 1
-        self._lives = 0
-        for a in self._arena.actors():
-            if isinstance(a, Turtle):
-                self._lives = a.lives()
-
-    def size(self) -> (int, int):
-        return self._arena.size()
-
-    def actors(self) -> [Actor]:
-        return self._arena.actors()
+            self.spawn(Ghost(randpt(w, h)))
+        self._secs = secs
 
     def game_over(self) -> bool:
-        return self._lives <= 0
+        return self.lives() <= 0
 
     def game_won(self) -> bool:
-        return self._time <= 0
+        return self.time() <= 0
 
     def lives(self) -> int:
-        return self._lives
+        for a in self.actors():
+            if isinstance(a, Turtle):
+                return a.lives()
+        return 0
 
     def time(self) -> int:
-        return self._time // 30
+        return self._secs - self.count() // 30
 
 
 class BounceGui:
