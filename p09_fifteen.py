@@ -18,17 +18,17 @@ class Fifteen(BoardGame):
         self._x0, self._y0 = w - 1, h - 1  # blank
         # then, random walk of the blank tile, until most tiles change
         while self._bd[-1] != 1:
-            dx, dy = choice([(0, -1), (+1, 0), (0, +1), (-1, 0)])
+            dx, dy = choice([(0, -1), (1, 0), (0, 1), (-1, 0)])
             self.play(self._x0 + dx, self._y0 + dy, "")
 
     def _get(self, x, y) -> int:  # -1 if outside of board
         w, h = self.size()
-        return self._bd[y * w + x] if (0 <= x < w and 0 <= y < h) else -1
+        return self._bd[x + y*w] if (0 <= x < w and 0 <= y < h) else -1
 
     def play(self, x: int, y: int, action: str):
         v, x0, y0 = self._get(x, y), self._x0, self._y0
         if v > 0 and abs(x - x0) + abs(y - y0) == 1:
-            self._bd[y0 * self._w + x0], self._bd[y * self._w + x] = v, 0
+            self._bd[x0 + y0*self._w], self._bd[x + y*self._w] = v, 0
             self._x0, self._y0 = x, y  # tile @ (x, y) swapped with blank
 
     def read(self, x: int, y: int) -> str:

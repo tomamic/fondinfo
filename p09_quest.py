@@ -11,10 +11,10 @@ FREE, ORC, GOLD, FOUND, OUT = range(5)  # 5 constants
 
 class Quest(BoardGame):
     def __init__(self, w: int, h: int, golds: int, orcs: int):
-        rest = w * h - golds - orcs - 1
+        rest = w*h - golds - orcs - 1
         if rest < 0:
             raise VaueError("Too many golds and orcs")
-        bd = [GOLD] * golds + [ORC] * orcs + [FREE] * rest
+        bd = [GOLD]*golds + [ORC]*orcs + [FREE]*rest
         shuffle(bd)
         self._bd, self._w, self._h = [FREE] + bd, w, h
         self._x = self._y = 0
@@ -22,13 +22,13 @@ class Quest(BoardGame):
 
     def _get(self, x, y) -> int:  # OUT if outside of board
         bd, w, h = self._bd, self._w, self._h
-        return bd[y * w + x] if (0 <= x < w and 0 <= y < h) else OUT
+        return bd[x + y*w] if (0 <= x < w and 0 <= y < h) else OUT
 
     def play(self, x: int, y: int, action: str):
         v = self._get(x, y)  # TODO : optionally allow diagonal moves
         if v != OUT and abs(x - self._x) + abs(y - self._y) == 1:
             if v == GOLD:
-                self._bd[y * self._w + x] = FOUND
+                self._bd[x + y*self._w] = FOUND
                 self._n -= 1
             self._dead = v == ORC
             self._x, self._y = x, y

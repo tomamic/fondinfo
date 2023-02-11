@@ -5,17 +5,17 @@
 '''
 
 def available(m: list, w: int, h: int, x: int, y: int) -> bool:
-    return 0 <= x < w and 0 <= y < h and m[y * w + x] == 0
+    return 0 <= x < w and 0 <= y < h and m[x + y*w] == 0
 
 def spiral(w: int, h: int) -> list:
-    m = [0] * (w * h)
+    m = [0] * (w*h)
 
     # initially: bottom-left cell, heading up
     x, y = 0, h - 1
     dx, dy = 0, -1
 
     for i in range(h * w):
-        m[y * w + x] = i + 1
+        m[x + y*w] = i + 1
         # against border or visited cell?
         if not available(m, w, h, x + dx, y + dy):
             # turn 90° clockwise, raster: (x', y') = (-y, x)
@@ -29,7 +29,7 @@ def main():
     m = spiral(w, h)
     for y in range(h):
         for x in range(w):
-            print('{:3}'.format(m[y * w + x]), end='')
+            print('{:3}'.format(m[x + y*w]), end='')
         print()
     print()
 

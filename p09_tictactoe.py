@@ -8,24 +8,24 @@ from boardgame import BoardGame, console_play
 
 class TicTacToe(BoardGame):
     '''https://en.wikipedia.org/wiki/Tic-tac-toe'''
-    
+
     def __init__(self, l=3):
         self._l = l
-        self._bd = [0] * (l * l)  # clean board
+        self._bd = [0] * l**2  # clean board
         self._turn = 1 # 1 is X, -1 is O
         self._won = self._full = False
 
     def _get(self, x, y) -> int:  # -2 if outside of board
         bd, l = self._bd, self._l
-        return bd[y * l + x] if (0 <= x < l and 0 <= y < l) else -2
+        return bd[x + y*l] if (0 <= x < l and 0 <= y < l) else -2
 
     def _line(self, x, y, dx, dy) -> int:
-        return all(self._get(x + i * dx, y + i * dy) == self._turn
+        return all(self._get(x + i*dx, y + i*dy) == self._turn
                    for i in range(self._l))
 
     def play(self, x: int, y: int, action: str):
         if self._get(x, y) == 0:
-            self._bd[y * self._l + x] = self._turn
+            self._bd[x + y*self._l] = self._turn
             self._won = (self._line(x, 0, 0, 1) or  # column x
                          self._line(0, y, 1, 0) or  # row y
                          self._line(0, 0, 1, 1) or  # diagonals
