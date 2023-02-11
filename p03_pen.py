@@ -17,7 +17,7 @@ def main():
     g2d.init_canvas((600, 600))
 
     n = 3  # triangle
-    rot = 2 * math.pi / n  # ↻ 120°
+    rot = 2 * math.pi / n  # ↻ 120°, exterior angle
     pos = pos0 = (200, 200)
     side, angle = 200, 0  # →
 
@@ -31,4 +31,5 @@ def main():
 
     g2d.main_loop()
 
-#main()
+if __name__ == "__main__":
+    main()  # won't run automatically, if the script is imported elsewhere
