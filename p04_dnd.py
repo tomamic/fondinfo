@@ -39,6 +39,5 @@ def main():
     print(c.alive())
 
 
-# main() 
 if __name__ == "__main__":
     main()  # won't run automatically, if the script is imported elsewhere
