@@ -8,7 +8,7 @@ line = input("Text? ").lower()
 digits, vowels = 0, 0
 
 for c in line:
-    if '0' <= c <= '9':
+    if "0" <= c <= "9":
         digits += 1
     elif c in "aeiou":  # test membership
         vowels += 1
