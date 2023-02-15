@@ -6,13 +6,12 @@
 
 import g2d
 
-L = 500
+L, l = 500, 200
 g2d.init_canvas((L, L))
 
-n = 4        ## int(g2d.prompt("N?"))
-d_red = 85   ## 255 / max(n - 1, 1)
-d_pos = 100  ## L / (n + 1)
-l = 200      ## d_pos * 2
+n = 4        # int(g2d.prompt("N?"))
+d_red = 85   # 255 / max(n - 1, 1)
+d_pos = 100  # (L - l) / max(n - 1, 1)
 
 for i in range(n):
     pos = i * d_pos
