@@ -16,7 +16,7 @@ class Fighter:
 
     def heal(self, cure: int) -> None:
         if (self.alive()):
-            self._hp = min(self._hp + cure, 20)
+            self._hp = min(self._hp + cure, 30)
 
     def alive(self) -> bool:
         return self._hp > 0
