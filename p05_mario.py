@@ -71,7 +71,6 @@ class Mario(Actor):
 
         aw, ah = arena.size()
         self._x = min(max(self._x, 0), aw - self._w)  # clamp
-        self._y = min(max(self._y, 0), ah - self._h)  # clamp
 
     def pos(self):
         return self._x, self._y
