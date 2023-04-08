@@ -70,6 +70,7 @@ class Arena():
         self._count += 1
 
     def _detect_collisions(self, actors):
+        # self._collisions = [[a2 for a2 in actors if self.check_collision(a1, a2)] for a1 in actors]
         self._collisions.clear()
         # divide the arena in tiles, for efficient collision detection
         tile = 40

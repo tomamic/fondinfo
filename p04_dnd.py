@@ -6,7 +6,7 @@
 
 from random import randint
 
-class Fighter:
+class DnDCharacter:
     def __init__(self, name: str):
         self._name = name
         self._hp = randint(15, 30)  # hit points
@@ -26,7 +26,7 @@ class Fighter:
 
 
 def main():
-    c = Fighter("Hero")
+    c = DnDCharacter("Hero")
     print(c.describe())
 
     for _ in range(3):
