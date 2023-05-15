@@ -9,7 +9,7 @@ from p10_expression import Expression, Literal, Sum, Product
 def parse(tokens: list) -> str:
     token = tokens.pop(0)
 
-    if '0' <= token[-1] <= '9':
+    if "0" <= token[-1] <= "9":
         return Literal(float(token))
     else:
         a = parse(tokens)
@@ -21,7 +21,7 @@ def parse(tokens: list) -> str:
             return Product(a, b)
 
 def main():
-    polish = '* 5 + 4 * 3 2'.split()
+    polish = "* 5 + 4 * 3 2".split()
 
     expr = parse(polish)
     print(expr.infix(), "==", expr.eval())

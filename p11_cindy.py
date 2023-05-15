@@ -16,18 +16,18 @@
 '''
 
 def get_move(board: list, x: int) -> int:
-    if board[x:x+2] == ['b', '_']:
+    if board[x:x+2] == ["b", "_"]:
         return 1
-    elif board[x:x+3] == ['b', 'w', '_']:
+    elif board[x:x+3] == ["b", "w", "_"]:
         return 2
-    elif board[x-1:x+1] == ['_', 'w']:
+    elif board[x-1:x+1] == ["_", "w"]:
         return -1
-    elif board[x-2:x+1] == ['_', 'b', 'w']:
+    elif board[x-2:x+1] == ["_", "b", "w"]:
         return -2
     return 0
 
 def solve(board, solution, level=0) -> bool:
-    print('  ' * level + ''.join(board))  # just for debug
+    print("  " * level + "".join(board))  # just for debug
     if board == solution:
         return True
 
@@ -45,9 +45,9 @@ def solve(board, solution, level=0) -> bool:
     return False
 
 def main():
-    n = int(input('n? '))
-    board = ['b'] * n + ['_'] + ['w'] * n
-    solution = ['w'] * n + ['_'] + ['b'] * n
+    n = int(input("n? "))
+    board = ["b"] * n + ["_"] + ["w"] * n
+    solution = ["w"] * n + ["_"] + ["b"] * n
     print(solve(board, solution))
 
 main()
