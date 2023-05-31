@@ -46,9 +46,10 @@ class Mario(Actor):
                 if abs(dx) < abs(dy):
                     self._x += dx
                 else:
+                    self._landed = sy < oy
                     self._y += dy
-                    self._dy = 1
-                    self._landed = dy < 0
+                    if dy != 0:
+                        self._dy = 0
 
         keys = arena.current_keys()
         if self._landed and "w" in keys and "w" not in arena.previous_keys():

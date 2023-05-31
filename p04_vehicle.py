@@ -47,4 +47,5 @@ def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
-##main()
+if __name__ == "__main__":
+    main()

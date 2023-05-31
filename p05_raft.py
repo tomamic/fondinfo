@@ -8,6 +8,7 @@ import sys; sys.path.append("../examples")
 import g2d
 from actor import Actor, Arena
 
+tile = 24
 
 class Raft(Actor):
     def __init__(self, x, y, dx):
@@ -44,7 +45,7 @@ class Frog(Actor):
         self._speed = 4
         self._dx, self._dy = 0, 0
         self._dragging = 0
-        self._count, self._steps = 0, 5
+        self._count, self._steps = 0, 6
 
     def move(self, arena):
         for other in arena.collisions():
@@ -52,8 +53,7 @@ class Frog(Actor):
                 self._dragging = other.speed()
 
         keys = arena.current_keys()
-        u, d, l, r = "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"
-        #u, d, l, r = "w", "s", "a", "d"
+        u, l, d, r = "wasd"
         if self._count == 0:
             if u in keys:
                 self._count = self._steps
@@ -69,15 +69,15 @@ class Frog(Actor):
                 self._dx, self._dy = +self._speed, 0
 
         if self._count > 0:
+            self._count -= 1
             self._y += self._dy
             self._x += self._dx
-            self._count -= 1
         self._x += self._dragging
         self._dragging = 0
 
         aw, ah = arena.size()
-        self._x = min(max(0, self._x), aw - self._w)
-        self._y = min(max(0, self._y), ah - self._h)
+        self._x = min(max(0, self._x), (aw - self._w) // tile * tile)
+        self._y = min(max(0, self._y), (ah - self._h) // tile * tile)
 
     def pos(self):
         return self._x, self._y
@@ -91,10 +91,10 @@ class Frog(Actor):
 ###
 
 
-arena = Arena((320, 240))
-arena.spawn(Raft(40, 60, 5))
-arena.spawn(Raft(80, 40, -5))
-arena.spawn(Frog(80, 80))
+arena = Arena((20*tile, 15*tile))
+arena.spawn(Raft(15*tile, 2*tile, -4))
+arena.spawn(Raft(15*tile, 3*tile, 4))
+arena.spawn(Frog(10*tile, 4*tile))
 
 def tick():
     g2d.clear_canvas()
@@ -111,4 +111,5 @@ def main():
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 
-main()
+if __name__ == "__main__":
+    main()

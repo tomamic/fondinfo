@@ -32,6 +32,17 @@ class Actor:
         raise NotImplementedError("Abstract method")
 
 
+def check_collision(a1: Actor, a2: Actor) -> bool:
+    '''Check two actors (args) for mutual collision or contact,
+    according to bounding-box collision detection.
+    Return True if actors collide or touch, False otherwise.
+    '''
+    x1, y1, w1, h1 = a1.pos() + a1.size()
+    x2, y2, w2, h2 = a2.pos() + a2.size()
+    return (y2 <= y1 + h1 and y1 <= y2 + h2 and
+            x2 <= x1 + w1 and x1 <= x2 + w2)
+
+
 class Arena():
     '''A generic 2D game, with a given size in pixels and a list of actors.
     '''
@@ -70,7 +81,7 @@ class Arena():
         self._count += 1
 
     def _detect_collisions(self, actors):
-        # self._collisions = [[a2 for a2 in actors if self.check_collision(a1, a2)] for a1 in actors]
+        # self._collisions = [[a2 for a2 in actors if a1 != a2 and check_collision(a1, a2)] for a1 in actors]
         self._collisions.clear()
         # divide the arena in tiles, for efficient collision detection
         tile = 40
@@ -78,31 +89,21 @@ class Arena():
         cells = [set() for _ in range(nx * ny)]
         for i, a in enumerate(actors):
             x, y, w, h = map(round, a.pos() + a.size())
-            for tx in range(x // tile, 1 + (x + w) // tile):
-                for ty in range(y // tile, 1 + (y + h) // tile):
+            for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
+                for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
                         cells[ty * nx + tx].add(i)
         for i, a in enumerate(actors):
             neighs = set()
             x, y, w, h = map(round, a.pos() + a.size())
-            for tx in range(x // tile, 1 + (x + w) // tile):
-                for ty in range(y // tile, 1 + (y + h) // tile):
+            for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
+                for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
                         neighs |= cells[ty * nx + tx]
-            colls = [actors[j] for j in reversed(sorted(neighs))
-                     if self.check_collision(a, actors[j])]
+            neighs.discard(i)
+            colls = [actors[j] for j in neighs  #reversed(sorted(neighs))
+                     if check_collision(a, actors[j])]
             self._collisions.append(colls)
-
-    def check_collision(self, a1: Actor, a2: Actor) -> bool:
-        '''Check two actors (args) for mutual collision,
-        according to bounding-box collision detection.
-        Return True if colliding, False otherwise.
-        '''
-        x1, y1, w1, h1 = a1.pos() + a1.size()
-        x2, y2, w2, h2 = a2.pos() + a2.size()
-        return (a1 is not a2
-            and y2 < y1 + h1 and y1 < y2 + h2
-            and x2 < x1 + w1 and x1 < x2 + w2)
     
     def collisions(self) -> list[Actor]:
         '''Get list of actors colliding with current actor'''

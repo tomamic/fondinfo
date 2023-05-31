@@ -7,6 +7,8 @@
 import g2d
 from actor import Actor, Arena
 
+tile = 24
+
 class Vehicle(Actor):
     def __init__(self, pos: (int, int), dx: int):
         self._x, self._y = pos
@@ -40,23 +42,25 @@ class Frog(Actor):
         self._x, self._y = pos
         self._w, self._h = 20, 20
         self._dx, self._dy = 0, 0
-        self._speed, self._steps, self._count = 2, 10, 0
+        self._speed, self._steps, self._count = 4, 6, 0
 
     def move(self, arena):
         if arena.collisions():
             self._x, self._y = self._x0, self._y0
+            self._count = 0
 
         keys = arena.current_keys()
-        if "a" in keys and self._count == 0:
+        u, l, d, r = "wasd"
+        if l in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = -self._speed, 0
-        elif "d" in keys and self._count == 0:
+        elif r in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = +self._speed, 0
-        elif "w" in keys and self._count == 0:
+        elif u in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = 0, -self._speed
-        elif "s" in keys and self._count == 0:
+        elif d in keys and self._count == 0:
             self._count = self._steps
             self._dx, self._dy = 0, +self._speed
 
@@ -67,8 +71,8 @@ class Frog(Actor):
             y = self._y + self._dy
 
             arena_w, arena_h = arena.size()
-            self._x = min(max(x, 0), arena_w - self._w)
-            self._y = min(max(y, 0), arena_h - self._h)
+            self._x = min(max(x, 0), (arena_w - self._w) // tile * tile)
+            self._y = min(max(y, 0), (arena_h - self._h) // tile * tile)
 
     def pos(self):
         return self._x, self._y
@@ -88,11 +92,12 @@ def tick():
 
 def main():
     global arena, frog
-    arena = Arena((480, 360))
-    arena.spawn(Frog((230, 340)))
-    arena.spawn(Vehicle((40, 40), 5))
-    arena.spawn(Vehicle((80, 80), -5))
+    arena = Arena((20*tile, 15*tile))
+    arena.spawn(Frog((10*tile, 13*tile)))
+    arena.spawn(Vehicle((2*tile, 2*tile), 4))
+    arena.spawn(Vehicle((3*tile, 3*tile), -4))
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 
-main()
+if __name__ == "__main__":
+    main()
