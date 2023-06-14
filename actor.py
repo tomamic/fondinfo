@@ -80,18 +80,27 @@ class Arena():
             a.move(self)
         self._count += 1
 
-    def _detect_collisions(self, actors):
+    def _naive_collisions(self, actors):
         # self._collisions = [[a2 for a2 in actors if a1 != a2 and check_collision(a1, a2)] for a1 in actors]
+        for a1 in actors:
+            colls_a1 = []
+            for a2 in actors:
+                if a1 != a2 and check_collision(a1, a2):
+                    colls_a1.append(a2)
+        self._collisions.append(colls_a1)
+
+    def _detect_collisions(self, actors):
         self._collisions.clear()
         # divide the arena in tiles, for efficient collision detection
         tile = 40
         nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
-        cells = [set() for _ in range(nx * ny)]
+        cells = [set() for _ in range(nx * ny)]  # each tile is a set
         for i, a in enumerate(actors):
             x, y, w, h = map(round, a.pos() + a.size())
             for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
                 for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
+                        # add actor `a` to the tile @ (tx, ty) 
                         cells[ty * nx + tx].add(i)
         for i, a in enumerate(actors):
             neighs = set()
@@ -99,10 +108,10 @@ class Arena():
             for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
                 for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
+                        # aggregate actors found at some tile occupied by `a`
                         neighs |= cells[ty * nx + tx]
-            neighs.discard(i)
             colls = [actors[j] for j in neighs  #reversed(sorted(neighs))
-                     if check_collision(a, actors[j])]
+                     if i != j and check_collision(a, actors[j])]
             self._collisions.append(colls)
     
     def collisions(self) -> list[Actor]:
