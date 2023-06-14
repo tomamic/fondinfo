@@ -82,12 +82,13 @@ class Arena():
 
     def _naive_collisions(self, actors):
         # self._collisions = [[a2 for a2 in actors if a1 != a2 and check_collision(a1, a2)] for a1 in actors]
+        self._collisions.clear()
         for a1 in actors:
-            colls_a1 = []
+            colls1 = []
             for a2 in actors:
                 if a1 != a2 and check_collision(a1, a2):
-                    colls_a1.append(a2)
-        self._collisions.append(colls_a1)
+                    colls1.append(a2)
+            self._collisions.append(colls1)
 
     def _detect_collisions(self, actors):
         self._collisions.clear()
