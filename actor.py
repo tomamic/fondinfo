@@ -70,7 +70,7 @@ class Arena():
             self._actors.remove(a)
 
     def tick(self, keys=list()):
-        '''Move all actors (through their own act method).
+        '''Move all actors (through their own move method).
         '''
         actors = list(reversed(self._actors))
         self._detect_collisions(actors)
