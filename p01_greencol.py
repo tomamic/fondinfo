@@ -10,12 +10,12 @@ L = 500
 g2d.init_canvas((L, L))
 
 n = int(g2d.prompt("N?"))
-d_green = 255 / max(n - 1, 1)
+m_green = 255 / max(n - 1, 1)
 l = L / max(n, 1)
 
 for i in range(n):
     y = i * l
-    green = i * d_green
+    green = i * m_green
     g2d.set_color((0, green, 0))
     g2d.draw_rect((0, y), (l, l))
 

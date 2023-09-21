@@ -10,13 +10,13 @@ L = 500
 g2d.init_canvas((L, L))
 
 n = int(g2d.prompt("N?"))
-d_blue = 255 / max(n - 1, 1)
-d = L / max(n, 1)
+m_blue = 255 / max(n - 1, 1)
+m_pos = L / max(n, 1)
 r = d / 2
 
 for i in range(n):
-    x = r + i * d
-    blue = i * d_blue
+    x = r + i * m_pos
+    blue = i * m_blue
     g2d.set_color((0, 0, blue))
     g2d.draw_circle((x, r), r)
 
