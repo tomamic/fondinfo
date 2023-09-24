@@ -7,7 +7,7 @@
 import g2d
 import math
 
-def next_pos(start: (float, float), length: float, angle: float) -> (float, float):
+def next_pos(start: g2d.Point, length: float, angle: float) -> g2d.Point:
     x, y = start
     x1 = x + math.cos(angle) * length
     y1 = y + math.sin(angle) * length

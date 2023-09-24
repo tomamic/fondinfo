@@ -72,8 +72,8 @@ try:
 except:
     _archive_project()
 
-Point = "tuple[int, int]"
-Color = "tuple[int, int, int]"
+Point = "tuple[float, float]"
+Color = "tuple[float, float, float]"
 
 _canvas, _ctx, _usr_tick = None, None, None
 _mouse_pos, _curr_keys, _prev_keys = (0, 0), set(), set()
