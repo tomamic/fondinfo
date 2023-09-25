@@ -140,6 +140,15 @@ def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
 def draw_text_centered(txt: str, pos: Point, size: int) -> None:
    draw_text(txt, pos, size, True)
 
+def draw_polygon(points: list[Point]):
+    if points:
+        _ctx.beginPath()
+        _ctx.moveTo(*points[0])  # 1st point
+        for point in points[1:]:
+            _ctx.lineTo(*point)
+        _ctx.closePath()  # go back to 1st point
+        _ctx.fill()
+
 def load_image(src: str) -> str:
     if src not in _loaded:
         img = js.Image.new()
