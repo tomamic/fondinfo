@@ -5,7 +5,7 @@ Polar = tuple[float, float]  # A point in polar coords
 
 def radius(pt: Point) -> float:
     x, y = pt
-    return (x ** 2 + y ** 2) ** 0.5
+    return sqrt(x ** 2 + y ** 2)
 
 def angle(pt: Point) -> float:
     x, y = pt
@@ -20,12 +20,9 @@ def from_polar(plr: Polar) -> Point:
     r, a = plr
     return (r * cos(a), r * sin(a))
 
-def rotate(pt: Point, a: float) -> Point:
-    x, y = pt
-    x1 = x * cos(a) - y * sin(a)
-    y1 = x * sin(a) + y * cos(a)
-    return (x1, y1)
-
+def rotate(pt: Point, angle: float) -> Point:
+    r, a = to_polar(pt)
+    return from_polar((r, a + angle))
 
 def main():
     pt0 = from_polar((2, pi/4))
