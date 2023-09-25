@@ -78,6 +78,9 @@ def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
 def draw_text_centered(txt: str, pos: Point, size: int) -> None:
     draw_text(txt, pos, size, True)
 
+def draw_polygon(points: list[Point]) -> None:
+    pg.draw.polygon(_canvas, _color, [_tup(p) for p in points])
+
 def load_image(src: str) -> str:
     gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/"
     if src not in _loaded:
