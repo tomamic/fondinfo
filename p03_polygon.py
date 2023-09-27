@@ -4,18 +4,17 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d, math, p03_polar
+import g2d, math
 
-def move_from(start: g2d.Point, length: float, angle: float) -> g2d.Point:
+def move_around(start: g2d.Point, length: float, angle: float) -> g2d.Point:
     x, y = start
-    dx, dy = p03_polar.from_polar((length, angle))
-    return x + dx, y + dy
+    return x + length * math.cos(angle), y + length * math.sin(angle)
 
 def draw_polygon(n: int, center: g2d.Point, radius: float):
     angle = 2 * math.pi / n
     for i in range(n):
-        pt1 = move_from(center, radius, i * angle)
-        pt2 = move_from(center, radius, (i + 1) * angle)
+        pt1 = move_around(center, radius, i * angle)
+        pt2 = move_around(center, radius, (i + 1) * angle)
         g2d.draw_line(pt1, pt2)
 
 def main():

@@ -231,10 +231,10 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key in _prev_keys - _curr_keys
 
-def current_keys() -> list:
+def current_keys() -> list[str]:
     return list(_curr_keys)
 
-def previous_keys() -> list:
+def previous_keys() -> list[str]:
     return list(_prev_keys)
 
 def mouse_clicked() -> bool:

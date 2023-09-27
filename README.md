@@ -18,7 +18,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 ### Basic structs
 
-- A `Color` is a tuple `(red, green, blue)`
+- A `Color` is a tuple `(red, green, blue)`; each value must be in the range `0..255`
 - A `Point` is a tuple `(x, y)`, representing a *position* or a *size*
 
 ### Canvas functions
@@ -34,6 +34,7 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 - **`draw_line`** `(pt1: Point, pt2: Point)` : Draw a line from `pt1` to `pt2`
 - **`draw_circle`** `(center: Point, radius: int)` : Fill a circle, given `center` and `radius`
 - **`draw_rect`** `(pos: Point, size: Point)` : Fill a given rectangle, given left-top position and size
+- **`draw_polygon`** `(points: list[Point])` : Fill a polygon, given its list of vertices
 - **`draw_text`** `(txt: str, pos: Point, size: int)` : Draw a text, given left-top position and font px size
 - **`draw_text_centered`** `(txt: str, pos: Point, size: int)` : Draw a centered text, given center and font px size
 

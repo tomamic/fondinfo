@@ -146,10 +146,10 @@ def _kb_name(key: int) -> str:
         name = "".join(w.capitalize() for w in name.split())
     return name
 
-def current_keys() -> list:
+def current_keys() -> list[str]:
     return list(_curr_keys)
 
-def previous_keys() -> list:
+def previous_keys() -> list[str]:
     return list(_prev_keys)
 
 def mouse_clicked() -> bool:
