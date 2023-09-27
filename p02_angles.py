@@ -10,7 +10,7 @@ from math import pi, sin, cos, radians
 g2d.init_canvas((400, 400))  # width, height
 
 r = 100
-x0, y0 = 200, 200
+x0, y0 = 200, 200  # center
 for angle in (0, 15, 30, 45):
     x = x0 + r * cos(radians(angle))
     y = y0 + r * sin(radians(angle))
