@@ -13,8 +13,8 @@ except:
     subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
     import pygame as pg
 
-Point = "tuple[float, float]"
-Color = "tuple[float, float, float]"
+Point = tuple[float, float]
+Color = tuple[float, float, float]
 
 _tkmain = Tk()
 _tkmain.wm_withdraw() #to hide the main window

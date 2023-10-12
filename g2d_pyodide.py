@@ -72,15 +72,11 @@ try:
 except:
     _archive_project()
 
-Point = "tuple[float, float]"
-Color = "tuple[float, float, float]"
+Point = tuple[float, float]
+Color = tuple[float, float, float]
 
 _canvas, _ctx, _usr_tick = None, None, None
 _mouse_pos, _curr_keys, _prev_keys = (0, 0), set(), set()
-_key_codes = {"Up": "ArrowUp", "Down": "ArrowDown",
-              "Left": "ArrowLeft", "Right": "ArrowRight",
-              "Space": "Spacebar", " ": "Spacebar",
-              "Esc": "Escape", "Del": "Delete"}
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 _lclick, _rclick = False, False
 _delay, _last_frame = 1000 / 30, 0
@@ -265,7 +261,7 @@ def _g2d_keydown(e: js.event) -> None:
     if _usr_tick:
         e.preventDefault() #
         e.stopPropagation()
-    key = _key_codes.get(e.key, e.key)
+    key = "Spacebar" if e.key == " " else e.key
     _curr_keys.add(key)
     if key == "Pause":
         close_canvas()
@@ -274,7 +270,7 @@ def _g2d_keyup(e: js.event) -> None:
     if _usr_tick:
         e.preventDefault() #
         e.stopPropagation()
-    key = _key_codes.get(e.key, e.key)
+    key = "Spacebar" if e.key == " " else e.key
     _curr_keys.discard(key)
 
 def _g2d_focus(e: js.event) -> None:
@@ -282,7 +278,7 @@ def _g2d_focus(e: js.event) -> None:
 
 def _g2d_mousemove(e: js.event) -> None:
     global _mouse_pos
-    canvas = js.document.getElementById('g2d-canvas')
+    canvas = js.document.getElementById("g2d-canvas")
     if canvas != None:
         rect = canvas.getBoundingClientRect()
         _mouse_pos = int(e.clientX - rect.left), int(e.clientY - rect.top)

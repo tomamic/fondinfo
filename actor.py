@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-Point = "tuple[int, int]"
+Point = tuple[float, float]
 
 class Actor:
     '''Interface to be implemented by each game character.
@@ -69,7 +69,7 @@ class Arena():
         if a in self._actors:
             self._actors.remove(a)
 
-    def tick(self, keys=list()):
+    def tick(self, keys=[]):
         '''Move all actors (through their own move method).
         '''
         actors = list(reversed(self._actors))
@@ -135,12 +135,12 @@ class Arena():
         '''
         return self._count
 
-    def current_keys(self) -> "list[str]":
+    def current_keys(self) -> list[str]:
         '''Return the currently pressed keys.
         '''
         return self._curr_keys
 
-    def previous_keys(self) -> "list[str]":
+    def previous_keys(self) -> list[str]:
         '''Return the keys pressed at last tick.
         '''
         return self._prev_keys
