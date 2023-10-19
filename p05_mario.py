@@ -7,6 +7,35 @@
 import g2d
 from actor import Actor, Arena
 
+class Jumpy(Actor):
+    def __init__(self):
+        self._x, self._y = 0, 100
+        self._dx, self._dy = 4, 0
+        self._w, self._h = 20, 20
+
+    def move(self, arena):
+        for other in arena.collisions():
+            other_x, other_y = other.pos()
+            if self._dy >= 0 and self._y < other_y:
+                self._y = other_y - self._h
+                self._dy = 0
+                if "ArrowUp" in arena.current_keys():
+                    self._dy = -16
+
+        arena_w, arena_h = arena.size()
+        self._x = (self._x + self._dx) % arena_w
+        self._y = self._y + self._dy
+        self._dy += 1
+
+    def pos(self):
+        return self._x, self._y
+
+    def size(self):
+        return self._w, self._h
+
+    def sprite(self):
+        return 0, 20
+
 
 class Wall(Actor):
     def __init__(self, pos, size):
@@ -26,72 +55,19 @@ class Wall(Actor):
         return None
 
 
-class Mario(Actor):
-    def __init__(self, pos):
-        self._x, self._y = pos
-        self._dx, self._dy = 0, 0
-        self._w, self._h = 20, 20
-        self._speed, self._max_speed, self._gravity = 2, 4, 0.1
-
-    def move(self, arena):
-        keys = arena.current_keys()
-        for other in arena.collisions():
-            if isinstance(other, Wall):
-                sx, sy, sw, sh = self.pos() + self.size()  # self's pos
-                ox, oy, ow, oh = other.pos() + other.size()  # other's pos
-
-                # move to the nearest border: left, right, top or bottom
-                dx = min(ox - sx - sw, ox + ow - sx, key=abs)
-                dy = min(oy - sy - sh, oy + oh - sy, key=abs)
-                if abs(dx) < abs(dy):
-                    self._x += dx
-                else:
-                    if dy != 0:
-                        self._y += dy
-                        self._dy = 0
-                    if sy < oy and "w" in keys:  # if on top, can jump
-                        self._dy = -self._max_speed
-
-        if "a" in keys:
-            self._dx = -self._speed
-        elif "d" in keys:
-            self._dx = self._speed
-        else:
-            self._dx = 0
-
-        self._x += self._dx
-        self._y += self._dy
-
-        self._dy = min(self._dy + self._gravity, self._max_speed)
-
-        aw, ah = arena.size()
-        self._x = min(max(self._x, 0), aw - self._w)  # clamp
-
-    def pos(self):
-        return self._x, self._y
-
-    def size(self):
-        return self._w, self._h
-
-    def sprite(self):
-        return 0, 20
-
-
 def tick():
     g2d.clear_canvas()
     for a in arena.actors():
-        if a.sprite():
-            g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
-        else:
-            g2d.draw_rect(a.pos(), a.size())
+        g2d.draw_rect(a.pos(), a.size())
 
-    arena.tick(g2d.current_keys())  # Game logic
+    arena.tick(g2d.current_keys())
 
-arena = Arena((320, 240))
-arena.spawn(Mario((80, 80)))
-arena.spawn(Wall((200, 80), (80, 20)))
-arena.spawn(Wall((120, 160), (80, 20)))
-arena.spawn(Wall((0, 220), (320, 20)))
+
+arena = Arena((640, 480))
+arena.spawn(Jumpy())
+arena.spawn(Wall((240, 350), (100, 40)))
+arena.spawn(Wall((420, 250), (100, 40)))
+arena.spawn(Wall((0, 460), (640, 20)))
 
 g2d.init_canvas(arena.size())
-g2d.main_loop(tick, 60)
+g2d.main_loop(tick)
