@@ -20,12 +20,12 @@ class Jumpy(Actor):
                 self._y = other_y - self._h
                 self._dy = 0
                 if "ArrowUp" in arena.current_keys():
-                    self._dy = -16
+                    self._dy = -16  # jump
 
         arena_w, arena_h = arena.size()
         self._x = (self._x + self._dx) % arena_w
         self._y = self._y + self._dy
-        self._dy += 1
+        self._dy += 1  # gravity
 
     def pos(self):
         return self._x, self._y
