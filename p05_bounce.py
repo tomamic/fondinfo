@@ -142,7 +142,7 @@ def main():
     arena.spawn(Ball((40, 80)))
     arena.spawn(Ball((80, 40)))
     arena.spawn(Ghost((120, 80)))
-    arena.spawn(Turtle((80, 80)))
+    arena.spawn(Turtle((230, 170)))
 
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
