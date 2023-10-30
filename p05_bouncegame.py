@@ -5,13 +5,7 @@
 '''
 
 from random import randrange
-from p05_bounce import Actor, Arena, Ball, Ghost, Turtle
-
-def randpt(w: int, h: int) -> (int, int):
-    x, y = randrange(w - 20), randrange(h - 20)
-    while (x - w // 2) ** 2 + (y - h // 2) ** 2 < 100 ** 2:
-        x, y = randrange(w - 20), randrange(h - 20)
-    return x, y
+from p05_bounce import Actor, Arena, Ball, Ghost, Turtle, Point
 
 class TurtleHero(Turtle):
     def __init__(self, pos):
@@ -19,12 +13,12 @@ class TurtleHero(Turtle):
         self._lives = 3
         self._blinking = 0
 
-    def move(self, arena: Arena):
+    def move(self, arena):
         super().move(arena)
         if self._blinking > 0:
             self._blinking -= 1
 
-    def hit(self, arena: Arena):
+    def hit(self, arena):
         if self._blinking == 0:
             self._blinking = 60
             self._lives -= 1
@@ -41,15 +35,22 @@ class TurtleHero(Turtle):
 
 
 class BounceGame(Arena):
-    def __init__(self, size=(480, 360), nballs=3, nghosts=2, secs=120):
+    def __init__(self, size=(480, 360), nballs=3, nghosts=2, time=120*30):
         super().__init__(size)
         w, h = size
         self.spawn(TurtleHero((w // 2, h // 2)))  # center
         for _ in range(nballs):
-            self.spawn(Ball(randpt(w, h)))
+            self.spawn(Ball(self._randpt()))
         for _ in range(nghosts):
-            self.spawn(Ghost(randpt(w, h)))
-        self._secs = secs
+            self.spawn(Ghost(self._randpt()))
+        self._time = time
+
+    def _randpt(self) -> Point:
+        w, h = self.size()
+        x, y = randrange(w - 20), randrange(h - 20)
+        while (x - w // 2) ** 2 + (y - h // 2) ** 2 < 100 ** 2:
+            x, y = randrange(w - 20), randrange(h - 20)
+        return x, y
 
     def game_over(self) -> bool:
         return self.lives() <= 0
@@ -64,7 +65,7 @@ class BounceGame(Arena):
         return 0
 
     def time(self) -> int:
-        return self._secs - self.count() // 30
+        return self._time - self.count()
 
 
 class BounceGui:
@@ -80,7 +81,7 @@ class BounceGui:
                 g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
             else:
                 pass  # g2d.draw_rect(a.pos(), a.size())
-        lives, time = self._game.lives(), self._game.time()
+        lives, time = self._game.lives(), self._game.time() // 30
         g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24)
 
         if self._game.game_over():
