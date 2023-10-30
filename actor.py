@@ -86,7 +86,7 @@ class Arena():
         for a1 in actors:
             colls1 = []
             for a2 in actors:
-                if a1 != a2 and check_collision(a1, a2):
+                if a1 is not a2 and check_collision(a1, a2):
                     colls1.append(a2)
             self._collisions.append(colls1)
 
