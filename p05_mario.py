@@ -9,9 +9,10 @@ from actor import Actor, Arena
 
 class Jumpy(Actor):
     def __init__(self):
-        self._x, self._y = 0, 100
-        self._dx, self._dy = 4, 0
+        self._x, self._y = 0, 240
         self._w, self._h = 20, 20
+        self._dx, self._dy = 4, 0
+        self._jump = -16
 
     def move(self, arena):
         for other in arena.collisions():
@@ -20,7 +21,7 @@ class Jumpy(Actor):
                 self._y = other_y - self._h
                 self._dy = 0
                 if "ArrowUp" in arena.current_keys():
-                    self._dy = -16  # jump
+                    self._dy = self._jump  # jump
 
         arena_w, arena_h = arena.size()
         self._x = (self._x + self._dx) % arena_w
@@ -64,10 +65,10 @@ def tick():
 
 
 arena = Arena((640, 480))
-arena.spawn(Jumpy())
 arena.spawn(Wall((240, 350), (100, 40)))
 arena.spawn(Wall((420, 250), (100, 40)))
 arena.spawn(Wall((0, 460), (640, 20)))
+arena.spawn(Jumpy())
 
 g2d.init_canvas(arena.size())
 g2d.main_loop(tick)
