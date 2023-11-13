@@ -5,21 +5,16 @@
 '''
 
 import g2d, math
-
-def next_pos(start: (float, float), length: float, angle: float) -> (float, float):
-    x, y = start
-    x1 = x + math.cos(angle) * length
-    y1 = y + math.sin(angle) * length
-    return (x1, y1)
+from p03_polar import move_around
 
 def draw_tree(pos, length, angle):
-    nxt = next_pos(pos, length, angle)
+    nxt = move_around(pos, length, angle)
     if length < 5:
         g2d.set_color((0, 255, 0))
         g2d.draw_line(pos, nxt)
     else:
         g2d.set_color((128, 64, 0))
-        g2d.draw_line(pos, nxt)
+        g2d.draw_line(pos, nxt, length / 5)
         draw_tree(nxt, length * 0.8, angle + math.pi / 6)
         draw_tree(nxt, length * 0.8, angle - math.pi / 6)
 

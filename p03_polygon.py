@@ -5,10 +5,7 @@
 '''
 
 import g2d, math
-
-def move_around(start: g2d.Point, length: float, angle: float) -> g2d.Point:
-    x, y = start
-    return x + length * math.cos(angle), y + length * math.sin(angle)
+from p03_polar import move_around
 
 def draw_polygon(n: int, center: g2d.Point, radius: float):
     angle = 2 * math.pi / n

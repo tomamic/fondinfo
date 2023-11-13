@@ -1,7 +1,7 @@
 from math import cos, atan2, pi, sin, sqrt
 
-Point = tuple[float, float]  # A point in cartesian coords
-Polar = tuple[float, float]  # A point in polar coords
+Point = tuple[float, float]  # A point in cartesian coords (x, y)
+Polar = tuple[float, float]  # A point in polar coords (r, a)
 
 def radius(pt: Point) -> float:
     x, y = pt
@@ -23,6 +23,11 @@ def from_polar(plr: Polar) -> Point:
 def rotate(pt: Point, angle: float) -> Point:
     r, a = to_polar(pt)
     return from_polar((r, a + angle))
+
+def move_around(start: Point, length: float, angle: float) -> Point:
+    x, y = start
+    dx, dy = from_polar((length, angle))
+    return x + dx, y + dy
 
 def main():
     pt0 = from_polar((2, pi/4))
