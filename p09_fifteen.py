@@ -9,8 +9,8 @@ from random import choice
 
 class Fifteen(BoardGame):
     def __init__(self, w: int, h: int):
-        if w * h < 2:
-            raise ValueError("Fifteen needs at least two cells")
+        if w < 2 or h < 2:
+            raise ValueError("Fifteen needs at least 2×2 cells")
         self._w, self._h = w, h
         # init game board with sorted tiles: [1 2 ... 14 15 0]
         self._bd = list(range(1, w * h)) + [0]
@@ -23,13 +23,14 @@ class Fifteen(BoardGame):
 
     def _get(self, x, y) -> int:  # -1 if outside of board
         w, h = self.size()
-        return self._bd[x + y*w] if (0 <= x < w and 0 <= y < h) else -1
+        return self._bd[x + y*w] if (0<=x<w and 0<=y<h) else -1
 
     def play(self, x: int, y: int, action: str):
         v, x0, y0 = self._get(x, y), self._x0, self._y0
         if v > 0 and abs(x - x0) + abs(y - y0) == 1:
-            self._bd[x0 + y0*self._w], self._bd[x + y*self._w] = v, 0
-            self._x0, self._y0 = x, y  # tile @ (x, y) swapped with blank
+            self._bd[x0 + y0*self._w] = v
+            self._bd[x + y*self._w] = 0
+            self._x0, self._y0 = x, y  # tile @ (x, y) ⇆ blank
 
     def read(self, x: int, y: int) -> str:
         v = self._get(x, y)
