@@ -22,7 +22,6 @@ def main():
     W, H = 480, 360
     g2d.init_canvas((W, H))
     draw_tree((W // 2, H), 72, -math.pi / 2)
-    g2d.update_canvas()
     g2d.main_loop()
 
 main()
