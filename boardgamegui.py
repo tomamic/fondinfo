@@ -15,19 +15,20 @@ class BoardGameGui:
         self.update_buttons()
 
     def tick(self):
+        cols, rows = self._game.size()
+        x, y = g2d.mouse_pos()
+        bx, by = x // W, y // H
         released = set(g2d.previous_keys()) - set(g2d.current_keys())
         if self._game.finished():
             g2d.alert(self._game.status())
             g2d.close_canvas()
         elif "Escape" in released:  # "Escape" key released
             g2d.close_canvas()
-        elif "LeftButton" in released:
-            x, y = g2d.mouse_pos()
-            self._game.play(x // W, y // H, "")
+        elif "LeftButton" in released and by < rows:
+            self._game.play(bx, by, "")
             self.update_buttons()
-        elif "RightButton" in released:
-            x, y = g2d.mouse_pos()
-            self._game.play(x // W, y // H, "flag")
+        elif "RightButton" in released and by < rows:
+            self._game.play(bx, by, "flag")
             self.update_buttons()
 
     def update_buttons(self):
