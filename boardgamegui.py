@@ -35,7 +35,7 @@ class BoardGameGui:
         g2d.clear_canvas()
         g2d.set_color((0, 0, 0))
         cols, rows = self._game.size()
-        for y in range(1, rows):
+        for y in range(1, rows + 1):
             g2d.draw_line((0, y * H), (cols * W, y * H))
         for x in range(1, cols):
             g2d.draw_line((x * W, 0), (x * W, rows * H))
@@ -43,9 +43,11 @@ class BoardGameGui:
             for x in range(cols):
                 value = self._game.read(x, y)
                 center = x * W + W // 2, y * H + H // 2
-                g2d.draw_text_centered(value, center, H // 2)
-        g2d.draw_text_centered(self._game.status(),
-                               (cols*W//2, rows*H + H//2), H//2)
+                g2d.draw_text_centered(value, center,
+                                       H // max(1, len(value)/2))
+        status = self._game.status()
+        g2d.draw_text_centered(status, (cols*W//2, rows*H + H//2),
+                               H * cols // max(cols, len(status)/2))
 
 def gui_play(game: BoardGame):
     cols, rows = game.size()
