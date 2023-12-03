@@ -7,7 +7,7 @@
 from boardgame import BoardGame
 from boardgamegui import gui_play
 
-symbol = {1: "x", -1: "o", 0: ""}
+symbol = ["", "x", "o"]  # 0, 1, -1
 
 class Connect4(BoardGame):
     def __init__(self, w: int, h: int):
@@ -21,12 +21,12 @@ class Connect4(BoardGame):
         if 0 <= y < self._h and 0 <= x < self._w:
             return self._board[y * self._w + x]  # otherwise, None
         
-    def _walk(self, x, y, dx, dy, v):
+    def _walk(self, x, y, dx, dy, v) -> int:
         if self._get(x, y) != v:
             return 0
         return 1 + self._walk(x + dx, y + dy, dx, dy, v)
 
-    def _around(self, x, y, v):
+    def _around(self, x, y, v) -> int:
         '''Max line length of `v`s around and w/o `(x, y)`'''
         return max(self._walk(x + dx, y + dy, dx, dy, v) +
                    self._walk(x - dx, y - dy, -dx, -dy, v)
@@ -42,7 +42,7 @@ class Connect4(BoardGame):
 
     def read(self, x: int, y: int) -> str:
         p = symbol[self._get(x, y)] 
-        return f"·{p}·" if self._move == (x, y) else p
+        return p + ("\u0332" if self._move == (x, y) else "")
 
     def play(self, x: int, y: int, command=""):
         y = self._walk(x, 0, 0, 1, 0) - 1

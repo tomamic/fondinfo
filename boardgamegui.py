@@ -41,13 +41,13 @@ class BoardGameGui:
             g2d.draw_line((x * W, 0), (x * W, rows * H))
         for y in range(rows):
             for x in range(cols):
-                value = self._game.read(x, y)
-                center = x * W + W // 2, y * H + H // 2
-                g2d.draw_text_centered(value, center,
-                                       H // max(1, len(value)/2))
+                _write(self._game.read(x, y), x * W, y * H, W, H)
         status = self._game.status()
-        g2d.draw_text_centered(status, (cols*W//2, rows*H + H//2),
-                               H * cols // max(cols, len(status)/2))
+        _write(status, 0, rows * H, cols * W, H)
+
+def _write(text, x, y, w, h):
+    fsize = min(h, 2 * w / len(text or " "))
+    g2d.draw_text_centered(text, (x + w // 2, y + h // 2), fsize)
 
 def gui_play(game: BoardGame):
     cols, rows = game.size()

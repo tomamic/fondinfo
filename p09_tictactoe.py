@@ -6,13 +6,15 @@
 
 from boardgame import BoardGame, console_play
 
+symbol = ["", "x", "o"]  # 0, 1, -1
+
 class TicTacToe(BoardGame):
     '''https://en.wikipedia.org/wiki/Tic-tac-toe'''
 
     def __init__(self, l=3):
         self._l = l
         self._bd = [0] * l**2  # clean board
-        self._turn = 1 # 1 is X, -1 is O
+        self._turn = 1  # 1 is `x`, -1 is `o`
         self._won = self._full = False
 
     def _get(self, x, y) -> int:  # -2 if outside of board
@@ -34,18 +36,15 @@ class TicTacToe(BoardGame):
             if not self.finished():
                 self._turn *= -1
 
-    def _sign(self, v: int):
-        return "X" if v == 1 else "O" if v == -1 else ""
-
     def read(self, x: int, y: int) -> str:
-        return self._sign(self._get(x, y))
+        return symbol[self._get(x, y)]
 
     def finished(self) -> bool:
         return self._won or self._full
 
     def status(self) -> str:
-        won, full, p = self._won, self._full, self._sign(self._turn)
-        return f"{p} has won" if won else "Tie game" if full else f"{p} turn"
+        p = "None" if self._full else symbol[self._turn]
+        return f"{p} wins" if self.finished() else f"{p} plays"
 
     def size(self) -> tuple[int, int]:
         return self._l, self._l
