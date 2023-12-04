@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import g2d
+import g2d_pyodide as g2d
 from boardgame import BoardGame
 
 W, H = 40, 40
@@ -46,7 +46,7 @@ class BoardGameGui:
         _write(status, 0, rows * H, cols * W, H)
 
 def _write(text, x, y, w, h):
-    fsize = min(h, 2 * w / len(text or " "))
+    fsize = 0.75 * min(h, 2 * w / len(text or " "))
     g2d.draw_text_centered(text, (x + w // 2, y + h // 2), fsize)
 
 def gui_play(game: BoardGame):

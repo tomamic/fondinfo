@@ -48,6 +48,6 @@ class Fifteen(BoardGame):
 
 if __name__ == "__main__":
     from boardgamegui import gui_play
-    game = Fifteen(3, 3)
+    game = Fifteen(4, 4)
     ##console_play(game)
     gui_play(game)
