@@ -101,7 +101,7 @@ class Arena():
             for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
                 for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
-                        # add actor `a` to the tile @ (tx, ty) 
+                        # add actor `a` to the tile @ (tx, ty)
                         cells[ty * nx + tx].add(i)
         for i, a in enumerate(actors):
             neighs = set()
@@ -111,10 +111,10 @@ class Arena():
                     if 0 <= tx < nx and 0 <= ty < ny:
                         # aggregate actors found at some tile occupied by `a`
                         neighs |= cells[ty * nx + tx]
-            colls = [actors[j] for j in neighs  #reversed(sorted(neighs))
+            colls = [actors[j] for j in sorted(neighs, reverse=True)
                      if i != j and check_collision(a, actors[j])]
             self._collisions.append(colls)
-    
+
     def collisions(self) -> list[Actor]:
         '''Get list of actors colliding with current actor'''
         t, colls = self._turn, self._collisions

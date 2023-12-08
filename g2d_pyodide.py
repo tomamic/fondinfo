@@ -97,8 +97,8 @@ def init_canvas(size: Point, scale=1) -> None:
     set_color((127, 127, 127))
 
 def set_color(color: Color) -> None:
-    _ctx.strokeStyle = "rgb" + str(color)
-    _ctx.fillStyle = "rgb" + str(color)
+    _ctx.strokeStyle = "rgb" + str(tuple(color))
+    _ctx.fillStyle = "rgb" + str(tuple(color))
 
 def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
