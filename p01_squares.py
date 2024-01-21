@@ -6,17 +6,13 @@
 
 import g2d
 
-L, l = 500, 200
-g2d.init_canvas((L, L))
+g2d.init_canvas((500, 500))
 
-n = 4        # int(g2d.prompt("N?"))
-m_red = 85   # 255 / max(n - 1, 1)
-m_pos = 100  # (L - l) / max(n - 1, 1)
-
-for i in range(n):
-    pos = i * m_pos
-    red = i * m_red
+for i in range(4):  # (0, 1, 2, 3)
+    red = i * 85    # proportional to i
     g2d.set_color((red, 0, 0))
-    g2d.draw_rect((pos, pos), (l, l))
+    
+    pos = i * 100   # proportional to i
+    g2d.draw_rect((pos, pos), (200, 200))
 
 g2d.main_loop()

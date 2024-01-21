@@ -10,7 +10,7 @@ L = 500
 g2d.init_canvas((L, L))
 
 n = int(g2d.prompt("N?"))
-m_green = 255 / max(n - 1, 1)
+m_green = 255 / max(n - 1, 1)  # max, to avoid dividing by 0
 l = L / max(n, 1)
 
 for i in range(n):

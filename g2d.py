@@ -27,6 +27,9 @@ _mouse_pos, _mouse_down = (0, 0), 0
 _curr_keys, _prev_keys = set(), set()
 _loaded = {}
 
+def _clamp(v, vmin, vmax): 
+    return min(max(v, vmin), vmax)
+
 def _tup(t: tuple) -> tuple:
     return tuple(map(round, t))
 
@@ -45,7 +48,7 @@ def canvas_size() -> Point:
 
 def set_color(color: Color) -> None:
     global _color
-    _color = _tup(color)
+    _color = _tup(map(_clamp, color, [0] * 4, [255] * 4))
 
 def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))

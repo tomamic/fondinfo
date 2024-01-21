@@ -82,6 +82,12 @@ _lclick, _rclick = False, False
 _delay, _last_frame = 1000 / 30, 0
 _loaded = {}
 
+def _clamp(v, vmin, vmax): 
+    return min(max(v, vmin), vmax)
+
+def _tup(t: tuple) -> tuple:
+    return tuple(map(round, t))
+
 def init_canvas(size: Point, scale=1) -> None:
     global _canvas, _ctx, _size
     if not (_canvas := js.document.getElementById("g2d-canvas")):

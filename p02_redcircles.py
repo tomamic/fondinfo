@@ -6,14 +6,15 @@
 
 import g2d
 
-R = 300
-g2d.init_canvas((R * 2, R * 2))
+R = 250
+g2d.init_canvas((2 * R, 2 * R))
 
 n = int(g2d.prompt("Circles? "))
+r = R / max(n, 1)  # radius: r_fst = r_m = r
+c = 255 / max(n - 1, 1)  # color
+
 for i in reversed(range(n)):
-    red = i * 255 / max(n - 1, 1)
-    radius = (i + 1) * R / n
-    g2d.set_color((red, 0, 0))
-    g2d.draw_circle((R, R), radius)
+    g2d.set_color((c * i, 0, 0))
+    g2d.draw_circle((R, R), r * i + r)
 
 g2d.main_loop()

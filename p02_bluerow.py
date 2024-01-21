@@ -10,7 +10,7 @@ L = 500
 g2d.init_canvas((L, L))
 
 n = int(g2d.prompt("N?"))
-m_blue = 255 / max(n - 1, 1)
+m_blue = 255 / max(n - 1, 1)  # max, to avoid dividing by 0
 diameter = L / max(n, 1)
 radius = diameter / 2
 
