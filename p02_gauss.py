@@ -4,7 +4,10 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-user = input("User? ")
-print("Welcome,", user, "!")
-if user == "admin":
-    print("At your command")
+n = int(input("n? "))
+total = 0
+for i in range(1, n + 1):
+    total += i
+    
+print("The sum is", total)
+print("Gauss' formula is", total == n * (n + 1) / 2)

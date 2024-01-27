@@ -7,23 +7,19 @@
 from random import randrange
 
 W, H = 5, 5
+player = (0, 0)
 
-player = 0, 0
-monster = 0, 0
+monster = (0, 0)
 while monster == player:
     monster = (randrange(W), randrange(H))
 
-gold = 0, 0
+gold = (0, 0)
 while gold == player or gold == monster:
     gold = (randrange(W), randrange(H))
 
-#print("Monster:", monster)
-#print("Gold:", gold)
-print("Player:", player)
-
 while player != monster and player != gold:
+    direction = input(f"Position: {player}. Direction (w/a/s/d)? ")
     x, y = player  # unpacking
-    direction = input("w/a/s/d? ")
     if direction == "w" and y > 0:
         y -= 1
     elif direction == "a" and x > 0:
@@ -33,9 +29,8 @@ while player != monster and player != gold:
     elif direction == "d" and x < W - 1:
         x += 1
     player = (x, y)
-    print("Player:", player)
 
 if player == gold:
-    print("Gold!")
+    print(f"Position: {player}. Gold!")
 else:
-    print("Monster!")
+    print(f"Position: {player}. Monster!")
