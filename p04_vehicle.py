@@ -10,17 +10,17 @@ class Vehicle:
     def __init__(self, pos: (int, int), dx: int):
         self._x, self._y = pos
         self._dx = dx
-        self._left, self._right = -100, ARENA_W + 100
+        self._xmin, self._xmax = -100, ARENA_W + 100
 
     def move(self):
-        if self._x + self._dx < self._left:
-            self._x = self._right
-        if self._x + self._dx > self._right:
-            self._x = self._left
+        if self._x + self._dx < self._xmin:
+            self._x += self._xmax - self._xmin
+        if self._x + self._dx > self._xmax:
+            self._x -= self._xmax - self._xmin
         self._x += self._dx
 
     def uturn(self):
-        self._dx *= -1
+        self._dx = -self._dx
 
     def pos(self):
         return self._x, self._y
@@ -34,7 +34,7 @@ class Vehicle:
 
 def tick():
     g2d.clear_canvas()
-    g2d.draw_image("ball.png", v.pos())
+    g2d.draw_image_clip("sprites.png", v.pos(), (0, 20), (20, 20))
     if g2d.mouse_clicked():
         v.uturn()
     v.move()

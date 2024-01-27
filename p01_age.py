@@ -4,15 +4,16 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from datetime import date
-
 b_year = int(input("Birth year? "))
 b_month = int(input("Birth month? "))
 b_day = int(input("Birth day? "))
-now = date.today()
 
-age = now.year - b_year
-if now.month < b_month or (now.month == b_month and now.day < b_day):
+c_year = int(input("Current year? "))
+c_month = int(input("Current month? "))
+c_day = int(input("Current day? "))
+
+age = c_year - b_year
+if c_month < b_month or (c_month == b_month and c_day < b_day):
     age -= 1
 
 print("Your age is", age)
