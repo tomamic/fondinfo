@@ -66,7 +66,7 @@ def _archive_project():
     sys.exit()
 
 try:
-    import base64, js, pyodide, sys
+    import base64, js, math, pyodide, sys
     import traceback
     from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 except:
@@ -82,11 +82,8 @@ _lclick, _rclick = False, False
 _delay, _last_frame = 1000 / 30, 0
 _loaded = {}
 
-def _clamp(v, vmin, vmax): 
-    return min(max(v, vmin), vmax)
-
-def _tup(t: tuple) -> tuple:
-    return tuple(map(round, t))
+def _tup(t: tuple, vmin=-math.inf, vmax=math.inf) -> tuple:
+    return tuple(min(max(round(v), vmin), vmax) for v in t)
 
 def init_canvas(size: Point, scale=1) -> None:
     global _canvas, _ctx, _size
@@ -103,8 +100,9 @@ def init_canvas(size: Point, scale=1) -> None:
     set_color((127, 127, 127))
 
 def set_color(color: Color) -> None:
-    _ctx.strokeStyle = "rgb" + str(tuple(color))
-    _ctx.fillStyle = "rgb" + str(tuple(color))
+    c = _tup(color, 0, 255) + (255,)
+    _ctx.strokeStyle = "rgba" + str(c[:3] + (c[3] / 255,))
+    _ctx.fillStyle = _ctx.strokeStyle
 
 def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)

@@ -6,7 +6,7 @@
 
 from tkinter import Tk, messagebox, simpledialog
 from urllib.request import urlopen
-import io, subprocess, sys
+import io, math, subprocess, sys
 try:
     import pygame as pg
 except:
@@ -27,20 +27,18 @@ _mouse_pos, _mouse_down = (0, 0), 0
 _curr_keys, _prev_keys = set(), set()
 _loaded = {}
 
-def _clamp(v, vmin, vmax): 
-    return min(max(v, vmin), vmax)
-
-def _tup(t: tuple) -> tuple:
-    return tuple(map(round, t))
+def _tup(t: tuple, vmin=-math.inf, vmax=math.inf) -> tuple:
+    return tuple(min(max(round(v), vmin), vmax) for v in t)
 
 def init_canvas(size: Point, scale=1):
     '''Set size of first CANVAS and return it'''
-    global _canvas, _display, _size
+    global _canvas, _display, _draw, _size
     pg.init()
     _size = _tup(size)
     w, h = _size
     _display = pg.display.set_mode((w * scale, h * scale))
-    _canvas = pg.Surface(_size) if scale != 1 else _display
+    _canvas = pg.Surface(_size, pg.SRCALPHA) if scale != 1 else _display
+    _draw = pg.Surface(_size, pg.SRCALPHA)
     clear_canvas()
 
 def canvas_size() -> Point:
@@ -48,7 +46,7 @@ def canvas_size() -> Point:
 
 def set_color(color: Color) -> None:
     global _color
-    _color = _tup(map(_clamp, color, [0] * 4, [255] * 4))
+    _color = _tup((list(color) + [255])[:4], 0, 255)
 
 def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
@@ -61,20 +59,38 @@ def update_canvas() -> None:
         _display.blit(scaled, (0, 0))
     pg.display.update()
 
+def drawing_surface() -> pg.Surface:
+    if len(_color) > 3 and _color[3] != 255:
+        _draw.fill((0, 0, 0, 0))
+        return _draw
+    return _canvas
+
+def blit_drawing_surface():
+    if len(_color) > 3 and _color[3] != 255:
+        _canvas.blit(_draw, (0, 0))
+
 def draw_line(pt1: Point, pt2: Point, width=1) -> None:
-    pg.draw.line(_canvas, _color, _tup(pt1), _tup(pt2), int(width))
+    surf = drawing_surface()
+    pg.draw.line(surf, _color, _tup(pt1), _tup(pt2), int(width))
+    blit_drawing_surface()
 
 def draw_circle(center: Point, radius: int) -> None:
-    pg.draw.circle(_canvas, _color, _tup(center), int(radius))
+    surf = drawing_surface()
+    pg.draw.circle(surf, _color, _tup(center), int(radius))
+    blit_drawing_surface()
 
 def draw_rect(pos: Point, size: Point) -> None:
-    pg.draw.rect(_canvas, _color, _tup(pos + size))
+    surf = drawing_surface()
+    pg.draw.rect(surf, _color, _tup(pos + size))
+    blit_drawing_surface()
 
 def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
     fname, fonts = "segoeuisymbol", pg.font.get_fonts()
     fname = fname if fname in fonts else "freesansbold"
     font = pg.font.SysFont(fname, int(size))
     surface = font.render(txt, True, _color)
+    if len(_color) > 3 and _color[3] != 255:
+        surface.set_alpha(_color[3])
     (x, y), (w, h) = _tup(pos), surface.get_size() if centered else (0, 0)
     _canvas.blit(surface, (x - w//2, y - h//2))
 
@@ -82,7 +98,9 @@ def draw_text_centered(txt: str, pos: Point, size: int) -> None:
     draw_text(txt, pos, size, True)
 
 def draw_polygon(points: list[Point]) -> None:
-    pg.draw.polygon(_canvas, _color, [_tup(p) for p in points])
+    surf = drawing_surface()
+    pg.draw.polygon(surf, _color, [_tup(p) for p in points])
+    blit_drawing_surface()
 
 def load_image(src: str) -> str:
     gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/"
