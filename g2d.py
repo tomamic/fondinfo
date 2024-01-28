@@ -10,7 +10,8 @@ import io, math, subprocess, sys
 try:
     import pygame as pg
 except:
-    subprocess.call([sys.executable, "-m", "pip", "install", "pygame"])
+    subprocess.call([sys.executable, "-m", "pip", "install", "pygame",
+                     "--break-system-packages"])
     import pygame as pg
 
 Point = tuple[float, float]
