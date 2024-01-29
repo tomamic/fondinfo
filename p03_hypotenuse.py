@@ -4,12 +4,14 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
+from math import sqrt
+
 def hypotenuse(leg1: float, leg2: float) -> float:
     '''
     Return the hypotenuse of a right triangle,
     given both its legs (catheti).
     '''
-    return (leg1 ** 2 + leg2 ** 2) ** 0.5
+    return sqrt(leg1 ** 2 + leg2 ** 2)
 
 def main():
     a = float(input('a? '))
@@ -18,4 +20,3 @@ def main():
     print(c)
 
 main()  # remove if importing the module elsewhere
-

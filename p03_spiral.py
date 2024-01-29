@@ -5,21 +5,23 @@
 '''
 
 import g2d
-import math
+from p03_polar import move_around
+from math import pi
 
-i, n = 0, 256
+W, H, N = 500, 500, 256
+v = 4 * pi / N  # angular velocity
+i = 0
 
 def tick():
     global i
-    x = int(300 + i * math.cos(i * math.pi / 32))
-    y = int(300 + i * math.sin(i * math.pi / 32))
+    pos = move_around((W / 2, H / 2), 25 + i * 0.4, i * v)
     g2d.clear_canvas()
     g2d.set_color((255 - i, 0, i))
-    g2d.draw_circle((x, y), i // 2)
-    i = (i + 1) % n
+    g2d.draw_circle(pos, i * 0.4)
+    i = (i + 1) % N
 
 def main():
-    g2d.init_canvas((600, 600))
+    g2d.init_canvas((W, H))
     g2d.main_loop(tick)
 
 main()

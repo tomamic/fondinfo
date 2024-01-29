@@ -21,4 +21,4 @@ def main():
     g2d.main_loop()
 
 if __name__ == "__main__":
-    main()  # won't run automatically, if the script is imported elsewhere
+    main()  # won't run automatically, if script is imported elsewhere
