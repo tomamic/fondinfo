@@ -9,8 +9,9 @@ import g2d
 ARENA_W, ARENA_H = 500, 250
 VIEW_W, VIEW_H = 300, 200
 BALL_W, BALL_H = 20, 20
+BACKGROUND = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/oop/viewport.png"
 
-class FallingBall:
+class FallingThing:
     def __init__(self, pos, speed=(4, 0), gravity=0.4):
         self._x, self._y = pos
         self._w, self._h = 20, 20
@@ -36,12 +37,14 @@ class FallingBall:
 
     def sprite(self) -> (int, int):
         if self._g == 0:
-            return 20, 0
-        return 0, 0
+            return 20, 0  # ghost sprite, w/o gravity
+        return 0, 0       # ball sprite, otherwise
 
 
-balls = [FallingBall((40, 80)), FallingBall((80, 120)),
-         FallingBall((60, 60), (3, 0), 0), FallingBall((60, 80), (-3, 0), 0)]
+actors = [FallingThing((40, 80)),
+          FallingThing((80, 120)),
+          FallingThing((60, 60), (3, 0), 0),
+          FallingThing((60, 80), (-3, 0), 0)]
 view_x, view_y = 0, 0
 
 def tick():
@@ -56,11 +59,12 @@ def tick():
     elif "ArrowLeft" in keys:
         view_x = max(view_x - 10, 0)
 
-    g2d.draw_image_clip("https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/oop/viewport.png",
-                        (0, 0), (view_x, view_y), (VIEW_W, VIEW_H))
-    for a in balls:
+    g2d.draw_image_clip(BACKGROUND, (0, 0),
+                        (view_x, view_y), (VIEW_W, VIEW_H))
+    for a in actors:
         x, y = a.pos()
-        g2d.draw_image_clip("sprites.png", (x - view_x, y - view_y), a.sprite(), a.size())
+        g2d.draw_image_clip("sprites.png", (x - view_x, y - view_y),
+                            a.sprite(), a.size())
         a.move()
 
 def main():

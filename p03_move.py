@@ -13,7 +13,7 @@ ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 # encapsulates behaviour, but exposes data
 def move_ball(x: int, y: int,
-              dx: int, dy: int) -> (int, int, int, int):
+              dx: int, dy: int) -> tuple[int, int, int, int]:
     if not 0 <= x + dx <= ARENA_W - BALL_H:
         dx = -dx
     if not 0 <= y + dy <= ARENA_H - BALL_H:
@@ -25,14 +25,14 @@ def move_ball(x: int, y: int,
 def tick():
     global x1, y1, dx1, dy1
     global x2, y2, dx2, dy2
-    g2d.clear_canvas()               # Draw background
-    g2d.draw_image("ball.png", (x1, y1))  # Draw foreground
-    g2d.draw_image("ball.png", (x2, y2))  # Draw foreground
+    g2d.clear_canvas()
+    g2d.draw_image("ball.png", (x1, y1))
+    g2d.draw_image("ball.png", (x2, y2))
     x1, y1, dx1, dy1 = move_ball(x1, y1, dx1, dy1)
     x2, y2, dx2, dy2 = move_ball(x2, y2, dx2, dy2)
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(tick)  # call tick 30 times/second
+    g2d.main_loop(tick)
 
 main()

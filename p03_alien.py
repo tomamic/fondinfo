@@ -22,6 +22,6 @@ def tick():
 
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(tick)  # call tick 30 times/second
+    g2d.main_loop(tick)
 
 main()

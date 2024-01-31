@@ -13,6 +13,6 @@ def draw_rays(x0: int, y0: int, r: int):
         y = y0 + r * sin(radians(angle))
         g2d.draw_line((x0, y0), (x, y))
 
-g2d.init_canvas((400, 400))  # width, height
+g2d.init_canvas((400, 400))
 draw_rays(200, 200, 100)
-g2d.main_loop()  # manage the window/canvas
+g2d.main_loop()

@@ -19,31 +19,26 @@ class Vehicle:
             self._x -= self._xmax - self._xmin
         self._x += self._dx
 
-    def uturn(self):
-        self._dx = -self._dx
-
     def pos(self):
         return self._x, self._y
 
     def size(self):
         return 20, 20
 
-    def sprite(self):
-        return 20, 0
-
 
 def tick():
     g2d.clear_canvas()
-    g2d.draw_image_clip("sprites.png", v.pos(), (0, 20), (20, 20))
-    if g2d.mouse_clicked():
-        v.uturn()
-    v.move()
+    g2d.draw_rect(v1.pos(), v1.size())
+    g2d.draw_rect(v2.pos(), v2.size())
+    v1.move()
+    v2.move()
 
 def main():
-    global g2d, v
+    global g2d, v1, v2
     import g2d  # Vehicle does not depend on g2d
 
-    v = Vehicle((40, 40), 5)
+    v1 = Vehicle((100, 50), 4)
+    v2 = Vehicle((200, 80), -4)
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 

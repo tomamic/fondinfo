@@ -40,4 +40,4 @@ def main():
     g2d.main_loop(tick, 10)
 
 if __name__ == "__main__":
-    main()  # called only if this file is executed directly
+    main()  # won't run, if script is imported elsewhere

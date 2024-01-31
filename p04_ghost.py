@@ -1,6 +1,6 @@
 from random import choice, randrange
 
-ARENA_W, ARENA_H = 480, 360
+ARENA_W, ARENA_H = 400, 400
 
 class Ghost:
     def __init__(self):
@@ -47,4 +47,5 @@ def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
-##main()
+if __name__ == "__main__":
+    main()

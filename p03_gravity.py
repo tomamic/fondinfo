@@ -16,13 +16,13 @@ def tick():
     g2d.draw_image("ball.png", (x, y))
     if not 0 <= x + dx <= ARENA_W - BALL_W:
         dx = -dx
-    if not 0 <= y + dy <= ARENA_H - BALL_H:
+    if y + dy > ARENA_H - BALL_H:
         dy = -dy
     else:
         dy += g
     x += dx
     y += dy
-    
+
 def main():
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)

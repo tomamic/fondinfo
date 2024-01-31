@@ -6,7 +6,7 @@
 
 import g2d
 from random import randrange
-from math import dist
+from math import dist  # √(Δx²+Δy²)
 
 def tick():
     if g2d.mouse_clicked():

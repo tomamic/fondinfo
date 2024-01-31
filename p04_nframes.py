@@ -5,50 +5,48 @@
 '''
 
 import g2d
+from random import choice, randrange
 
-ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
+ARENA_W, ARENA_H, BALL_W, BALL_H = 400, 400, 20, 20
 
-class Ball:
-    def __init__(self, pos: (int, int)):
-        self._x, self._y = pos
-        self._dx, self._dy = 2, 2
+class Ghost:
+    def __init__(self):
+        self._x, self._y = ARENA_W // 2, ARENA_H // 2
+        self._dx, self._dy = 0, 0
         self._count = 0
 
     def move(self):
         if self._count > 0:
-            if not (0 <= self._x + self._dx <= ARENA_W - BALL_W):
-                self._dx = -self._dx
-            if not (0 <= self._y + self._dy <= ARENA_H - BALL_H):
-                self._dy = -self._dy
-
-            self._x += self._dx
-            self._y += self._dy
+            self._x = (self._x + self._dx) % ARENA_W
+            self._y = (self._y + self._dy) % ARENA_H
             self._count -= 1
-
-    def start(self):
-        if self._count == 0:
+        elif randrange(100) == 0:
             self._count = 10
+            self._dx = choice([-4, 0, 4])
+            self._dy = choice([-4, 0, 4])
 
-    def pos(self) -> (int, int):
+    def pos(self) -> tuple[int, int]:
         return self._x, self._y
 
-def tick():
-    g2d.clear_canvas()  # BG
-    g2d.draw_image("ball.png", b1.pos())  # FG
-    g2d.draw_image("ball.png", b2.pos())  # FG
+    def sprite(self) -> tuple[int, int]:
+        if self._count > 0:
+            return 20, 20  # transparent, while moving
+        return 20, 0  # visible
 
-    if "1" in g2d.current_keys():
-        b1.start()
-    if "2" in g2d.current_keys():
-        b2.start()
-    b1.move()
-    b2.move()
+    def size(self) -> tuple[int, int]:
+        return 20, 20
+
+
+def tick():
+    g2d.clear_canvas()
+    g2d.draw_image_clip("sprites.png", g1.pos(), g1.sprite(), g1.size())
+    g1.move()
 
 def main():
-    global b1, b2
-    b1 = Ball((40, 80))
-    b2 = Ball((80, 40))
+    global g1
+    g1 = Ghost()
     g2d.init_canvas((ARENA_W, ARENA_H))
     g2d.main_loop(tick)
 
-main()
+if __name__ == "__main__":
+    main()

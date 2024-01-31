@@ -8,9 +8,9 @@ import g2d
 from p04_ball import Ball, ARENA_W, ARENA_H
 
 def tick():
-    g2d.clear_canvas()  # BG
+    g2d.clear_canvas()
     for b in balls:
-        g2d.draw_image("ball.png", b.pos())  # FG
+        g2d.draw_image("ball.png", b.pos())
         b.move()
 
 def main():
