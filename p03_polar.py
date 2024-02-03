@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-from math import sin, cos, radians, hypot, atan2
+from math import sin, cos, radians, degrees, hypot, atan2, pi, dist
 
 Point = tuple[float, float]  # Pt in cartesian coords (x, y)
 Polar = tuple[float, float]  # Pt in polar coords (r, angle)
@@ -14,14 +14,14 @@ def to_polar(pt: Point) -> Polar:
     Convert from cartesian to polar coords
     '''
     x, y = pt
-    return (hypot(x, y), atan2(y, x))
+    return (hypot(x, y), degrees(atan2(y, x)))
 
 def from_polar(plr: Polar) -> Point:
     '''
     Convert from polar to cartesian coords
     '''
     r, angle = plr
-    return (r * cos(angle), r * sin(angle))
+    return (r * cos(radians(angle)), r * sin(radians(angle)))
 
 def move_around(start: Point, length: float, angle: float) -> Point:
     '''
@@ -39,13 +39,11 @@ def rotate(pt: Point, angle: float) -> Point:
     return from_polar((r, a + angle))
 
 def main():
-    pt0 = from_polar((2, radians(45)))
-    # pt0 = sqrt(2), sqrt(2)  # same point, ∡ 45°
-    pt1 = rotate(pt0, radians(15))  # (1, √3) ∡ 60°
+    pt0 = from_polar((2, 45))  # (√2, √2) ∡ 45°
+    pt1 = rotate(pt0, 15)  # (1, √3) ∡ 60°
 
-    print(pt0, to_polar(pt0))  # (√2, √2) (2, π/4)
-    print(pt1, to_polar(pt1))  # (1, √3) (2, π/3)
+    print(pt0, to_polar(pt0))  # (√2, √2) (2, 45°)
+    print(pt1, to_polar(pt1))  # (1, √3) (2, 60°)
 
 if __name__ == "__main__":
     main()  # won't run automatically, if script is imported elsewhere
-    

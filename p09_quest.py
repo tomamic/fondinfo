@@ -45,8 +45,11 @@ class Quest(BoardGame):
     def status(self) -> str:  # TODO : refine messages
         return "Orc!" if self._dead else f"{self._n} golds to find"
 
-    def size(self) -> tuple[int, int]:
-        return self._w, self._h
+    def cols(self) -> int:
+        return self._w
+
+    def rows(self) -> int:
+        return self._h
 
 
 if __name__ == "__main__":

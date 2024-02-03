@@ -6,10 +6,7 @@
 
 def print_towers(towers: list):
     for t in towers:
-        print("|-", end="")
-        for d in t:
-            print(d, end="")
-        print()
+        print("|-" + "".join(t))
     print()
 
 
@@ -32,7 +29,7 @@ def main():
     discs = int(input("Discs? "))
     towers = [[], [], []]
     for d in reversed(range(discs)):
-        towers[0].append(d + 1)
+        towers[0].append(str(d + 1))
     print_towers(towers)
 
     # move all discs from pole 0 to pole 2

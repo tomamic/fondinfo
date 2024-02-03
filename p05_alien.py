@@ -5,16 +5,16 @@
 '''
 
 import g2d, random
-from actor import Actor, Arena
+from actor import Actor, Arena, Point
 
 class Alien(Actor):
-    def __init__(self, pos):
+    def __init__(self, pos: Point):
         self._x, self._y = pos
         # TODO: give each alien its own moving space, e.g. 150px
-        # self._xmin, self._xmax = ...
+        # self._xmin, self._xmax = …
         self._dx, self._dy = 5, 5
 
-    def move(self, arena):
+    def move(self, arena: Arena):
         for other in arena.collisions():
             if isinstance(other, Bullet):
                 arena.kill(self)
@@ -26,20 +26,20 @@ class Alien(Actor):
             self._dx = -self._dx
             self._y += self._dy
 
-    def pos(self):
+    def pos(self) -> Point:
         return self._x, self._y
 
-    def size(self):
+    def size(self) -> Point:
         return 20, 20
 
-    def sprite(self):
+    def sprite(self) -> Point:
         return 0, 0
 
 
 class Bullet(Actor):
-    def __init__(self, pos: "tuple[int, int]"):
+    def __init__(self, pos):
         self._x, self._y = pos
-        # ...
+        # …
 
     def move(self, arena):
         for other in arena.collisions():

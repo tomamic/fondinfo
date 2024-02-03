@@ -25,7 +25,7 @@ class Jumpy(Actor):
 
         arena_w, arena_h = arena.size()
         self._x = (self._x + self._dx) % arena_w
-        self._y = self._y + self._dy
+        self._y += self._dy
         self._dy += 1  # gravity
 
     def pos(self):
@@ -35,7 +35,7 @@ class Jumpy(Actor):
         return self._w, self._h
 
     def sprite(self):
-        return 0, 20
+        return None
 
 
 class Wall(Actor):

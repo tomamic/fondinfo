@@ -21,7 +21,7 @@ class TicTacToe(BoardGame):
         bd, l = self._bd, self._l
         return bd[x + y*l] if (0 <= x < l and 0 <= y < l) else -2
 
-    def _line(self, x, y, dx, dy) -> int:
+    def _line(self, x, y, dx, dy) -> bool:
         return all(self._get(x + i*dx, y + i*dy) == self._turn
                    for i in range(self._l))
 
@@ -46,8 +46,11 @@ class TicTacToe(BoardGame):
         p = "None" if self._full else symbol[self._turn]
         return f"{p} wins" if self.finished() else f"{p} plays"
 
-    def size(self) -> tuple[int, int]:
-        return self._l, self._l
+    def cols(self) -> int:
+        return self._l
+
+    def rows(self) -> int:
+        return self._l
 
 
 if __name__ == "__main__":

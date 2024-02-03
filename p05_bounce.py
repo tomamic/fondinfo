@@ -39,13 +39,13 @@ class Ball(Actor):
         self._x += self._dx
         self._y += self._dy
 
-    def pos(self):
+    def pos(self) -> Point:
         return self._x, self._y
 
-    def size(self):
+    def size(self) -> Point:
         return self._w, self._h
 
-    def sprite(self):
+    def sprite(self) -> Point:
         return 0, 0
 
 
@@ -67,19 +67,17 @@ class Ghost(Actor):
         if randrange(1000) == 0:
             arena.spawn(Ball(self.pos()))
 
-    def pos(self):
+    def pos(self) -> Point:
         return self._x, self._y
 
-    def size(self):
+    def size(self) -> Point:
         return self._w, self._h
 
-    def sprite(self):
+    def sprite(self) -> Point:
         if self._visible:
             return 20, 0
         return 20, 20
 
-    def visible(self):
-        return self._visible
 
 class Turtle(Actor):
     def __init__(self, pos):
@@ -94,7 +92,7 @@ class Turtle(Actor):
                 self.hit(arena)
 
         keys = arena.current_keys()
-        self._dx = self._dy = 0
+        self._dx, self._dy = 0, 0
         if "ArrowUp" in keys:
             self._dy = -self._speed
         elif "ArrowDown" in keys:
@@ -113,13 +111,13 @@ class Turtle(Actor):
     def hit(self, arena: Arena):
         arena.kill(self)
 
-    def pos(self):
+    def pos(self) -> Point:
         return self._x, self._y
 
-    def size(self):
+    def size(self) -> Point:
         return self._w, self._h
 
-    def sprite(self):
+    def sprite(self) -> Point:
         return 0, 20
 
 
@@ -148,4 +146,4 @@ def main():
     g2d.main_loop(tick)
 
 if __name__ == "__main__":
-    main()  # call main to start the program
+    main()

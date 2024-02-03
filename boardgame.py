@@ -10,15 +10,15 @@ def abstract():
 class BoardGame:
     def play(self, x: int, y: int, action: str): abstract()
     def read(self, x: int, y: int) -> str: abstract()
-    def size(self) -> tuple[int, int]: abstract()
+    def cols(self) -> int: abstract()
+    def rows(self) -> int: abstract()
     def finished(self) -> bool: abstract()
     def status(self) -> str: abstract()
 
 
 def print_game(game: BoardGame):
-    cols, rows = game.size()
-    for y in range(rows):
-        for x in range(cols):
+    for y in range(game.rows()):
+        for x in range(game.cols()):
             print(game.read(x, y) or "·", end="\t")
         print()
     print(game.status())

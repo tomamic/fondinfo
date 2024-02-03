@@ -11,7 +11,7 @@ def avg(matrix: list, cols: int, rows: int, x0: int, y0: int) -> float:
         x1, y1 = x0 + dx, y0 + dy
         if 0 <= x1 < cols and 0 <= y1 < rows:
             count += 1
-            total += matrix[x1 + y1*cols]
+            total += matrix[x1 + y1 * cols]
     return total / count
 
 def smooth(matrix: list[float], cols: int, rows: int) -> list[float]:
@@ -24,21 +24,13 @@ def smooth(matrix: list[float], cols: int, rows: int) -> list[float]:
     return result
 
 def main():
-    matrix = []
-    cols, rows = 0, 0
-    with open('_matrix.csv', 'r') as file1:
-        for line in file1:
-            splitted = line.split(',')
-            vals = [int(i) for i in splitted]
-            matrix += vals
-            cols = len(vals)
-            rows += 1
+    from p09_csv import read_csv
+    matrix, cols, rows = read_csv("_matrix.csv")
 
-    print(cols, 'x', rows)
-    print(matrix)
-    print()
+    print(f"{cols}×{rows}")
+    print(matrix, "\n")
     smoothed = smooth(matrix, cols, rows)
     print(smoothed)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

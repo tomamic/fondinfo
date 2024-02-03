@@ -9,20 +9,20 @@
 def f3(x: float) -> float:
     return x ** 3 - x - 1
 
-def find_zero(f, xmin: float, xmax: float, err: float) -> float:
-    if f(xmin) * f(xmax) > 0:
-        raise ValueError("Cannot find a solution in the range")
-    x = (xmin + xmax) / 2
+def find_zero(f, x1: float, x2: float, err: float) -> float:
+    y1, y2 = f(x1), f(x2)
+    if y1 * y2 > 0:
+        raise ValueError("f(x1) and f(x2) must have opposite sign")
+    x = (x1 + x2) / 2
     y = f(x)
-    if abs(y) > err:
-        if y * f(xmin) < 0:
-            x = find_zero(f, xmin, x, err)
-        else:
-            x = find_zero(f, x, xmax, err)
-    return x
+    if abs(y) <= err:
+        return x
+    x1, x2 = (x1, x) if y1 * y < 0 else (x, x2)
+    return find_zero(f, x1, x2, err)
 
 def main():
-    x = find_zero(f3, 1, 2, 1e-6)
-    print(x)
+    sol = find_zero(f3, 1, 2, 1e-6)
+    print(sol)
 
-main()
+if __name__ == "__main__":
+    main()

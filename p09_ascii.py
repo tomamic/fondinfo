@@ -10,7 +10,7 @@ COLS, ROWS = 24, 4
 for y in range(ROWS):
     for x in range(COLS):
         ##i = FIRST + x + y*COLS
-        i = FIRST + x*ROWS + y
+        i = FIRST + x * ROWS + y
         if i <= LAST:
             print(chr(i), end="")
     print()

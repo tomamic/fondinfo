@@ -10,31 +10,31 @@ from boardgame import BoardGame
 W, H = 40, 40
 
 class BoardGameGui:
-    def __init__(self, g: BoardGame):
-        self._game = g
+    def __init__(self, game: BoardGame):
+        self._game = game
         self.update_buttons()
 
     def tick(self):
-        cols, rows = self._game.size()
+        game = self._game
         x, y = g2d.mouse_pos()
         bx, by = x // W, y // H
         released = set(g2d.previous_keys()) - set(g2d.current_keys())
-        if self._game.finished():
-            g2d.alert(self._game.status())
+        if game.finished():
+            g2d.alert(game.status())
             g2d.close_canvas()
         elif "Escape" in released:  # "Escape" key released
             g2d.close_canvas()
-        elif "LeftButton" in released and by < rows:
-            self._game.play(bx, by, "")
+        elif "LeftButton" in released and by < game.rows():
+            game.play(bx, by, "")
             self.update_buttons()
-        elif "RightButton" in released and by < rows:
-            self._game.play(bx, by, "flag")
+        elif "RightButton" in released and by < game.rows():
+            game.play(bx, by, "flag")
             self.update_buttons()
 
     def update_buttons(self):
+        cols, rows = self._game.cols(), self._game.rows()
         g2d.clear_canvas()
         g2d.set_color((0, 0, 0))
-        cols, rows = self._game.size()
         for y in range(1, rows + 1):
             g2d.draw_line((0, y * H), (cols * W, y * H))
         for x in range(1, cols):
@@ -50,7 +50,6 @@ def _write(text, x, y, w, h):
     g2d.draw_text_centered(text, (x + w // 2, y + h // 2), fsize)
 
 def gui_play(game: BoardGame):
-    cols, rows = game.size()
-    g2d.init_canvas((cols * W, rows * H + H))
+    g2d.init_canvas((game.cols() * W, game.rows() * H + H))
     ui = BoardGameGui(game)
     g2d.main_loop(ui.tick)

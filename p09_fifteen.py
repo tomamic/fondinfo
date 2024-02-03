@@ -22,14 +22,15 @@ class Fifteen(BoardGame):
             self.play(self._x0 + dx, self._y0 + dy, "")
 
     def _get(self, x, y) -> int:  # -1 if outside of board
-        w, h = self.size()
-        return self._bd[x + y*w] if (0<=x<w and 0<=y<h) else -1
+        if 0 <= x < self._w and 0 <= y < self._h:
+            return self._bd[x + y * self._w]
+        return -1
 
     def play(self, x: int, y: int, action: str):
         v, x0, y0 = self._get(x, y), self._x0, self._y0
         if v > 0 and abs(x - x0) + abs(y - y0) == 1:
-            self._bd[x0 + y0*self._w] = v
-            self._bd[x + y*self._w] = 0
+            self._bd[x0 + y0 * self._w] = v
+            self._bd[x + y * self._w] = 0
             self._x0, self._y0 = x, y  # tile @ (x, y) ⇆ blank
 
     def read(self, x: int, y: int) -> str:
@@ -42,8 +43,11 @@ class Fifteen(BoardGame):
     def status(self) -> str:
         return "Puzzle solved!" if self.finished() else "Playing"
 
-    def size(self) -> tuple[int, int]:
-        return self._w, self._h
+    def cols(self) -> int:
+        return self._w
+
+    def rows(self) -> int:
+        return self._h
 
 
 if __name__ == "__main__":

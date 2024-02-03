@@ -5,11 +5,10 @@
 '''
 
 import g2d
-from math import pi
 from p03_polar import move_around
 
 def draw_watch(center: g2d.Point, radius: int):
-    angle = 2 * pi / 60    # 6° rotation for each minute
+    angle = 360 / 60       # 6° rotation for each minute
     for i in range(60):    # 60 minutes
         l = radius * 0.05  # line length: 5% of radius
         if i % 5 == 0:     # each 5 mins, line is 4-fold longer

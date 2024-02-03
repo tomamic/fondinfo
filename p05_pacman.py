@@ -39,13 +39,16 @@ class PacMan(Actor):
         path_l, path_r, path_u, path_d = True, True, True, True
         for other in arena.collisions():
             if isinstance(other, Wall):
+                # wall can also be adjacent, w/o intersection
                 ox, oy, ow, oh = other.pos() + other.size()
-                if oy < self._y + self._h and self._y < oy + oh:  ## | overlap
+                if oy < self._y + self._h and self._y < oy + oh:
+                    # ↕ overlap, ↔ movement is obstacled
                     if self._x > ox:
                         path_l = False
                     else:
                         path_r = False
-                if ox < self._x + self._w and self._x < ox + ow:  ## — overlap
+                if ox < self._x + self._w and self._x < ox + ow:
+                    # ↔ overlap, ↕ movement is obstacled
                     if self._y > oy:
                         path_u = False
                     else:
@@ -65,13 +68,15 @@ class PacMan(Actor):
                 self._dx, self._dy = 0, +self._speed
 
             # if current direction is blocked, PacMan stops
-            if (self._dx < 0 and not path_l or self._dx > 0 and not path_r or
-                self._dy < 0 and not path_u or self._dy > 0 and not path_d):
+            if (self._dx < 0 and not path_l or
+                self._dx > 0 and not path_r or
+                self._dy < 0 and not path_u or
+                self._dy > 0 and not path_d):
                 self._dx, self._dy = 0, 0
 
+        arena_w, arena_h = arena.size()
+        self._x = (self._x + self._dx) % arena_w
         self._y += self._dy
-        self._x += self._dx
-        self._x %= arena.size()[0]
 
     def pos(self):
         return self._x, self._y

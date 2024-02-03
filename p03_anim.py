@@ -17,8 +17,5 @@ def tick():
     ##if x + dx > ARENA_W: ...
     x += dx                             # Update ball's position
 
-def main():
-    g2d.init_canvas((ARENA_W, ARENA_H))
-    g2d.main_loop(tick)  # call tick 30 times/second
-
-main()
+g2d.init_canvas((ARENA_W, ARENA_H))
+g2d.main_loop(tick)  # call tick 30 times/second

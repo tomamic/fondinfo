@@ -1,11 +1,13 @@
 def merge(a: list, b: list) -> list:
+    ia, ib = 0, 0
     result = []
-    while a or b:
-        if a and b:
-            d = a if a[0] <= b[0] else b
+    while ia < len(a) or ib < len(b):
+        if ia < len(a) and (ib == len(b) or a[ia] <= b[ib]):
+            result.append(a[ia])
+            ia += 1  # one elem “consumed” from a
         else:
-            d = a if a else b
-        result.append(d.pop(0))
+            result.append(b[ib])
+            ib += 1  # one elem “consumed” from b
     return result
 
 def main():

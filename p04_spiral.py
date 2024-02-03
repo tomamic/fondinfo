@@ -13,7 +13,7 @@ class Spiral:
     def __init__(self, center):
         self._center = center
         self._n, self._i = 256, 0
-        self._v = 4 * math.pi / self._n  # angular velocity
+        self._v = 2 * 360 / self._n  # angular velocity
 
     def move(self):
         self._i = (self._i + 1) % self._n

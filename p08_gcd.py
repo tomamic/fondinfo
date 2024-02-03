@@ -5,9 +5,9 @@
 '''
 
 def gcd(a: int, b: int) -> int:
-    if b != 0:
-        return gcd(b, a % b)  # tail recursion
-    return a
+    if b == 0:
+        return a
+    return gcd(b, a % b)  # tail recursion
 
 def gcd_it(a: int, b: int) -> int:
     while b != 0:
@@ -21,4 +21,5 @@ def main():
     result = gcd(a, b)
     print(result)
 
-main()
+if __name__ == "__main__":
+    main()

@@ -59,6 +59,7 @@ def update_canvas() -> None:
         scaled = pg.transform.scale(_canvas, _display.get_size())
         _display.blit(scaled, (0, 0))
     pg.display.update()
+    pg.time.wait(0)
 
 def drawing_surface() -> pg.Surface:
     if len(_color) > 3 and _color[3] != 255:
@@ -82,7 +83,9 @@ def draw_circle(center: Point, radius: int) -> None:
 
 def draw_rect(pos: Point, size: Point) -> None:
     surf = drawing_surface()
-    pg.draw.rect(surf, _color, _tup(pos + size))
+    rect = pg.Rect(*_tup(pos + size))
+    rect.normalize()
+    pg.draw.rect(surf, _color, rect)
     blit_drawing_surface()
 
 def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:

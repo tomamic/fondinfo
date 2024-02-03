@@ -8,11 +8,11 @@ from random import randint
 
 def read_csv(filename: str) -> tuple[list, int, int]:
     data, rows = [], 0
-    with open(filename, "r") as f:
+    with open(filename) as f:
         for line in f:
+            rows += 1
             for v in line.split(","):
                 data.append(int(v))
-            rows += 1
     return data, len(data) // max(rows, 1), rows
 
 def write_csv(filename: str, data: list, cols: int, rows: int) -> None:
@@ -20,10 +20,10 @@ def write_csv(filename: str, data: list, cols: int, rows: int) -> None:
         for y in range(rows):
             for x in range(cols):
                 sep = "\n" if x == cols - 1 else ","
-                print(data[x + y*cols], end=sep, file=f)
+                print(data[x + y * cols], end=sep, file=f)
 
 def main():
-    #write_csv("_data.csv", [randint(1, 12) for i in range(20)], 4, 5)
+    write_csv("_data.csv", [randint(1, 12) for i in range(20)], 4, 5)
 
     data, cols, rows = read_csv("_data.csv")
 
@@ -33,4 +33,5 @@ def main():
 
     write_csv("_data2.csv", data, cols, rows)
 
-main()
+if __name__ == "__main__":
+    main()

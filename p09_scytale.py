@@ -10,12 +10,12 @@ text = "informazioneSEGRETISSIMA"
 #    text = infile.read()
 
 with open("_output.txt", "w") as outfile:
-    matrix = [" "] * (COLS*ROWS)
+    matrix = [" "] * (COLS * ROWS)
     i, n = 0, len(text)
     while i < n:
-        for x in range(COLS):
+        for x in range(COLS):  # columns are filled one by one
             for y in range(ROWS):
                 c = text[i] if i < n else " "
-                matrix[x + y*COLS] = c
+                matrix[x + y * COLS] = c
                 i += 1
         print("".join(matrix), end="", file=outfile)

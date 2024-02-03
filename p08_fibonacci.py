@@ -4,9 +4,10 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import functools, time
+from functools import lru_cache
+from time import time
 
-@functools.lru_cache()
+@lru_cache()
 def fibonacci1(n: int) -> int:
     if n < 2:
         return n
@@ -29,16 +30,16 @@ def fibonacci3(n: int) -> int:
 def main():
     n = int(input("n? "))
 
-    start = time.time()
+    start = time()
     fib = fibonacci1(n)
-    print("fib1:", fib, time.time() - start)
+    print("fib1:", fib, time() - start)
 
-    start = time.time()
+    start = time()
     fib = fibonacci2(n)
-    print("fib2:", fib, time.time() - start)
+    print("fib2:", fib, time() - start)
 
-    start = time.time()
+    start = time()
     fib = fibonacci3(n)
-    print('fib3:', fib, time.time() - start)
+    print('fib3:', fib, time() - start)
 
 main()

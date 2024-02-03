@@ -4,11 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-import sys; sys.path.append("../examples")
-import g2d
 from actor import Actor, Arena
-
-tile = 24
 
 class Raft(Actor):
     def __init__(self, x, y, dx):
@@ -44,40 +40,34 @@ class Frog(Actor):
         self._w, self._h = 20, 20
         self._speed = 4
         self._dx, self._dy = 0, 0
-        self._dragging = 0
         self._count, self._steps = 0, 6
 
     def move(self, arena):
         for other in arena.collisions():
             if isinstance(other, Raft) and self._count == 0:
-                self._dragging = other.speed()
-
-        keys = arena.current_keys()
-        u, l, d, r = "wasd"
-        if self._count == 0:
-            if u in keys:
-                self._count = self._steps
-                self._dx, self._dy = 0, -self._speed
-            if d in keys:
-                self._count = self._steps
-                self._dx, self._dy = 0, +self._speed
-            if l in keys:
-                self._count = self._steps
-                self._dx, self._dy = -self._speed, 0
-            if r in keys:
-                self._count = self._steps
-                self._dx, self._dy = +self._speed, 0
+                self._x += other.speed()
 
         if self._count > 0:
             self._count -= 1
-            self._y += self._dy
             self._x += self._dx
-        self._x += self._dragging
-        self._dragging = 0
-
-        aw, ah = arena.size()
-        self._x = min(max(0, self._x), (aw - self._w) // tile * tile)
-        self._y = min(max(0, self._y), (ah - self._h) // tile * tile)
+            self._y += self._dy
+        else:
+            length = self._speed * self._steps  # total jump length
+            arena_w, arena_h = arena.size()
+            keys = arena.current_keys()
+            u, l, d, r = "wasd"
+            if l in keys and self._x - length >= 0:
+                self._count = self._steps
+                self._dx, self._dy = -self._speed, 0
+            elif r in keys and self._x + length <= arena_w - self._w:
+                self._count = self._steps
+                self._dx, self._dy = self._speed, 0
+            elif u in keys and self._y - length >= 0:
+                self._count = self._steps
+                self._dx, self._dy = 0, -self._speed
+            elif d in keys and self._y + length <= arena_h - self._h:
+                self._count = self._steps
+                self._dx, self._dy = 0, self._speed
 
     def pos(self):
         return self._x, self._y
@@ -88,13 +78,6 @@ class Frog(Actor):
     def sprite(self):
         return 0, 20
 
-###
-
-
-arena = Arena((20*tile, 15*tile))
-arena.spawn(Raft(15*tile, 2*tile, -4))
-arena.spawn(Raft(15*tile, 3*tile, 4))
-arena.spawn(Frog(10*tile, 4*tile))
 
 def tick():
     g2d.clear_canvas()
@@ -104,10 +87,16 @@ def tick():
         else:
             g2d.draw_rect(a.pos(), a.size())
 
-    arena.tick(g2d.current_keys())  # Game logic
+    arena.tick(g2d.current_keys())
 
 def main():
-    global sprites
+    global g2d, arena
+    import g2d
+    arena = Arena((480, 360))
+    arena.spawn(Raft(360, 48, -4))
+    arena.spawn(Raft(360, 72, 4))
+    arena.spawn(Frog(240, 96))
+
     g2d.init_canvas(arena.size())
     g2d.main_loop(tick)
 

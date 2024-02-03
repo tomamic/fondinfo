@@ -15,11 +15,11 @@ def main():
     while (txt := g2d.prompt("Val? ")):
         values.append(float(txt))
 
-    n, max_val = len(values), max(values)
-    for i, v in enumerate(values):
-        pos = 0, i * H / n
-        size = v * W / max_val, (H / n) - 1
-        g2d.draw_rect(pos, size)
+    n, vmax = len(values), max(values)
+    if vmax > 0 and n > 0:
+        for i, v in enumerate(values):
+            w = v * W / vmax
+            g2d.draw_rect((0, i * H / n), (w, H / n - 1))
 
     g2d.main_loop()
 

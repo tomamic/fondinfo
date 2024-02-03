@@ -5,6 +5,7 @@
 '''
 
 from random import randrange
+from p03_polar import move_around
 from p05_bounce import Actor, Arena, Ball, Ghost, Turtle, Point
 
 class TurtleHero(Turtle):
@@ -35,22 +36,18 @@ class TurtleHero(Turtle):
 
 
 class BounceGame(Arena):
-    def __init__(self, size=(480, 360), nballs=3, nghosts=2, time=120*30):
+    def __init__(self, size=(450, 450), nballs=3, nghosts=2, time=120*30):
         super().__init__(size)
         w, h = size
-        self.spawn(TurtleHero((w // 2, h // 2)))  # center
+        center = w / 2, h / 2
+        self.spawn(TurtleHero(center))
         for _ in range(nballs):
-            self.spawn(Ball(self._randpt()))
+            pos = move_around(center, 150, randrange(360))
+            self.spawn(Ball(pos))
         for _ in range(nghosts):
-            self.spawn(Ghost(self._randpt()))
+            pos = move_around(center, 150, randrange(360))
+            self.spawn(Ghost(pos))
         self._time = time
-
-    def _randpt(self) -> Point:
-        w, h = self.size()
-        x, y = randrange(w - 20), randrange(h - 20)
-        while (x - w // 2) ** 2 + (y - h // 2) ** 2 < 100 ** 2:
-            x, y = randrange(w - 20), randrange(h - 20)
-        return x, y
 
     def game_over(self) -> bool:
         return self.lives() <= 0
@@ -79,7 +76,7 @@ class BounceGui:
         for a in self._game.actors():
             if a.sprite() != None:
                 g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
-                
+
         lives, time = self._game.lives(), self._game.time() // 30
         g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24)
 

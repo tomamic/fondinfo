@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 '''
 
-def words(alphabet: str, n: int) -> [str]:
+def words(alphabet: str, n: int) -> list[str]:
     if n == 0:
         return ['']
 
