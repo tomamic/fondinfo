@@ -18,9 +18,9 @@ Point = tuple[float, float]
 Color = tuple[float, float, float]
 
 _tkmain = Tk()
-_tkmain.wm_withdraw() #to hide the main window
+_tkmain.withdraw()  # hide the main window
 _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
-_tkmain.geometry("100x100+%d+%d" % (_ws//2, _hs//2))
+_tkmain.geometry(f"+{_ws // 2}+{_hs // 2}")
 
 _canvas, _display, _tick = None, None, None
 _size, _color = (640, 480), (127, 127, 127)
@@ -152,7 +152,7 @@ def confirm(message: str) -> bool:
 def prompt(message: str) -> str:
     if _canvas:
         update_canvas()
-    return simpledialog.askstring("", message, parent=_tkmain) or ""
+    return simpledialog.askstring("", message) or ""
 
 def mouse_pos() -> Point:
     return _mouse_pos
