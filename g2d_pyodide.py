@@ -21,7 +21,7 @@ html = """<!DOCTYPE html>
         let pyodide = await loadPyodide();
         pyodide.runPython(`
             import base64, io, js, os, shutil, sys, zipfile
-            app_data = """%%DATA%%"""
+            app_data = '''%%DATA%%'''
             with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), "r") as zip_ref:
                 zip_ref.extractall()
             if os.path.exists("g2d_pyodide.py"):
