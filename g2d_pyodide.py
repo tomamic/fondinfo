@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-'''
+"""
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-'''
+"""
 
-html = '''<!DOCTYPE html>
+html = """<!DOCTYPE html>
 <html>
     <head>
         <title>%%SCRIPT%%</title>
@@ -22,7 +22,7 @@ html = '''<!DOCTYPE html>
         pyodide.runPython(`
             import base64, io, js, os, shutil, sys, zipfile
             app_data = """%%DATA%%"""
-            with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), 'r') as zip_ref:
+            with zipfile.ZipFile(io.BytesIO(base64.b64decode(app_data)), "r") as zip_ref:
                 zip_ref.extractall()
             if os.path.exists("g2d_pyodide.py"):
                 shutil.copyfile("g2d_pyodide.py", "g2d.py")
@@ -40,7 +40,7 @@ html = '''<!DOCTYPE html>
         main();
         </script>
     </body>
-</html>'''
+</html>"""
 
 def _archive_project():
     # if not in browser, zip the whole app folder

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-'''
+"""
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-'''
+"""
 
 from tkinter import Tk, messagebox, simpledialog
 from urllib.request import urlopen
@@ -32,7 +32,7 @@ def _tup(t: tuple, vmin=-math.inf, vmax=math.inf) -> tuple:
     return tuple(min(max(round(v), vmin), vmax) for v in t)
 
 def init_canvas(size: Point, scale=1):
-    '''Set size of first CANVAS and return it'''
+    """Set size of first CANVAS and return it"""
     global _canvas, _display, _draw, _size
     pg.init()
     _size = _tup(size)
