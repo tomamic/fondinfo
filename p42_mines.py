@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+'''
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+'''
+
+from boardgame import BoardGame
+from random import sample
+
+MINE, FLAG, ERR, FREE, OUT = 9, 10, 11, -1, -2
+dirs = [(0,-1), (1,-1), (1,0), (1,1), (0,1), (-1,1), (-1,0), (-1,-1)]
+
+class Mines(BoardGame):
+    def __init__(self, w: int, h: int, n: int):
+        self._w, self._h = w, h
+        if (rest := w*h - n) < 0:
+            raise ValueError("Too many mines")
+        self._bd = sample([MINE]*n + [FREE]*rest, w*h)
+        self._lost = self._won = False
+
+    def _get(self, x, y) -> int:  # OUT if outside of board
+        w, h = self.cols(), self.rows()
+        return self._bd[x + y*w] if 0 <= x < w and 0 <= y < h else OUT
+
+    def play(self, x: int, y: int, action: str):
+        v = self._get(x, y)
+        if v == OUT:
+            return
+        if action == "flag":
+            rot = {MINE: FLAG, FLAG: MINE, FREE: ERR, ERR: FREE}
+            self._bd[x + y*self._w] = rot.get(v, v)
+        elif v == MINE:
+            self._lost = True
+        elif v == FREE:
+            v = sum(self._get(x + dx, y + dy) in (MINE, FLAG)
+                    for dx, dy in dirs)
+            self._bd[x + y*self._w] = v
+            if v == 0:
+                for dx, dy in dirs:
+                    self.play(x + dx, y + dy, "")
+        self._won = not any(v in (FREE, ERR) for v in self._bd)
+
+    def read(self, x: int, y: int) -> str:
+        v = self._get(x, y)
+        return ("💣" if v == MINE and self.finished() else
+                "⚑" if v in (FLAG, ERR) else
+                str(v) if 1 <= v <= 8 else
+                "" if v == 0 else "·")
+
+    def finished(self) -> bool:
+        return self._lost or self._won
+
+    def status(self) -> str:
+        return "Mine!" if self._lost else "Solved!" if self._won else ""
+
+    def cols(self) -> int:
+        return self._w
+
+    def rows(self) -> int:
+        return self._h
+
+
+if __name__ == "__main__":
+    from boardgamegui import gui_play
+    gui_play(Mines(10, 10, 5))
