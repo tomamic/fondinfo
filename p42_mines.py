@@ -13,9 +13,7 @@ dirs = [(0,-1), (1,-1), (1,0), (1,1), (0,1), (-1,1), (-1,0), (-1,-1)]
 class Mines(BoardGame):
     def __init__(self, w: int, h: int, n: int):
         self._w, self._h = w, h
-        if (rest := w*h - n) < 0:
-            raise ValueError("Too many mines")
-        self._bd = sample([MINE]*n + [FREE]*rest, w*h)
+        self._bd = sample([MINE] * n + [FREE] * (w*h - n), w*h)
         self._lost = self._won = False
 
     def _get(self, x, y) -> int:  # OUT if outside of board
@@ -24,9 +22,7 @@ class Mines(BoardGame):
 
     def play(self, x: int, y: int, action: str):
         v = self._get(x, y)
-        if v == OUT:
-            return
-        if action == "flag":
+        if v != OUT and action == "flag":
             rot = {MINE: FLAG, FLAG: MINE, FREE: ERR, ERR: FREE}
             self._bd[x + y*self._w] = rot.get(v, v)
         elif v == MINE:
