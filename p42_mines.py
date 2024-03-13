@@ -7,7 +7,7 @@
 from boardgame import BoardGame
 from random import sample
 
-MINE, FLAG, ERR, FREE, OUT = 9, 10, 11, -1, -2
+MINE, TFLAG, FFLAG, FREE, OUT = 9, 10, 11, -1, -2  # true/false flag
 dirs = [(0,-1), (1,-1), (1,0), (1,1), (0,1), (-1,1), (-1,0), (-1,-1)]
 
 class Mines(BoardGame):
@@ -23,23 +23,23 @@ class Mines(BoardGame):
     def play(self, x: int, y: int, action: str):
         v = self._get(x, y)
         if v != OUT and action == "flag":
-            rot = {MINE: FLAG, FLAG: MINE, FREE: ERR, ERR: FREE}
+            rot = {MINE: TFLAG, TFLAG: MINE, FREE: FFLAG, FFLAG: FREE}
             self._bd[x + y*self._w] = rot.get(v, v)
         elif v == MINE:
             self._lost = True
         elif v == FREE:
-            v = sum(self._get(x + dx, y + dy) in (MINE, FLAG)
-                    for dx, dy in dirs)
+            v = sum(1 for dx, dy in dirs
+                    if self._get(x + dx, y + dy) in (MINE, TFLAG))
             self._bd[x + y*self._w] = v
             if v == 0:
                 for dx, dy in dirs:
                     self.play(x + dx, y + dy, "")
-        self._won = not any(v in (FREE, ERR) for v in self._bd)
+        self._won = not any(v in (FREE, FFLAG) for v in self._bd)
 
     def read(self, x: int, y: int) -> str:
         v = self._get(x, y)
         return ("💣" if v == MINE and self.finished() else
-                "⚑" if v in (FLAG, ERR) else
+                "⚑" if v in (TFLAG, FFLAG) else
                 str(v) if 1 <= v <= 8 else
                 "" if v == 0 else "·")
 

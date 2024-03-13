@@ -32,10 +32,11 @@ while state not in accepting:
     if symbol not in alphabet:
         raise ValueError(f"{symbol}∉Σ, Σ={alphabet}")
 
-    new_state, new_symbol, delta = transition.get((state, symbol), (None, "", 0))
-    print((state, symbol), "→", (new_state, new_symbol, delta), "§§", tape, pos)
+    trans = transition.get((state, symbol), (None, "", 0))
+    new_state, new_symbol, delta = trans
+    print((state, symbol), "→", trans, "§§", tape, pos)
     tape[pos] = new_symbol
-    state, symbol, pos = new_state, new_symbol, pos + delta
+    state, pos = new_state, pos + delta
     if not state: break
 
 print("Result:", state in accepting)
