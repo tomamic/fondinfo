@@ -6,7 +6,7 @@
 
 COLS, ROWS = 4, 3
 text = "informazioneSEGRETISSIMA"
-#with open("p09_scytale.py") as infile:
+#with open("p43_scytale.py") as infile:
 #    text = infile.read()
 
 with open("_output.txt", "w") as outfile:

@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-import g2d, math
+import g2d
 from p21_polar import move_around
 
 def draw_tree(pos, length, angle):

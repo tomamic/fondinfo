@@ -7,7 +7,7 @@
 from boardgame import BoardGame
 from random import sample
 
-MINE, TFLAG, FFLAG, FREE, OUT = 9, 10, 11, -1, -2  # true/false flag
+MINE, FREE, TFLAG, FFLAG, OUT = 9, 10, 11, 12, 13  # true/false flag
 dirs = [(0,-1), (1,-1), (1,0), (1,1), (0,1), (-1,1), (-1,0), (-1,-1)]
 
 class Mines(BoardGame):
@@ -31,7 +31,7 @@ class Mines(BoardGame):
             v = sum(1 for dx, dy in dirs
                     if self._get(x + dx, y + dy) in (MINE, TFLAG))
             self._bd[x + y*self._w] = v
-            if v == 0:
+            if v == 0:  # uncover all cells around
                 for dx, dy in dirs:
                     self.play(x + dx, y + dy, "")
         self._won = not any(v in (FREE, FFLAG) for v in self._bd)

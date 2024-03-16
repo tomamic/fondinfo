@@ -20,7 +20,13 @@ def fibonacci2(n: int, _cache=[0, 1]) -> int:
     _cache.append(result)
     return result
 
-def fibonacci3(n: int) -> int:
+def fibonacci3(n: int) -> tuple[int, int]:
+    if n == 0:
+        return 0, 1
+    prv, val = fibonacci3(n - 1)
+    return val, val + prv
+
+def fibonacci4(n: int) -> int:
     val, nxt = 0, 1
     for i in range(n):
         val, nxt = nxt, val + nxt
@@ -39,7 +45,11 @@ def main():
     print("fib2:", fib, time() - start)
 
     start = time()
-    fib = fibonacci3(n)
+    fib, nxt = fibonacci3(n)
     print("fib3:", fib, time() - start)
+
+    start = time()
+    fib = fibonacci4(n)
+    print("fib4:", fib, time() - start)
 
 main()

@@ -15,13 +15,14 @@ class TicTacToe(BoardGame):
         self._l = l
         self._bd = [0] * l**2  # clean board
         self._turn = 1  # 1 is `x`, -1 is `o`
-        self._won = self._full = False
+        self._won = self._tie = False
 
     def _get(self, x, y) -> int:  # -2 if outside of board
         bd, l = self._bd, self._l
         return bd[x + y*l] if (0 <= x < l and 0 <= y < l) else -2
 
     def _line(self, x, y, dx, dy) -> bool:
+        # whole line filled with current symbol?
         return all(self._get(x + i*dx, y + i*dy) == self._turn
                    for i in range(self._l))
 
@@ -32,7 +33,7 @@ class TicTacToe(BoardGame):
                          self._line(0, y, 1, 0) or  # row y
                          self._line(0, 0, 1, 1) or  # diagonals
                          self._line(self._l - 1, 0, -1, 1))
-            self._full = all(self._bd)
+            self._tie = not self._won and all(self._bd)
             if not self.finished():
                 self._turn *= -1
 
@@ -40,10 +41,10 @@ class TicTacToe(BoardGame):
         return symbol[self._get(x, y)]
 
     def finished(self) -> bool:
-        return self._won or self._full
+        return self._won or self._tie
 
     def status(self) -> str:
-        p = "None" if self._full else symbol[self._turn]
+        p = "None" if self._tie else symbol[self._turn]
         return f"{p} wins" if self.finished() else f"{p} plays"
 
     def cols(self) -> int:
@@ -55,5 +56,4 @@ class TicTacToe(BoardGame):
 
 if __name__ == "__main__":
     from boardgamegui import gui_play
-    game = TicTacToe(3)
-    gui_play(game)
+    gui_play(TicTacToe(3))
