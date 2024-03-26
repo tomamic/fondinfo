@@ -24,7 +24,7 @@ class Actor:
         """
         raise NotImplementedError("Abstract method")
 
-    def sprite(self) -> Point:
+    def sprite(self) -> Point | None:
         """Return the position (x, y) of current sprite,
         if it is contained in a larger image, with other sprites;
         Otherwise, simply return None.
@@ -64,7 +64,7 @@ class Arena():
             self._actors.append(a)
 
     def kill(self, a: Actor):
-        """Removes an actor from this arena.
+        """Remove an actor from this arena.
         """
         if a in self._actors:
             self._actors.remove(a)
@@ -81,7 +81,7 @@ class Arena():
         self._count += 1
 
     def _naive_collisions(self, actors):
-        # self._collisions = [[a2 for a2 in actors if a1 != a2 and check_collision(a1, a2)] for a1 in actors]
+        # self._collisions = [[a2 for a2 in actors if a1 is not a2 and check_collision(a1, a2)] for a1 in actors]
         self._collisions.clear()
         for a1 in actors:
             colls1 = []
@@ -116,7 +116,8 @@ class Arena():
             self._collisions.append(colls)
 
     def collisions(self) -> list[Actor]:
-        """Get list of actors colliding with current actor"""
+        """Get list of actors colliding with current actor
+        """
         t, colls = self._turn, self._collisions
         return colls[t] if 0 <= t < len(colls) else []
 

@@ -82,7 +82,6 @@ class Ghost(Actor):
 class Turtle(Actor):
     def __init__(self, pos):
         self._x, self._y = pos
-        self._dx, self._dy = 0, 0
         self._w, self._h = 20, 20
         self._speed = 2
 
@@ -92,18 +91,15 @@ class Turtle(Actor):
                 self.hit(arena)
 
         keys = arena.current_keys()
-        self._dx, self._dy = 0, 0
         if "ArrowUp" in keys:
-            self._dy = -self._speed
+            self._y -= self._speed
         elif "ArrowDown" in keys:
-            self._dy = self._speed
+            self._y += self._speed
         if "ArrowLeft" in keys:
-            self._dx = -self._speed
+            self._x -= self._speed
         elif "ArrowRight" in keys:
-            self._dx = self._speed
-        self._x += self._dx
-        self._y += self._dy
-
+            self._x += self._speed
+    
         aw, ah = arena.size()
         self._x = min(max(self._x, 0), aw - self._w)  # clamp
         self._y = min(max(self._y, 0), ah - self._h)  # clamp
