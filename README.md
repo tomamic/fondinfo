@@ -4,7 +4,7 @@ http://tomamic.github.io
 
 Python and C++ examples
 
-Copyleft (ɔ) 2008-2020 Michele Tomaiuolo - http://sowide.unipr.it/tomamic <br>
+Copyleft (ɔ) 2008-2024 Michele Tomaiuolo - http://sowide.unipr.it/tomamic <br>
 This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 
 ---
