@@ -39,13 +39,13 @@ class Folder(Node):
             n.print(indent + 4)
 
 def main():
-    ball = Document("ball.txt", "spherics")
-    data = Folder("data", [ball])
+    prod = Document("prod.csv", "1,2,3,4")
+    data = Folder("data", [prod])
     a1_0 = Document("a1.txt", "bla bla 0")
-    cmpt166 = Folder("cmpt166", [a1_0, data])
+    work = Folder("Work", [a1_0, data])
     a1_1 = Document("a1.txt", "a different file")
-    macm101 = Folder("macm101", [a1_1])
-    desktop = Folder("Desktop", [cmpt166, macm101])
+    personal = Folder("Personal", [a1_1])
+    desktop = Folder("Desktop", [work, personal])
 
     print(desktop.size())
 
