@@ -1,14 +1,3 @@
-## Programming lab @ UniPR
-
-http://tomamic.github.io
-
-Python examples
-
-Copyleft (ɔ) 2008-2024 Michele Tomaiuolo - http://sowide.unipr.it/tomamic <br>
-This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
-
----
-
 ## g2d
 
 ### Installing
@@ -58,3 +47,10 @@ This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
 - **`alert`** `(message: str)` : Show a dialog with a message
 
 [*Key values*](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) + `"Spacebar", "LeftButton", "RightButton", "MiddleButton"`
+
+--
+
+http://fondinfo.github.io
+
+Copyleft (ɔ) 2008-2024 Michele Tomaiuolo - http://sowide.unipr.it/tomamic <br>
+This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
