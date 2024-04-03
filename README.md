@@ -29,7 +29,7 @@
 ### Images and sounds
 
 - **`load_image`** `(src: str) -> str` : Preload an image and return a name for it
-- **`draw_image`** `(src: str, pos: Point, clip_pos: Point=None, clip_size: Point=None)` : Blit an image, given its name and position; optionally, image is clipped
+- **`draw_image`** `(src: str, pos: Point, clip_pos: Point=None, clip_size: Point=None)` : Blit an image, given its name and position; optionally, a rectangle is clipped from image
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
 - **`play_audio`** `(src: str, loop: bool=False)` : Play a sound, possibly in a loop, given its name
 - **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
