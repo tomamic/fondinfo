@@ -13,7 +13,7 @@ x, y, dx, dy = 50, 50, 5, 5
 def tick():
     global x, y, dx
     g2d.clear_canvas()
-    g2d.draw_image_clip("sprites.png", (x, y), (20, 0), (20, 20))
+    g2d.draw_image("sprites.png", (x, y), (20, 0), (20, 20))
     if 0 <= x + dx <= ARENA_W - BALL_W:
         x += dx
     else:

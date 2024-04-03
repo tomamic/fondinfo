@@ -39,7 +39,7 @@ class Ghost:
 
 def tick():
     g2d.clear_canvas()
-    g2d.draw_image_clip("sprites.png", g1.pos(), g1.sprite(), g1.size())
+    g2d.draw_image("sprites.png", g1.pos(), g1.sprite(), g1.size())
     g1.move()
 
 def main():

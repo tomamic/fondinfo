@@ -74,6 +74,7 @@ except:
 
 Point = tuple[float, float]
 Color = tuple[float, float, float]
+ImageClip = tuple[str, Point, Point]
 
 _canvas, _ctx, _usr_tick = None, None, None
 _mouse_pos, _curr_keys, _prev_keys = (0, 0), set(), set()
@@ -126,7 +127,7 @@ def draw_circle(center: Point, radius: int) -> None:
 def draw_rect(pos: Point, size: Point) -> None:
     _ctx.fillRect(*pos, *size)
 
-def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
+def draw_text(txt: str, pos: Point, size: int, centered=True) -> None:
     _ctx.font = str(size) + "px sans-serif";
 
     # clear background rect assuming height of font
@@ -136,9 +137,6 @@ def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
     _ctx.textBaseline = "middle" if centered else "top";
     _ctx.textAlign = "center" if centered else "left";
     _ctx.fillText(txt, *pos)
-
-def draw_text_centered(txt: str, pos: Point, size: int) -> None:
-   draw_text(txt, pos, size, True)
 
 def draw_polygon(points: list[Point]):
     if points:
@@ -159,12 +157,11 @@ def load_image(src: str) -> str:
         _loaded[src] = img
     return src
 
-def draw_image(src: str, pos: Point) -> None:
-    _ctx.drawImage(_loaded[load_image(src)], *pos)
-
-def draw_image_clip(src: str, pos: Point, clip: Point,
-                    size: Point) -> None:
-    _ctx.drawImage(_loaded[load_image(src)], *clip, *size, *pos, *size)
+def draw_image(src: str, pos: Point, clip_pos: Point=None, clip_size: Point=None) -> None:
+    if clip_pos and clip_size:
+        _ctx.drawImage(_loaded[load_image(src)], *clip_pos, *clip_size, *pos, *clip_size)
+    else:
+        _ctx.drawImage(_loaded[load_image(src)], *pos)
 
 def load_audio(src: str) -> str:
     if src not in _loaded:

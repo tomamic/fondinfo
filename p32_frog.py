@@ -80,7 +80,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if a.sprite():
-            g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+            g2d.draw_image("sprites.png", a.pos(), a.sprite(), a.size())
         else:
             g2d.draw_rect(a.pos(), a.size())
     arena.tick(g2d.current_keys())

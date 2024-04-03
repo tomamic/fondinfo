@@ -75,10 +75,10 @@ class BounceGui:
         g2d.clear_canvas()
         for a in self._game.actors():
             if a.sprite() != None:
-                g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+                g2d.draw_image("sprites.png", a.pos(), a.sprite(), a.size())
 
         lives, time = self._game.lives(), self._game.time() // 30
-        g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24)
+        g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24, centered=False)
 
         if self._game.game_over():
             g2d.alert("Game over")

@@ -71,12 +71,12 @@ def blit_drawing_surface():
     if len(_color) > 3 and _color[3] != 255:
         _canvas.blit(_draw, (0, 0))
 
-def draw_line(pt1: Point, pt2: Point, width=1) -> None:
+def draw_line(pt1: Point, pt2: Point, width: float=1) -> None:
     surf = drawing_surface()
     pg.draw.line(surf, _color, _tup(pt1), _tup(pt2), int(width))
     blit_drawing_surface()
 
-def draw_circle(center: Point, radius: int) -> None:
+def draw_circle(center: Point, radius: float) -> None:
     surf = drawing_surface()
     pg.draw.circle(surf, _color, _tup(center), int(radius))
     blit_drawing_surface()
@@ -88,7 +88,7 @@ def draw_rect(pos: Point, size: Point) -> None:
     pg.draw.rect(surf, _color, rect)
     blit_drawing_surface()
 
-def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
+def draw_text(txt: str, pos: Point, size: int, centered=True) -> None:
     fname, fonts = "segoeuisymbol", pg.font.get_fonts()
     fname = fname if fname in fonts else "freesansbold"
     font = pg.font.SysFont(fname, int(size))
@@ -97,9 +97,6 @@ def draw_text(txt: str, pos: Point, size: int, centered=False) -> None:
         surface.set_alpha(_color[3])
     (x, y), (w, h) = _tup(pos), surface.get_size() if centered else (0, 0)
     _canvas.blit(surface, (x - w//2, y - h//2))
-
-def draw_text_centered(txt: str, pos: Point, size: int) -> None:
-    draw_text(txt, pos, size, True)
 
 def draw_polygon(points: list[Point]) -> None:
     surf = drawing_surface()
@@ -117,12 +114,12 @@ def load_image(src: str) -> str:
             _loaded[src] = pg.image.load(image)
     return src
 
-def draw_image(src: str, pos: Point) -> None:
-    _canvas.blit(_loaded[load_image(src)], _tup(pos))
-
-def draw_image_clip(src: str, pos: Point, clip_pos: Point, clip_size: Point) -> None:
-    image = _loaded[load_image(src)]
-    _canvas.blit(image, _tup(pos), area=_tup(clip_pos) + _tup(clip_size))
+def draw_image(src: str, pos: Point,
+               clip_pos: Point=None, clip_size: Point=None) -> None:
+    area = None
+    if clip_pos and clip_size:
+        area=_tup(clip_pos) + _tup(clip_size)
+    _canvas.blit(_loaded[load_image(src)], _tup(pos), area=area)
 
 def load_audio(src: str) -> str:
     if src not in _loaded:
@@ -189,7 +186,7 @@ def key_pressed(key: str) -> bool:
 def key_released(key: str) -> bool:
     return key in _prev_keys and key not in _curr_keys
 
-def main_loop(tick=None, fps=30) -> None:
+def main_loop(tick=None, fps: int=30) -> None:
     global _mouse_pos, _tick
     _tick = tick
     clock = pg.time.Clock()

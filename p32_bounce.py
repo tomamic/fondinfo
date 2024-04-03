@@ -99,7 +99,7 @@ class Turtle(Actor):
             self._x -= self._speed
         elif "ArrowRight" in keys:
             self._x += self._speed
-    
+
         aw, ah = arena.size()
         self._x = min(max(self._x, 0), aw - self._w)  # clamp
         self._y = min(max(self._y, 0), ah - self._h)  # clamp
@@ -121,7 +121,7 @@ def tick():
     g2d.clear_canvas()
     for a in arena.actors():
         if a.sprite() != None:
-            g2d.draw_image_clip("sprites.png", a.pos(), a.sprite(), a.size())
+            g2d.draw_image("sprites.png", a.pos(), a.sprite(), a.size())
         else:
             pass  # g2d.draw_rect(a.pos(), a.size())
 

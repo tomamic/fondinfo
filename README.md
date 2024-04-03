@@ -13,27 +13,25 @@
 ### Canvas functions
 
 - **`init_canvas`** `(size: Point)` : Initialize the drawing canvas
-- **`main_loop`** `(tick=None, fps=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
+- **`main_loop`** `(tick: Callable=None, fps: float=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
 - **`clear_canvas`** `()` : Clear the canvas
 - **`close_canvas`** `()` : Close the canvas and exit the main loop
 
 ### Drawing functions
 
 - **`set_color`** `(color: Color)` : Set the drawing color
-- **`draw_line`** `(pt1: Point, pt2: Point)` : Draw a line from `pt1` to `pt2`
-- **`draw_circle`** `(center: Point, radius: int)` : Fill a circle, given `center` and `radius`
+- **`draw_line`** `(pt1: Point, pt2: Point, width: float=1)` : Draw a line from `pt1` to `pt2`, with an optional width
+- **`draw_circle`** `(center: Point, radius: float)` : Fill a circle, given `center` and `radius`
 - **`draw_rect`** `(pos: Point, size: Point)` : Fill a given rectangle, given left-top position and size
 - **`draw_polygon`** `(points: list[Point])` : Fill a polygon, given its list of vertices
-- **`draw_text`** `(txt: str, pos: Point, size: int)` : Draw a text, given left-top position and font px size
-- **`draw_text_centered`** `(txt: str, pos: Point, size: int)` : Draw a centered text, given center and font px size
+- **`draw_text`** `(txt: str, pos: Point, size: float, centered: bool=True)` : Draw a text, given position and font px size; text will be centered, or optionally aligned to left-top
 
 ### Images and sounds
 
-- **`load_image`** `(src: str) -> str` : Load an image and return a name for it
-- **`draw_image`** `(src: str, pos: Point)` : Blit a whole image, given its name and the position
-- **`draw_image_clip`** `(src: str, pos: Point, clip_pos: Point, clip_size: Point)` : Blit a portion of an image
+- **`load_image`** `(src: str) -> str` : Preload an image and return a name for it
+- **`draw_image`** `(src: str, pos: Point, clip_pos: Point=None, clip_size: Point=None)` : Blit an image, given its name and position; optionally, image is clipped
 - **`load_audio`** `(src: str) -> str` : Load a sound and return a name for it
-- **`play_audio`** `(src: str, loop: bool)` : Play a sound, possibly in a loop, given its name
+- **`play_audio`** `(src: str, loop: bool=False)` : Play a sound, possibly in a loop, given its name
 - **`pause_audio`** `(src: str)` : Stop playing a sound, given its name
 
 ### Input and output

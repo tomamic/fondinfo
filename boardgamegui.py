@@ -47,7 +47,7 @@ class BoardGameGui:
 
 def _write(text, x, y, w, h):
     fsize = 0.75 * min(h, 2 * w / len(text or " "))
-    g2d.draw_text_centered(text, (x + w // 2, y + h // 2), fsize)
+    g2d.draw_text(text, (x + w // 2, y + h // 2), fsize)
 
 def gui_play(game: BoardGame):
     g2d.init_canvas((game.cols() * W, game.rows() * H + H))

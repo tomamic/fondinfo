@@ -94,10 +94,10 @@ class Arena():
         self._collisions.clear()
         # divide the arena in tiles, for efficient collision detection
         tile = 40
-        nx, ny = (self._w + tile - 1) // tile,  (self._h + tile - 1) // tile
+        nx, ny = -(-self._w // tile),  -(-self._h // tile)  # ceil div
         cells = [set() for _ in range(nx * ny)]  # each tile is a set
         for i, a in enumerate(actors):
-            x, y, w, h = map(round, a.pos() + a.size())
+            x, y, w, h = (round(v) for v in a.pos() + a.size())
             for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
                 for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
@@ -105,11 +105,11 @@ class Arena():
                         cells[ty * nx + tx].add(i)
         for i, a in enumerate(actors):
             neighs = set()
-            x, y, w, h = map(round, a.pos() + a.size())
+            x, y, w, h = (round(v) for v in a.pos() + a.size())
             for tx in range((x - 1) // tile, 1 + (x + w + 1) // tile):
                 for ty in range((y - 1) // tile, 1 + (y + h + 1) // tile):
                     if 0 <= tx < nx and 0 <= ty < ny:
-                        # aggregate actors found at some tile occupied by `a`
+                        # all actors sharing some tile with `a`
                         neighs |= cells[ty * nx + tx]
             colls = [actors[j] for j in sorted(neighs, reverse=True)
                      if i != j and check_collision(a, actors[j])]

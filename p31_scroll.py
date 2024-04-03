@@ -59,11 +59,11 @@ def tick():
     elif "ArrowLeft" in keys:
         view_x = max(view_x - 10, 0)
 
-    g2d.draw_image_clip(BACKGROUND, (0, 0),
+    g2d.draw_image(BACKGROUND, (0, 0),
                         (view_x, view_y), (VIEW_W, VIEW_H))
     for a in actors:
         x, y = a.pos()
-        g2d.draw_image_clip("sprites.png", (x - view_x, y - view_y),
+        g2d.draw_image("sprites.png", (x - view_x, y - view_y),
                             a.sprite(), a.size())
         a.move()
 

@@ -39,7 +39,7 @@ def tick():
     g2d.clear_canvas()
     for g in ghosts:
         # Cut an area from a larger image
-        g2d.draw_image_clip("sprites.png", g.pos(), g.sprite(), g.size())
+        g2d.draw_image("sprites.png", g.pos(), g.sprite(), g.size())
         g.move()
 
 def main():
