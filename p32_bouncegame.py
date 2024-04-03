@@ -36,7 +36,7 @@ class TurtleHero(Turtle):
 
 
 class BounceGame(Arena):
-    def __init__(self, size=(450, 450), nballs=3, nghosts=2, time=120*30):
+    def __init__(self, size=(500, 500), nballs=3, nghosts=2, time=120*30):
         super().__init__(size)
         w, h = size
         center = w / 2, h / 2
@@ -78,7 +78,7 @@ class BounceGui:
                 g2d.draw_image("sprites.png", a.pos(), a.sprite(), a.size())
 
         lives, time = self._game.lives(), self._game.time() // 30
-        g2d.draw_text(f"Lives: {lives} Time: {time}", (0, 0), 24, centered=False)
+        g2d.draw_text(f"Lives: {lives} Time: {time}", (250, 12), 24)
 
         if self._game.game_over():
             g2d.alert("Game over")
