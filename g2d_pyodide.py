@@ -127,15 +127,10 @@ def draw_circle(center: Point, radius: int) -> None:
 def draw_rect(pos: Point, size: Point) -> None:
     _ctx.fillRect(*pos, *size)
 
-def draw_text(txt: str, pos: Point, size: int, centered=True) -> None:
+def draw_text(txt: str, pos: Point, size: int) -> None:
     _ctx.font = str(size) + "px sans-serif";
-
-    # clear background rect assuming height of font
-    ## width = _ctx.measureText(txt).width;
-    ## _ctx.clearRect(x, y, width, size);
-
-    _ctx.textBaseline = "middle" if centered else "top";
-    _ctx.textAlign = "center" if centered else "left";
+    _ctx.textBaseline = "middle"
+    _ctx.textAlign = "center"
     _ctx.fillText(txt, *pos)
 
 def draw_polygon(points: list[Point]):

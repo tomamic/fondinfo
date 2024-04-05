@@ -12,7 +12,7 @@ class Mario(Actor):
     def __init__(self):
         self._x, self._y = 0, 240
         self._w, self._h = 20, 20
-        self._dx, self._dy = 2, 0
+        self._dx, self._dy = 0, 0
         self._speed, self._jump = 2, -8
         self._gravity = 0.25
 
