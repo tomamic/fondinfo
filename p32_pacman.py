@@ -36,7 +36,7 @@ class PacMan(Actor):
         self._speed = 2
 
     def move(self, arena):
-        path_l, path_r, path_u, path_d = True, True, True, True
+        path_l = path_r = path_u = path_d = True
         for other in arena.collisions():
             if isinstance(other, Wall):
                 # wall can also be adjacent, w/o intersection

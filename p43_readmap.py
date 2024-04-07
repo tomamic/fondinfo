@@ -18,7 +18,7 @@ def expand_wall(matrix, x, y) -> tuple[int, int]:
 
 def main():
     walls, cookies, powerups, pacman = [], [], [], None
-    with open("p42_pacmanmap.txt") as file1:
+    with open("p43_pacmanmap.txt") as file1:
         board = [list(line.rstrip("\n")) for line in file1]
     cols, rows = len(board[0]), len(board)
     for y in range(rows):
