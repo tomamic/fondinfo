@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-'''
+"""
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-'''
+"""
 
 from unittest import TestCase, main
 from p31_ball import Ball, ARENA_W, ARENA_H, BALL_W, BALL_H
@@ -29,7 +29,7 @@ class SimpleTest(TestCase):
                 b = Ball(x0, y0)
                 b.move()
                 self.assertTrue(b.pos() == (x1, y1))
-        
-        
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-'''
+"""
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
-'''
+"""
 
 from boardgame import BoardGame, console_play
 from random import sample
 
 class LightsOut(BoardGame):
-    '''https://en.wikipedia.org/wiki/Lights_Out_(game)'''
+    """https://en.wikipedia.org/wiki/Lights_Out_(game)"""
 
     def __init__(self, w=5, h=5, level=4):
         self._w, self._h = w, h
