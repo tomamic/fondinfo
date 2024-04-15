@@ -32,6 +32,19 @@ def dump_bmp(image, palette, w, h, bpp):
     for i, v in enumerate(image):
         print(f"Row {i:3}:", v.hex(" "))
 
+def draw_4bpp(image, palette, w, h, bpp):
+    import g2d
+    g2d.init_canvas((w, h), 10)  # 10x zoom
+    for y, row in enumerate(reversed(image)):
+        for x in range(w):
+            if bpp == 4:
+                pix = row[x // 2]  # 2 pixels per byte
+                pix = pix // 16 if x % 2 == 0 else pix % 16
+                b, g, r, _ = palette[pix]
+                g2d.set_color((r, g, b))
+            g2d.draw_rect((x, y), (1, 1))
+    g2d.main_loop()
+
 def draw_bmp(image, palette, w, h, bpp):
     import g2d
     g2d.init_canvas((w, h), 10)  # 10x zoom
@@ -58,4 +71,4 @@ def draw_bmp(image, palette, w, h, bpp):
 if __name__ == "__main__":
     image, palette, w, h, bpp = read_bmp("redbrick.bmp")
     dump_bmp(image, palette, w, h, bpp)
-    draw_bmp(image, palette, w, h, bpp)
+    draw_4bpp(image, palette, w, h, bpp)  # or, draw_bmp
