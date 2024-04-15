@@ -11,8 +11,8 @@ ops = {"+": add, "-": sub, "*": mul, "/": truediv, "~": neg}
 
 # expr = term {( "+" | "-" ) term}
 # term = factor {( "*" | "/" ) factor}
-# factor = "-" factor | "(" expr ")" | var | num
-# var = [A-Za-z]\w+
+# factor = "-" factor | "(" expr ")" | identifier | number
+# (identifiers start with a letter, numbers are float)
 
 # expr = term {( "+" | "-" ) term}
 def expr(tok: "Tokenizer") -> "Expr":
@@ -32,7 +32,7 @@ def term(tok: "Tokenizer") -> "Expr":
         x = BinaryOp(nxt, x, y)
     return x
 
-# factor = "-" factor | "(" expr ")" | var | num
+# factor = "-" factor | "(" expr ")" | identifier | number
 def factor(tok: "Tokenizer") -> "Expr":
     nxt = tok.peek()
     if nxt == "-":
