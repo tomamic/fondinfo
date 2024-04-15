@@ -17,19 +17,21 @@ ops = {"+": add, "-": sub, "*": mul, "/": truediv, "~": neg}
 # expr = term {( "+" | "-" ) term}
 def expr(tok: "Tokenizer") -> "Expr":
     x = term(tok)
-    while (nxt := tok.peek()) in ("+", "-"):
-        tok.consume(nxt)
+    while tok.peek() in ("+", "-"):
+        op = tok.peek()
+        tok.consume(op)
         y = term(tok)
-        x = BinaryOp(nxt, x, y)
+        x = BinaryOp(op, x, y)
     return x
 
 # term = factor {( "*" | "/" ) factor}
 def term(tok: "Tokenizer") -> "Expr":
     x = factor(tok)
-    while (nxt := tok.peek()) in ("*", "/"):
-        tok.consume(nxt)
+    while tok.peek() in ("*", "/"):
+        op = tok.peek()
+        tok.consume(op)
         y = factor(tok)
-        x = BinaryOp(nxt, x, y)
+        x = BinaryOp(op, x, y)
     return x
 
 # factor = "-" factor | "(" expr ")" | identifier | number
