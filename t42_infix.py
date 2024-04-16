@@ -6,64 +6,7 @@
 
 import re
 from math import isclose
-from operator import add, sub, mul, truediv, neg
-ops = {"+": add, "-": sub, "*": mul, "/": truediv, "~": neg}
-
-class Expr:
-    def to_prefix(self) -> str:
-        raise NotImplementedError("Abstract method")
-
-    def eval(self, context: dict[str, float]) -> float:
-        raise NotImplementedError("Abstract method")
-
-class BinaryOp(Expr):
-    def __init__(self, op: str, x: Expr, y: Expr):
-        self._op, self._x, self._y = op, x, y
-
-    def to_prefix(self):
-        x = self._x.to_prefix()
-        y = self._y.to_prefix()
-        return f"{self._op} {x} {y}"
-
-    def eval(self, ctx):
-        x = self._x.eval(ctx)
-        y = self._y.eval(ctx)
-        op = ops[self._op]
-        return op(x, y)
-    
-class UnaryOp(Expr):
-    def __init__(self, op, x: Expr):
-        self._op, self._x = op, x
-
-    def to_prefix(self):
-        x = self._x.to_prefix()
-        return f"{self._op}{x}"
-
-    def eval(self, ctx):
-        x = self._x.eval(ctx)
-        op = ops[self._op]
-        return op(x)
-
-class Var(Expr):
-    def __init__(self, name: str):
-        self._name = name
-
-    def to_prefix(self):
-        return f"{self._name}"
-
-    def eval(self, ctx):
-        return ctx.get(self._name, 0)
-
-class Num(Expr):
-    def __init__(self, val: float):
-        self._val = val
-
-    def to_prefix(self):
-        return f"{self._val}"
-
-    def eval(self, ctx):
-        return self._val
-
+from p52_expr import *
 
 class Tokenizer:
     def __init__(self, text):
@@ -144,7 +87,7 @@ def main():
         tok = Tokenizer(infix)
         ast = expr(tok)
         tok.end()
-        assert ast.to_prefix() == prefix
+        assert ast.prefix() == prefix
         assert isclose(ast.eval(ctx), val)
 
 if __name__ == "__main__":
