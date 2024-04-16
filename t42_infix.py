@@ -6,7 +6,7 @@
 
 import re
 from math import isclose
-from p52_expr import *
+from p52_expr import Expr, BinaryOp, UnaryOp, Var, Num
 
 class Tokenizer:
     def __init__(self, text):
