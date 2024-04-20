@@ -154,16 +154,6 @@ class AlienGame(Arena):
                 return False
         return True
 
-    def lives(self) -> int:
-        for a in self.actors():
-            if isinstance(a, Turtle):
-                return a.lives()
-        return 0
-
-    def time(self) -> int:
-        return self._time - self.count()
-
-
 class AlienGui:
     def __init__(self):
         self._game = AlienGame()

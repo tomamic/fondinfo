@@ -99,6 +99,7 @@ def init_canvas(size: Point, scale=1) -> None:
     _ctx.scale(scale, scale)
     clear_canvas()
     set_color((127, 127, 127))
+    _curr_keys.clear()
 
 def set_color(color: Color) -> None:
     c = _tup(color, 0, 255) + (255,)

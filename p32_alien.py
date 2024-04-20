@@ -16,7 +16,7 @@ class Alien(Actor):
 
     def move(self, arena: Arena):
         for other in arena.collisions():
-            if isinstance(other, Bullet):
+            if isinstance(other, Missile):
                 arena.kill(self)
         # TODO: use the alien’s own limits
         aw, ah = arena.size()
@@ -36,7 +36,7 @@ class Alien(Actor):
         return 0, 0
 
 
-class Bullet(Actor):
+class Missile(Actor):
     def __init__(self, pos):
         self._x, self._y = pos
         # …
@@ -66,7 +66,7 @@ def tick():
         g2d.draw_rect(a.pos(), a.size())
     if arena.count() % 40 == 0:
         aw, ah = arena.size()
-        arena.spawn(Bullet((aw / 2, ah)))
+        arena.spawn(Missile((aw / 2, ah)))
     arena.tick()
 
 def main():
