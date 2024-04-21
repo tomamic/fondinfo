@@ -11,10 +11,10 @@ class Alien(Actor):
     def __init__(self, pos: Point):
         self._x, self._y = pos
         self._w, self._h = 32, 20
-        self._pose = 0
+        self._dx, self._dy = 4, 8
         # each alien has its own moving space, e.g. 150px
         self._xmin, self._xmax = self._x, self._x + 150
-        self._dx, self._dy = 4, 8
+        self._pose = 0  # which sprite to use?
 
     def move(self, arena: Arena):
         for other in arena.collisions():
@@ -26,8 +26,8 @@ class Alien(Actor):
             self._dx = -self._dx
             self._y += self._dy
         
-        f = 1 + arena.count() // 50
-        if random.randrange(500 // f) == 0:
+        chances = 25000 // (1 + arena.count())
+        if random.randrange(chances) == 0:
             pos = self._x + self._w / 2, self._y + self._h
             arena.spawn(Bomb(pos))
         self._pose = arena.count() // 8 % 2
@@ -101,11 +101,8 @@ class Cannon(Actor):
 
     def move(self, arena):
         for other in arena.collisions():
-            if isinstance(other, Alien):
-                arena.kill(self)
             if isinstance(other, Bomb):
                 arena.kill(self)
-
 
         aw, ah = arena.size()
         keys = arena.current_keys()
@@ -118,8 +115,8 @@ class Cannon(Actor):
             self._x -= 4
         elif "ArrowRight" in keys:
             self._x += 4
-        self._x = max(self._x, 0)
-        self._x = min(self._x, aw - self._w)
+        self._x = max(self._x, 0)  # clamp
+        self._x = min(self._x, aw - self._w)  # clamp
 
     def pos(self):
         return self._x, self._y
@@ -161,13 +158,10 @@ class AlienGui:
         g2d.main_loop(self.tick)
 
     def tick(self):
-        sprites = "https://tomamic.github.io/images/sprites/invaders.png"
+        sprites = "https://fondinfo.github.io/sprites/invaders.png"
         g2d.clear_canvas()
         for a in self._game.actors():
-            if a.sprite():
-                g2d.draw_image(sprites, a.pos(), a.sprite(), a.size())
-            else:
-                g2d.draw_rect(a.pos(), a.size())
+            g2d.draw_image(sprites, a.pos(), a.sprite(), a.size())
 
         if self._game.game_over():
             g2d.alert("Game over")
