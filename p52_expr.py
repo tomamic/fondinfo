@@ -14,7 +14,7 @@ class Expr:
     def infix(self) -> str:
         raise NotImplementedError("Abstract method")
 
-    def eval(self, context: dict[str, float]) -> float:
+    def eval(self, context: dict[str, float]={}) -> float:
         raise NotImplementedError("Abstract method")
 
 class BinaryOp(Expr):
@@ -32,7 +32,7 @@ class BinaryOp(Expr):
         res = f"{x} {self._op} {y}"
         return f"({res})" if self._op in "+-" else res
 
-    def eval(self, ctx):
+    def eval(self, ctx={}):
         x = self._x.eval(ctx)
         y = self._y.eval(ctx)
         op = ops[self._op]
@@ -50,7 +50,7 @@ class UnaryOp(Expr):
         x = self._x.infix()
         return f"{self._op}({x})"
 
-    def eval(self, ctx):
+    def eval(self, ctx={}):
         x = self._x.eval(ctx)
         op = ops[self._op]
         return op(x)
@@ -65,7 +65,7 @@ class Var(Expr):
     def infix(self):
         return f"{self._name}"
 
-    def eval(self, ctx):
+    def eval(self, ctx={}):
         return ctx.get(self._name, 0)
 
 class Num(Expr):
@@ -78,7 +78,7 @@ class Num(Expr):
     def infix(self):
         return f"{self._val}"
 
-    def eval(self, ctx):
+    def eval(self, ctx={}):
         return self._val
 
 

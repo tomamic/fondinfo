@@ -4,27 +4,25 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-from p51_expression import Expression, Literal, Sum, Product
+from p52_expr import Expr, Num, BinaryOp
 
 def parse(tokens: list) -> str:
     token = tokens.pop(0)
 
     if "0" <= token[-1] <= "9":
-        return Literal(float(token))
+        return Num(float(token))
     else:
         a = parse(tokens)
         b = parse(tokens)
 
-        if token == "+":
-            return Sum(a, b)
-        elif token == "*":
-            return Product(a, b)
+        if token in "+-*/":
+            return BinaryOp(token, a, b)
 
 def main():
     polish = "* 5 + 4 * 3 2".split()
 
     expr = parse(polish)
-    print(expr.infix(), "==", expr.eval())
+    print(expr.infix(), "==", expr.eval({}))
 
     # 5.0 * (4.0 + 3.0 * 2.0) == 50.0
 
