@@ -24,11 +24,11 @@ def smooth(matrix: list[float], cols: int, rows: int) -> list[float]:
     return result
 
 def main():
-    from p42_csv import read_csv
-    matrix, cols, rows = read_csv("_matrix.csv")
+    matrix = [10,  7,  6,  8,
+               8,  1, 11,  4,
+               6,  7,  8,  2]
+    cols, rows = 4, 3
 
-    print(f"{cols}×{rows}")
-    print(matrix, "\n")
     smoothed = smooth(matrix, cols, rows)
     print(smoothed)
 
