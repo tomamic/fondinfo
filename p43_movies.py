@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+"""
+
+# import pyodide.http  # in the playground
+# open("movies.csv", "w").writelines(pyodide.http.open_url("https://fondinfo.github.io/data/movies.csv"))
+
 from csv import reader
 from operator import itemgetter
 
