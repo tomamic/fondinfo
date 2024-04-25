@@ -4,40 +4,48 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-def to_infix(tokens: list) -> str:
-    token = tokens.pop(0)
+from typing import Iterable
+from p52_expr import ops, Num, BinaryOp
 
-    if "0" <= token[-1] <= "9":
+def to_infix(tokens: Iterable) -> str:
+    token = next(tokens)
+
+    if token[0].isdigit():
         return token
     else:
         a = to_infix(tokens)
         b = to_infix(tokens)
-
         return f"({a} {token} {b})"
 
-def evaluate(tokens: list) -> float:
-    token = tokens.pop(0)
+def evaluate(tokens: Iterable) -> float:
+    token = next(tokens)
 
-    if "0" <= token[-1] <= "9":
+    if token[0].isdigit():
         return float(token)
     else:
         a = evaluate(tokens)
         b = evaluate(tokens)
+        op = ops[token]
+        return op(a, b)
 
-        if token == "+": return a + b
-        elif token == "-": return a - b
-        elif token == "*": return a * b
-        elif token == "/": return a / b
-        elif token == "div": return int(a) // int(b)
-        elif token == "mod": return int(a) % int(b)
+def parse(tokens: Iterable) -> float:
+    token = next(tokens)
+
+    if token[0].isdigit():
+        return Num(float(token))
+    else:
+        a = parse(tokens)
+        b = parse(tokens)
+        return BinaryOp(token, a, b)
 
 def main():
-    polish = "mod + * + 1 2 + 2 3 4 5".split()
+    polish = "* 5 + * 3 2 4".split()
 
-    infix = to_infix(polish[:])
-    value = evaluate(polish[:])
+    infix = to_infix(iter(polish))
+    value = evaluate(iter(polish))
+    tree = parse(iter(polish))
     print(infix, "==", value)
 
-    # ((((1 + 2) * (2 + 3)) + 4) mod 5) == 4
+    # (5 * ((3 * 2) + 4)) == 50.0
 
 main()

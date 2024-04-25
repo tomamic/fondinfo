@@ -38,20 +38,25 @@ class Frog(Actor):
     def __init__(self, x, y):
         self._x, self._y = x, y
         self._w, self._h = 20, 20
-        self._speed = 4
-        self._dx, self._dy = 0, 0
+        self._dx, self._dy, self._drift = 0, 0, 0
         self._count, self._steps = 0, 6
+        self._speed = 4
 
     def move(self, arena):
+        raft = False
         for other in arena.collisions():
             if isinstance(other, Raft) and self._count == 0:
-                self._x += other.speed()
+                raft = True
+                self._drift = other.speed()
+                self._x += self._drift
 
         if self._count > 0:
             self._count -= 1
-            self._x += self._dx
+            self._x += self._dx + self._drift
             self._y += self._dy
         else:
+            if not raft:
+                self._drift = 0
             length = self._speed * self._steps  # total jump length
             arena_w, arena_h = arena.size()
             keys = arena.current_keys()

@@ -5,12 +5,23 @@
 """
 
 FIRST, LAST = 32, 126
-COLS, ROWS = 24, 4
 
-for y in range(ROWS):
-    for x in range(COLS):
-        ##i = FIRST + x + y*COLS
-        i = FIRST + x * ROWS + y
+cols, rows = 16, 8
+
+for y in range(rows):
+    for x in range(cols):
+        i = FIRST + y * cols + x
         if i <= LAST:
             print(chr(i), end=" ")
     print()
+print()
+
+cols, rows = 8, 16
+
+for y in range(rows):
+    for x in range(cols):
+        i = FIRST + x * rows + y
+        if i <= LAST:
+            print(chr(i), end=" ")
+    print()
+

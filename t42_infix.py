@@ -10,7 +10,7 @@ from p52_expr import Expr, BinaryOp, UnaryOp, Var, Num
 
 class Tokenizer:
     def __init__(self, text):
-        regex = r"\s*([A-Za-z0-9\.]+|.?)"
+        regex = r"\s*([\w\.]+|.?)"
         self._tokens = re.finditer(regex, text.rstrip())
         self._next = next(self._tokens)
 
@@ -64,7 +64,7 @@ def factor(tok: Tokenizer) -> Expr:
         x = expr(tok)
         tok.consume(")")
         return x
-    elif nxt.isalpha():
+    elif nxt[0].isalpha():
         tok.consume(nxt)
         return Var(nxt)
     else:

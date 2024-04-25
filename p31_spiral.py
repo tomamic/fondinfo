@@ -20,7 +20,7 @@ class Spiral:
 
     def pos(self):
         i, v, center = self._i, self._v, self._center
-        return move_around(center, 25 + i * 0.4, i * v)
+        return move_around(center, i * 0.4, i * v)
 
     def radius(self):
         return self._i * 0.4
