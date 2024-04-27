@@ -8,15 +8,21 @@ import sys; sys.path.append("../")
 import g2d
 from math import pi
 
-g2d.init_canvas((400, 400))
+RMAX = 200
+CX, CY = 250, 250
+TY, TH = 25, 50  # text pos and size
+
+g2d.init_canvas((CX * 2, CY * 2))
 r = float(g2d.prompt("Radius? "))
 
-if 0 <= r <= 200:
-    g2d.draw_circle((200, 200), r)
-    area = pi * r ** 2
-    perimeter = 2 * pi * r
-    g2d.alert("Area: " + str(area))
-    g2d.alert("Perimeter: " + str(perimeter))
+if 0 <= r <= RMAX:
+    g2d.draw_circle((CX, CY), r)
+    area = round(pi * r ** 2, 2)
+    perimeter = round(2 * pi * r, 2)
+    g2d.draw_text("Area: " + str(area),
+                  (CX, CY - r - TY), TH)
+    g2d.draw_text("Perimeter: " + str(perimeter),
+                  (CX, CY + r + TY), TH)
 else:
     g2d.alert("Error: out of range")
 
