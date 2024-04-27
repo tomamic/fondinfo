@@ -148,8 +148,11 @@ def load_image(src: str) -> str:
         img = js.Image.new()
         img.src = src
         if not src.startswith("http"):
-            with open(src, "rb") as f:
-                img.src = "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+            try:
+                with open(src, "rb") as f:
+                    img.src = "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+            except:
+                img.src = "https://fondinfo.github.io/sprites/" + src
         _loaded[src] = img
     return src
 
