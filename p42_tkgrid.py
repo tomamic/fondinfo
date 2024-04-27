@@ -8,7 +8,7 @@ class BoardGameGui(Tk):
         self.title(type(game).__name__)
         self._game = game
 
-        cols, rows = game.size()
+        cols, rows = self._game.cols(), self._game.rows()
         for y in range(rows):
             for x in range(cols):
                 def clicked(bx=x, by=y):
@@ -22,7 +22,7 @@ class BoardGameGui(Tk):
         self.update_buttons()
 
     def update_buttons(self):
-        cols, rows = self._game.size()
+        cols, rows = self._game.cols(), self._game.rows()
         for y in range(rows):
             for x in range(cols):
                 b = self.grid_slaves(column=x, row=y)[0]

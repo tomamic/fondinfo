@@ -24,10 +24,11 @@ class LightsOut(BoardGame):
 
     def play(self, x: int, y: int, action: str):
         if self._get(x, y) != None:  # is the cell within the board?
-            for dx, dy in ((0, 0), (0, -1), (1, 0), (0, 1), (-1, 0)):
-                v = self._get(x + dx, y + dy)
+            for dx, dy in [(0, 0), (0, -1), (1, 0), (0, 1), (-1, 0)]:
+                x1, y1 = x + dx, y + dy
+                v = self._get(x1, y1)
                 if v != None:  # is this neighbor cell in the board?
-                    self._board[(y + dy) * self._w + x + dx] = not v
+                    self._board[x1 + y1 * self._w] = not v
             self._solved = not any(self._board)
 
     def read(self, x: int, y: int) -> str:
