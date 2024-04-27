@@ -4,8 +4,8 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-from urllib.request import urlopen  # in desktop
-open("_movies.csv", "wb").write(urlopen("https://fondinfo.github.io/data/movies.csv").read())
+# from urllib.request import urlopen  # in desktop
+# open("_movies.csv", "wb").write(urlopen("https://fondinfo.github.io/data/movies.csv").read())
 
 # import pyodide.http  # in the playground
 # open("_movies.csv", "w").writelines(pyodide.http.open_url("https://fondinfo.github.io/data/movies.csv"))
