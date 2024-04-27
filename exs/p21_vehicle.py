@@ -3,6 +3,7 @@
 @author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
+import sys; sys.path.append("../")
 import g2d
 
 x, y, dx = 50, 50, 5

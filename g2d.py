@@ -104,7 +104,7 @@ def draw_polygon(points: list[Point]) -> None:
     blit_drawing_surface()
 
 def load_image(src: str) -> str:
-    gh = "https://raw.githubusercontent.com/tomamic/fondinfo/master/"
+    gh = "https://fondinfo.github.io/sprites/"
     if src not in _loaded:
         try:
             _loaded[src] = pg.image.load(src)

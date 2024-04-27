@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 from boardgame import BoardGame
 from random import shuffle
 

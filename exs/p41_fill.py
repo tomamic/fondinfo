@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+"""
+
 def fill(values: list[int], pos: int):
     if values[pos] == 0:
         values[pos] = 1

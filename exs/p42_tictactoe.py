@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 from boardgame import BoardGame, console_play
 
 symbol = ["", "x", "o"]  # 0, 1, -1

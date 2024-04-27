@@ -4,8 +4,10 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 import g2d
 from p21_polygon import draw_polygon
+
 i, n = 0, 0
 ARENA_W, ARENA_H, R = 600, 600, 250
 

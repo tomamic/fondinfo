@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 import g2d
 from random import randrange
 from math import dist  # √(Δx²+Δy²)

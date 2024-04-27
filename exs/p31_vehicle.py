@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 ARENA_W, ARENA_H = 480, 360
 
 class Vehicle:

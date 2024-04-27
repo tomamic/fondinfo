@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 from p42_connect4 import Connect4, gui_play
 from copy import deepcopy
 from math import inf

@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 import g2d
 
 x, y, dy, count = 40, 40, -4, 0

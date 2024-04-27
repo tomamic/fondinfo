@@ -4,6 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import sys; sys.path.append("../")
 import g2d
 from random import randrange
 from p32_bounce import Ball, Arena
@@ -17,7 +18,6 @@ for _ in range(10):
 
 # view size is smaller than arena
 VIEW_W, VIEW_H = 300, 200
-BACKGROUND = "https://raw.githubusercontent.com/tomamic/tomamic.github.io/master/images/oop/viewport.png"
 view_x, view_y = 0, 0
 
 def tick():
@@ -33,7 +33,7 @@ def tick():
         view_x = max(view_x - 10, 0)
 
     # translate background and sprites in view's coords
-    g2d.draw_image(BACKGROUND, (0, 0),
+    g2d.draw_image("viewport.png", (0, 0),
                         (view_x, view_y), (VIEW_W, VIEW_H))
     for a in arena.actors():
         x, y = a.pos()
