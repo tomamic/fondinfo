@@ -4,7 +4,10 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-import g2d
+try:
+    from __main__ import g2d
+except:
+    import g2d
 from boardgame import BoardGame
 
 W, H = 40, 40
