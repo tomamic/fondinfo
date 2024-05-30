@@ -7,7 +7,7 @@
 def download(url, name):
     try:
         from pyodide.http import open_url  # in the playground
-        open(name, "w").writelines(open_url(url))
+        open(name, "w").write(open_url(url).read())
     except:
         from urllib.request import urlopen  # locally
         open(name, "wb").write(urlopen(url).read())
