@@ -4,7 +4,7 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-from p52_expr import Expr, Num, BinaryOp
+from c12_expr import Expr, Num, BinaryOp
 
 def parse(tokens: list) -> str:
     token = tokens.pop(0)

@@ -4,14 +4,6 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
-class ListNode:
-    def __init__(self, data, next=None):
-        self.data = data
-        self.next = next  # ListNode | None
-
-    def __str__(self) -> str:
-        return f"<{self.data} {self.next}>"
-
 class TreeNode:
     def __init__(self, data, left=None, right=None):
         self.data = data

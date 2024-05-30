@@ -5,7 +5,7 @@
 """
 
 from typing import Iterable
-from p52_expr import ops, Num, BinaryOp
+from c12_expr import ops, Num, BinaryOp
 
 def to_infix(tokens: Iterable) -> str:
     token = next(tokens)

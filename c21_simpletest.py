@@ -5,7 +5,7 @@
 """
 
 from unittest import TestCase, main
-from p31_ball import Ball, ARENA_W, ARENA_H, BALL_W, BALL_H
+from c06_ball import Ball, ARENA_W, ARENA_H, BALL_W, BALL_H
 
 MAX_X, MAX_Y = ARENA_W - BALL_W, ARENA_H - BALL_H
 

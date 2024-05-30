@@ -5,7 +5,7 @@
 """
 
 import g2d
-from p31_ball import Ball, ARENA_W, ARENA_H
+from c06_ball import Ball, ARENA_W, ARENA_H
 
 def tick():
     g2d.clear_canvas()

@@ -5,8 +5,8 @@
 """
 
 from random import randrange
-from p21_polar import move_around
-from p32_bounce import Actor, Arena, Ball, Ghost, Turtle, Point
+from c04_polar import move_around
+from c07_bounce import Actor, Arena, Ball, Ghost, Turtle, Point
 
 class TurtleHero(Turtle):
     def __init__(self, pos):

@@ -6,7 +6,7 @@
 
 from unittest import TestCase, main
 from unittest.mock import Mock
-from p32_bouncegame import Arena, Ball, Ghost, TurtleHero
+from c07_bouncegame import Arena, Ball, Ghost, TurtleHero
 
 
 class BallTest(TestCase):
