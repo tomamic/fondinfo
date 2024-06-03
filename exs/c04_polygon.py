@@ -6,7 +6,7 @@
 
 import sys; sys.path.append("../")
 import g2d
-from p21_polar import move_around
+from c04_polar import move_around
 
 def draw_polygon(n: int, center: g2d.Point, radius: float,
                  rot: float=0):
