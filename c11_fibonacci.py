@@ -7,7 +7,7 @@
 from functools import lru_cache
 from time import time
 
-@lru_cache()
+## @lru_cache()
 def fibonacci1(n: int) -> int:
     if n < 2:
         return n
