@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+@author  Alberto Ferrari - https://albertoferrari.github.io/
+@license This software is free - https://opensource.org/license/mit
+"""
+
 class Point:
     def __init__(self, x: float, y: float):
         self._x = x
