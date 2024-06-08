@@ -7,10 +7,11 @@
 import sys; sys.path.append("../")
 import g2d
 
-L, l, margin = 500, 200, 10
+L, margin = 500, 10
 g2d.init_canvas((L, L))
 
 n = int(g2d.prompt("How many squares?"))
+l = 2 * L / (n + 1)
 
 pos_fst, pos_lst = margin, L - l - margin
 pos_m = (pos_lst - pos_fst) / max(n - 1, 1)  # ⚠️ div by 0
