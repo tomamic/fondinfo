@@ -17,3 +17,11 @@ class LineSegment:
         self._b = b
     def length(self) -> float:
         return self._a.distance(self._b)
+
+def main():
+    Point a(3,4)
+    Point b(6,5)
+    Segmant s(a,b)
+    print(s.length()
+
+main()
