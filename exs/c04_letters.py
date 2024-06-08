@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
+@license This software is free - http://www.gnu.org/licenses/gpl.html
+"""
+
 def count_am_nz(text: str) -> tuple[int, int]:
     count_am, count_nz = 0, 0
     for c in text.lower():

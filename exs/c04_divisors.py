@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+@author  Alberto Ferrari - https://albertoferrari.github.io/
+@license This software is free - https://opensource.org/license/mit
+"""
+
 def common_divisors(num1, num2):
     divisors = []
     # Find the smaller number between num1 and num2
