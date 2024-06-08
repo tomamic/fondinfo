@@ -19,9 +19,9 @@ class LineSegment:
         return self._a.distance(self._b)
 
 def main():
-    Point a(3,4)
-    Point b(6,5)
-    Segmant s(a,b)
-    print(s.length()
+    a = Point(3,4)
+    b = Point(6,5)
+    s = LineSegment(a,b)
+    print(s.length())
 
 main()
