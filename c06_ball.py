@@ -10,7 +10,7 @@ class Ball:
     def __init__(self, x0: int, y0: int):
         self._x = x0
         self._y = y0
-        self._dx, self._dy = 5, 5
+        self._dx, self._dy = 4, 4
 
     def move(self):
         if not 0 <= self._x + self._dx <= ARENA_W - BALL_W:
