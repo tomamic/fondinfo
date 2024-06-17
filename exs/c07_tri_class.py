@@ -6,6 +6,7 @@
 
 import sys; sys.path.append("../")
 import g2d
+from math import isclose
 
 class Point:
     def __init__(self, x: float, y: float):
@@ -54,7 +55,7 @@ if a + b != c and a + c != b and b + c != a:
 	else:
 	   g2d.alert("isosceles triangle")
 
-	if a**2 == b**2 + c**2 or b**2 == a**2 + c**2 or c**2 == b**2 + a**2:
+	if isclose(a**2,b**2 + c**2) or isclose(b**2,a**2 + c**2) or isclose(c**2, b**2 + a**2):
 	   g2d.alert("righ triangle")
 
 g2d.main_loop()
