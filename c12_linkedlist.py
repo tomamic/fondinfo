@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 class ListNode:
@@ -18,7 +18,7 @@ def push_back(node: ListNode, val) -> ListNode:
         node = ListNode(val)
     else:
         node.next = push_back(node.next, val)
-    return node 
+    return node
 
 
 def push_front(node: ListNode, val) -> ListNode:

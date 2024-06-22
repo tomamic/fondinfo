@@ -50,5 +50,5 @@
 
 http://fondinfo.github.io
 
-Copyleft (ɔ) 2008-2024 Michele Tomaiuolo - http://sowide.unipr.it/tomamic <br>
-This software is free - License: http://www.gnu.org/licenses/gpl-3.0.txt
+Copyleft (ɔ) 2008-2024 Michele Tomaiuolo - https://tomamic.github.io/ <br>
+This software is free - https://opensource.org/license/mit

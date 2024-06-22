@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io
+@license This software is free - https://opensource.org/license/mit
 """
 
 # from urllib.request import urlopen  # in desktop
@@ -44,4 +44,4 @@ with open("_movies.csv") as f:
 actors = sorted(actor_runtimes.items(), key=itemgetter(1), reverse=True)[:5]
 for a, rt in actors:
     print(a, rt, "\n", actor_movies[a], "\n", actor_collabs[a])
-    
+

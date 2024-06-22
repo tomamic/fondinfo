@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 import random
@@ -25,7 +25,7 @@ class Alien(Actor):
         else:
             self._dx = -self._dx
             self._y += self._dy
-        
+
         chances = 25000 // (1 + arena.count())
         if random.randrange(chances) == 0:
             pos = self._x + self._w / 2, self._y + self._h

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io
+@license This software is free - https://opensource.org/license/mit
 """
 
 class ListNode:
@@ -16,17 +16,17 @@ class ListNode:
 class Stack:
     def __init__(self):
         self._node = None
-        
+
     def push(self, val):
         self._node = ListNode(val, self._node)
-        
+
     def pop(self):
         if self.empty():
             raise ValueError("Empty stack")
         val = self._node.data
         self._node = self._node.next
         return val
-    
+
     def empty(self):
         return not self._node
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 def linear_search(v: list, value, beg, end) -> int:
@@ -117,7 +117,7 @@ def main():
              "Kay", "Lea", "Meg", "Sue", "Zoe"]
     i = binary_search(names, "Meg", 0, len(names))
     print(i)
-    
+
     vals = [3, 0, 1, 8, 7, 2, 5, 4, 6, 9]
     bubble_sort(vals, 0, len(vals))
     print(vals)

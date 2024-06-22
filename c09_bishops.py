@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 from random import sample
@@ -16,7 +16,7 @@ for b in bishops:
     y, x = divmod(b, w)
     diags1.add(x + y)  # //
     diags2.add(x + h - 1 - y)  # \\
-    
+
 for y in range(h):
     for x in range(w):
         c = ("X" if y * w + x in bishops else

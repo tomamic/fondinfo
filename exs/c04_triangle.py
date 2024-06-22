@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io
+@license This software is free - https://opensource.org/license/mit
 """
 
 def triangle_perimeter(a: float, b: float, c: float) -> float:
     if a > b + c or b > a + c or c > a + b:
         raise ValueError("Not a triangle")
     return a + b + c
-    
+
 def main():
     again = True
     while again:
@@ -19,9 +19,9 @@ def main():
             print(triangle_perimeter(a, b, c))
         except ValueError as e:
             print(e)
-    
+
         again = input("Continue [Y/N]? ") in "Yy"
-        
+
 if __name__ == "__main__":
     main()
-    
+

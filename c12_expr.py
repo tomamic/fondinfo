@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 from operator import add, sub, mul, truediv, neg
@@ -37,7 +37,7 @@ class BinaryOp(Expr):
         y = self._y.eval(ctx)
         op = ops[self._op]
         return op(x, y)
-    
+
 class UnaryOp(Expr):
     def __init__(self, op, x: Expr):
         self._op, self._x = op, x
