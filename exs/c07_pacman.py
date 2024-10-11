@@ -7,7 +7,7 @@
 import sys; sys.path.append("../")
 import g2d
 from actor import Actor, Arena
-import p32_pacmanmap as pmmap
+import c10_pacmanmap as pmmap
 
 tile = 8
 
@@ -90,8 +90,8 @@ class PacMan(Actor):
 
 
 def tick():
-    background = "https://tomamic.github.io/images/sprites/pac-man-bg.png"
-    sprites = "https://tomamic.github.io/images/sprites/pac-man.png"
+    background = "https://fondinfo.github.io/sprites/pac-man-bg.png"
+    sprites = "https://fondinfo.github.io/sprites/pac-man.png"
     g2d.draw_image(background, (0, 0))
     for a in arena.actors():
         if a.sprite():
