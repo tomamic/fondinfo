@@ -39,7 +39,9 @@ class Alien(Actor):
         return self._w, self._h
 
     def sprite(self) -> Point:
-        return 74, 519 if self._pose else 548
+        if self._pose:
+            return 24, 354
+        return 0, 354
 
 
 class Missile(Actor):
