@@ -10,7 +10,7 @@ from actor import Actor, Arena, Point
 class Alien(Actor):
     def __init__(self, pos: Point):
         self._x, self._y = pos
-        self._w, self._h = 32, 20
+        self._w, self._h = 24, 16
         self._dx, self._dy = 4, 8
         # each alien has its own moving space, e.g. 150px
         self._xmin, self._xmax = self._x, self._x + 150
@@ -67,12 +67,12 @@ class Missile(Actor):
         return self._w, self._h
 
     def sprite(self):
-        return 204, 557
+        return 165, 354
 
 
 class Bomb(Actor):
     def __init__(self, pos):
-        self._w, self._h = 4, 8
+        self._w, self._h = 8, 16
         self._x, self._y = pos
         self._x -= self._w / 2
 
@@ -93,7 +93,7 @@ class Bomb(Actor):
         return self._w, self._h
 
     def sprite(self):
-        return 204, 531
+        return 53, 338
 
 
 class Cannon(Actor):
@@ -127,7 +127,7 @@ class Cannon(Actor):
         return self._w, self._h
 
     def sprite(self):
-        return 273, 549
+        return 153, 364
 
 class AlienGame(Arena):
     def __init__(self, size=(480, 360)):
@@ -161,7 +161,8 @@ class AlienGui:
 
     def tick(self):
         sprites = "https://fondinfo.github.io/sprites/invaders.png"
-        g2d.clear_canvas()
+        g2d.set_color((0, 0, 0))
+        g2d.draw_rect((0, 0), self._game.size())
         for a in self._game.actors():
             g2d.draw_image(sprites, a.pos(), a.sprite(), a.size())
 
