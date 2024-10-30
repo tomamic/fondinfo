@@ -19,38 +19,43 @@ class BoardGameGui:
 
     def tick(self):
         game = self._game
-        x, y = g2d.mouse_pos()
-        bx, by = x // W, y // H
+        mouse_x, mouse_y = g2d.mouse_pos()
+        x, y = mouse_x // W, mouse_y // H
         released = set(g2d.previous_keys()) - set(g2d.current_keys())
         if game.finished():
             g2d.alert(game.status())
             g2d.close_canvas()
         elif "Escape" in released:  # "Escape" key released
             g2d.close_canvas()
-        elif "LeftButton" in released and by < game.rows():
-            game.play(bx, by, "")
-            self.update_buttons()
-        elif "RightButton" in released and by < game.rows():
-            game.play(bx, by, "flag")
-            self.update_buttons()
+        elif "LeftButton" in released and y < game.rows():
+            game.play(x, y, "")
+            self.update_buttons((x, y))
+        elif "RightButton" in released and y < game.rows():
+            game.play(x, y, "flag")
+            self.update_buttons((x, y))
 
-    def update_buttons(self):
+    def update_buttons(self, last_move=None):
         cols, rows = self._game.cols(), self._game.rows()
-        g2d.clear_canvas()
         g2d.set_color((0, 0, 0))
-        for y in range(1, rows + 1):
-            g2d.draw_line((0, y * H), (cols * W, y * H))
-        for x in range(1, cols):
-            g2d.draw_line((x * W, 0), (x * W, rows * H))
+        g2d.draw_rect((0, 0), (cols * W, rows * H + H))
         for y in range(rows):
             for x in range(cols):
-                _write(self._game.read(x, y), x * W, y * H, W, H)
+                gray = 232 if (x, y) == last_move else 255
+                text = self._game.read(x, y)
+                _write(text, (x, y), bg=(gray, gray, gray))
         status = self._game.status()
-        _write(status, 0, rows * H, cols * W, H)
-
-def _write(text, x, y, w, h):
-    fsize = 0.75 * min(h, 2 * w / len(text or " "))
-    g2d.draw_text(text, (x + w // 2, y + h // 2), fsize)
+        _write(status, (0, rows), cols)
+        
+def _write(text, pos, cols=1, bg=(255, 255, 255)):
+    x, y = pos
+    g2d.set_color(bg)
+    g2d.draw_rect((x * W + 1, y * H + 1), (cols * W - 2, H - 2))
+    
+    chars = max(1, len(text))
+    fsize = min(0.75 * H, 1.5 * cols * W / chars)
+    center = (x * W + cols * W/2, y * H + H/2)
+    g2d.set_color((0, 0, 0))
+    g2d.draw_text(text, center, fsize)
 
 def gui_play(game: BoardGame):
     g2d.init_canvas((game.cols() * W, game.rows() * H + H))
