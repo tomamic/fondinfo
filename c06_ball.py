@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
@@ -10,7 +10,7 @@ class Ball:
     def __init__(self, x0: int, y0: int):
         self._x = x0
         self._y = y0
-        self._dx, self._dy = 5, 5
+        self._dx, self._dy = 4, 4
 
     def move(self):
         if not 0 <= self._x + self._dx <= ARENA_W - BALL_W:

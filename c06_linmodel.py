@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
+"""
+
 class LinearModel:
     def __init__(self, slope: float, intercept: float):
         self._a = slope

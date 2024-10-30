@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 from unittest import TestCase, main
@@ -12,16 +12,16 @@ MAX_X, MAX_Y = ARENA_W - BALL_W, ARENA_H - BALL_H
 class SimpleTest(TestCase):
 
     def test_corner(self):
-        b = Ball(MAX_X, MAX_Y)  # dx = 5, dy = 5
+        b = Ball(MAX_X, MAX_Y)  # dx = 4, dy = 4
         b.move()
-        self.assertTrue(b.pos() == (MAX_X - 5, MAX_Y - 5))
+        self.assertTrue(b.pos() == (MAX_X - 4, MAX_Y - 4))
 
     def test_move(self):
-        test_values = [ (40, 80, 45, 85),
-                        (40, MAX_Y - 5, 45, MAX_Y),
-                        (40, MAX_Y, 45, MAX_Y - 5),
-                        (MAX_X - 5, 80, MAX_X, 85),
-                        (MAX_X, 80, MAX_X - 5, 85) ]
+        test_values = [ (40, 80, 44, 84),
+                        (40, MAX_Y - 4, 44, MAX_Y),
+                        (40, MAX_Y, 44, MAX_Y - 4),
+                        (MAX_X - 4, 80, MAX_X, 84),
+                        (MAX_X, 80, MAX_X - 4, 84) ]
 
         for param in test_values:
             with self.subTest(param=param):

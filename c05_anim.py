@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 import g2d
 
-x, y, dx = 50, 50, 5
+x, y, dx = 40, 40, 4
 ARENA_W, ARENA_H = 480, 360
 
 def tick():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 states = {"Q0", "Q1", "Q2", "Q3", "Q4", "Qf"}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 class Fraction:
@@ -16,14 +16,14 @@ class Fraction:
         else:
             self._num = num
             self._den = den
-        self._normalize()  # normalize 
-            
+        self._normalize()  # normalize
+
     def _normalize(self):
         import math
         gcg = math.gcd(self._num, self._den)
         self._num = self._num // gcg
         self._den = self._den // gcg
-    
+
     def __str__(self):
         return f"({self._num}/{self._den})"
 
@@ -32,24 +32,24 @@ class Fraction:
         num = self._num * f._den + f._num * self._den
         den = self._den * f._den
         return Fraction(num, den)
-    
+
     def __sub__(self, f: "Fraction") -> "Fraction":
         """ implements subtraction between fractions """
         num = self._num * f._den - f._num * self._den
         den = self._den * f._den
         return Fraction(num, den)
-    
+
     def __mul__(self, f: "Fraction") -> "Fraction":
         """ implements multiplication of fractions """
         num = self._num * f._num
         den = self._den * f._den
         return Fraction(num, den)
-    
+
     def __truediv__(self, f: "Fraction") -> "Fraction":
-        """ implements division between fractions """        
+        """ implements division between fractions """
         num = self._num * f._den
         den = self._den * f._num
-        return Fraction(num, den)    
+        return Fraction(num, den)
 
 def main():
     f1 = Fraction(10, 4)

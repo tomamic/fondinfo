@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 from functools import lru_cache
 from time import time
 
-@lru_cache()
+## @lru_cache()
 def fibonacci1(n: int) -> int:
     if n < 2:
         return n

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-@author  Michele Tomaiuolo - http://www.ce.unipr.it/people/tomamic
-@license This software is free - http://www.gnu.org/licenses/gpl.html
+@author  Michele Tomaiuolo - https://tomamic.github.io/
+@license This software is free - https://opensource.org/license/mit
 """
 
 import g2d
 
 # way too much global stuff!
-x1, y1, dx1, dy1 = 40, 80, 5, 5
-x2, y2, dx2, dy2 = 80, 40, 5, 5
+x1, y1, dx1, dy1 = 40, 80, 4, 4
+x2, y2, dx2, dy2 = 80, 40, 4, 4
 ARENA_W, ARENA_H, BALL_W, BALL_H = 480, 360, 20, 20
 
 # encapsulates behaviour, but exposes data
