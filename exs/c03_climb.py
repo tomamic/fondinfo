@@ -6,9 +6,9 @@
 
 from random import randint
 
-TOP = 100					# top of the climb
-climb_a = climb_b = 0		# start
-win_a = win_b = False		# winner
+TOP = 100              # top of the climb
+climb_a = climb_b = 0  # start
+win_a = win_b = False  # winner
 
 while not(win_a) and not(win_b):
     climb_a = min(max(climb_a + randint(-1, 3), 0), TOP)
@@ -18,7 +18,7 @@ while not(win_a) and not(win_b):
         win_a = True
     if climb_b == TOP:
         win_b = True
-		
+        
 if win_a and win_b:
     print("Both climbers win")
 elif win_a:
