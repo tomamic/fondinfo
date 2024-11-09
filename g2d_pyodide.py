@@ -140,13 +140,11 @@ def draw_text(text: str, center: Point, size: int) -> None:
     _ctx.fillText(text, *center)
 
 def draw_polygon(points: list[Point]):
-    if points:
-        _ctx.beginPath()
-        _ctx.moveTo(*points[0])  # 1st point
-        for point in points[1:]:
-            _ctx.lineTo(*point)
-        _ctx.closePath()  # go back to 1st point
-        _ctx.stroke() if _stroke else _ctx.fill()
+    _ctx.beginPath()
+    for point in points:
+        _ctx.lineTo(*point)
+    _ctx.closePath()
+    _ctx.stroke() if _stroke else _ctx.fill()
 
 def load_image(src: str) -> str:
     if src not in _loaded:
