@@ -20,11 +20,12 @@
 ### Drawing functions
 
 - **`set_color`** `(color: Color)` : Set the drawing color
+- **`set_stroke`** `(width: int=0)` : Set the stroke width to outline shapes, instead of filling them
 - **`draw_line`** `(pt1: Point, pt2: Point, width: float=1)` : Draw a line from `pt1` to `pt2`, with an optional width
 - **`draw_circle`** `(center: Point, radius: float)` : Fill a circle, given `center` and `radius`
-- **`draw_rect`** `(pos: Point, size: Point)` : Fill a given rectangle, given left-top position and size
+- **`draw_rect`** `(pos: Point, size: Point)` : Fill a rectangle, given left-top position and size
 - **`draw_polygon`** `(points: list[Point])` : Fill a polygon, given its list of vertices
-- **`draw_text`** `(txt: str, pos: Point, size: float, centered: bool=True)` : Draw a text, given position and font px size; text will be centered, or optionally aligned to left-top
+- **`draw_text`** `(text: str, center: Point, size: float)` : Draw a text, given its `center` position and font px `size`
 
 ### Images and sounds
 
