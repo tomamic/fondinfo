@@ -9,12 +9,14 @@ from c04_polar import move_around
 
 def draw_tree(pos, length, angle):
     nxt = move_around(pos, length, angle)
-    if length < 5:
+    if length < 4:
         g2d.set_color((0, 255, 0))
+        g2d.set_stroke(3)
         g2d.draw_line(pos, nxt)
     else:
         g2d.set_color((128, 64, 0))
-        g2d.draw_line(pos, nxt, length / 5)
+        g2d.set_stroke(length / 5)
+        g2d.draw_line(pos, nxt)
         draw_tree(nxt, length * 0.8, angle + 30)
         draw_tree(nxt, length * 0.8, angle - 30)
 
