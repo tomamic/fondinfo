@@ -132,12 +132,12 @@ def draw_circle(center: Point, radius: int) -> None:
 def draw_rect(pos: Point, size: Point) -> None:
     _ctx.strokeRect(*pos, *size) if _stroke else _ctx.fillRect(*pos, *size)
 
-def draw_text(txt: str, pos: Point, size: int) -> None:
+def draw_text(text: str, center: Point, size: int) -> None:
     _ctx.font = str(size) + "px sans-serif";
     _ctx.textBaseline = "middle"
     _ctx.textAlign = "center"
-    #_ctx.strokeText(txt, *pos) if _stroke else _ctx.fillText(txt, *pos)
-    _ctx.fillText(txt, *pos)
+    #_ctx.strokeText(txt, *center) if _stroke else _ctx.fillText(txt, *center)
+    _ctx.fillText(text, *center)
 
 def draw_polygon(points: list[Point]):
     if points:

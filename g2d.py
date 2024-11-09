@@ -92,14 +92,14 @@ def draw_rect(pos: Point, size: Point) -> None:
     pg.draw.rect(surf, _color, rect, width=_stroke)
     blit_drawing_surface()
 
-def draw_text(txt: str, pos: Point, size: int) -> None:
+def draw_text(text: str, center: Point, size: int) -> None:
     fname, fonts = "segoeuisymbol", pg.font.get_fonts()
     fname = fname if fname in fonts else "freesansbold"
     font = pg.font.SysFont(fname, int(size))
-    surface = font.render(txt, True, _color)
+    surface = font.render(text, True, _color)
     if len(_color) > 3 and _color[3] != 255:
         surface.set_alpha(_color[3])
-    (x, y), (w, h) = _tup(pos), surface.get_size()
+    (x, y), (w, h) = _tup(center), surface.get_size()
     _canvas.blit(surface, (x - w//2, y - h//2))
 
 def draw_polygon(points: list[Point]) -> None:
