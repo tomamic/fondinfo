@@ -74,13 +74,13 @@ except:
 
 Point = tuple[float, float]
 Color = tuple[float, float, float]
-ImageClip = tuple[str, Point, Point]
 
 _canvas, _ctx, _usr_tick = None, None, None
 _mouse_pos, _curr_keys, _prev_keys = (0, 0), set(), set()
 _mouse_codes = ["LeftButton", "MiddleButton", "RightButton"]
 _lclick, _rclick = False, False
 _delay, _last_frame = 1000 / 30, 0
+_stroke = 0
 _loaded = {}
 
 def _tup(t: tuple, vmin=-math.inf, vmax=math.inf) -> tuple:
@@ -106,32 +106,37 @@ def set_color(color: Color) -> None:
     _ctx.strokeStyle = "rgba" + str(c[:3] + (c[3] / 255,))
     _ctx.fillStyle = _ctx.strokeStyle
 
+def set_stroke(width: int=0) -> None:
+    global _stroke
+    _stroke = _ctx.lineWidth = width
+    
 def clear_canvas() -> None:
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
 
 def draw_line(pt1: Point, pt2: Point, width=1) -> None:
-    _ctx.lineWidth = width
+    _ctx.lineWidth = max(_stroke, width)
     _ctx.beginPath()
     _ctx.moveTo(*pt1)
     _ctx.lineTo(*pt2)
     _ctx.closePath()
     _ctx.stroke()
-    _ctx.lineWidth = 1
+    _ctx.lineWidth = _stroke
 
 def draw_circle(center: Point, radius: int) -> None:
     from math import pi
     _ctx.beginPath()
     _ctx.arc(*center, radius, 0, 2 * pi)
     _ctx.closePath()
-    _ctx.fill()
+    _ctx.stroke() if _stroke else _ctx.fill()
 
 def draw_rect(pos: Point, size: Point) -> None:
-    _ctx.fillRect(*pos, *size)
+    _ctx.strokeRect(*pos, *size) if _stroke else _ctx.fillRect(*pos, *size)
 
 def draw_text(txt: str, pos: Point, size: int) -> None:
     _ctx.font = str(size) + "px sans-serif";
     _ctx.textBaseline = "middle"
     _ctx.textAlign = "center"
+    #_ctx.strokeText(txt, *pos) if _stroke else _ctx.fillText(txt, *pos)
     _ctx.fillText(txt, *pos)
 
 def draw_polygon(points: list[Point]):
@@ -141,7 +146,7 @@ def draw_polygon(points: list[Point]):
         for point in points[1:]:
             _ctx.lineTo(*point)
         _ctx.closePath()  # go back to 1st point
-        _ctx.fill()
+        _ctx.stroke() if _stroke else _ctx.fill()
 
 def load_image(src: str) -> str:
     if src not in _loaded:

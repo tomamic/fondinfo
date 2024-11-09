@@ -23,7 +23,7 @@ _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
 _tkmain.geometry(f"+{_ws // 2}+{_hs // 2}")
 
 _canvas, _display, _tick = None, None, None
-_size, _color = (640, 480), (127, 127, 127)
+_size, _color, _stroke = (640, 480), (127, 127, 127), 0
 _mouse_pos, _mouse_down = (0, 0), 0
 _curr_keys, _prev_keys = set(), set()
 _loaded = {}
@@ -49,6 +49,10 @@ def set_color(color: Color) -> None:
     global _color
     _color = _tup((list(color) + [255])[:4], 0, 255)
 
+def set_stroke(width: int) -> None:
+    global _stroke
+    _stroke = int(width)
+
 def clear_canvas() -> None:
     _canvas.fill((255, 255, 255))
 
@@ -73,19 +77,19 @@ def blit_drawing_surface():
 
 def draw_line(pt1: Point, pt2: Point, width: float=1) -> None:
     surf = drawing_surface()
-    pg.draw.line(surf, _color, _tup(pt1), _tup(pt2), int(width))
+    pg.draw.line(surf, _color, _tup(pt1), _tup(pt2), width=max(int(width), _stroke, 1))
     blit_drawing_surface()
 
 def draw_circle(center: Point, radius: float) -> None:
     surf = drawing_surface()
-    pg.draw.circle(surf, _color, _tup(center), int(radius))
+    pg.draw.circle(surf, _color, _tup(center), int(radius), width=_stroke)
     blit_drawing_surface()
 
 def draw_rect(pos: Point, size: Point) -> None:
     surf = drawing_surface()
     rect = pg.Rect(*_tup(pos + size))
     rect.normalize()
-    pg.draw.rect(surf, _color, rect)
+    pg.draw.rect(surf, _color, rect, width=_stroke)
     blit_drawing_surface()
 
 def draw_text(txt: str, pos: Point, size: int) -> None:
@@ -100,7 +104,7 @@ def draw_text(txt: str, pos: Point, size: int) -> None:
 
 def draw_polygon(points: list[Point]) -> None:
     surf = drawing_surface()
-    pg.draw.polygon(surf, _color, [_tup(p) for p in points])
+    pg.draw.polygon(surf, _color, [_tup(p) for p in points], width=_stroke)
     blit_drawing_surface()
 
 def load_image(src: str) -> str:
