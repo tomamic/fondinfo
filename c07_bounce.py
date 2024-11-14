@@ -11,31 +11,31 @@ class Ball(Actor):
     def __init__(self, pos):
         self._x, self._y = pos
         self._w, self._h = 20, 20
-        self._speed = 4
-        self._dx, self._dy = self._speed, self._speed
+        self._dx, self._dy = 4, 4
 
     def move(self, arena: Arena):
         for other in arena.collisions():
             if not isinstance(other, Ghost):
                 x, y = other.pos()
                 if x < self._x:
-                    self._dx = self._speed
+                    self._dx = abs(self._dx)
                 else:
-                    self._dx = -self._speed
+                    self._dx = -abs(self._dx)
                 if y < self._y:
-                    self._dy = self._speed
+                    self._dy = abs(self._dy)
                 else:
-                    self._dy = -self._speed
+                    self._dy = -abs(self._dy)
 
         arena_w, arena_h = arena.size()
         if self._x + self._dx < 0:
-            self._dx = self._speed
+            self._dx = abs(self._dx)
         elif self._x + self._dx > arena_w - self._w:
-            self._dx = -self._speed
+            self._dx = -abs(self._dx)
         if self._y + self._dy < 0:
-            self._dy = self._speed
+            self._dy = abs(self._dy)
         elif self._y + self._dy > arena_h - self._h:
-            self._dy = -self._speed
+            self._dy = -abs(self._dy)
+
         self._x += self._dx
         self._y += self._dy
 
