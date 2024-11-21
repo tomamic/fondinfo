@@ -20,7 +20,7 @@
 ### Drawing functions
 
 - **`set_color`** `(color: Color)` : Set the drawing color
-- **`set_stroke`** `(width: int=0)` : Set the stroke width for outlining shapes, instead of filling them
+- **`set_stroke`** `(width: float=0)` : Set the stroke width for outlining shapes, instead of filling them
 - **`draw_line`** `(pt1: Point, pt2: Point)` : Draw a line from `pt1` to `pt2`
 - **`draw_circle`** `(center: Point, radius: float)` : Fill a circle, given `center` and `radius`
 - **`draw_rect`** `(pos: Point, size: Point)` : Fill a rectangle, given left-top position and size

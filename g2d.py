@@ -50,7 +50,7 @@ def set_color(color: Color) -> None:
     global _color
     _color = _tup((list(color) + [255])[:4], 0, 255)
 
-def set_stroke(width: int) -> None:
+def set_stroke(width: float=0) -> None:
     global _stroke
     _stroke = int(width)
 

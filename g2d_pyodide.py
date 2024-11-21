@@ -106,10 +106,10 @@ def set_color(color: Color) -> None:
     _ctx.strokeStyle = "rgba" + str(c[:3] + (c[3] / 255,))
     _ctx.fillStyle = _ctx.strokeStyle
 
-def set_stroke(width: int=0) -> None:
+def set_stroke(width: float=0) -> None:
     global _stroke
     _stroke = _ctx.lineWidth = width
-    
+
 def clear_canvas(background: Color=None) -> None:
     if background:
         c = _tup(background, 0, 255) + (255,)
