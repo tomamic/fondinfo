@@ -14,7 +14,7 @@
 
 - **`init_canvas`** `(size: Point)` : Initialize the drawing canvas
 - **`main_loop`** `(tick: Callable=None, fps: float=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
-- **`clear_canvas`** `()` : Clear the canvas
+- **`clear_canvas`** `(background: Color=None)` : Clear the canvas, with white or an optionally provided `background` color
 - **`close_canvas`** `()` : Close the canvas and exit the main loop
 
 ### Drawing functions
