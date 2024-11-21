@@ -23,7 +23,8 @@ _ws, _hs = _tkmain.winfo_screenwidth(), _tkmain.winfo_screenheight()
 _tkmain.geometry(f"+{_ws // 2}+{_hs // 2}")
 
 _canvas, _display, _tick = None, None, None
-_size, _color, _stroke = (640, 480), (127, 127, 127), 0
+_size, _stroke = (640, 480), 0
+_color, _background = (127, 127, 127), (255, 255, 255)
 _mouse_pos, _mouse_down = (0, 0), 0
 _curr_keys, _prev_keys = set(), set()
 _loaded = {}
@@ -53,8 +54,11 @@ def set_stroke(width: int) -> None:
     global _stroke
     _stroke = int(width)
 
-def clear_canvas() -> None:
-    _canvas.fill((255, 255, 255))
+def clear_canvas(background: Color=None) -> None:
+    global _background
+    if background:
+        _background = background
+    _canvas.fill(_background)
 
 def update_canvas() -> None:
     global _prev_keys

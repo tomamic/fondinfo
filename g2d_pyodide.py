@@ -110,7 +110,12 @@ def set_stroke(width: int=0) -> None:
     global _stroke
     _stroke = _ctx.lineWidth = width
     
-def clear_canvas() -> None:
+def clear_canvas(background: Color=None) -> None:
+    if background:
+        c = _tup(background, 0, 255) + (255,)
+        style = _canvas.getAttribute("style")
+        style = "background:rgba" + str(c[:3] + (c[3] / 255,)) + ";" + style.split(";", 1)[1]
+        _canvas.setAttribute("style", style)
     _ctx.clearRect(0, 0, _canvas.width, _canvas.height)
 
 def draw_line(pt1: Point, pt2: Point, width=1) -> None:
