@@ -14,17 +14,18 @@
 
 - **`init_canvas`** `(size: Point)` : Initialize the drawing canvas
 - **`main_loop`** `(tick: Callable=None, fps: float=30)` : Start the event loop, accepting an optional `tick` function, which will be called periodically
-- **`clear_canvas`** `()` : Clear the canvas
+- **`clear_canvas`** `(background: Color=None)` : Clear the canvas, with white or an optionally provided `background` color
 - **`close_canvas`** `()` : Close the canvas and exit the main loop
 
 ### Drawing functions
 
 - **`set_color`** `(color: Color)` : Set the drawing color
-- **`draw_line`** `(pt1: Point, pt2: Point, width: float=1)` : Draw a line from `pt1` to `pt2`, with an optional width
+- **`set_stroke`** `(width: float=0)` : Set the stroke width for outlining shapes, instead of filling them
+- **`draw_line`** `(pt1: Point, pt2: Point)` : Draw a line from `pt1` to `pt2`
 - **`draw_circle`** `(center: Point, radius: float)` : Fill a circle, given `center` and `radius`
-- **`draw_rect`** `(pos: Point, size: Point)` : Fill a given rectangle, given left-top position and size
+- **`draw_rect`** `(pos: Point, size: Point)` : Fill a rectangle, given left-top position and size
 - **`draw_polygon`** `(points: list[Point])` : Fill a polygon, given its list of vertices
-- **`draw_text`** `(txt: str, pos: Point, size: float, centered: bool=True)` : Draw a text, given position and font px size; text will be centered, or optionally aligned to left-top
+- **`draw_text`** `(text: str, center: Point, size: float)` : Draw a text, given its `center` position and font px `size`
 
 ### Images and sounds
 
